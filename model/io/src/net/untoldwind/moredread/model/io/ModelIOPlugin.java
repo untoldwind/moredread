@@ -77,10 +77,19 @@ public class ModelIOPlugin extends AbstractUIPlugin {
 	}
 
 	public void sceneSave(final Scene scene) {
-		final FileDialog fileDialog = new FileDialog(PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getShell());
+		String fileName = scene.getSceneMetadata().getFileName();
 
-		fileDialog.open();
+		if (fileName == null) {
+			final FileDialog fileDialog = new FileDialog(PlatformUI
+					.getWorkbench().getActiveWorkbenchWindow().getShell());
+
+			fileName = fileDialog.open();
+
+			if (fileName == null) {
+				return;
+			}
+		}
+
 	}
 
 	/**

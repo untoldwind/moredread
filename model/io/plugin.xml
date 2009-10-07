@@ -2,5 +2,15 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="net.untoldwind.moredread.model.io" name="MoreDread IO" schema="schema/io.exsd"/>
+   <extension
+         point="net.untoldwind.moredread.model.io">
+      <file-io
+            extension="mrd"
+            id="net.untoldwind.moredread.model.io.mrd"
+            label="Mrd Example"
+            readerClass="net.untoldwind.moredread.model.io.impl.mrd.MrdModelReader"
+            writerClass="net.untoldwind.moredread.model.io.impl.mrd.MrdModelWriter">
+      </file-io>
+   </extension>
 
 </plugin>
