@@ -146,9 +146,6 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 						changedNodes.add(spatialNode);
 					}
 				}
-				if (!changedNodes.isEmpty()) {
-					scene.markNodeGeometryChanged(changedNodes);
-				}
 			} finally {
 				if (finished) {
 					scene.getSceneChangeHandler().commit();

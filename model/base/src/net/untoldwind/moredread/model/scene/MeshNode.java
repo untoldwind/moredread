@@ -37,6 +37,9 @@ public class MeshNode extends ObjectNode {
 	}
 
 	public void setMesh(final Mesh<?> mesh) {
+		scene.getSceneChangeHandler().registerCommand(
+				new MeshNodeGeometryChangedCommand(this));
+
 		this.mesh = mesh;
 	}
 

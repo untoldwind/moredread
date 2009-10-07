@@ -170,9 +170,6 @@ public class FaceSelectionToolHandler implements IToolHandler {
 					}
 					changedNodes.add(node);
 				}
-				if (!changedNodes.isEmpty()) {
-					scene.markNodeGeometryChanged(changedNodes);
-				}
 			} finally {
 				if (finished) {
 					scene.getSceneChangeHandler().commit();

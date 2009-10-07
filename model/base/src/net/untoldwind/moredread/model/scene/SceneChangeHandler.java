@@ -1,10 +1,13 @@
 package net.untoldwind.moredread.model.scene;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.untoldwind.moredread.model.scene.change.CompositeChangeCommand;
 import net.untoldwind.moredread.model.scene.change.ISceneChangeCommand;
+import net.untoldwind.moredread.model.scene.event.SceneGeometryChangeEvent;
 
 import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.core.commands.operations.OperationHistoryFactory;
@@ -13,20 +16,20 @@ public class SceneChangeHandler {
 	private final Scene scene;
 
 	transient Thread lockOwner;
-	transient boolean collectChanges;
+	transient boolean allowUndo;
 	transient Map<String, ISceneChangeCommand> stage;
 
 	SceneChangeHandler(final Scene scene) {
 		this.scene = scene;
 	}
 
-	public synchronized void begin(final boolean collectChanges) {
+	public synchronized void begin(final boolean allowUndo) {
 		if (lockOwner != null) {
 			throw new RuntimeException(
 					"Scene is already manipulated by thread: " + lockOwner);
 		}
 		lockOwner = Thread.currentThread();
-		this.collectChanges = collectChanges;
+		this.allowUndo = allowUndo;
 		if (stage == null) {
 			this.stage = new LinkedHashMap<String, ISceneChangeCommand>();
 		}
@@ -41,9 +44,17 @@ public class SceneChangeHandler {
 		}
 
 		lockOwner = null;
+		final List<INode> affectedNodes = new ArrayList<INode>();
 		for (final ISceneChangeCommand cmd : stage.values()) {
 			cmd.updateCurrentValues(scene);
+			cmd.collectAffectedNodes(scene, affectedNodes);
 		}
+		for (final INode node : affectedNodes) {
+			node.markDirty();
+		}
+		scene.fireSceneGeometryChangeEvent(new SceneGeometryChangeEvent(scene,
+				affectedNodes));
+
 	}
 
 	public synchronized void commit() {
@@ -54,16 +65,27 @@ public class SceneChangeHandler {
 					"Scene is manipulated by anowher thread: " + lockOwner);
 		}
 		lockOwner = null;
+		final List<INode> affectedNodes = new ArrayList<INode>();
 		for (final ISceneChangeCommand cmd : stage.values()) {
 			cmd.updateCurrentValues(scene);
+			cmd.collectAffectedNodes(scene, affectedNodes);
 		}
 
-		if (stage.size() == 1) {
-			queueCommand(stage.values().iterator().next());
-		} else if (stage.size() > 1) {
-			queueCommand(new CompositeChangeCommand(stage.values()));
+		if (allowUndo) {
+			if (stage.size() == 1) {
+				queueCommand(stage.values().iterator().next());
+			} else if (stage.size() > 1) {
+				queueCommand(new CompositeChangeCommand(stage.values()));
+			}
 		}
+
 		stage = null;
+
+		for (final INode node : affectedNodes) {
+			node.markDirty();
+		}
+		scene.fireSceneGeometryChangeEvent(new SceneGeometryChangeEvent(scene,
+				affectedNodes));
 	}
 
 	public boolean isChangeAllowed() {
@@ -80,12 +102,10 @@ public class SceneChangeHandler {
 	public void registerCommand(final ISceneChangeCommand command) {
 		checkChangeAllowed();
 
-		if (collectChanges) {
-			synchronized (stage) {
-				if (!stage.containsKey(command.getStageId())) {
-					command.updateOriginalValues(scene);
-					stage.put(command.getStageId(), command);
-				}
+		synchronized (stage) {
+			if (!stage.containsKey(command.getStageId())) {
+				command.updateOriginalValues(scene);
+				stage.put(command.getStageId(), command);
 			}
 		}
 	}

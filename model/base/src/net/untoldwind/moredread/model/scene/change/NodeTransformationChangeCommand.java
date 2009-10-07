@@ -1,7 +1,8 @@
 package net.untoldwind.moredread.model.scene.change;
 
-import java.util.Arrays;
+import java.util.List;
 
+import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.scene.SpatialNode;
 
@@ -61,6 +62,17 @@ public class NodeTransformationChangeCommand extends AbstractOperation
 	}
 
 	@Override
+	public void collectAffectedNodes(final Scene scene, final List<INode> nodes) {
+		final SpatialNode node = (SpatialNode) scene.getNode(nodeId);
+
+		if (node == null) {
+			throw new RuntimeException("Node " + nodeId + " not found in scene");
+		}
+
+		nodes.add(node);
+	}
+
+	@Override
 	public IStatus execute(final IProgressMonitor monitor, final IAdaptable info)
 			throws ExecutionException {
 		return Status.OK_STATUS;
@@ -86,8 +98,6 @@ public class NodeTransformationChangeCommand extends AbstractOperation
 			scene.getSceneChangeHandler().commit();
 		}
 
-		scene.markNodeGeometryChanged(Arrays.asList(node));
-
 		return Status.OK_STATUS;
 	}
 
@@ -110,8 +120,6 @@ public class NodeTransformationChangeCommand extends AbstractOperation
 		} finally {
 			scene.getSceneChangeHandler().commit();
 		}
-
-		scene.markNodeGeometryChanged(Arrays.asList(node));
 
 		return Status.OK_STATUS;
 	}

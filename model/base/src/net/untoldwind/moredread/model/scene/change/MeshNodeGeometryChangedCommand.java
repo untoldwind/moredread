@@ -1,8 +1,9 @@
 package net.untoldwind.moredread.model.scene.change;
 
-import java.util.Arrays;
+import java.util.List;
 
 import net.untoldwind.moredread.model.mesh.Mesh;
+import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.MeshNode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.state.BinaryStateReader;
@@ -55,6 +56,17 @@ public class MeshNodeGeometryChangedCommand extends AbstractOperation implements
 	}
 
 	@Override
+	public void collectAffectedNodes(final Scene scene, final List<INode> nodes) {
+		final MeshNode node = (MeshNode) scene.getNode(nodeId);
+
+		if (node == null) {
+			throw new RuntimeException("Node " + nodeId + " not found in scene");
+		}
+
+		nodes.add(node);
+	}
+
+	@Override
 	public IStatus execute(final IProgressMonitor monitor, final IAdaptable info)
 			throws ExecutionException {
 		return Status.OK_STATUS;
@@ -78,8 +90,6 @@ public class MeshNodeGeometryChangedCommand extends AbstractOperation implements
 			scene.getSceneChangeHandler().commit();
 		}
 
-		scene.markNodeGeometryChanged(Arrays.asList(node));
-
 		return Status.OK_STATUS;
 	}
 
@@ -100,8 +110,6 @@ public class MeshNodeGeometryChangedCommand extends AbstractOperation implements
 		} finally {
 			scene.getSceneChangeHandler().commit();
 		}
-
-		scene.markNodeGeometryChanged(Arrays.asList(node));
 
 		return Status.OK_STATUS;
 	}

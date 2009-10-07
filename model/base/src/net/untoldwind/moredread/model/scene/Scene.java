@@ -1,7 +1,6 @@
 package net.untoldwind.moredread.model.scene;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,13 +49,6 @@ public class Scene extends Group {
 		synchronized (geometryListeners) {
 			geometryListeners.remove(listener);
 		}
-	}
-
-	public void markNodeGeometryChanged(final Collection<? extends INode> nodes) {
-		for (final INode node : nodes) {
-			node.markDirty();
-		}
-		fireSceneGeometryChangeEvent(new SceneGeometryChangeEvent(this, nodes));
 	}
 
 	public INode getNode(final long nodeId) {

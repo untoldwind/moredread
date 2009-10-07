@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.Scene;
 
 import org.eclipse.core.commands.ExecutionException;
@@ -39,6 +40,13 @@ public class CompositeChangeCommand extends AbstractOperation implements
 	public void updateCurrentValues(final Scene scene) {
 		for (final ISceneChangeCommand cmd : commands) {
 			cmd.updateCurrentValues(scene);
+		}
+	}
+
+	@Override
+	public void collectAffectedNodes(final Scene scene, final List<INode> nodes) {
+		for (final ISceneChangeCommand cmd : commands) {
+			cmd.collectAffectedNodes(scene, nodes);
 		}
 	}
 
