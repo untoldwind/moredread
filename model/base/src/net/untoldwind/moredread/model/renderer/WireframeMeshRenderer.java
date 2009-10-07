@@ -2,9 +2,9 @@ package net.untoldwind.moredread.model.renderer;
 
 import java.nio.FloatBuffer;
 
-import net.untoldwind.moredread.model.mesh.Edge;
-import net.untoldwind.moredread.model.mesh.Face;
-import net.untoldwind.moredread.model.mesh.Mesh;
+import net.untoldwind.moredread.model.mesh.IEdge;
+import net.untoldwind.moredread.model.mesh.IMesh;
+import net.untoldwind.moredread.model.mesh.IPolygon;
 
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
@@ -25,7 +25,7 @@ public class WireframeMeshRenderer implements IMeshRendererAdapter {
 	}
 
 	@Override
-	public Geometry renderMesh(final Mesh<?> mesh,
+	public Geometry renderMesh(final IMesh mesh,
 			final IColorProvider colorProvider) {
 		final FloatBuffer vertexBuffer = BufferUtils.createVector3Buffer(mesh
 				.getEdges().size()
@@ -37,7 +37,7 @@ public class WireframeMeshRenderer implements IMeshRendererAdapter {
 					* 2 + (drawNormals ? mesh.getFaces().size() * 2 : 0));
 		}
 
-		for (final Edge edge : mesh.getEdges()) {
+		for (final IEdge edge : mesh.getEdges()) {
 			final Vector3f p1 = edge.getVertex1().getPoint();
 			final Vector3f p2 = edge.getVertex2().getPoint();
 
@@ -62,7 +62,7 @@ public class WireframeMeshRenderer implements IMeshRendererAdapter {
 			}
 		}
 		if (drawNormals) {
-			for (final Face<?> face : mesh.getFaces()) {
+			for (final IPolygon face : mesh.getFaces()) {
 				final Vector3f p1 = face.getCenter();
 				final Vector3f p2 = p1.add(face.getMeanNormal());
 

@@ -26,8 +26,9 @@ public abstract class TriangulatorTestBase {
 	protected abstract ITriangulator getTriangulator();
 
 	protected void testQuad(final int[] expected) {
-		final IPoint[] vertices = new IPoint[] { new Point(0, 0, 0),
-				new Point(1, 0, 0), new Point(1, 1, 0), new Point(0, 1, 0) };
+		final IPoint[] vertices = new IPoint[] { new Point(0, 0, 0, 0),
+				new Point(1, 1, 0, 0), new Point(2, 1, 1, 0),
+				new Point(3, 0, 1, 0) };
 		final Vector3f[] normals = new Vector3f[] { new Vector3f(0, 0, 1),
 				new Vector3f(0, 0, 1), new Vector3f(0, 0, 1),
 				new Vector3f(0, 0, 1) };

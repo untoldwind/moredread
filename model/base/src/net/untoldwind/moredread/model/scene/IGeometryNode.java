@@ -7,10 +7,11 @@ import net.untoldwind.moredread.model.mesh.IPolygon;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 
-public interface IGeometryNode<T extends IGeometry> extends INode {
-	T getRenderGeometry();
+public interface IGeometryNode<RO_GEOMETRY extends IGeometry, RW_GEOMETRY extends IGeometry>
+		extends INode {
+	RO_GEOMETRY getRenderGeometry();
 
-	T getEditableGeometry(boolean forChange);
+	RW_GEOMETRY getEditableGeometry(boolean forChange);
 
 	ColorRGBA getModelColor(final float alpha);
 

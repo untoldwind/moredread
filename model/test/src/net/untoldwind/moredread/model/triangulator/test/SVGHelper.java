@@ -53,13 +53,13 @@ public class SVGHelper {
 				switch (cmd.charAt(0)) {
 				case 'M':
 				case 'm':
-					vertices.add(parseCoordinate(t.nextToken()));
+					vertices.add(parseCoordinate(count, t.nextToken()));
 					normals.add(new Vector3f(0, 0, 1));
 					count++;
 					break;
 				case 'L':
 				case 'l':
-					vertices.add(parseCoordinate(t.nextToken()));
+					vertices.add(parseCoordinate(count, t.nextToken()));
 					normals.add(new Vector3f(0, 0, 1));
 					count++;
 					break;
@@ -85,10 +85,10 @@ public class SVGHelper {
 		return result;
 	}
 
-	protected static IPoint parseCoordinate(final String coord) {
+	protected static IPoint parseCoordinate(final int index, final String coord) {
 		final String[] coordArr = coord.split(",");
 
-		return new Point(new Vector3f(Float.parseFloat(coordArr[0]), Float
-				.parseFloat(coordArr[1]), 0));
+		return new Point(index, new Vector3f(Float.parseFloat(coordArr[0]),
+				Float.parseFloat(coordArr[1]), 0));
 	}
 }

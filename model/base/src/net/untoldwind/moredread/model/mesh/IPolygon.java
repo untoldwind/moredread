@@ -14,4 +14,6 @@ public interface IPolygon extends IGeometry {
 	int[] getPolygonContourCounts();
 
 	boolean isClosed();
+
+	Vector3f getCenter();
 }

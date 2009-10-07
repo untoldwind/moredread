@@ -5,7 +5,7 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.untoldwind.moredread.model.mesh.Mesh;
+import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.PolyFace;
 import net.untoldwind.moredread.model.mesh.PolyMesh;
 import net.untoldwind.moredread.model.mesh.QuadFace;
@@ -25,7 +25,7 @@ import com.jme.util.geom.BufferUtils;
 public class SolidMeshRenderer implements IMeshRendererAdapter {
 
 	@Override
-	public Geometry renderMesh(final Mesh<?> mesh,
+	public Geometry renderMesh(final IMesh mesh,
 			final IColorProvider colorProvider) {
 		switch (mesh.getMeshType()) {
 		case TRIANGLE:

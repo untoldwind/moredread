@@ -69,6 +69,19 @@ public class Polygon implements IPolygon {
 	}
 
 	@Override
+	public Vector3f getCenter() {
+		final Vector3f center = new Vector3f(0, 0, 0);
+
+		for (final IPoint vertex : vertices) {
+			center.addLocal(vertex.getPoint());
+		}
+
+		center.divideLocal(vertices.size());
+
+		return center;
+	}
+
+	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("Polygon [closed=");

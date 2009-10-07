@@ -14,8 +14,7 @@ import net.untoldwind.moredread.model.state.IStateWriter;
 
 import com.jme.math.Vector3f;
 
-public abstract class Mesh<T extends Face<?>> implements IGeometry,
-		IStateHolder {
+public abstract class Mesh<T extends Face<?>> implements IMesh, IStateHolder {
 	protected int vertexCount = 0;
 	protected final List<Vertex> vertices;
 	protected final Map<EdgeId, Edge> edges;

@@ -3,7 +3,7 @@ package net.untoldwind.moredread.model.mesh;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Edge {
+public class Edge implements IEdge {
 	private final Mesh<?> owner;
 	private final EdgeId index;
 	private final Vertex vertex1;
@@ -11,7 +11,7 @@ public class Edge {
 	private boolean smooth;
 	private final Set<Face<?>> faces;
 
-	Edge(Mesh<?> owner, Vertex vertex1, Vertex vertex2) {
+	Edge(final Mesh<?> owner, final Vertex vertex1, final Vertex vertex2) {
 		this.owner = owner;
 		this.index = new EdgeId(vertex1.getIndex(), vertex2.getIndex());
 		this.vertex1 = vertex1;
@@ -42,7 +42,7 @@ public class Edge {
 		return smooth;
 	}
 
-	public void setSmooth(boolean smooth) {
+	public void setSmooth(final boolean smooth) {
 		this.smooth = smooth;
 	}
 
@@ -51,15 +51,18 @@ public class Edge {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj == null)
+	public boolean equals(final Object obj) {
+		if (obj == null) {
 			return false;
-		if (obj == this)
+		}
+		if (obj == this) {
 			return true;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 
-		Edge castObj = (Edge) obj;
+		final Edge castObj = (Edge) obj;
 
 		return index.equals(castObj.index) && smooth == castObj.smooth
 				&& vertex1.equals(castObj.vertex1)
@@ -73,7 +76,7 @@ public class Edge {
 
 	@Override
 	public String toString() {
-		StringBuffer buffer = new StringBuffer("Edge(");
+		final StringBuffer buffer = new StringBuffer("Edge(");
 		buffer.append("index=").append(index);
 		buffer.append(", smooth=").append(smooth);
 		buffer.append(", vertex1=").append(vertex1);
