@@ -29,6 +29,13 @@ public class CompositeChangeCommand extends AbstractOperation implements
 	}
 
 	@Override
+	public void updateOriginalValues(final Scene scene) {
+		for (final ISceneChangeCommand cmd : commands) {
+			cmd.updateOriginalValues(scene);
+		}
+	}
+
+	@Override
 	public void updateCurrentValues(final Scene scene) {
 		for (final ISceneChangeCommand cmd : commands) {
 			cmd.updateCurrentValues(scene);

@@ -7,6 +7,7 @@ import org.eclipse.core.commands.operations.IUndoableOperation;
 public interface ISceneChangeCommand extends IUndoableOperation {
 	String getStageId();
 
-	void updateCurrentValues(final Scene scene);
+	void updateOriginalValues(final Scene scene);
 
+	void updateCurrentValues(final Scene scene);
 }

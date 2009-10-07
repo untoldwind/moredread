@@ -31,7 +31,7 @@ public class MeshNode extends ObjectNode {
 	public Mesh<?> getEditableGeometry(final boolean forChange) {
 		if (forChange) {
 			scene.getSceneChangeHandler().registerCommand(
-					new MeshNodeGeometryChangedCommand(this, mesh));
+					new MeshNodeGeometryChangedCommand(this));
 		}
 		return mesh;
 	}

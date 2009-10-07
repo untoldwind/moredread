@@ -18,24 +18,34 @@ import com.jme.math.Vector3f;
 public class NodeTransformationChangeCommand extends AbstractOperation
 		implements ISceneChangeCommand {
 	private final long nodeId;
-	private final Quaternion oldLocalRotation;
-	private final Vector3f oldLocalTranslation;
-	private final Vector3f oldLocalScale;
+	private Quaternion oldLocalRotation;
+	private Vector3f oldLocalTranslation;
+	private Vector3f oldLocalScale;
 	private Quaternion newLocalRotation;
 	private Vector3f newLocalTranslation;
 	private Vector3f newLocalScale;
 
 	public NodeTransformationChangeCommand(final SpatialNode node) {
 		super("Node " + node.getName() + " transformation change");
+
 		nodeId = node.getNodeId();
-		oldLocalRotation = new Quaternion(node.getLocalRotation());
-		oldLocalTranslation = new Vector3f(node.getLocalTranslation());
-		oldLocalScale = new Vector3f(node.getLocalScale());
 	}
 
 	@Override
 	public String getStageId() {
 		return "NodeTransformation-" + nodeId;
+	}
+
+	@Override
+	public void updateOriginalValues(final Scene scene) {
+		final SpatialNode node = (SpatialNode) scene.getNode(nodeId);
+
+		if (node == null) {
+			throw new RuntimeException("Node " + nodeId + " not found in scene");
+		}
+		oldLocalRotation = new Quaternion(node.getLocalRotation());
+		oldLocalTranslation = new Vector3f(node.getLocalTranslation());
+		oldLocalScale = new Vector3f(node.getLocalScale());
 	}
 
 	@Override

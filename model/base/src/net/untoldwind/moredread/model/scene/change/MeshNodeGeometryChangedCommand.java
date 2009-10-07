@@ -18,20 +18,29 @@ import org.eclipse.core.runtime.Status;
 public class MeshNodeGeometryChangedCommand extends AbstractOperation implements
 		ISceneChangeCommand {
 	private final long nodeId;
-	private final byte[] oldState;
+	private byte[] oldState;
 	private byte[] newState;
 
-	public MeshNodeGeometryChangedCommand(final MeshNode meshNode,
-			final Mesh<?> mesh) {
+	public MeshNodeGeometryChangedCommand(final MeshNode meshNode) {
 		super("Node " + meshNode.getName() + " geometry change");
 
 		nodeId = meshNode.getNodeId();
-		oldState = BinaryStateWriter.toByteArray(mesh);
 	}
 
 	@Override
 	public String getStageId() {
 		return "MeshNodeGeometry-" + nodeId;
+	}
+
+	@Override
+	public void updateOriginalValues(final Scene scene) {
+		final MeshNode node = (MeshNode) scene.getNode(nodeId);
+
+		if (node == null) {
+			throw new RuntimeException("Node " + nodeId + " not found in scene");
+		}
+		oldState = BinaryStateWriter.toByteArray(node
+				.getEditableGeometry(false));
 	}
 
 	@Override

@@ -83,6 +83,7 @@ public class SceneChangeHandler {
 		if (collectChanges) {
 			synchronized (stage) {
 				if (!stage.containsKey(command.getStageId())) {
+					command.updateOriginalValues(scene);
 					stage.put(command.getStageId(), command);
 				}
 			}
