@@ -18,8 +18,7 @@
       </annotation>
       <complexType>
          <choice minOccurs="0" maxOccurs="unbounded">
-            <element ref="file-reader"/>
-            <element ref="file-writer"/>
+            <element ref="file-io"/>
          </choice>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -48,7 +47,7 @@
       </complexType>
    </element>
 
-   <element name="file-reader">
+   <element name="file-io">
       <complexType>
          <attribute name="id" type="string" use="required">
             <annotation>
@@ -74,7 +73,7 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="class" type="string" use="required">
+         <attribute name="readerClass" type="string">
             <annotation>
                <documentation>
                   
@@ -84,36 +83,7 @@
                </appinfo>
             </annotation>
          </attribute>
-      </complexType>
-   </element>
-
-   <element name="file-writer">
-      <complexType>
-         <attribute name="id" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-         </attribute>
-         <attribute name="label" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-               <appinfo>
-                  <meta.attribute translatable="true"/>
-               </appinfo>
-            </annotation>
-         </attribute>
-         <attribute name="extension" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-            </annotation>
-         </attribute>
-         <attribute name="class" type="string" use="required">
+         <attribute name="writerClass" type="string">
             <annotation>
                <documentation>
                   

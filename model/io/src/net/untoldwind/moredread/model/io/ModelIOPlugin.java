@@ -3,13 +3,15 @@ package net.untoldwind.moredread.model.io;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.untoldwind.moredread.model.io.impl.FileReaderDescriptor;
-import net.untoldwind.moredread.model.io.impl.FileWriterDescriptor;
+import net.untoldwind.moredread.model.io.impl.FileIODescriptor;
+import net.untoldwind.moredread.model.scene.Scene;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -26,8 +28,7 @@ public class ModelIOPlugin extends AbstractUIPlugin {
 	// The shared instance
 	private static ModelIOPlugin plugin;
 
-	private Map<String, IFileReaderDescriptor> fileReadersById;
-	private Map<String, IFileWriterDescriptor> fileWritersById;
+	private Map<String, IFileIODescriptor> fileIOById;
 
 	/**
 	 * The constructor
@@ -44,8 +45,7 @@ public class ModelIOPlugin extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
-		final Map<String, IFileReaderDescriptor> newFileReadersById = new HashMap<String, IFileReaderDescriptor>();
-		final Map<String, IFileWriterDescriptor> newFileWritersById = new HashMap<String, IFileWriterDescriptor>();
+		final Map<String, IFileIODescriptor> newFileIOById = new HashMap<String, IFileIODescriptor>();
 
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
 		final IExtensionPoint toolExtensionPoint = registry
@@ -53,18 +53,13 @@ public class ModelIOPlugin extends AbstractUIPlugin {
 
 		for (final IConfigurationElement element : toolExtensionPoint
 				.getConfigurationElements()) {
-			if ("file-reader".equals(element.getName())) {
-				final FileReaderDescriptor fileReader = new FileReaderDescriptor(
+			if ("file-io".equals(element.getName())) {
+				final FileIODescriptor fileReader = new FileIODescriptor(
 						element);
-				newFileReadersById.put(fileReader.getId(), fileReader);
-			} else if ("file-writer".equals(element.getName())) {
-				final FileWriterDescriptor fileWriter = new FileWriterDescriptor(
-						element);
-				newFileWritersById.put(fileWriter.getId(), fileWriter);
+				newFileIOById.put(fileReader.getId(), fileReader);
 			}
 		}
-		fileReadersById = newFileReadersById;
-		fileWritersById = newFileWritersById;
+		fileIOById = newFileIOById;
 	}
 
 	/**
@@ -77,12 +72,15 @@ public class ModelIOPlugin extends AbstractUIPlugin {
 		super.stop(context);
 	}
 
-	public IFileReaderDescriptor getFileReader(final String id) {
-		return fileReadersById.get(id);
+	public IFileIODescriptor getFileIO(final String id) {
+		return fileIOById.get(id);
 	}
 
-	public IFileWriterDescriptor getFileWriter(final String id) {
-		return fileWritersById.get(id);
+	public void sceneSave(final Scene scene) {
+		final FileDialog fileDialog = new FileDialog(PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getShell());
+
+		fileDialog.open();
 	}
 
 	/**

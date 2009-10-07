@@ -11,7 +11,7 @@ import net.untoldwind.moredread.model.scene.event.SceneGeometryChangeEvent;
 public class Scene extends Group {
 	private final SceneSelection sceneSelection;
 	private final SceneChangeHandler sceneChangeHandler;
-
+	private final SceneMetadata sceneMetadata;
 	private final List<ISceneGeometryChangeListener> geometryListeners;
 
 	private final Map<Long, INode> nodesById;
@@ -21,6 +21,7 @@ public class Scene extends Group {
 
 		sceneSelection = new SceneSelection(this);
 		sceneChangeHandler = new SceneChangeHandler(this);
+		sceneMetadata = new SceneMetadata();
 		geometryListeners = new ArrayList<ISceneGeometryChangeListener>();
 		nodesById = new HashMap<Long, INode>();
 	}
@@ -31,6 +32,10 @@ public class Scene extends Group {
 
 	public SceneChangeHandler getSceneChangeHandler() {
 		return sceneChangeHandler;
+	}
+
+	public SceneMetadata getSceneMetadata() {
+		return sceneMetadata;
 	}
 
 	void registerNode(final INode node) {
