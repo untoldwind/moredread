@@ -14,4 +14,6 @@ public interface INode {
 	BoundingBox getWorldBoundingBox();
 
 	void markDirty();
+
+	<T> T accept(ISceneVisitor<T> visitor);
 }

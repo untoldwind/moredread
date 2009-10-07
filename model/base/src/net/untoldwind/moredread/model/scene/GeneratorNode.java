@@ -92,4 +92,8 @@ public class GeneratorNode extends ObjectNode {
 		renderedGeometries = null;
 	}
 
+	@Override
+	public <T> T accept(final ISceneVisitor<T> visitor) {
+		return visitor.visitGeneratorNode(this);
+	}
 }

@@ -92,4 +92,10 @@ public class MeshNode extends ObjectNode {
 			}
 		}
 	}
+
+	@Override
+	public <T> T accept(final ISceneVisitor<T> visitor) {
+		return visitor.visitMeshNode(this);
+	}
+
 }

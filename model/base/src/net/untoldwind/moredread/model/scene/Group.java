@@ -74,4 +74,9 @@ public class Group extends SpatialNode implements IComposite {
 		}
 	}
 
+	@Override
+	public <T> T accept(final ISceneVisitor<T> visitor) {
+		return visitor.visitGroup(this);
+	}
+
 }

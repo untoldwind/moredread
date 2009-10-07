@@ -7,7 +7,9 @@ Bundle-Activator: net.untoldwind.moredread.model.io.ModelIOPlugin
 Bundle-Vendor: untoldwind.net
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- net.untoldwind.moredread.model;bundle-version="0.9.0"
+ net.untoldwind.moredread.model;bundle-version="0.9.0",
+ net.untoldwind.moredread.utils;bundle-version="0.9.0",
+ net.untoldwind.moredread.jme;bundle-version="2.0.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: net.untoldwind.moredread.model.io,

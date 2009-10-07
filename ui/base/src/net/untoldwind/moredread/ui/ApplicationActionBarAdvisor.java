@@ -32,6 +32,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	private IWorkbenchAction exitAction;
 	private IWorkbenchAction aboutAction;
 	private IWorkbenchAction newWindowAction;
+	private IWorkbenchAction newAction;
+	private IWorkbenchAction saveAction;
+	private IWorkbenchAction saveAsAction;
 	private IWorkbenchAction undoAction;
 	private IWorkbenchAction redoAction;
 
@@ -61,6 +64,15 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 		aboutAction = ActionFactory.ABOUT.create(window);
 		register(aboutAction);
+
+		newAction = ActionFactory.NEW.create(window);
+		register(newAction);
+
+		saveAction = ActionFactory.SAVE.create(window);
+		register(saveAction);
+
+		saveAsAction = ActionFactory.SAVE_AS.create(window);
+		register(saveAsAction);
 
 		undoAction = ActionFactory.UNDO.create(window);
 		register(undoAction);
@@ -100,7 +112,10 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		menuBar.add(helpMenu);
 
 		// File
-		fileMenu.add(newWindowAction);
+		fileMenu.add(newAction);
+		fileMenu.add(new Separator());
+		fileMenu.add(saveAction);
+		fileMenu.add(saveAsAction);
 		fileMenu.add(new Separator());
 		fileMenu.add(exitAction);
 
@@ -110,6 +125,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 		// Window
 		showViewMenuMgr.add(showViewItem);
+		windowMenu.add(newWindowAction);
+		windowMenu.add(new Separator());
 		windowMenu.add(showViewMenuMgr);
 		windowMenu.add(new Separator());
 		windowMenu.add(preferencesActions);

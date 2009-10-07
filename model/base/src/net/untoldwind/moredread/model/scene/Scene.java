@@ -60,6 +60,11 @@ public class Scene extends Group {
 		return nodesById.get(nodeId);
 	}
 
+	@Override
+	public <T> T accept(final ISceneVisitor<T> visitor) {
+		return visitor.visitScene(this);
+	}
+
 	protected void fireSceneGeometryChangeEvent(
 			final SceneGeometryChangeEvent event) {
 		final ISceneGeometryChangeListener listenerArray[];
