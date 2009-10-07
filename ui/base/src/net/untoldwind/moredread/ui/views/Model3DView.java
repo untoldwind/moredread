@@ -3,6 +3,7 @@ package net.untoldwind.moredread.ui.views;
 import java.util.HashMap;
 
 import net.untoldwind.moredread.jme.MoreDreadJME;
+import net.untoldwind.moredread.model.io.ModelIOPlugin;
 import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.scene.SceneSelection;
@@ -25,6 +26,7 @@ import net.untoldwind.moredread.ui.input.event.RotateAroundYCameraUpdate;
 import net.untoldwind.moredread.ui.preferences.IPreferencesConstants;
 
 import org.eclipse.core.commands.operations.IOperationHistory;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -46,6 +48,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.ISaveablePart;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.operations.RedoActionHandler;
 import org.eclipse.ui.operations.UndoActionHandler;
@@ -58,7 +61,7 @@ import com.jme.system.DisplaySystem;
 import com.jmex.swt.input.SWTKeyInput;
 import com.jmex.swt.lwjgl.LWJGLSWTConstants;
 
-public class Model3DView extends ViewPart implements
+public class Model3DView extends ViewPart implements ISaveablePart,
 		ISceneSelectionModeListener, ISceneSelectionChangeListener,
 		ISceneGeometryChangeListener {
 
@@ -207,6 +210,35 @@ public class Model3DView extends ViewPart implements
 	public void sceneGeometryChanged(final SceneGeometryChangeEvent event) {
 		implementor.updateDisplayNodes();
 		canvas.queueRender();
+	}
+
+	@Override
+	public void doSave(final IProgressMonitor monitor) {
+		ModelIOPlugin.getDefault().sceneSave(
+				MoreDreadUI.getDefault().getSceneHolder().getScene());
+	}
+
+	@Override
+	public void doSaveAs() {
+		ModelIOPlugin.getDefault().sceneSaveAs(
+				MoreDreadUI.getDefault().getSceneHolder().getScene());
+	}
+
+	@Override
+	public boolean isDirty() {
+		// TODO: Use change handling to eval this
+		return true;
+	}
+
+	@Override
+	public boolean isSaveAsAllowed() {
+		return true;
+	}
+
+	@Override
+	public boolean isSaveOnCloseNeeded() {
+		// TODO: Use change handling to eval this
+		return false;
 	}
 
 	@SuppressWarnings("unchecked")

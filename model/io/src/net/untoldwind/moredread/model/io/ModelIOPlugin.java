@@ -1,7 +1,12 @@
 package net.untoldwind.moredread.model.io;
 
-import java.util.HashMap;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import net.untoldwind.moredread.model.io.impl.FileIODescriptor;
 import net.untoldwind.moredread.model.scene.Scene;
@@ -10,6 +15,8 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -45,7 +52,7 @@ public class ModelIOPlugin extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
-		final Map<String, IFileIODescriptor> newFileIOById = new HashMap<String, IFileIODescriptor>();
+		final Map<String, IFileIODescriptor> newFileIOById = new TreeMap<String, IFileIODescriptor>();
 
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
 		final IExtensionPoint toolExtensionPoint = registry
@@ -81,15 +88,51 @@ public class ModelIOPlugin extends AbstractUIPlugin {
 
 		if (fileName == null) {
 			final FileDialog fileDialog = new FileDialog(PlatformUI
-					.getWorkbench().getActiveWorkbenchWindow().getShell());
+					.getWorkbench().getActiveWorkbenchWindow().getShell(),
+					SWT.SAVE);
 
+			final Map<String, String> fileExtensions = new LinkedHashMap<String, String>();
+			final List<IFileIODescriptor> fileIODescriptors = new ArrayList<IFileIODescriptor>();
+			for (final IFileIODescriptor descriptor : fileIOById.values()) {
+				if (descriptor.getExtension() != null) {
+					fileExtensions.put(descriptor.getExtension(), descriptor
+							.getLabel());
+					fileIODescriptors.add(descriptor);
+				}
+			}
+			fileDialog.setText("Save Scene");
+			fileDialog.setFilterExtensions(fileExtensions.keySet().toArray(
+					new String[fileExtensions.size()]));
+			fileDialog.setFilterNames(fileExtensions.values().toArray(
+					new String[fileExtensions.size()]));
 			fileName = fileDialog.open();
 
 			if (fileName == null) {
 				return;
 			}
+
+			try {
+				final IFileIODescriptor fileIODescriptor = fileIODescriptors
+						.get(fileDialog.getFilterIndex());
+				final FileOutputStream out = new FileOutputStream(fileName);
+
+				fileIODescriptor.getModelWriter().writeScene(scene, out);
+
+			} catch (final IOException e) {
+				log(e);
+			}
 		}
 
+	}
+
+	public void sceneSaveAs(final Scene scene) {
+
+	}
+
+	public void log(final Throwable e) {
+		getLog().log(
+				new Status(Status.ERROR, PLUGIN_ID, Status.ERROR, e.toString(),
+						e));
 	}
 
 	/**

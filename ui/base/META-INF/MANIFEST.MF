@@ -12,6 +12,7 @@ Require-Bundle: org.eclipse.ui,
  net.untoldwind.moredread.lwjgl;bundle-version="0.9.0",
  net.untoldwind.moredread.utils;bundle-version="0.9.0",
  net.untoldwind.moredread.ui.tools;bundle-version="0.9.0",
- net.untoldwind.moredread.ui.input;bundle-version="0.9.0"
+ net.untoldwind.moredread.ui.input;bundle-version="0.9.0",
+ net.untoldwind.moredread.model.io;bundle-version="0.9.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
