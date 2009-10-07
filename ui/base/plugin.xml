@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         id="application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="net.untoldwind.moredread.ui.Application">
+         </run>
+      </application>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            name="RCP Perspective"
+            class="net.untoldwind.moredread.ui.Perspective"
+            id="net.untoldwind.moredread.ui.perspective">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            allowMultiple="true"
+            class="net.untoldwind.moredread.ui.views.Model3DView"
+            id="net.untoldwind.moredread.ui.model3dview"
+            name="3D"
+            restorable="true">
+      </view>
+      <view
+            class="net.untoldwind.moredread.ui.views.ModelTreeView"
+            id="net.untoldwind.moredread.ui.modelTreeView"
+            name="Model"
+            restorable="true">
+      </view>
+      <view
+            class="net.untoldwind.moredread.ui.views.SelectionModeView"
+            id="net.untoldwind.moredread.ui.selectionModeView"
+            name="Selection Mode"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="true"
+            class="net.untoldwind.moredread.ui.views.ToolSelectionView"
+            id="net.untoldwind.moredread.ui.toolSelectionView"
+            name="Tools"
+            restorable="true">
+      </view>
+      <view
+            class="net.untoldwind.moredread.ui.views.UndoHistoryView"
+            id="net.untoldwind.moredread.ui.undoHistoryView"
+            name="Undo History"
+            restorable="true">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="Mail"
+            id="net.untoldwind.moredread.ui.category">
+      </category>
+      <command
+            name="Open Mailbox"
+            description="Opens a mailbox"
+            categoryId="net.untoldwind.moredread.ui.category"
+            id="net.untoldwind.moredread.ui.open">
+      </command>
+      <command
+            name="Open Message Dialog"
+            description="Open a message dialog"
+            categoryId="net.untoldwind.moredread.ui.category"
+            id="net.untoldwind.moredread.ui.openMessage">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="net.untoldwind.moredread.ui.open"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="CTRL+2">
+      </key>
+      <key
+            commandId="net.untoldwind.moredread.ui.openMessage"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="CTRL+3">
+      </key>
+      <key
+            commandId="org.eclipse.ui.file.exit"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="CTRL+X">
+      </key>
+   </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="net.untoldwind.moredread.ui.application"
+            name="MoreDread">
+         <property
+               name="aboutText"
+               value="RCP Mail template created by PDE">
+         </property>
+         <property
+               name="windowImages"
+               value="icons/sample2.gif">
+         </property>
+         <property
+               name="aboutImage"
+               value="product_lg.gif">
+         </property>
+         <property
+               name="appName"
+               value="MoreDread">
+         </property>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            description="Camera controls"
+            id="net.untoldwind.moredread.ui.category.Camera"
+            name="Camera">
+      </category>
+      <command
+            id="moredread-ui.command1"
+            name="name">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.equinox.preferences.preferences">
+      <initializer
+            class="net.untoldwind.moredread.ui.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="net.untoldwind.moredread.ui.preferences.Model3DViewPreferencesPage"
+            id="net.untoldwind.moredread.ui.mode3dview.preferences"
+            name="3DView">
+      </page>
+   </extension>
+
+</plugin>

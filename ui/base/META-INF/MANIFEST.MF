@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MoreDread
+Bundle-SymbolicName: net.untoldwind.moredread.ui; singleton:=true
+Bundle-Version: 0.9.0
+Bundle-Activator: net.untoldwind.moredread.ui.MoreDreadUI
+Bundle-Vendor: untoldwind.net
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ net.untoldwind.moredread.jme;bundle-version="2.0.1",
+ net.untoldwind.moredread.model;bundle-version="0.9.0",
+ net.untoldwind.moredread.lwjgl;bundle-version="0.9.0",
+ net.untoldwind.moredread.utils;bundle-version="0.9.0",
+ net.untoldwind.moredread.ui.tools;bundle-version="0.9.0",
+ net.untoldwind.moredread.ui.input;bundle-version="0.9.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy

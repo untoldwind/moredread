@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="net.untoldwind.moredread.ui.tools" name="MoreDread UI Tools" schema="schema/tools.exsd"/>
+   <extension
+         point="net.untoldwind.moredread.ui.tools">
+      <category
+            id="net.untoldwind.moredread.ui.tool.category.default"
+            label="Default"
+            visible="false"></category>
+      <category
+            id="net.untoldwind.moredread.ui.tool.category.utilities"
+            label="Utilities"
+            visible="true">
+      </category>
+      <tool
+            categoryId="net.untoldwind.moredread.ui.tool.category.default"
+            class="net.untoldwind.moredread.ui.tools.selection.ObjectSelectionToolHandler"
+            icon="icons/SelectionTool.png"
+            id="net.untoldwind.moredread.ui.tool.objectSelection"
+            label="Select Object"
+            type="TOGGLE">
+         <activation
+               selectionCount="0-*"
+               selectionMode="OBJECT">
+         </activation>
+      </tool>
+      <tool
+            categoryId="net.untoldwind.moredread.ui.tool.category.default"
+            class="net.untoldwind.moredread.ui.tools.selection.FaceSelectionToolHandler"
+            icon="icons/SelectionTool.png"
+            id="net.untoldwind.moredread.ui.tool.faceSelection"
+            label="Select Face"
+            type="TOGGLE">
+         <activation
+               selectionCount="0-*"
+               selectionMode="FACE">
+         </activation>
+      </tool>
+      <tool
+            categoryId="net.untoldwind.moredread.ui.tool.category.default"
+            class="net.untoldwind.moredread.ui.tools.selection.EdgeSelectionToolHandler"
+            icon="icons/SelectionTool.png"
+            id="net.untoldwind.moredread.ui.tool.edgeSelection"
+            label="Select Edge"
+            type="TOGGLE">
+         <activation
+               selectionCount="0-*"
+               selectionMode="EDGE">
+         </activation>
+      </tool>
+      <tool
+            categoryId="net.untoldwind.moredread.ui.tool.category.default"
+            class="net.untoldwind.moredread.ui.tools.selection.VertexSelectionToolHandler"
+            icon="icons/SelectionTool.png"
+            id="net.untoldwind.moredread.ui.tool.vertexSelection"
+            label="Select Vertex"
+            type="TOGGLE">
+         <activation
+               selectionCount="0-*"
+               selectionMode="VERTEX">
+         </activation>
+      </tool>
+      <tool
+            categoryId="net.untoldwind.moredread.ui.tool.category.utilities"
+            class="net.untoldwind.moredread.ui.tools.utilities.TriangulateToolHandler"
+            icon="icons/Triangulate.png"
+            id="net.untoldwind.moredread.ui.tool.triangulate"
+            label="Triangulate faces"
+            type="PUSH">
+         <activation
+               selectionCount="1-*"
+               selectionMode="OBJECT">
+         </activation>
+         <activation
+               selectionCount="1-*"
+               selectionMode="FACE">
+         </activation>
+      </tool>
+   </extension>
+
+</plugin>

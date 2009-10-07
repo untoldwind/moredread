@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Moredread Lwjgl
+Bundle-SymbolicName: net.untoldwind.moredread.lwjgl
+Bundle-Version: 2.1.0
+Bundle-Vendor: untoldwind.net
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Eclipse-ExtensibleAPI: true
+Export-Package: net.java.games.input,
+ net.java.games.util,
+ net.java.games.util.plugins,
+ net.java.games.util.plugins.test,
+ org.lwjgl,
+ org.lwjgl.input,
+ org.lwjgl.openal,
+ org.lwjgl.opengl,
+ org.lwjgl.util,
+ org.lwjgl.util.glu,
+ org.lwjgl.util.input,
+ org.lwjgl.util.jinput,
+ org.lwjgl.util.vector

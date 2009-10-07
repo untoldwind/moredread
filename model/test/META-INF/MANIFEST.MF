@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MoreDread model test
+Bundle-SymbolicName: net.untoldwind.moredread.model.test
+Bundle-Version: 0.9.0
+Bundle-Vendor: untoldwind.net
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: net.untoldwind.moredread.model;bundle-version="0.9.0",
+ org.junit4;bundle-version="4.5.0",
+ net.untoldwind.moredread.jme;bundle-version="0.9.0",
+ net.untoldwind.moredread.utils;bundle-version="0.9.0"
