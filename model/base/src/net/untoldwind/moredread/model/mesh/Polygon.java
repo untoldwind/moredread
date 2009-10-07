@@ -3,6 +3,8 @@ package net.untoldwind.moredread.model.mesh;
 import java.util.Arrays;
 import java.util.List;
 
+import net.untoldwind.moredread.model.enums.GeometryType;
+
 import com.jme.math.Vector3f;
 
 public class Polygon implements IPolygon {
@@ -27,6 +29,11 @@ public class Polygon implements IPolygon {
 		this.stripCounts = stripCounts;
 		this.contourCounts = contourCounts;
 		this.closed = closed;
+	}
+
+	@Override
+	public GeometryType getGeometryType() {
+		return GeometryType.POLYGON;
 	}
 
 	@Override

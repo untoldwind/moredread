@@ -1,5 +1,7 @@
 package net.untoldwind.moredread.model.mesh;
 
+import net.untoldwind.moredread.model.enums.GeometryType;
+
 /**
  * Most abstract interface for all geometry objects.
  * 
@@ -8,5 +10,5 @@ package net.untoldwind.moredread.model.mesh;
  * @author junglas
  */
 public interface IGeometry {
-
+	GeometryType getGeometryType();
 }

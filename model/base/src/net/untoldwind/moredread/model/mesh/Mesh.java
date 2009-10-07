@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.untoldwind.moredread.model.enums.GeometryType;
 import net.untoldwind.moredread.model.enums.MeshType;
 import net.untoldwind.moredread.model.state.IStateHolder;
 import net.untoldwind.moredread.model.state.IStateReader;
@@ -24,6 +25,11 @@ public abstract class Mesh<T extends Face<?>> implements IMesh, IStateHolder {
 		vertices = new ArrayList<Vertex>();
 		edges = new HashMap<EdgeId, Edge>();
 		faces = new ArrayList<T>();
+	}
+
+	@Override
+	public GeometryType getGeometryType() {
+		return GeometryType.MESH;
 	}
 
 	public Vertex addVertex(final Vector3f point) {

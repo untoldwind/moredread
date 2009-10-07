@@ -2,6 +2,7 @@ package net.untoldwind.moredread.model.mesh;
 
 import java.util.List;
 
+import net.untoldwind.moredread.model.enums.GeometryType;
 import net.untoldwind.moredread.model.state.IStateHolder;
 
 import com.jme.math.Vector3f;
@@ -15,6 +16,11 @@ public abstract class Face<T extends Mesh<?>> implements IStateHolder, IPolygon 
 	protected Face(final T owner, final int index) {
 		this.owner = owner;
 		this.index = index;
+	}
+
+	@Override
+	public GeometryType getGeometryType() {
+		return GeometryType.POLYGON;
 	}
 
 	public T getOwner() {

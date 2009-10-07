@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.untoldwind.moredread.model.enums.GeometryType;
 import net.untoldwind.moredread.model.state.IStateHolder;
 import net.untoldwind.moredread.model.state.IStateWriter;
 
@@ -23,6 +24,11 @@ public class Vertex implements IStateHolder, IPoint {
 		this.point = point;
 		this.edges = new HashSet<Edge>();
 		this.faces = new HashSet<Face<?>>();
+	}
+
+	@Override
+	public GeometryType getGeometryType() {
+		return GeometryType.POINT;
 	}
 
 	public Mesh<?> getOwner() {
