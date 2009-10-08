@@ -2,6 +2,7 @@ package net.untoldwind.moredread.model.scene;
 
 import java.util.List;
 
+import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.Mesh;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
 import net.untoldwind.moredread.model.scene.change.MeshNodeGeometryChangedCommand;
@@ -29,16 +30,20 @@ public class MeshNode extends ObjectNode {
 	}
 
 	@Override
-	public Mesh<?> getRenderGeometry() {
+	public IMesh getRenderGeometry() {
 		return mesh;
 	}
 
 	@Override
-	public Mesh<?> getEditableGeometry(final boolean forChange) {
-		if (forChange) {
-			scene.getSceneChangeHandler().registerCommand(
-					new MeshNodeGeometryChangedCommand(this));
-		}
+	public IMesh getGeometry() {
+		return mesh;
+	}
+
+	@Override
+	public Mesh<?> getEditableGeometry() {
+		scene.getSceneChangeHandler().registerCommand(
+				new MeshNodeGeometryChangedCommand(this));
+
 		return mesh;
 	}
 

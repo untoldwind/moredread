@@ -1,9 +1,11 @@
 package net.untoldwind.moredread.model.mesh;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 import net.untoldwind.moredread.model.enums.GeometryType;
+import net.untoldwind.moredread.model.state.IStateWriter;
 
 import com.jme.math.Vector3f;
 
@@ -86,6 +88,11 @@ public class Polygon implements IPolygon {
 		center.divideLocal(vertices.size());
 
 		return center;
+	}
+
+	@Override
+	public void writeState(final IStateWriter writer) throws IOException {
+		writer.writeCollection("vertices", vertices);
 	}
 
 	@Override

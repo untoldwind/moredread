@@ -68,7 +68,7 @@ public class PolyFace extends Face<PolyMesh> {
 	}
 
 	@Override
-	public List<? extends IPoint> getPolygonPoints() {
+	public List<? extends IVertex> getPolygonPoints() {
 		return vertices;
 	}
 

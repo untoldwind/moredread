@@ -3,8 +3,8 @@ package net.untoldwind.moredread.ui.controls.impl;
 import java.nio.FloatBuffer;
 import java.util.List;
 
-import net.untoldwind.moredread.model.mesh.Mesh;
-import net.untoldwind.moredread.model.mesh.Vertex;
+import net.untoldwind.moredread.model.mesh.IMesh;
+import net.untoldwind.moredread.model.mesh.IPoint;
 import net.untoldwind.moredread.model.scene.IMeshNode;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
@@ -85,8 +85,8 @@ public class VertexSelectionModelControl extends Point implements IModelControl 
 	}
 
 	void updateGeometry() {
-		final Mesh<?> mesh = node.getEditableGeometry(false);
-		final Vertex vertex = mesh.getVertex(vertexIndex);
+		final IMesh mesh = node.getGeometry();
+		final IPoint vertex = mesh.getVertex(vertexIndex);
 		final FloatBuffer vertexBuffer = BufferUtils.createVector3Buffer(1);
 		final Vector3f v = node.localToWorld(vertex.getPoint(), new Vector3f());
 
@@ -99,8 +99,8 @@ public class VertexSelectionModelControl extends Point implements IModelControl 
 	}
 
 	void updateHandle(final Camera camera) {
-		final Mesh<?> mesh = node.getEditableGeometry(false);
-		final Vertex vertex = mesh.getVertex(vertexIndex);
+		final IMesh mesh = node.getGeometry();
+		final IPoint vertex = mesh.getVertex(vertexIndex);
 		final Vector3f v = node.localToWorld(vertex.getPoint(), new Vector3f());
 
 		if (pointControlHandle == null) {

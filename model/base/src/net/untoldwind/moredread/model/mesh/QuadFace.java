@@ -42,7 +42,7 @@ public class QuadFace extends Face<QuadMesh> {
 	}
 
 	@Override
-	public List<? extends IPoint> getPolygonPoints() {
+	public List<? extends IVertex> getPolygonPoints() {
 		return Arrays.asList(vertices);
 	}
 

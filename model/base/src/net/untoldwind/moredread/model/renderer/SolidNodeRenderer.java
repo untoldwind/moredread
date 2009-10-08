@@ -7,7 +7,7 @@ import java.util.List;
 import net.untoldwind.moredread.model.enums.SelectionMode;
 import net.untoldwind.moredread.model.mesh.EdgeId;
 import net.untoldwind.moredread.model.mesh.IMesh;
-import net.untoldwind.moredread.model.mesh.IPoint;
+import net.untoldwind.moredread.model.mesh.IVertex;
 import net.untoldwind.moredread.model.scene.IMeshNode;
 import net.untoldwind.moredread.model.scene.SceneSelection;
 
@@ -138,7 +138,7 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 				.getSceneSelection();
 		final List<Vector3f> points = new ArrayList<Vector3f>();
 
-		for (final IPoint vertex : mesh.getVertices()) {
+		for (final IVertex vertex : mesh.getVertices()) {
 			if (sceneSelection.isVertexSelected(node, vertex.getIndex())) {
 				points.add(vertex.getPoint());
 			}

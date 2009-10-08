@@ -1,20 +1,20 @@
 package net.untoldwind.moredread.model.mesh;
 
+import java.io.IOException;
+
 import net.untoldwind.moredread.model.enums.GeometryType;
+import net.untoldwind.moredread.model.state.IStateWriter;
 
 import com.jme.math.Vector3f;
 
 public class Point implements IPoint {
-	private final int index;
 	private final Vector3f point;
 
-	public Point(final int index, final Vector3f point) {
-		this.index = index;
+	public Point(final Vector3f point) {
 		this.point = point;
 	}
 
-	public Point(final int index, final float x, final float y, final float z) {
-		this.index = index;
+	public Point(final float x, final float y, final float z) {
 		this.point = new Vector3f(x, y, z);
 	}
 
@@ -24,12 +24,13 @@ public class Point implements IPoint {
 	}
 
 	@Override
-	public int getIndex() {
-		return index;
-	}
-
-	@Override
 	public Vector3f getPoint() {
 		return point;
 	}
+
+	@Override
+	public void writeState(final IStateWriter writer) throws IOException {
+		writer.writeVector3f("point", point);
+	}
+
 }

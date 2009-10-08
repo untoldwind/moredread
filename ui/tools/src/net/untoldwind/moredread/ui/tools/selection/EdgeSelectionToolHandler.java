@@ -9,6 +9,8 @@ import java.util.Set;
 import net.untoldwind.moredread.annotations.Singleton;
 import net.untoldwind.moredread.model.mesh.Edge;
 import net.untoldwind.moredread.model.mesh.EdgeId;
+import net.untoldwind.moredread.model.mesh.IEdge;
+import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.Mesh;
 import net.untoldwind.moredread.model.mesh.Vertex;
 import net.untoldwind.moredread.model.scene.IMeshNode;
@@ -42,10 +44,10 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 		for (final INode node : scene.getSceneSelection().getSelectedNodes()) {
 			if (node instanceof IMeshNode) {
 				final IMeshNode meshNode = (IMeshNode) node;
-				final Mesh<?> mesh = meshNode.getEditableGeometry(false);
+				final IMesh mesh = meshNode.getGeometry();
 
 				if (mesh != null) {
-					for (final Edge edge : mesh.getEdges()) {
+					for (final IEdge edge : mesh.getEdges()) {
 						controls.add(new EdgeSelectionModelControl(meshNode,
 								edge.getIndex(), new SelectToolAdapter(scene,
 										displaySystem, meshNode, edge
@@ -123,8 +125,8 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 			for (final EdgeSelection edgeSelection : scene.getSceneSelection()
 					.getSelectedEdges()) {
 				final IMeshNode node = edgeSelection.getNode();
-				final Mesh<?> mesh = node.getEditableGeometry(false);
-				final Edge edge = mesh.getEdge(edgeSelection.getEdgeIndex());
+				final IMesh mesh = node.getGeometry();
+				final IEdge edge = mesh.getEdge(edgeSelection.getEdgeIndex());
 
 				center.addLocal(node.localToWorld(edge.getVertex1().getPoint(),
 						new Vector3f()));
@@ -160,7 +162,7 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 				for (final EdgeSelection edgeSelection : scene
 						.getSceneSelection().getSelectedEdges()) {
 					final IMeshNode node = edgeSelection.getNode();
-					final Mesh<?> mesh = node.getEditableGeometry(true);
+					final Mesh<?> mesh = node.getEditableGeometry();
 					final Edge edge = mesh
 							.getEdge(edgeSelection.getEdgeIndex());
 

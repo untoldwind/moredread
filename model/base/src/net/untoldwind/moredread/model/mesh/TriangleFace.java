@@ -42,7 +42,7 @@ public class TriangleFace extends Face<TriangleMesh> {
 	}
 
 	@Override
-	public List<? extends IPoint> getPolygonPoints() {
+	public List<? extends IVertex> getPolygonPoints() {
 		return Arrays.asList(vertices);
 	}
 

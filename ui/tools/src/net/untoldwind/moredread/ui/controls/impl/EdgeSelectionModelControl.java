@@ -3,9 +3,9 @@ package net.untoldwind.moredread.ui.controls.impl;
 import java.nio.FloatBuffer;
 import java.util.List;
 
-import net.untoldwind.moredread.model.mesh.Edge;
 import net.untoldwind.moredread.model.mesh.EdgeId;
-import net.untoldwind.moredread.model.mesh.Mesh;
+import net.untoldwind.moredread.model.mesh.IEdge;
+import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.scene.IMeshNode;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
@@ -85,8 +85,8 @@ public class EdgeSelectionModelControl extends Line implements IModelControl {
 	}
 
 	void updateGeometry() {
-		final Mesh<?> mesh = node.getEditableGeometry(false);
-		final Edge edge = mesh.getEdge(edgeIndex);
+		final IMesh mesh = node.getGeometry();
+		final IEdge edge = mesh.getEdge(edgeIndex);
 		final FloatBuffer vertexBuffer = BufferUtils.createVector3Buffer(2);
 		final Vector3f v1 = node.localToWorld(edge.getVertex1().getPoint(),
 				new Vector3f());
@@ -105,8 +105,8 @@ public class EdgeSelectionModelControl extends Line implements IModelControl {
 	}
 
 	void updateHandle(final Camera camera) {
-		final Mesh<?> mesh = node.getEditableGeometry(false);
-		final Edge edge = mesh.getEdge(edgeIndex);
+		final IMesh mesh = node.getGeometry();
+		final IEdge edge = mesh.getEdge(edgeIndex);
 		final Vector3f v1 = node.localToWorld(edge.getVertex1().getPoint(),
 				new Vector3f());
 		final Vector3f v2 = node.localToWorld(edge.getVertex2().getPoint(),

@@ -40,8 +40,7 @@ public class MeshNodeGeometryChangedCommand extends AbstractOperation implements
 		if (node == null) {
 			throw new RuntimeException("Node " + nodeId + " not found in scene");
 		}
-		oldState = BinaryStateWriter.toByteArray(node
-				.getEditableGeometry(false));
+		oldState = BinaryStateWriter.toByteArray(node.getGeometry());
 	}
 
 	@Override
@@ -51,8 +50,7 @@ public class MeshNodeGeometryChangedCommand extends AbstractOperation implements
 		if (node == null) {
 			throw new RuntimeException("Node " + nodeId + " not found in scene");
 		}
-		newState = BinaryStateWriter.toByteArray(node
-				.getEditableGeometry(false));
+		newState = BinaryStateWriter.toByteArray(node.getGeometry());
 	}
 
 	@Override

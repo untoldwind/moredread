@@ -3,6 +3,7 @@ package net.untoldwind.moredread.model.scene;
 import java.util.List;
 
 import net.untoldwind.moredread.model.generator.IMeshGenerator;
+import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.Mesh;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
 
@@ -24,7 +25,7 @@ public class GeneratorNode extends ObjectNode {
 	}
 
 	@Override
-	public Mesh<?> getRenderGeometry() {
+	public IMesh getRenderGeometry() {
 		if (generatedMesh == null) {
 			regenerate();
 		}
@@ -33,7 +34,12 @@ public class GeneratorNode extends ObjectNode {
 	}
 
 	@Override
-	public Mesh<?> getEditableGeometry(final boolean forChange) {
+	public IMesh getGeometry() {
+		return null;
+	}
+
+	@Override
+	public Mesh<?> getEditableGeometry() {
 		return null;
 	}
 

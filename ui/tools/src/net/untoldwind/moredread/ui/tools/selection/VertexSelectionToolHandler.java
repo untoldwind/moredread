@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 
 import net.untoldwind.moredread.annotations.Singleton;
+import net.untoldwind.moredread.model.mesh.IMesh;
+import net.untoldwind.moredread.model.mesh.IVertex;
 import net.untoldwind.moredread.model.mesh.Mesh;
 import net.untoldwind.moredread.model.mesh.Vertex;
 import net.untoldwind.moredread.model.scene.IMeshNode;
@@ -38,10 +40,10 @@ public class VertexSelectionToolHandler implements IToolHandler {
 		for (final INode node : scene.getSceneSelection().getSelectedNodes()) {
 			if (node instanceof IMeshNode) {
 				final IMeshNode meshNode = (IMeshNode) node;
-				final Mesh<?> mesh = meshNode.getEditableGeometry(false);
+				final IMesh mesh = meshNode.getGeometry();
 
 				if (mesh != null) {
-					for (final Vertex vertex : mesh.getVertices()) {
+					for (final IVertex vertex : mesh.getVertices()) {
 						controls.add(new VertexSelectionModelControl(meshNode,
 								vertex.getIndex(), new SelectToolAdapter(scene,
 										displaySystem, meshNode, vertex
@@ -121,8 +123,8 @@ public class VertexSelectionToolHandler implements IToolHandler {
 			for (final VertexSelection vertexSelection : scene
 					.getSceneSelection().getSelectedVertices()) {
 				final IMeshNode node = vertexSelection.getNode();
-				final Mesh<?> mesh = node.getEditableGeometry(false);
-				final Vertex vertex = mesh.getVertex(vertexSelection
+				final IMesh mesh = node.getGeometry();
+				final IVertex vertex = mesh.getVertex(vertexSelection
 						.getVertexIndex());
 
 				center.addLocal(node.localToWorld(vertex.getPoint(),
@@ -156,7 +158,7 @@ public class VertexSelectionToolHandler implements IToolHandler {
 				for (final VertexSelection vertexSelection : scene
 						.getSceneSelection().getSelectedVertices()) {
 					final IMeshNode node = vertexSelection.getNode();
-					final Mesh<?> mesh = node.getEditableGeometry(true);
+					final Mesh<?> mesh = node.getEditableGeometry();
 					final Vertex vertex = mesh.getVertex(vertexSelection
 							.getVertexIndex());
 

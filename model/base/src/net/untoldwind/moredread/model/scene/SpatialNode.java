@@ -89,8 +89,7 @@ public abstract class SpatialNode extends NodeBase implements INode {
 	}
 
 	public IPoint localToWorld(final IPoint point) {
-		return new Point(point.getIndex(), localToWorld(point.getPoint(),
-				new Vector3f()));
+		return new Point(localToWorld(point.getPoint(), new Vector3f()));
 	}
 
 	public IPolygon localToWorld(final IPolygon polygon) {

@@ -8,6 +8,8 @@ import java.util.Set;
 
 import net.untoldwind.moredread.annotations.Singleton;
 import net.untoldwind.moredread.model.mesh.Face;
+import net.untoldwind.moredread.model.mesh.IFace;
+import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.Mesh;
 import net.untoldwind.moredread.model.mesh.Vertex;
 import net.untoldwind.moredread.model.scene.IMeshNode;
@@ -40,10 +42,10 @@ public class FaceSelectionToolHandler implements IToolHandler {
 		for (final INode node : scene.getSceneSelection().getSelectedNodes()) {
 			if (node instanceof IMeshNode) {
 				final IMeshNode meshNode = (IMeshNode) node;
-				final Mesh<?> mesh = meshNode.getEditableGeometry(false);
+				final IMesh mesh = meshNode.getGeometry();
 
 				if (mesh != null) {
-					for (final Face<?> face : mesh.getFaces()) {
+					for (final IFace face : mesh.getFaces()) {
 						controls.add(new FaceSelectionModelControl(meshNode,
 								face.getIndex(), new SelectToolAdapter(scene,
 										displaySystem, meshNode, face
@@ -121,8 +123,8 @@ public class FaceSelectionToolHandler implements IToolHandler {
 			for (final FaceSelection faceSelection : scene.getSceneSelection()
 					.getSelectedFaces()) {
 				final IMeshNode node = faceSelection.getNode();
-				final Mesh<?> mesh = node.getEditableGeometry(false);
-				final Face<?> face = mesh.getFace(faceSelection.getFaceIndex());
+				final IMesh mesh = node.getGeometry();
+				final IFace face = mesh.getFace(faceSelection.getFaceIndex());
 
 				center.addLocal(node.localToWorld(face.getCenter(),
 						new Vector3f()));
@@ -156,7 +158,7 @@ public class FaceSelectionToolHandler implements IToolHandler {
 				for (final FaceSelection faceSelection : scene
 						.getSceneSelection().getSelectedFaces()) {
 					final IMeshNode node = faceSelection.getNode();
-					final Mesh<?> mesh = node.getEditableGeometry(true);
+					final Mesh<?> mesh = node.getEditableGeometry();
 					final Face<?> face = mesh.getFace(faceSelection
 							.getFaceIndex());
 

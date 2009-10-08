@@ -8,9 +8,15 @@ import net.untoldwind.moredread.model.enums.MeshType;
 public interface IMesh extends IGeometry {
 	MeshType getMeshType();
 
-	List<? extends IPoint> getVertices();
+	List<? extends IVertex> getVertices();
+
+	IVertex getVertex(final int vertexIndes);
 
 	Collection<? extends IEdge> getEdges();
 
-	List<? extends IPolygon> getFaces();
+	IEdge getEdge(final EdgeId edgeIndex);
+
+	List<? extends IFace> getFaces();
+
+	IFace getFace(final int faceIndex);
 }

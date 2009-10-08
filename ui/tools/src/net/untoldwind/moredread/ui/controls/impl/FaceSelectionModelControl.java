@@ -5,11 +5,9 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.untoldwind.moredread.model.mesh.Face;
+import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IPoint;
 import net.untoldwind.moredread.model.mesh.IPolygon;
-import net.untoldwind.moredread.model.mesh.Mesh;
-import net.untoldwind.moredread.model.mesh.Vertex;
 import net.untoldwind.moredread.model.scene.IMeshNode;
 import net.untoldwind.moredread.model.triangulator.ITriangulator;
 import net.untoldwind.moredread.model.triangulator.TriangulatorFactory;
@@ -90,7 +88,7 @@ public class FaceSelectionModelControl extends TriMesh implements IModelControl 
 	}
 
 	void updateGeometry() {
-		final Mesh<?> mesh = node.getEditableGeometry(false);
+		final IMesh mesh = node.getGeometry();
 		final ITriangulator triangulator = TriangulatorFactory
 				.createTriangulator(TriangulatorFactory.Implementation.FIST);
 		final IPolygon face = node.localToWorld(mesh.getFace(faceIndex));
@@ -122,11 +120,11 @@ public class FaceSelectionModelControl extends TriMesh implements IModelControl 
 	}
 
 	void updateHandle(final Camera camera) {
-		final Mesh<?> mesh = node.getEditableGeometry(false);
-		final Face<?> face = mesh.getFace(faceIndex);
+		final IMesh mesh = node.getGeometry();
+		final IPolygon face = mesh.getFace(faceIndex);
 		final List<Vector3f> points = new ArrayList<Vector3f>();
 
-		for (final Vertex vertex : face.getVertices()) {
+		for (final IPoint vertex : face.getPolygonPoints()) {
 			points.add(node.localToWorld(vertex.getPoint(), new Vector3f()));
 		}
 

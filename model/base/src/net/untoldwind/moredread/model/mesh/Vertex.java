@@ -10,7 +10,7 @@ import net.untoldwind.moredread.model.state.IStateWriter;
 
 import com.jme.math.Vector3f;
 
-public class Vertex implements IStateHolder, IPoint {
+public class Vertex implements IStateHolder, IVertex {
 	private final Mesh<?> owner;
 	private final int index;
 	private Vector3f point;

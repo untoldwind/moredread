@@ -1,6 +1,7 @@
 package net.untoldwind.moredread.model.mesh;
 
 import net.untoldwind.moredread.model.enums.GeometryType;
+import net.untoldwind.moredread.model.state.IStateHolder;
 
 /**
  * Most abstract interface for all geometry objects.
@@ -9,6 +10,6 @@ import net.untoldwind.moredread.model.enums.GeometryType;
  * 
  * @author junglas
  */
-public interface IGeometry {
+public interface IGeometry extends IStateHolder {
 	GeometryType getGeometryType();
 }

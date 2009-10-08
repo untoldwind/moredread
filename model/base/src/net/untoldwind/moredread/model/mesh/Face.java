@@ -7,7 +7,7 @@ import net.untoldwind.moredread.model.state.IStateHolder;
 
 import com.jme.math.Vector3f;
 
-public abstract class Face<T extends Mesh<?>> implements IStateHolder, IPolygon {
+public abstract class Face<T extends Mesh<?>> implements IStateHolder, IFace {
 	private final T owner;
 	protected final int index;
 	protected Vector3f center;

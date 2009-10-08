@@ -11,7 +11,9 @@ public interface IGeometryNode<RO_GEOMETRY extends IGeometry, RW_GEOMETRY extend
 		extends INode {
 	RO_GEOMETRY getRenderGeometry();
 
-	RW_GEOMETRY getEditableGeometry(boolean forChange);
+	RO_GEOMETRY getGeometry();
+
+	RW_GEOMETRY getEditableGeometry();
 
 	ColorRGBA getModelColor(final float alpha);
 
