@@ -42,11 +42,6 @@ public class TriangleFace extends Face<TriangleMesh> {
 	}
 
 	@Override
-	public List<? extends IVertex> getPolygonPoints() {
-		return Arrays.asList(vertices);
-	}
-
-	@Override
 	public int[] getPolygonContourCounts() {
 		return new int[] { 1 };
 	}

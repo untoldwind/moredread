@@ -95,7 +95,7 @@ public abstract class SpatialNode extends NodeBase implements INode {
 	public IPolygon localToWorld(final IPolygon polygon) {
 		final List<IPoint> points = new ArrayList<IPoint>();
 
-		for (final IPoint point : polygon.getPolygonPoints()) {
+		for (final IPoint point : polygon.getVertices()) {
 			points.add(localToWorld(point));
 		}
 

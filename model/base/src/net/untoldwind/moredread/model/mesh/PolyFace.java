@@ -68,11 +68,6 @@ public class PolyFace extends Face<PolyMesh> {
 	}
 
 	@Override
-	public List<? extends IVertex> getPolygonPoints() {
-		return vertices;
-	}
-
-	@Override
 	public int[] getPolygonContourCounts() {
 		return new int[] { stripCounts.size() };
 	}

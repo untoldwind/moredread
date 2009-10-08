@@ -17,8 +17,7 @@ public class FISTTriangulator implements ITriangulator {
 
 		gi.contourCounts = polygon.getPolygonContourCounts();
 		gi.stripCounts = polygon.getPolygonStripCounts();
-		final List<? extends IPoint> coordinatePoints = polygon
-				.getPolygonPoints();
+		final List<? extends IPoint> coordinatePoints = polygon.getVertices();
 
 		gi.coordinates = new Vector3f[coordinatePoints.size()];
 		for (int i = 0; i < gi.coordinates.length; i++) {

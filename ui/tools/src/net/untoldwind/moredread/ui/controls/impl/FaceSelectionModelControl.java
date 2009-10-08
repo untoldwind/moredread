@@ -93,7 +93,7 @@ public class FaceSelectionModelControl extends TriMesh implements IModelControl 
 				.createTriangulator(TriangulatorFactory.Implementation.FIST);
 		final IPolygon face = node.localToWorld(mesh.getFace(faceIndex));
 		final Vector3f normal = face.getMeanNormal();
-		final List<? extends IPoint> vertices = face.getPolygonPoints();
+		final List<? extends IPoint> vertices = face.getVertices();
 		final FloatBuffer vertexBuffer = BufferUtils
 				.createVector3Buffer(vertices.size());
 		final FloatBuffer normalBuffer = BufferUtils
@@ -124,7 +124,7 @@ public class FaceSelectionModelControl extends TriMesh implements IModelControl 
 		final IPolygon face = mesh.getFace(faceIndex);
 		final List<Vector3f> points = new ArrayList<Vector3f>();
 
-		for (final IPoint vertex : face.getPolygonPoints()) {
+		for (final IPoint vertex : face.getVertices()) {
 			points.add(node.localToWorld(vertex.getPoint(), new Vector3f()));
 		}
 

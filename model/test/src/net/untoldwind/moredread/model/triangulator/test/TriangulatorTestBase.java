@@ -51,7 +51,7 @@ public abstract class TriangulatorTestBase {
 		assertNotNull(polygon);
 
 		if (DEBUG) {
-			PNGHelper.drawPolygon(polygon.getPolygonPoints(), polygon
+			PNGHelper.drawPolygon(polygon.getVertices(), polygon
 					.getPolygonStripCounts(), polyId + "-poly.png");
 		}
 
@@ -59,7 +59,7 @@ public abstract class TriangulatorTestBase {
 
 		if (DEBUG) {
 			System.out.println(polyId + " : " + Arrays.toString(result));
-			PNGHelper.drawTriangles(polygon.getPolygonPoints(), result, polyId
+			PNGHelper.drawTriangles(polygon.getVertices(), result, polyId
 					+ "-tri.png");
 		}
 

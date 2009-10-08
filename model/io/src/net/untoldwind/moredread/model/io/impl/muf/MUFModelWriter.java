@@ -117,8 +117,8 @@ public class MUFModelWriter implements IModelWriter {
 				for (final IFace face : mesh.getFaces()) {
 					final Element faceElement = facesElement.addElement("face");
 					final int[] stripCount = face.getPolygonStripCounts();
-					final Iterator<? extends IVertex> it = face
-							.getPolygonPoints().iterator();
+					final Iterator<? extends IVertex> it = face.getVertices()
+							.iterator();
 
 					for (int i = 0; i < stripCount.length; i++) {
 						final Element stripElement = faceElement
@@ -136,7 +136,7 @@ public class MUFModelWriter implements IModelWriter {
 				for (final IFace face : mesh.getFaces()) {
 					final Element faceElement = facesElement.addElement("face");
 
-					for (final IVertex point : face.getPolygonPoints()) {
+					for (final IVertex point : face.getVertices()) {
 						final Element pointElement = faceElement
 								.addElement("point");
 						pointElement.addAttribute("index", String.valueOf(point

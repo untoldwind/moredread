@@ -5,5 +5,5 @@ import java.util.List;
 public interface IFace extends IPolygon {
 	int getIndex();
 
-	List<? extends IVertex> getPolygonPoints();
+	List<? extends IVertex> getVertices();
 }

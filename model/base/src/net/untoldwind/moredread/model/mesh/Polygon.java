@@ -39,7 +39,7 @@ public class Polygon implements IPolygon {
 	}
 
 	@Override
-	public List<? extends IPoint> getPolygonPoints() {
+	public List<? extends IPoint> getVertices() {
 		return vertices;
 	}
 
