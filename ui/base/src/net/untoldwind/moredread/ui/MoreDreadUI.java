@@ -10,6 +10,7 @@ import net.untoldwind.moredread.jme.MoreDreadJME;
 import net.untoldwind.moredread.model.generator.CubeMeshGenerator;
 import net.untoldwind.moredread.model.generator.DodecahedronMeshGenerator;
 import net.untoldwind.moredread.model.generator.OctahedronMeshGenerator;
+import net.untoldwind.moredread.model.mesh.PolyMesh;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
 import net.untoldwind.moredread.model.scene.ISceneHolder;
 import net.untoldwind.moredread.model.scene.MeshNode;
@@ -155,7 +156,7 @@ public class MoreDreadUI extends AbstractUIPlugin {
 
 			node1.setLocalScale(new Vector3f(2.0f, 2.0f, 2.0f));
 
-			final SpatialNode node2 = new MeshNode(scene,
+			final SpatialNode node2 = new MeshNode(scene, "Mesh Cube",
 					new CubeMeshGenerator().generateMesh());
 
 			node2.setLocalTranslation(new Vector3f(3.5f, 0, 0));
@@ -171,17 +172,61 @@ public class MoreDreadUI extends AbstractUIPlugin {
 			node4.setLocalScale(new Vector3f(3.0f, 3.0f, 3.0f));
 			node4.setLocalTranslation(new Vector3f(10f, 0, 0));
 
-			final SpatialNode node5 = new MeshNode(scene,
+			final SpatialNode node5 = new MeshNode(scene, "Mesh Dodecahedron",
 					new DodecahedronMeshGenerator().generateMesh());
 
 			node5.setLocalScale(new Vector3f(3.0f, 3.0f, 3.0f));
 			node5.setLocalTranslation(new Vector3f(-10f, 0, 0));
 
-			final SpatialNode node6 = new MeshNode(scene,
+			final SpatialNode node6 = new MeshNode(scene, "Mesh Octahedron",
 					new OctahedronMeshGenerator().generateMesh());
 
 			node6.setLocalScale(new Vector3f(3.0f, 3.0f, 3.0f));
 			node6.setLocalTranslation(new Vector3f(0, 10f, 0));
+
+			final PolyMesh cubeWithHole = new PolyMesh();
+
+			cubeWithHole.addVertex(new Vector3f(-1, -1, -1));
+			cubeWithHole.addVertex(new Vector3f(1, -1, -1));
+			cubeWithHole.addVertex(new Vector3f(1, 1, -1));
+			cubeWithHole.addVertex(new Vector3f(-1, 1, -1));
+			cubeWithHole.addVertex(new Vector3f(-1, -1, 1));
+			cubeWithHole.addVertex(new Vector3f(1, -1, 1));
+			cubeWithHole.addVertex(new Vector3f(1, 1, 1));
+			cubeWithHole.addVertex(new Vector3f(-1, 1, 1));
+
+			cubeWithHole.addVertex(new Vector3f(-0.75f, -0.75f, -1));
+			cubeWithHole.addVertex(new Vector3f(0.75f, -0.75f, -1));
+			cubeWithHole.addVertex(new Vector3f(0.75f, 0.75f, -1));
+			cubeWithHole.addVertex(new Vector3f(-0.75f, 0.75f, -1));
+
+			cubeWithHole.addVertex(new Vector3f(-0.75f, -0.75f, 1));
+			cubeWithHole.addVertex(new Vector3f(0.75f, -0.75f, 1));
+			cubeWithHole.addVertex(new Vector3f(0.75f, 0.75f, 1));
+			cubeWithHole.addVertex(new Vector3f(-0.75f, 0.75f, 1));
+
+			cubeWithHole
+					.addFace(new int[][] { { 3, 2, 1, 0 }, { 8, 9, 10, 11 } });
+
+			cubeWithHole.addFace(new int[][] { { 4, 5, 6, 7 },
+					{ 15, 14, 13, 12 } });
+
+			cubeWithHole.addFace(4, 7, 3, 0);
+			cubeWithHole.addFace(1, 2, 6, 5);
+			cubeWithHole.addFace(0, 1, 5, 4);
+			cubeWithHole.addFace(2, 3, 7, 6);
+
+			cubeWithHole.addFace(8, 12, 13, 9);
+			cubeWithHole.addFace(10, 14, 15, 11);
+			cubeWithHole.addFace(13, 14, 10, 9);
+			cubeWithHole.addFace(11, 15, 12, 8);
+
+			final SpatialNode node7 = new MeshNode(scene, "Cube With Hole",
+					cubeWithHole);
+
+			node7.setLocalScale(new Vector3f(3.0f, 3.0f, 3.0f));
+			node7.setLocalTranslation(new Vector3f(0, -10f, 0));
+
 		} finally {
 			scene.getSceneChangeHandler().commit();
 		}

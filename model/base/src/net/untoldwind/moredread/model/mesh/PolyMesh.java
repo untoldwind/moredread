@@ -47,6 +47,36 @@ public class PolyMesh extends Mesh<PolyFace> {
 		return face;
 	}
 
+	public PolyFace addFace(final int[][] vertexStripIndices) {
+		final Vertex[][] vertexStrips = new Vertex[vertexStripIndices.length][];
+		final List<Edge> edgeList = new ArrayList<Edge>();
+
+		for (int k = 0; k < vertexStripIndices.length; k++) {
+			final int[] vertexIndices = vertexStripIndices[k];
+
+			vertexStrips[k] = new Vertex[vertexStripIndices[k].length];
+
+			for (int i = 0; i < vertexIndices.length; i++) {
+				final Vertex vertex1 = vertices.get(vertexIndices[i]);
+
+				vertexStrips[k][i] = vertex1;
+
+				final Vertex vertex2 = vertices.get(vertexIndices[(i + 1)
+						% vertexIndices.length]);
+
+				edgeList.add(addEdge(vertex1, vertex2));
+			}
+		}
+
+		final PolyFace face = new PolyFace(this, faces.size(), vertexStrips,
+				edgeList);
+
+		faces.add(face);
+
+		return face;
+
+	}
+
 	@Override
 	public TriangleMesh toTriangleMesh() {
 		final TriangleMesh triangleMesh = new TriangleMesh();

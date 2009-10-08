@@ -22,6 +22,12 @@ public class MeshNode extends ObjectNode {
 		this.mesh = mesh;
 	}
 
+	public MeshNode(final Group parent, final String name, final Mesh<?> mesh) {
+		super(parent, name);
+
+		this.mesh = mesh;
+	}
+
 	@Override
 	public Mesh<?> getRenderGeometry() {
 		return mesh;

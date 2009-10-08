@@ -31,6 +31,29 @@ public class PolyFace extends Face<PolyMesh> {
 		}
 	}
 
+	PolyFace(final PolyMesh owner, final int index,
+			final Vertex[][] vertexStrips, final List<Edge> edges) {
+		super(owner, index);
+
+		this.edges = edges;
+
+		this.vertices = new ArrayList<Vertex>();
+		this.stripCounts = new ArrayList<Integer>();
+		for (final Vertex[] strip : vertexStrips) {
+			this.stripCounts.add(strip.length);
+			for (final Vertex vertex : strip) {
+				this.vertices.add(vertex);
+			}
+		}
+		for (final Vertex vertex : vertices) {
+			vertex.getFaces().add(this);
+		}
+
+		for (final Edge edge : edges) {
+			edge.getFaces().add(this);
+		}
+	}
+
 	@Override
 	public List<Vertex> getVertices() {
 		return vertices;
