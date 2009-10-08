@@ -5,11 +5,11 @@
    <extension
          point="net.untoldwind.moredread.model.io">
       <file-io
-            extension="mrd"
-            id="net.untoldwind.moredread.model.io.mrd"
-            label="Mrd Example"
-            readerClass="net.untoldwind.moredread.model.io.impl.mrd.MrdModelReader"
-            writerClass="net.untoldwind.moredread.model.io.impl.mrd.MrdModelWriter">
+            extension="muf"
+            id="net.untoldwind.moredread.model.io.muf"
+            label="MUF (Most Useless Format)"
+            readerClass="net.untoldwind.moredread.model.io.impl.muf.MUFModelReader"
+            writerClass="net.untoldwind.moredread.model.io.impl.muf.MUFModelWriter">
       </file-io>
    </extension>
 

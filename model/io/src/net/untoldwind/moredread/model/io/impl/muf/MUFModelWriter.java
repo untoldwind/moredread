@@ -1,4 +1,4 @@
-package net.untoldwind.moredread.model.io.impl.mrd;
+package net.untoldwind.moredread.model.io.impl.muf;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -25,9 +25,11 @@ import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 
 /**
+ * Most Useless Format writer.
+ * 
  * This is considered to be an example for scene io.
  */
-public class MrdModelWriter implements IModelWriter {
+public class MUFModelWriter implements IModelWriter {
 
 	@Override
 	public void writeScene(final Scene scene, final OutputStream out)

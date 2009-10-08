@@ -114,6 +114,11 @@ public class ModelIOPlugin extends AbstractUIPlugin {
 			try {
 				final IFileIODescriptor fileIODescriptor = fileIODescriptors
 						.get(fileDialog.getFilterIndex());
+
+				if (!fileName.endsWith(fileIODescriptor.getExtension())) {
+					fileName += "." + fileIODescriptor.getExtension();
+				}
+
 				final FileOutputStream out = new FileOutputStream(fileName);
 
 				fileIODescriptor.getModelWriter().writeScene(scene, out);
