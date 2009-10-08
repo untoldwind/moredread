@@ -14,5 +14,4 @@ public class BSPTree {
 	public void setRoot(final BSPNode root) {
 		this.root = root;
 	}
-
 }
