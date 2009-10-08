@@ -52,7 +52,6 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 	private InputHandler input;
 
 	Node controlsNode;
-	Node sceneNode;
 	Node backdropNode;
 
 	GridBackdrop gridBackdrop;
@@ -73,10 +72,8 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 	@Override
 	public void simpleSetup() {
 		controlsNode = new Node("controlsNode");
-		sceneNode = new Node("sceneNode");
 		backdropNode = new Node("backdropNode");
 
-		rootNode.attachChild(sceneNode);
 		rootNode.attachChild(backdropNode);
 
 		final DirectionalLight light = new DirectionalLight();
@@ -124,16 +121,6 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 		axis = new Vector3f(1, 1, 0.5f);
 		axis.normalizeLocal();
 
-		final SolidNodeRendererParam rendererParam = new SolidNodeRendererParam(
-				MoreDreadUI
-						.getDefault()
-						.getPreferenceStore()
-						.getBoolean(
-								IPreferencesConstants.MODEL3DVIEW_SELECTED_SHOW_NORMALS));
-		sceneHolder.getScene().updateDisplayNode(
-				new SolidNodeRenderer(renderer, sceneHolder.getSelectionMode(),
-						rendererParam), sceneNode);
-
 		startTime = System.currentTimeMillis() + 5000;
 
 		input = new FirstPersonHandler(cam, 50, 1);
@@ -152,18 +139,6 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 	}
 
 	public void updateDisplayNodes() {
-
-		final SolidNodeRendererParam rendererParam = new SolidNodeRendererParam(
-				MoreDreadUI
-						.getDefault()
-						.getPreferenceStore()
-						.getBoolean(
-								IPreferencesConstants.MODEL3DVIEW_SELECTED_SHOW_NORMALS));
-		sceneHolder.getScene().updateDisplayNode(
-				new SolidNodeRenderer(renderer, sceneHolder.getSelectionMode(),
-						rendererParam), sceneNode);
-		rootNode.updateGeometricState(0.0f, true);
-		rootNode.updateRenderState();
 
 		if (controlsNode.getChildren() != null) {
 			for (final IModelControl modelControl : modelControls) {
@@ -196,6 +171,16 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 
 	@Override
 	public void simpleRender() {
+		final SolidNodeRendererParam rendererParam = new SolidNodeRendererParam(
+				MoreDreadUI
+						.getDefault()
+						.getPreferenceStore()
+						.getBoolean(
+								IPreferencesConstants.MODEL3DVIEW_SELECTED_SHOW_NORMALS));
+
+		sceneHolder.render(renderer, new SolidNodeRenderer(renderer,
+				sceneHolder.getSelectionMode(), rendererParam));
+
 		renderer.renderQueue();
 		renderer.clearZBuffer();
 		renderer.draw(controlsNode);
@@ -233,7 +218,7 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 				ray.direction).subtractLocal(ray.origin).normalizeLocal();
 
 		results.setCheckDistance(true);
-		sceneNode.findPick(ray, results);
+		sceneHolder.findPick(ray, results);
 
 		for (int i = 0; i < results.getNumber(); i++) {
 			final PickData pick = results.getPickData(i);
