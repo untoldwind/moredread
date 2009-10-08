@@ -38,7 +38,6 @@ import com.jme.scene.state.ZBufferState;
 import com.jme.scene.state.BlendState.BlendEquation;
 import com.jme.scene.state.MaterialState.ColorMaterial;
 import com.jme.scene.state.MaterialState.MaterialFace;
-import com.jme.system.DisplaySystem;
 import com.jme.system.canvas.SimpleCanvasImpl;
 import com.jme.util.GameTaskQueue;
 import com.jme.util.GameTaskQueueManager;
@@ -227,9 +226,13 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 	@Override
 	public INode pickNode(final Vector2f screenCoord) {
 		final PickResults results = new TrianglePickResults();
-		final Ray ray = DisplaySystem.getDisplaySystem().getPickRay(
-				screenCoord, false, null);
+		final Ray ray = new Ray();
 
+		renderer.getCamera().getWorldCoordinates(screenCoord, 0, ray.origin);
+		renderer.getCamera().getWorldCoordinates(screenCoord, 0.3f,
+				ray.direction).subtractLocal(ray.origin).normalizeLocal();
+
+		results.setCheckDistance(true);
 		sceneNode.findPick(ray, results);
 
 		for (int i = 0; i < results.getNumber(); i++) {
