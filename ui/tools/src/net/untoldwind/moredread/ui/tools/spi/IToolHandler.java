@@ -7,6 +7,7 @@ import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.tools.IDisplaySystem;
 
 public interface IToolHandler {
+	boolean activate(Scene scene);
 
 	List<? extends IModelControl> getModelControls(Scene scene,
 			IDisplaySystem displaySystem);

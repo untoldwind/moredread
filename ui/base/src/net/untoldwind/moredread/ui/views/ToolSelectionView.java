@@ -14,6 +14,8 @@ import net.untoldwind.moredread.ui.tools.IToolDescriptor;
 import net.untoldwind.moredread.ui.tools.UIToolsPlugin;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ToolBar;
@@ -44,15 +46,30 @@ public class ToolSelectionView extends ViewPart implements
 
 			for (final IToolDescriptor toolDescriptor : toolCategoryDescriptor
 					.getTools()) {
-				final ToolItem toolItem = new ToolItem(toolBar, SWT.PUSH
-						| SWT.NONE);
+				int style = SWT.NONE;
+				switch (toolDescriptor.getToolType()) {
+				case PUSH:
+					style |= SWT.PUSH;
+					break;
+				case TOGGLE:
+					style |= SWT.CHECK;
+					break;
+				}
+				final ToolItem toolItem = new ToolItem(toolBar, style);
+
 				if (toolDescriptor.getIcon() != null) {
 					toolItem.setImage(toolDescriptor.getIcon().createImage());
 					toolItem.setToolTipText(toolDescriptor.getLabel());
-					toolItem.setData(toolDescriptor);
 				} else {
 					toolItem.setText(toolDescriptor.getLabel());
 				}
+				toolItem.setData(toolDescriptor);
+				toolItem.addSelectionListener(new SelectionAdapter() {
+					@Override
+					public void widgetSelected(final SelectionEvent e) {
+						selectTool(toolDescriptor);
+					}
+				});
 			}
 		}
 		MoreDreadUI.getDefault().getSceneHolder()
@@ -78,6 +95,11 @@ public class ToolSelectionView extends ViewPart implements
 	@Override
 	public void sceneSelectionModeChanged(final SceneSelectionModeEvent event) {
 		updateTools();
+	}
+
+	protected void selectTool(final IToolDescriptor toolDescriptor) {
+		toolDescriptor.activate(MoreDreadUI.getDefault().getSceneHolder()
+				.getScene());
 	}
 
 	protected void updateTools() {

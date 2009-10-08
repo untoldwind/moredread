@@ -30,6 +30,11 @@ import com.jme.math.Vector3f;
 public class EdgeSelectionToolHandler implements IToolHandler {
 
 	@Override
+	public boolean activate(final Scene scene) {
+		return true;
+	}
+
+	@Override
 	public List<? extends IModelControl> getModelControls(final Scene scene,
 			final IDisplaySystem displaySystem) {
 		final List<IModelControl> controls = new ArrayList<IModelControl>();

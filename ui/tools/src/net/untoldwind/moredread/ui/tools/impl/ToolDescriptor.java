@@ -7,6 +7,7 @@ import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.tools.IDisplaySystem;
 import net.untoldwind.moredread.ui.tools.IToolDescriptor;
+import net.untoldwind.moredread.ui.tools.ToolType;
 import net.untoldwind.moredread.ui.tools.spi.IToolHandler;
 
 import org.eclipse.core.runtime.CoreException;
@@ -18,6 +19,7 @@ public class ToolDescriptor implements IToolDescriptor {
 	private final String pluginId;
 	private final String id;
 	private final String label;
+	private final ToolType toolType;
 	private final String icon;
 	private final IToolHandler toolHandler;
 	private final String categoryId;
@@ -29,6 +31,7 @@ public class ToolDescriptor implements IToolDescriptor {
 		pluginId = configElement.getContributor().getName();
 		id = configElement.getAttribute("id");
 		label = configElement.getAttribute("label");
+		toolType = ToolType.valueOf(configElement.getAttribute("type"));
 		icon = configElement.getAttribute("icon");
 		toolHandler = (IToolHandler) configElement
 				.createExecutableExtension("class");
@@ -61,19 +64,19 @@ public class ToolDescriptor implements IToolDescriptor {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public ImageDescriptor getIcon() {
-		if (icon != null) {
-			return AbstractUIPlugin.imageDescriptorFromPlugin(pluginId, icon);
-		}
-		return null;
+	public ToolType getToolType() {
+		return toolType;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public IToolHandler getToolHandler() {
-		return toolHandler;
+	public ImageDescriptor getIcon() {
+		if (icon != null) {
+			return AbstractUIPlugin.imageDescriptorFromPlugin(pluginId, icon);
+		}
+		return null;
 	}
 
 	public List<ToolActivation> getActivations() {
@@ -82,6 +85,14 @@ public class ToolDescriptor implements IToolDescriptor {
 
 	public String getCategoryId() {
 		return categoryId;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean activate(final Scene scene) {
+		return toolHandler.activate(scene);
 	}
 
 	/**

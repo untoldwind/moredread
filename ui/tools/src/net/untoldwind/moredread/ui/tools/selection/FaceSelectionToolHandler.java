@@ -27,6 +27,10 @@ import com.jme.math.Vector3f;
 
 @Singleton
 public class FaceSelectionToolHandler implements IToolHandler {
+	@Override
+	public boolean activate(final Scene scene) {
+		return true;
+	}
 
 	@Override
 	public List<? extends IModelControl> getModelControls(final Scene scene,
