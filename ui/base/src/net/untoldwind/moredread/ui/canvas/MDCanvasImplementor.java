@@ -62,6 +62,8 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 
 	private final ISceneHolder sceneHolder;
 
+	boolean updateNecessary = true;
+
 	public MDCanvasImplementor(final int width, final int height,
 			final ISceneHolder sceneHolder) {
 		super(width, height);
@@ -139,7 +141,7 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 	}
 
 	public void updateDisplayNodes() {
-
+		updateNecessary = true;
 		if (controlsNode.getChildren() != null) {
 			for (final IModelControl modelControl : modelControls) {
 				modelControl.updatePositions();
@@ -171,15 +173,21 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 
 	@Override
 	public void simpleRender() {
-		final SolidNodeRendererParam rendererParam = new SolidNodeRendererParam(
-				MoreDreadUI
-						.getDefault()
-						.getPreferenceStore()
-						.getBoolean(
-								IPreferencesConstants.MODEL3DVIEW_SELECTED_SHOW_NORMALS));
+		if (updateNecessary) {
+			final SolidNodeRendererParam rendererParam = new SolidNodeRendererParam(
+					MoreDreadUI
+							.getDefault()
+							.getPreferenceStore()
+							.getBoolean(
+									IPreferencesConstants.MODEL3DVIEW_SELECTED_SHOW_NORMALS));
 
-		sceneHolder.render(renderer, new SolidNodeRenderer(renderer,
-				sceneHolder.getSelectionMode(), rendererParam));
+			sceneHolder.render(renderer, new SolidNodeRenderer(renderer,
+					sceneHolder.getSelectionMode(), rendererParam));
+
+			updateNecessary = false;
+		} else {
+			sceneHolder.render(renderer, null);
+		}
 
 		renderer.renderQueue();
 		renderer.clearZBuffer();
