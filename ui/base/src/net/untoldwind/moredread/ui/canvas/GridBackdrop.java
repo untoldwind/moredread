@@ -153,9 +153,9 @@ public class GridBackdrop extends Node {
 
 		final Line lines = new Line("", vertexBuffer, null, null, null);
 
-		lines.setAntialiased(true);
+		lines.setAntialiased(false);
 		lines.setLineWidth(0.5f);
-		lines.setDefaultColor(ColorRGBA.black.clone());
+		lines.setDefaultColor(ColorRGBA.gray.clone());
 		return lines;
 	}
 }

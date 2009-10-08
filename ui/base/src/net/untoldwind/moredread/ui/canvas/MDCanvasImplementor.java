@@ -23,21 +23,15 @@ import com.jme.input.InputHandler;
 import com.jme.intersection.PickData;
 import com.jme.intersection.PickResults;
 import com.jme.intersection.TrianglePickResults;
-import com.jme.light.DirectionalLight;
 import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
 import com.jme.math.Ray;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
-import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.state.BlendState;
-import com.jme.scene.state.LightState;
-import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.ZBufferState;
 import com.jme.scene.state.BlendState.BlendEquation;
-import com.jme.scene.state.MaterialState.ColorMaterial;
-import com.jme.scene.state.MaterialState.MaterialFace;
 import com.jme.system.canvas.SimpleCanvasImpl;
 import com.jme.util.GameTaskQueue;
 import com.jme.util.GameTaskQueueManager;
@@ -77,33 +71,6 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 		backdropNode = new Node("backdropNode");
 
 		rootNode.attachChild(backdropNode);
-
-		final DirectionalLight light = new DirectionalLight();
-		light.setDiffuse(new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
-		light.setAmbient(new ColorRGBA(0.5f, 0.5f, 0.5f, 1.0f));
-		light.setDirection(new Vector3f(-1, -1, -1));
-		light.setEnabled(true);
-
-		/** Attach the light to a lightState and the lightState to rootNode. */
-		final LightState lightState = renderer.createLightState();
-		lightState.setEnabled(true);
-		lightState.attach(light);
-		rootNode.setRenderState(lightState);
-
-		final MaterialState materialState = renderer.createMaterialState();
-		materialState.setMaterialFace(MaterialFace.FrontAndBack);
-		materialState.setColorMaterial(ColorMaterial.AmbientAndDiffuse);
-		materialState.setEnabled(true);
-		final BlendState sceneBlendState = renderer.createBlendState();
-		sceneBlendState.setEnabled(true);
-		sceneBlendState.setBlendEnabled(true);
-		sceneBlendState
-				.setSourceFunction(BlendState.SourceFunction.SourceAlpha);
-		sceneBlendState
-				.setDestinationFunction(BlendState.DestinationFunction.OneMinusSourceAlpha);
-
-		rootNode.setRenderState(materialState);
-		rootNode.setRenderState(sceneBlendState);
 
 		final ZBufferState zBufferState = renderer.createZBufferState();
 		zBufferState.setEnabled(false);
