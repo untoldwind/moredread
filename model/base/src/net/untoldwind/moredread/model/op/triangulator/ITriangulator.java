@@ -1,4 +1,4 @@
-package net.untoldwind.moredread.model.triangulator;
+package net.untoldwind.moredread.model.op.triangulator;
 
 import net.untoldwind.moredread.model.mesh.IPolygon;
 

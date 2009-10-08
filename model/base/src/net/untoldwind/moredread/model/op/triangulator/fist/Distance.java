@@ -1,4 +1,4 @@
-package net.untoldwind.moredread.model.triangulator.fist;
+package net.untoldwind.moredread.model.op.triangulator.fist;
 
 /**
  * Original license information:
@@ -18,16 +18,15 @@ package net.untoldwind.moredread.model.triangulator.fist;
  * ----------------------------------------------------------------------
  */
 
-class Left extends Object {
+class Distance extends Object {
 	int ind;
-	int index;
+	double dist;
 
-	Left() {
+	Distance() {
 	}
 
-	void copy(Left l) {
-		ind = l.ind;
-		index = l.index;
+	void copy(Distance d) {
+		ind = d.ind;
+		dist = d.dist;
 	}
-
 }

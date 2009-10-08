@@ -1,4 +1,4 @@
-package net.untoldwind.moredread.model.triangulator.fist;
+package net.untoldwind.moredread.model.op.triangulator.fist;
 
 import com.jme.math.Vector3f;
 

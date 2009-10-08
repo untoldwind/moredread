@@ -1,4 +1,4 @@
-package net.untoldwind.moredread.model.triangulator.fist;
+package net.untoldwind.moredread.model.op.triangulator.fist;
 
 /**
  * Original license information:
@@ -18,15 +18,27 @@ package net.untoldwind.moredread.model.triangulator.fist;
  * ----------------------------------------------------------------------
  */
 
-class Distance extends Object {
-	int ind;
-	double dist;
+class ListNode {
+	int index;
+	int prev;
+	int next;
+	int convex;
+	int vcntIndex; // Vertex, Color, Normal, Texture Index
 
-	Distance() {
+	ListNode(int ind) {
+		index = ind;
+		prev = -1;
+		next = -1;
+		convex = 0;
+		vcntIndex = -1;
 	}
 
-	void copy(Distance d) {
-		ind = d.ind;
-		dist = d.dist;
+	void setCommonIndex(int comIndex) {
+		vcntIndex = comIndex;
+
+	}
+
+	int getCommonIndex() {
+		return vcntIndex;
 	}
 }

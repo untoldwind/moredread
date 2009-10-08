@@ -1,4 +1,4 @@
-package net.untoldwind.moredread.model.triangulator.fist;
+package net.untoldwind.moredread.model.op.triangulator.fist;
 
 /**
  * Original license information:
@@ -18,17 +18,16 @@ package net.untoldwind.moredread.model.triangulator.fist;
  * ----------------------------------------------------------------------
  */
 
-class HeapNode {
-	int index, prev, next;
-	double ratio;
+class Left extends Object {
+	int ind;
+	int index;
 
-	HeapNode() {
+	Left() {
 	}
 
-	void copy(HeapNode hNode) {
-		index = hNode.index;
-		prev = hNode.prev;
-		next = hNode.next;
-		ratio = hNode.ratio;
+	void copy(Left l) {
+		ind = l.ind;
+		index = l.index;
 	}
+
 }

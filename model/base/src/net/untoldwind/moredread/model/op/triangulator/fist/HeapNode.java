@@ -1,4 +1,4 @@
-package net.untoldwind.moredread.model.triangulator.fist;
+package net.untoldwind.moredread.model.op.triangulator.fist;
 
 /**
  * Original license information:
@@ -18,27 +18,17 @@ package net.untoldwind.moredread.model.triangulator.fist;
  * ----------------------------------------------------------------------
  */
 
-class ListNode {
-	int index;
-	int prev;
-	int next;
-	int convex;
-	int vcntIndex; // Vertex, Color, Normal, Texture Index
+class HeapNode {
+	int index, prev, next;
+	double ratio;
 
-	ListNode(int ind) {
-		index = ind;
-		prev = -1;
-		next = -1;
-		convex = 0;
-		vcntIndex = -1;
+	HeapNode() {
 	}
 
-	void setCommonIndex(int comIndex) {
-		vcntIndex = comIndex;
-
-	}
-
-	int getCommonIndex() {
-		return vcntIndex;
+	void copy(HeapNode hNode) {
+		index = hNode.index;
+		prev = hNode.prev;
+		next = hNode.next;
+		ratio = hNode.ratio;
 	}
 }

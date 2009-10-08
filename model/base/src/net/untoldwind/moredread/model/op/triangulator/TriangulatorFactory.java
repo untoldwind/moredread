@@ -1,6 +1,6 @@
-package net.untoldwind.moredread.model.triangulator;
+package net.untoldwind.moredread.model.op.triangulator;
 
-import net.untoldwind.moredread.model.triangulator.fist.FISTTriangulator;
+import net.untoldwind.moredread.model.op.triangulator.fist.FISTTriangulator;
 
 public class TriangulatorFactory {
 	public enum Implementation {

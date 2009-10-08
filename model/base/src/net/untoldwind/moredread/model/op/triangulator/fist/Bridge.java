@@ -1,6 +1,6 @@
-package net.untoldwind.moredread.model.triangulator.fist;
+package net.untoldwind.moredread.model.op.triangulator.fist;
 
-import static net.untoldwind.moredread.model.triangulator.fist.Triangulator.INC_DIST_BK;
+import static net.untoldwind.moredread.model.op.triangulator.fist.Triangulator.INC_DIST_BK;
 
 class Bridge {
 

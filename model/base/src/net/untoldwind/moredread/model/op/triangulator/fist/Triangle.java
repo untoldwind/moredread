@@ -1,4 +1,4 @@
-package net.untoldwind.moredread.model.triangulator.fist;
+package net.untoldwind.moredread.model.op.triangulator.fist;
 
 class Triangle extends Object {
 	int v1, v2, v3; // This store the index into the list array.

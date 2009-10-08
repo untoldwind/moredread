@@ -9,7 +9,7 @@ import java.util.Map;
 import net.untoldwind.moredread.model.mesh.IPoint;
 import net.untoldwind.moredread.model.mesh.Point;
 import net.untoldwind.moredread.model.mesh.Polygon;
-import net.untoldwind.moredread.model.triangulator.ITriangulator;
+import net.untoldwind.moredread.model.op.triangulator.ITriangulator;
 
 import com.jme.math.Vector3f;
 

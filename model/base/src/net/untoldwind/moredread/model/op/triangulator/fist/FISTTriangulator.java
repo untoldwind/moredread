@@ -1,10 +1,10 @@
-package net.untoldwind.moredread.model.triangulator.fist;
+package net.untoldwind.moredread.model.op.triangulator.fist;
 
 import java.util.List;
 
 import net.untoldwind.moredread.model.mesh.IPoint;
 import net.untoldwind.moredread.model.mesh.IPolygon;
-import net.untoldwind.moredread.model.triangulator.ITriangulator;
+import net.untoldwind.moredread.model.op.triangulator.ITriangulator;
 
 import com.jme.math.Vector3f;
 

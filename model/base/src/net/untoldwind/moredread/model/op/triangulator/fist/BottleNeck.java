@@ -1,6 +1,6 @@
-package net.untoldwind.moredread.model.triangulator.fist;
+package net.untoldwind.moredread.model.op.triangulator.fist;
 
-import static net.untoldwind.moredread.model.triangulator.fist.Triangulator.ZERO;
+import static net.untoldwind.moredread.model.op.triangulator.fist.Triangulator.ZERO;
 
 class BottleNeck {
 
