@@ -2,7 +2,9 @@ package net.untoldwind.moredread.model.io.impl.muf;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Iterator;
 
+import net.untoldwind.moredread.model.enums.MeshType;
 import net.untoldwind.moredread.model.io.spi.IModelWriter;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IPoint;
@@ -109,14 +111,36 @@ public class MUFModelWriter implements IModelWriter {
 			}
 
 			final Element facesElement = meshElement.addElement("faces");
-			for (final IPolygon face : mesh.getFaces()) {
-				final Element faceElement = facesElement.addElement("face");
 
-				for (final IPoint point : face.getPolygonPoints()) {
-					final Element pointElement = faceElement
-							.addElement("point");
-					pointElement.addAttribute("index", String.valueOf(point
-							.getIndex()));
+			if (mesh.getMeshType() == MeshType.POLY) {
+				for (final IPolygon face : mesh.getFaces()) {
+					final Element faceElement = facesElement.addElement("face");
+					final int[] stripCount = face.getPolygonStripCounts();
+					final Iterator<? extends IPoint> it = face
+							.getPolygonPoints().iterator();
+
+					for (int i = 0; i < stripCount.length; i++) {
+						final Element stripElement = faceElement
+								.addElement("srip");
+
+						for (int j = 0; j < stripCount[i]; j++) {
+							final Element pointElement = stripElement
+									.addElement("point");
+							pointElement.addAttribute("index", String
+									.valueOf(it.next().getIndex()));
+						}
+					}
+				}
+			} else {
+				for (final IPolygon face : mesh.getFaces()) {
+					final Element faceElement = facesElement.addElement("face");
+
+					for (final IPoint point : face.getPolygonPoints()) {
+						final Element pointElement = faceElement
+								.addElement("point");
+						pointElement.addAttribute("index", String.valueOf(point
+								.getIndex()));
+					}
 				}
 			}
 

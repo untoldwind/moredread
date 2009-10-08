@@ -100,7 +100,8 @@ public class ModelIOPlugin extends AbstractUIPlugin {
 					fileIODescriptors.add(descriptor);
 				}
 			}
-			fileDialog.setText("Save Scene");
+			fileDialog.setFilterPath(System.getProperty("user.home"));
+			fileDialog.setText("Save Scene ...");
 			fileDialog.setFilterExtensions(fileExtensions.keySet().toArray(
 					new String[fileExtensions.size()]));
 			fileDialog.setFilterNames(fileExtensions.values().toArray(
@@ -123,15 +124,65 @@ public class ModelIOPlugin extends AbstractUIPlugin {
 
 				fileIODescriptor.getModelWriter().writeScene(scene, out);
 
+				scene.getSceneMetadata().setFileIOId(fileIODescriptor.getId());
+				scene.getSceneMetadata().setFileName(fileName);
+			} catch (final IOException e) {
+				log(e);
+			}
+		} else {
+			try {
+				final IFileIODescriptor fileIODescriptor = fileIOById.get(scene
+						.getSceneMetadata().getFileIOId());
+
+				final FileOutputStream out = new FileOutputStream(fileName);
+
+				fileIODescriptor.getModelWriter().writeScene(scene, out);
 			} catch (final IOException e) {
 				log(e);
 			}
 		}
-
 	}
 
 	public void sceneSaveAs(final Scene scene) {
+		final FileDialog fileDialog = new FileDialog(PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getShell(), SWT.SAVE);
 
+		final Map<String, String> fileExtensions = new LinkedHashMap<String, String>();
+		final List<IFileIODescriptor> fileIODescriptors = new ArrayList<IFileIODescriptor>();
+		for (final IFileIODescriptor descriptor : fileIOById.values()) {
+			if (descriptor.getExtension() != null) {
+				fileExtensions.put(descriptor.getExtension(), descriptor
+						.getLabel());
+				fileIODescriptors.add(descriptor);
+			}
+		}
+		fileDialog.setFilterPath(System.getProperty("user.home"));
+		fileDialog.setText("Save Scene As ...");
+		fileDialog.setFilterExtensions(fileExtensions.keySet().toArray(
+				new String[fileExtensions.size()]));
+		fileDialog.setFilterNames(fileExtensions.values().toArray(
+				new String[fileExtensions.size()]));
+		String fileName = fileDialog.open();
+
+		if (fileName == null) {
+			return;
+		}
+
+		try {
+			final IFileIODescriptor fileIODescriptor = fileIODescriptors
+					.get(fileDialog.getFilterIndex());
+
+			if (!fileName.endsWith(fileIODescriptor.getExtension())) {
+				fileName += "." + fileIODescriptor.getExtension();
+			}
+
+			final FileOutputStream out = new FileOutputStream(fileName);
+
+			fileIODescriptor.getModelWriter().writeScene(scene, out);
+
+		} catch (final IOException e) {
+			log(e);
+		}
 	}
 
 	public void log(final Throwable e) {
