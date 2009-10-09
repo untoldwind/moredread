@@ -20,6 +20,18 @@ public class BoolMesh {
 		faces = new ArrayList<BoolFace>();
 	}
 
+	public int getNumFaces() {
+		return faces.size();
+	}
+
+	public BoolFace getFace(final int idx) {
+		return faces.get(idx);
+	}
+
+	public List<BoolFace> getFaces() {
+		return faces;
+	}
+
 	public void addFace(final BoolFace face) {
 		if (face.size() == 3) {
 			addFace3(face);

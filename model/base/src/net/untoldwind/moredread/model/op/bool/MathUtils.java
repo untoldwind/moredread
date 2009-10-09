@@ -200,7 +200,7 @@ public class MathUtils {
 	 *            point
 	 * @return true if the three points lay on the same line, false otherwise
 	 */
-	public static boolean BOP_collinear(final Vector3f p1, final Vector3f p2,
+	public static boolean collinear(final Vector3f p1, final Vector3f p2,
 			final Vector3f p3) {
 		if (comp(p1, p2) == 0 || comp(p2, p3) == 0) {
 			return true;
@@ -228,7 +228,7 @@ public class MathUtils {
 	 * 
 	 * @return true if the quad is convex, false otherwise
 	 */
-	public static boolean BOP_convex(final Vector3f p1, final Vector3f p2,
+	public static boolean convex(final Vector3f p1, final Vector3f p2,
 			final Vector3f p3, final Vector3f p4) {
 		final Vector3f v1 = p3.subtract(p1);
 		final Vector3f v2 = p4.subtract(p2);
