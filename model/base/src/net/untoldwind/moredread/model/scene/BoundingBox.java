@@ -44,6 +44,39 @@ public class BoundingBox {
 		return zExtent;
 	}
 
+	public void add(final Vector3f point) {
+		float minX = center.x - xExtent, minY = center.y - yExtent, minZ = center.z
+				- zExtent;
+		float maxX = center.x + xExtent, maxY = center.y + yExtent, maxZ = center.z
+				+ zExtent;
+
+		if (point.x < minX) {
+			minX = point.x;
+		} else if (point.x > maxX) {
+			maxX = point.x;
+		}
+
+		if (point.y < minY) {
+			minY = point.y;
+		} else if (point.y > maxY) {
+			maxY = point.y;
+		}
+
+		if (point.z < minZ) {
+			minZ = point.z;
+		} else if (point.z > maxZ) {
+			maxZ = point.z;
+		}
+
+		center.set(minX + maxX, minY + maxY, minZ + maxZ);
+		center.multLocal(0.5f);
+
+		xExtent = maxX - center.x;
+		yExtent = maxY - center.y;
+		zExtent = maxZ - center.z;
+
+	}
+
 	public void computeFromPoints(final List<? extends IPoint> points) {
 		if (points == null || points.isEmpty()) {
 			return;

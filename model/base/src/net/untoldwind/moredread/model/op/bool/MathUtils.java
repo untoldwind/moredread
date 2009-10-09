@@ -151,6 +151,172 @@ public class MathUtils {
 	}
 
 	/**
+	 * Computes the intersection between two lines (on the same plane).
+	 * 
+	 * @param vL1
+	 *            first line vector
+	 * @param pL1
+	 *            first line point
+	 * @param vL2
+	 *            second line vector
+	 * @param pL2
+	 *            second line point
+	 * @param intersection
+	 *            intersection point (if exists)
+	 * @return false if lines are parallels, true otherwise
+	 */
+	public static boolean intersect(final Vector3f vL1, final Vector3f pL1,
+			final Vector3f vL2, final Vector3f pL2, final Vector3f intersection) {
+		// NOTE:
+		// If the lines aren't on the same plane, the intersection point will
+		// not be valid.
+		// So be careful !!
+
+		float t = -1;
+		float den = (vL1.y * vL2.x - vL1.x * vL2.y);
+
+		if (!fuzzyZero(den)) {
+			t = (pL2.y * vL1.x - vL1.y * pL2.x + pL1.x * vL1.y - pL1.y * vL1.x)
+					/ den;
+		} else {
+			den = (vL1.y * vL2.z - vL1.z * vL2.y);
+			if (!fuzzyZero(den)) {
+				t = (pL2.y * vL1.z - vL1.y * pL2.z + pL1.z * vL1.y - pL1.y
+						* vL1.z)
+						/ den;
+			} else {
+				den = (vL1.x * vL2.z - vL1.z * vL2.x);
+				if (!fuzzyZero(den)) {
+					t = (pL2.x * vL1.z - vL1.x * pL2.z + pL1.z * vL1.x - pL1.x
+							* vL1.z)
+							/ den;
+				} else {
+					return false;
+				}
+			}
+		}
+
+		intersection.set(vL2.x * t + pL2.x, vL2.y * t + pL2.y, vL2.z * t
+				+ pL2.z);
+
+		return true;
+	}
+
+	/**
+	 * Returns the center of the circle defined by three points.
+	 * 
+	 * @param p1
+	 *            point
+	 * @param p2
+	 *            point
+	 * @param p3
+	 *            point
+	 * @param center
+	 *            circle center
+	 * @return false if points are collinears, true otherwise
+	 */
+	public static boolean getCircleCenter(final Vector3f p1, final Vector3f p2,
+			final Vector3f p3, final Vector3f center) {
+		// Compute quad plane
+		final Vector3f p1p2 = p2.subtract(p1);
+		final Vector3f p1p3 = p3.subtract(p1);
+		final Plane plane1 = createPlane(p1, p2, p3);
+		final Vector3f plane = plane1.getNormal();
+
+		// Compute first line vector, perpendicular to plane vector and edge
+		// (p1,p2)
+		final Vector3f vL1 = p1p2.cross(plane);
+		if (fuzzyZero(vL1.length())) {
+			return false;
+		}
+		vL1.normalize();
+
+		// Compute first line point, middle point of edge (p1,p2)
+		final Vector3f pL1 = new Vector3f();
+		pL1.interpolate(p1, p2, 0.5f);
+
+		// Compute second line vector, perpendicular to plane vector and edge
+		// (p1,p3)
+		final Vector3f vL2 = p1p3.cross(plane);
+		if (fuzzyZero(vL2.length())) {
+			return false;
+		}
+		vL2.normalize();
+
+		// Compute second line point, middle point of edge (p1,p3)
+		final Vector3f pL2 = new Vector3f();
+		pL2.interpolate(p1, p2, 0.5f);
+
+		// Compute intersection (the lines lay on the same plane, so the
+		// intersection exists
+		// only if they are not parallel!!)
+		return intersect(vL1, pL1, vL2, pL2, center);
+	}
+
+	/**
+	 * Returns if points q is inside the circle defined by p1, p2 and p3.
+	 * 
+	 * @param p1
+	 *            point
+	 * @param p2
+	 *            point
+	 * @param p3
+	 *            point
+	 * @param q
+	 *            point
+	 * @return true if p4 or p5 are inside the circle, false otherwise. If the
+	 *         circle does not exist (p1, p2 and p3 are collinears) returns true
+	 */
+	public static boolean isInsideCircle(final Vector3f p1, final Vector3f p2,
+			final Vector3f p3, final Vector3f q) {
+		final Vector3f center = new Vector3f();
+
+		// Compute circle center
+		final boolean ok = getCircleCenter(p1, p2, p3, center);
+
+		if (!ok) {
+			return true; // p1,p2 and p3 are collinears
+		}
+
+		// Check if q is inside the circle
+		final float r = p1.distance(center);
+		final float d = q.distance(center);
+		return (comp(d, r) <= 0);
+	}
+
+	/**
+	 * Returns if points p4 or p5 is inside the circle defined by p1, p2 and p3.
+	 * 
+	 * @param p1
+	 *            point
+	 * @param p2
+	 *            point
+	 * @param p3
+	 *            point
+	 * @param p4
+	 *            point
+	 * @param p5
+	 *            point
+	 * @return true if p4 or p5 is inside the circle, false otherwise. If the
+	 *         circle does not exist (p1, p2 and p3 are collinears) returns true
+	 */
+	public static boolean isInsideCircle(final Vector3f p1, final Vector3f p2,
+			final Vector3f p3, final Vector3f p4, final Vector3f p5) {
+		final Vector3f center = new Vector3f();
+		final boolean ok = getCircleCenter(p1, p2, p3, center);
+
+		if (!ok) {
+			return true; // Collinear points!
+		}
+
+		// Check if p4 or p5 is inside the circle
+		final float r = p1.distance(center);
+		final float d1 = p4.distance(center);
+		final float d2 = p5.distance(center);
+		return (comp(d1, r) <= 0 || comp(d2, r) <= 0);
+	}
+
+	/**
 	 * Intersects a plane with the line that contains the specified points.
 	 * 
 	 * @param plane
@@ -202,4 +368,15 @@ public class MathUtils {
 		return fuzzyZero(plane.pseudoDistance(point));
 	}
 
+	public static Plane createPlane(final Vector3f a, final Vector3f b,
+			final Vector3f c) {
+		final Vector3f l1 = b.subtract(a);
+		final Vector3f l2 = c.subtract(b);
+
+		Vector3f n = l1.cross(l2);
+		n = n.normalize();
+		final float d = n.dot(a);
+
+		return new Plane(n, d);
+	}
 }
