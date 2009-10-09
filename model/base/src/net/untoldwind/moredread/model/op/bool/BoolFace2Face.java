@@ -39,7 +39,7 @@ public class BoolFace2Face {
 
 	static class Points {
 		Vector3f[] points;
-		int[] faces;
+		int[] face;
 		int size;
 		boolean invertA;
 		boolean invertB;
@@ -308,14 +308,14 @@ public class BoolFace2Face {
 				}
 				points.points[points.size] = p1;
 				points.points[points.size + 1] = p2;
-				points.faces[points.size] = faceValue;
-				points.faces[points.size + 1] = faceValue;
+				points.face[points.size] = faceValue;
+				points.face[points.size + 1] = faceValue;
 				points.size += 2;
 			}
 
 			else {
 				points.points[points.size] = p1;
-				points.faces[points.size] = faceValue;
+				points.face[points.size] = faceValue;
 				points.size++;
 			}
 		}
@@ -342,7 +342,7 @@ public class BoolFace2Face {
 			// Trivial case, only test the merge ...
 			if (MathUtils
 					.fuzzyZero(points.points[0].distance(points.points[1]))) {
-				points.faces[0] = 3;
+				points.face[0] = 3;
 				points.size--;
 			}
 		} else {
@@ -389,12 +389,12 @@ public class BoolFace2Face {
 			// Sort data
 			for (i = 0; i < points.size; i++) {
 				sortedPoints[i] = points.points[position[i]];
-				sortedFaces[i] = points.faces[position[i]];
+				sortedFaces[i] = points.face[position[i]];
 			}
 
 			points.invertA = false;
 			points.invertB = false;
-			if (points.faces[1] == 1) {
+			if (points.face[1] == 1) {
 
 				// invertAÀ?
 				for (i = 0; i < points.size; i++) {
@@ -417,7 +417,7 @@ public class BoolFace2Face {
 						}
 					}
 				}
-			} else if (points.faces[1] == 2) {
+			} else if (points.face[1] == 2) {
 				// invertBÀ?
 				for (i = 0; i < points.size; i++) {
 					if (position[i] == 2) {
@@ -503,7 +503,7 @@ public class BoolFace2Face {
 			// Merge initial points ...
 			for (i = 0; i < points.size; i++) {
 				points.points[i] = sortedPoints[i];
-				points.faces[i] = sortedFaces[i];
+				points.face[i] = sortedFaces[i];
 			}
 
 		}
@@ -528,11 +528,11 @@ public class BoolFace2Face {
 	 * @param segmemts
 	 *            array of the output x-segments
 	 */
-	void BOP_createXS(final BoolMesh mesh, final BoolFace faceA,
+	void createXS(final BoolMesh mesh, final BoolFace faceA,
 			final BoolFace faceB, final BoolSegment sA, final BoolSegment sB,
 			final boolean invert, final BoolSegment[] segments) {
-		BOP_createXS(mesh, faceA, faceB, faceA.getPlane(), faceB.getPlane(),
-				sA, sB, invert, segments);
+		createXS(mesh, faceA, faceB, faceA.getPlane(), faceB.getPlane(), sA,
+				sB, invert, segments);
 	}
 
 	/**
@@ -558,11 +558,300 @@ public class BoolFace2Face {
 	 * @param segmemts
 	 *            array of the output x-segments
 	 */
-	void BOP_createXS(final BoolMesh mesh, final BoolFace faceA,
+	void createXS(final BoolMesh mesh, final BoolFace faceA,
 			final BoolFace faceB, final Plane planeA, final Plane planeB,
 			final BoolSegment sA, final BoolSegment sB, final boolean invert,
 			final BoolSegment[] segments) {
-		// TODO
+		final Points points = new Points();
+
+		points.points = new Vector3f[4]; // points of the segments
+		points.face = new int[4]; // relative face indexs (1 => faceA, 2 =>
+		// faceB)
+		points.size = 0; // size of points and relative face indexs
+
+		getPoints(points, mesh, faceA, sA, planeB, 1);
+		getPoints(points, mesh, faceB, sB, planeA, 2);
+
+		points.invertA = false;
+		points.invertB = false;
+
+		mergeSort(points);
+
+		if (points.invertA) {
+			sA.invert();
+		}
+		if (points.invertB) {
+			sB.invert();
+		}
+
+		// Compute the configuration label
+		int label = 0;
+		for (int i = 0; i < points.size; i++) {
+			label = points.face[i] + label * 10;
+		}
+
+		if (points.size == 1) {
+			// Two coincident points
+			segments[0].cfg1 = sA.cfg1;
+			segments[1].cfg1 = sB.cfg1;
+
+			segments[0].v1 = getVertexIndex(mesh, points.points[0], sA.cfg1,
+					sB.cfg1, sA.v1, sB.v1, invert);
+			segments[1].v1 = segments[0].v1;
+			segments[0].cfg2 = segments[1].cfg2 = BoolSegment
+					.createUndefinedCfg();
+		} else if (points.size == 2) {
+			switch (label) {
+			// Two non-coincident points
+			case sA_sB:
+			case sB_sA:
+				segments[0].cfg1 = segments[1].cfg1 = segments[0].cfg2 = segments[1].cfg2 = BoolSegment
+						.createUndefinedCfg();
+				break;
+
+			// Two coincident points and one non-coincident of sA
+			case sA_sX:
+				segments[0].cfg1 = sA.cfg2;
+				segments[1].cfg1 = sB.cfg1;
+				segments[0].v1 = getVertexIndex(mesh, points.points[1],
+						sA.cfg2, sB.cfg1, sA.v2, sB.v1, invert);
+				segments[1].v1 = segments[0].v1;
+
+				segments[0].cfg2 = BoolSegment.createUndefinedCfg();
+				segments[1].cfg2 = BoolSegment.createUndefinedCfg();
+				break;
+			case sX_sA:
+				segments[0].cfg1 = sA.cfg1;
+				segments[1].cfg1 = sB.cfg1;
+				segments[0].v1 = getVertexIndex(mesh, points.points[0],
+						sA.cfg1, sB.cfg1, sA.v1, sB.v1, invert);
+				segments[1].v1 = segments[0].v1;
+
+				segments[0].cfg2 = BoolSegment.createUndefinedCfg();
+				segments[1].cfg2 = BoolSegment.createUndefinedCfg();
+				break;
+
+			// Two coincident points and one non-coincident of sB
+			case sB_sX:
+				segments[0].cfg1 = sA.cfg1;
+				segments[1].cfg1 = sB.cfg2;
+				segments[0].v1 = getVertexIndex(mesh, points.points[1],
+						sA.cfg1, sB.cfg2, sA.v1, sB.v2, invert);
+				segments[1].v1 = segments[0].v1;
+
+				segments[0].cfg2 = BoolSegment.createUndefinedCfg();
+				segments[1].cfg2 = BoolSegment.createUndefinedCfg();
+				break;
+			case sX_sB:
+				segments[0].cfg1 = sA.cfg1;
+				segments[1].cfg1 = sB.cfg1;
+				segments[0].v1 = getVertexIndex(mesh, points.points[0],
+						sA.cfg1, sB.cfg1, sA.v1, sB.v1, invert);
+				segments[1].v1 = segments[0].v1;
+
+				segments[0].cfg2 = BoolSegment.createUndefinedCfg();
+				segments[1].cfg2 = BoolSegment.createUndefinedCfg();
+				break;
+
+			// coincident points 2-2
+			case sX_sX:
+				segments[0].cfg1 = sA.cfg1;
+				segments[1].cfg1 = sB.cfg1;
+				segments[0].v1 = getVertexIndex(mesh, points.points[0],
+						sA.cfg1, sB.cfg1, sA.v1, sB.v1, invert);
+				segments[1].v1 = segments[0].v1;
+
+				segments[0].cfg2 = sA.cfg2;
+				segments[1].cfg2 = sB.cfg2;
+				segments[0].v2 = getVertexIndex(mesh, points.points[1],
+						sA.cfg2, sB.cfg2, sA.v2, sB.v2, invert);
+				segments[1].v2 = segments[0].v2;
+				break;
+
+			default:
+				break;
+			}
+		} else if (points.size == 3) {
+			switch (label) {
+			case sA_sA_sB:
+			case sB_sA_sA:
+			case sA_sB_sB:
+			case sB_sB_sA:
+				segments[0].cfg1 = segments[1].cfg1 = segments[0].cfg2 = segments[1].cfg2 = BoolSegment
+						.createUndefinedCfg();
+				break;
+
+			case sA_sB_sA:
+				segments[1].v1 = getVertexIndex(mesh, points.points[1],
+						sB.cfg1, sB.v1);
+				segments[1].cfg1 = sB.cfg1;
+				segments[1].cfg2 = BoolSegment.createUndefinedCfg();
+				segments[0].cfg1 = sA.getConfig();
+				segments[0].cfg2 = BoolSegment.createUndefinedCfg();
+				segments[0].v1 = segments[1].v1;
+				break;
+
+			case sB_sA_sB:
+				segments[0].v1 = getVertexIndex(mesh, points.points[1],
+						sA.cfg1, sA.v1);
+				segments[0].cfg1 = sA.cfg1;
+				segments[0].cfg2 = BoolSegment.createUndefinedCfg();
+				segments[1].cfg1 = sB.getConfig();
+				segments[1].cfg2 = BoolSegment.createUndefinedCfg();
+				segments[1].v1 = segments[0].v1;
+				break;
+
+			case sA_sX_sB:
+				segments[0].cfg1 = sA.cfg2;
+				segments[1].cfg1 = sB.cfg1;
+				segments[0].v1 = getVertexIndex(mesh, points.points[1],
+						sA.cfg2, sB.cfg1, sA.v2, sB.v1, invert);
+				segments[1].v1 = segments[0].v1;
+				segments[0].cfg2 = BoolSegment.createUndefinedCfg();
+				segments[1].cfg2 = BoolSegment.createUndefinedCfg();
+				break;
+
+			case sB_sX_sA:
+				segments[0].cfg1 = sA.cfg1;
+				segments[1].cfg1 = sB.cfg2;
+				segments[0].v1 = getVertexIndex(mesh, points.points[1],
+						sA.cfg1, sB.cfg2, sA.v1, sB.v2, invert);
+				segments[1].v1 = segments[0].v1;
+				segments[0].cfg2 = BoolSegment.createUndefinedCfg();
+				segments[1].cfg2 = BoolSegment.createUndefinedCfg();
+				break;
+
+			case sX_sA_sB:
+				segments[0].cfg1 = sA.cfg1;
+				segments[1].cfg1 = sB.cfg1;
+				segments[0].v1 = getVertexIndex(mesh, points.points[0],
+						sA.cfg1, sB.cfg1, sA.v1, sB.v1, invert);
+				segments[1].v1 = segments[0].v1;
+
+				segments[0].cfg2 = sA.cfg2;
+				segments[1].cfg2 = sB.getConfig();
+				segments[0].v2 = getVertexIndex(mesh, points.points[1],
+						sA.cfg2, sA.v2);
+				segments[1].v2 = segments[0].v2;
+				break;
+
+			case sX_sB_sA:
+				segments[0].cfg1 = sA.cfg1;
+				segments[1].cfg1 = sB.cfg1;
+				segments[0].v1 = getVertexIndex(mesh, points.points[0],
+						sA.cfg1, sB.cfg1, sA.v1, sB.v1, invert);
+				segments[1].v1 = segments[0].v1;
+
+				segments[0].cfg2 = sA.getConfig();
+				segments[1].cfg2 = sB.cfg2;
+				segments[0].v2 = getVertexIndex(mesh, points.points[1],
+						sB.cfg2, sB.v2);
+				segments[1].v2 = segments[0].v2;
+				break;
+
+			case sA_sB_sX:
+				segments[0].cfg1 = sA.getConfig();
+				segments[1].cfg1 = sB.cfg1;
+				segments[0].v1 = getVertexIndex(mesh, points.points[1],
+						sB.cfg1, sB.v1);
+				segments[1].v1 = segments[0].v1;
+
+				segments[0].cfg2 = sA.cfg2;
+				segments[1].cfg2 = sB.cfg2;
+				segments[0].v2 = getVertexIndex(mesh, points.points[2],
+						sA.cfg2, sB.cfg2, sA.v2, sB.v2, invert);
+				segments[1].v2 = segments[0].v2;
+				break;
+
+			case sB_sA_sX:
+				segments[0].cfg1 = sA.cfg1;
+				segments[1].cfg1 = sB.getConfig();
+				segments[0].v1 = getVertexIndex(mesh, points.points[1],
+						sA.cfg1, sA.v1);
+				segments[1].v1 = segments[0].v1;
+
+				segments[0].cfg2 = sA.cfg2;
+				segments[1].cfg2 = sB.cfg2;
+				segments[0].v2 = getVertexIndex(mesh, points.points[2],
+						sA.cfg2, sB.cfg2, sA.v2, sB.v2, invert);
+				segments[1].v2 = segments[0].v2;
+				break;
+
+			default:
+				break;
+			}
+		} else {
+			// 4!
+			switch (label) {
+			case sA_sA_sB_sB:
+			case sB_sB_sA_sA:
+				segments[0].cfg1 = segments[1].cfg1 = segments[0].cfg2 = segments[1].cfg2 = BoolSegment
+						.createUndefinedCfg();
+				break;
+
+			case sA_sB_sA_sB:
+				segments[0].cfg1 = sA.getConfig();
+				segments[1].cfg1 = sB.cfg1;
+				segments[0].v1 = getVertexIndex(mesh, points.points[1],
+						sB.cfg1, sB.v1);
+				segments[1].v1 = segments[0].v1;
+
+				segments[0].cfg2 = sA.cfg2;
+				segments[1].cfg2 = sB.getConfig();
+				segments[0].v2 = getVertexIndex(mesh, points.points[2],
+						sA.cfg2, sA.v2);
+				segments[1].v2 = segments[0].v2;
+				break;
+
+			case sB_sA_sB_sA:
+				segments[0].cfg1 = sA.cfg1;
+				segments[1].cfg1 = sB.getConfig();
+				segments[0].v1 = getVertexIndex(mesh, points.points[1],
+						sA.cfg1, sA.v1);
+				segments[1].v1 = segments[0].v1;
+
+				segments[0].cfg2 = sA.getConfig();
+				segments[1].cfg2 = sB.cfg2;
+				segments[0].v2 = getVertexIndex(mesh, points.points[2],
+						sB.cfg2, sB.v2);
+				segments[1].v2 = segments[0].v2;
+				break;
+
+			case sA_sB_sB_sA:
+				segments[0].cfg1 = sA.getConfig();
+				segments[1].cfg1 = sB.cfg1;
+				segments[0].v1 = getVertexIndex(mesh, points.points[1],
+						sB.cfg1, sB.v1);
+				segments[1].v1 = segments[0].v1;
+
+				segments[0].cfg2 = segments[0].cfg1;
+				segments[1].cfg2 = sB.cfg2;
+				segments[0].v2 = getVertexIndex(mesh, points.points[2],
+						sB.cfg2, sB.v2);
+				segments[1].v2 = segments[0].v2;
+				break;
+
+			case sB_sA_sA_sB:
+				segments[0].cfg1 = sA.cfg1;
+				segments[1].cfg1 = sB.getConfig();
+				segments[0].v1 = getVertexIndex(mesh, points.points[1],
+						sA.cfg1, sA.v1);
+				segments[1].v1 = segments[0].v1;
+
+				segments[0].cfg2 = sA.cfg2;
+				segments[1].cfg2 = segments[1].cfg1;
+				segments[0].v2 = getVertexIndex(mesh, points.points[2],
+						sA.cfg2, sA.v2);
+				segments[1].v2 = segments[0].v2;
+				break;
+
+			default:
+				break;
+			}
+		}
+
+		segments[0].sort();
+		segments[1].sort();
 	}
 
 	/**
