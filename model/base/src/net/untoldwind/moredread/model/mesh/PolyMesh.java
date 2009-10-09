@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.untoldwind.moredread.model.enums.MeshType;
-import net.untoldwind.moredread.model.op.triangulator.ITriangulator;
-import net.untoldwind.moredread.model.op.triangulator.TriangulatorFactory;
+import net.untoldwind.moredread.model.op.ITriangulator;
+import net.untoldwind.moredread.model.op.TriangulatorFactory;
 import net.untoldwind.moredread.model.state.IStateReader;
 
 public class PolyMesh extends Mesh<PolyFace> {

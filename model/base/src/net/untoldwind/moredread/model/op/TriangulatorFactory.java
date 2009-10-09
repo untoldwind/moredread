@@ -1,4 +1,4 @@
-package net.untoldwind.moredread.model.op.triangulator;
+package net.untoldwind.moredread.model.op;
 
 import net.untoldwind.moredread.model.op.triangulator.fist.FISTTriangulator;
 

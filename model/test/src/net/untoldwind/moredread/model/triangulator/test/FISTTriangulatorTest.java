@@ -1,8 +1,8 @@
 package net.untoldwind.moredread.model.triangulator.test;
 
-import net.untoldwind.moredread.model.op.triangulator.ITriangulator;
-import net.untoldwind.moredread.model.op.triangulator.TriangulatorFactory;
-import net.untoldwind.moredread.model.op.triangulator.TriangulatorFactory.Implementation;
+import net.untoldwind.moredread.model.op.ITriangulator;
+import net.untoldwind.moredread.model.op.TriangulatorFactory;
+import net.untoldwind.moredread.model.op.TriangulatorFactory.Implementation;
 
 import org.junit.Test;
 

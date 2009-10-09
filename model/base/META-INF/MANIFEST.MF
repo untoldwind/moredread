@@ -13,7 +13,7 @@ Bundle-Vendor: untoldwind.net
 Export-Package: net.untoldwind.moredread.model.enums,
  net.untoldwind.moredread.model.generator,
  net.untoldwind.moredread.model.mesh,
- net.untoldwind.moredread.model.op.triangulator,
+ net.untoldwind.moredread.model.op,
  net.untoldwind.moredread.model.renderer,
  net.untoldwind.moredread.model.scene,
  net.untoldwind.moredread.model.scene.change,

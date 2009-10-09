@@ -13,8 +13,8 @@ import net.untoldwind.moredread.model.mesh.QuadMesh;
 import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
 import net.untoldwind.moredread.model.mesh.Vertex;
-import net.untoldwind.moredread.model.op.triangulator.ITriangulator;
-import net.untoldwind.moredread.model.op.triangulator.TriangulatorFactory;
+import net.untoldwind.moredread.model.op.ITriangulator;
+import net.untoldwind.moredread.model.op.TriangulatorFactory;
 
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
