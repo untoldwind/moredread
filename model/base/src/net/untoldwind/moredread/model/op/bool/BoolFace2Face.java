@@ -41,6 +41,8 @@ public class BoolFace2Face {
 		Vector3f[] points;
 		int[] faces;
 		int size;
+		boolean invertA;
+		boolean invertB;
 	}
 
 	/**
@@ -320,6 +322,250 @@ public class BoolFace2Face {
 	}
 
 	/**
+	 * Sorts the colinear points and relative face indices.
+	 * 
+	 * @param points
+	 *            array of points where the new points are saved
+	 * @param faces
+	 *            array of relative face index to the points
+	 * @param size
+	 *            size of arrays points and faces
+	 * @param invertA
+	 *            indicates if points of same relative face had been exchanged
+	 */
+	void mergeSort(final Points points) {
+		final Vector3f sortedPoints[] = new Vector3f[4];
+		final int sortedFaces[] = new int[4], position[] = new int[4];
+		int i;
+		if (points.size == 2) {
+
+			// Trivial case, only test the merge ...
+			if (MathUtils
+					.fuzzyZero(points.points[0].distance(points.points[1]))) {
+				points.faces[0] = 3;
+				points.size--;
+			}
+		} else {
+			// size is 3 or 4
+			// Get segment extreme points
+			float maxDistance = -1;
+			for (i = 0; i < points.size - 1; i++) {
+				for (int j = i + 1; j < points.size; j++) {
+					final float distance = points.points[i]
+							.distance(points.points[j]);
+					if (distance > maxDistance) {
+						maxDistance = distance;
+						position[0] = i;
+						position[points.size - 1] = j;
+					}
+				}
+			}
+
+			// Get segment inner points
+			position[1] = position[2] = points.size;
+			for (i = 0; i < points.size; i++) {
+				if ((i != position[0]) && (i != position[points.size - 1])) {
+					if (position[1] == points.size) {
+						position[1] = i;
+					} else {
+						position[2] = i;
+					}
+				}
+			}
+
+			// Get inner points
+			if (position[2] < points.size) {
+				final float d1 = points.points[position[1]]
+						.distance(points.points[position[0]]);
+				final float d2 = points.points[position[2]]
+						.distance(points.points[position[0]]);
+				if (d1 > d2) {
+					final int aux = position[1];
+					position[1] = position[2];
+					position[2] = aux;
+				}
+			}
+
+			// Sort data
+			for (i = 0; i < points.size; i++) {
+				sortedPoints[i] = points.points[position[i]];
+				sortedFaces[i] = points.faces[position[i]];
+			}
+
+			points.invertA = false;
+			points.invertB = false;
+			if (points.faces[1] == 1) {
+
+				// invertAÀ?
+				for (i = 0; i < points.size; i++) {
+					if (position[i] == 1) {
+						points.invertA = true;
+						break;
+					} else if (position[i] == 0) {
+						break;
+					}
+				}
+
+				// invertBÀ?
+				if (points.size == 4) {
+					for (i = 0; i < points.size; i++) {
+						if (position[i] == 3) {
+							points.invertB = true;
+							break;
+						} else if (position[i] == 2) {
+							break;
+						}
+					}
+				}
+			} else if (points.faces[1] == 2) {
+				// invertBÀ?
+				for (i = 0; i < points.size; i++) {
+					if (position[i] == 2) {
+						points.invertB = true;
+						break;
+					} else if (position[i] == 1) {
+						break;
+					}
+				}
+			}
+
+			// Merge data
+			float d1 = sortedPoints[1].distance(sortedPoints[0]);
+			final float d2 = sortedPoints[1].distance(sortedPoints[2]);
+			if (MathUtils.fuzzyZero(d1) && sortedFaces[1] != sortedFaces[0]) {
+				if (MathUtils.fuzzyZero(d2) && sortedFaces[1] != sortedFaces[2]) {
+					if (d1 < d2) {
+						// merge 0 and 1
+						sortedFaces[0] = 3;
+						for (i = 1; i < points.size - 1; i++) {
+							sortedPoints[i] = sortedPoints[i + 1];
+							sortedFaces[i] = sortedFaces[i + 1];
+						}
+						points.size--;
+						if (points.size == 3) {
+							// merge 1 and 2 ???
+							d1 = sortedPoints[1].distance(sortedPoints[2]);
+							if (MathUtils.fuzzyZero(d1)
+									&& sortedFaces[1] != sortedFaces[2]) {
+								// merge!
+								sortedFaces[1] = 3;
+								points.size--;
+							}
+						}
+					} else {
+						// merge 1 and 2
+						sortedFaces[1] = 3;
+						for (i = 2; i < points.size - 1; i++) {
+							sortedPoints[i] = sortedPoints[i + 1];
+							sortedFaces[i] = sortedFaces[i + 1];
+						}
+						points.size--;
+					}
+				} else {
+					// merge 0 and 1
+					sortedFaces[0] = 3;
+					for (i = 1; i < points.size - 1; i++) {
+						sortedPoints[i] = sortedPoints[i + 1];
+						sortedFaces[i] = sortedFaces[i + 1];
+					}
+					points.size--;
+					if (points.size == 3) {
+						// merge 1 i 2 ???
+						d1 = sortedPoints[1].distance(sortedPoints[2]);
+						if (MathUtils.fuzzyZero(d1)
+								&& sortedFaces[1] != sortedFaces[2]) {
+							// merge!
+							sortedFaces[1] = 3;
+							points.size--;
+						}
+					}
+				}
+			} else {
+				if (MathUtils.fuzzyZero(d2) && sortedFaces[1] != sortedFaces[2]) {
+					// merge 1 and 2
+					sortedFaces[1] = 3;
+					for (i = 2; i < points.size - 1; i++) {
+						sortedPoints[i] = sortedPoints[i + 1];
+						sortedFaces[i] = sortedFaces[i + 1];
+					}
+					points.size--;
+				} else if (points.size == 4) {
+					d1 = sortedPoints[2].distance(sortedPoints[3]);
+					if (MathUtils.fuzzyZero(d1)
+							&& sortedFaces[2] != sortedFaces[3]) {
+						// merge 2 and 3
+						sortedFaces[2] = 3;
+						points.size--;
+					}
+				}
+			}
+
+			// Merge initial points ...
+			for (i = 0; i < points.size; i++) {
+				points.points[i] = sortedPoints[i];
+				points.faces[i] = sortedFaces[i];
+			}
+
+		}
+	}
+
+	/**
+	 * Computes the x-segment of two segments (the shared interval). The
+	 * segments needs to have sA.m_cfg1 > 0 && sB.m_cfg1 > 0 .
+	 * 
+	 * @param mesh
+	 *            mesh that contains the faces, edges and vertices
+	 * @param faceA
+	 *            face of object A
+	 * @param faceB
+	 *            face of object B
+	 * @param sA
+	 *            segment of intersection between faceA and planeB
+	 * @param sB
+	 *            segment of intersection between faceB and planeA
+	 * @param invert
+	 *            indicates if faceA has priority over faceB
+	 * @param segmemts
+	 *            array of the output x-segments
+	 */
+	void BOP_createXS(final BoolMesh mesh, final BoolFace faceA,
+			final BoolFace faceB, final BoolSegment sA, final BoolSegment sB,
+			final boolean invert, final BoolSegment[] segments) {
+		BOP_createXS(mesh, faceA, faceB, faceA.getPlane(), faceB.getPlane(),
+				sA, sB, invert, segments);
+	}
+
+	/**
+	 * Computes the x-segment of two segments (the shared interval). The
+	 * segments needs to have sA.m_cfg1 > 0 && sB.m_cfg1 > 0 .
+	 * 
+	 * @param mesh
+	 *            mesh that contains the faces, edges and vertices
+	 * @param faceA
+	 *            face of object A
+	 * @param faceB
+	 *            face of object B
+	 * @param planeA
+	 *            plane of faceA
+	 * @param planeB
+	 *            plane of faceB
+	 * @param sA
+	 *            segment of intersection between faceA and planeB
+	 * @param sB
+	 *            segment of intersection between faceB and planeA
+	 * @param invert
+	 *            indicates if faceA has priority over faceB
+	 * @param segmemts
+	 *            array of the output x-segments
+	 */
+	void BOP_createXS(final BoolMesh mesh, final BoolFace faceA,
+			final BoolFace faceB, final Plane planeA, final Plane planeB,
+			final BoolSegment sA, final BoolSegment sB, final boolean invert,
+			final BoolSegment[] segments) {
+		// TODO
+	}
+
+	/**
 	 * Computes the vertex index of a point.
 	 * 
 	 * @param mesh
@@ -338,7 +584,7 @@ public class BoolFace2Face {
 	 *            indicates if vA has priority over vB
 	 * @return final vertex index in the mesh
 	 */
-	BoolVertex BOP_getVertexIndex(final BoolMesh mesh, final Vector3f point,
+	BoolVertex getVertexIndex(final BoolMesh mesh, final Vector3f point,
 			final int cfgA, final int cfgB, final BoolVertex vA,
 			final BoolVertex vB, final boolean invert) {
 		if (BoolSegment.isVertex(cfgA)) { // exists vertex index on A
