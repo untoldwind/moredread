@@ -11,7 +11,6 @@ public class BoolFace {
 	int split;
 	int tag;
 	BoolFace originalFace;
-	List<BoolEdge> edges;
 
 	public BoolFace(final BoolVertex v1, final BoolVertex v2,
 			final BoolVertex v3, final Plane plane, final BoolFace originalFace) {
@@ -22,10 +21,6 @@ public class BoolFace {
 
 	public BoolVertex getVertex(final int idx) {
 		return vertices.get(idx);
-	}
-
-	public BoolEdge getEdge(final int idx) {
-		return edges.get(idx);
 	}
 
 	public List<BoolVertex> getVertices() {
