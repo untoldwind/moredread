@@ -37,6 +37,12 @@ public class BoolFace2Face {
 	private final static int sA_sB_sB_sA = 1221;
 	private final static int sB_sA_sA_sB = 2112;
 
+	static class Points {
+		Vector3f[] points;
+		int[] faces;
+		int size;
+	}
+
 	/**
 	 * Computes intersections between faces of both lists.
 	 * 
@@ -255,9 +261,52 @@ public class BoolFace2Face {
 		// TODO
 	}
 
-	static class Points {
-		Vector3f[] points;
-		int[] faces;
-		int size;
+	/**
+	 * Triangulates the input face according to the specified segment.
+	 * 
+	 * @param mesh
+	 *            mesh that contains the faces, edges and vertices
+	 * @param faces
+	 *            set of faces that contains the original face and the new
+	 *            triangulated faces
+	 * @param face
+	 *            face to be triangulated
+	 * @param s
+	 *            segment used to triangulate face
+	 */
+	void triangulate(final List<BoolFace> faces, final BoolFace face,
+			final BoolSegment s) {
+		// TODO
+	}
+
+	/**
+	 * Returns the first face of faces that shares the input edge of face.
+	 * 
+	 * @param mesh
+	 *            mesh that contains the faces, edges and vertices
+	 * @param faces
+	 *            set of faces
+	 * @param face
+	 *            input face
+	 * @param edge
+	 *            face's edge
+	 * @return first face that shares the edge of input face
+	 */
+	BoolFace BOP_getOppositeFace(final List<BoolFace> faces,
+			final BoolFace face, final BoolEdge edge) {
+		if (edge == null) {
+			return null;
+		}
+
+		final List<BoolFace> auxfaces = edge.getFaces();
+
+		for (final BoolFace auxface : auxfaces) {
+			if (auxface != face && auxface.getTAG() != BoolTag.BROKEN
+					&& faces.contains(auxface)) {
+				return auxface;
+			}
+		}
+
+		return null;
 	}
 }

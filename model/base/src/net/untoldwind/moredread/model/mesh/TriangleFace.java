@@ -46,8 +46,8 @@ public class TriangleFace extends Face<TriangleMesh> {
 		return vertices;
 	}
 
-	public Edge[] getEdges() {
-		return edges;
+	public List<Edge> getEdges() {
+		return Arrays.asList(edges);
 	}
 
 	@Override

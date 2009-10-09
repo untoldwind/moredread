@@ -46,8 +46,8 @@ public class QuadFace extends Face<QuadMesh> {
 		return vertices;
 	}
 
-	public Edge[] getEdges() {
-		return edges;
+	public List<Edge> getEdges() {
+		return Arrays.asList(edges);
 	}
 
 	@Override

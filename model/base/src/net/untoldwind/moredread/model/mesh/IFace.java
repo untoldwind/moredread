@@ -11,6 +11,8 @@ public interface IFace extends IPolygon {
 
 	List<? extends IVertex> getVertices();
 
+	List<? extends IEdge> getEdges();
+
 	Plane getPlane();
 
 }

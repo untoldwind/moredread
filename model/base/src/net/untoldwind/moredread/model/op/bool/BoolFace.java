@@ -7,14 +7,19 @@ import net.untoldwind.moredread.model.mesh.IVertex;
 
 import com.jme.math.Plane;
 
-public class BoolFace {
+public abstract class BoolFace {
 	IFace face;
 	int split;
 	int tag;
 	int originalFace;
+	List<BoolEdge> edges;
 
 	public IVertex getVertex(final int idx) {
 		return face.getVertex(idx);
+	}
+
+	public BoolEdge getEdge(final int idx) {
+		return edges.get(idx);
 	}
 
 	public List<? extends IVertex> getVertices() {

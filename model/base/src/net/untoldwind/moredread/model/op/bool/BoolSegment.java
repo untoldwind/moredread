@@ -95,4 +95,15 @@ public class BoolSegment {
 	static int createVertexCfg(final int vertex) {
 		return vertex;
 	}
+
+	/**
+	 * Returns the relative edge index from the specified end segment
+	 * configuration.
+	 * 
+	 * @return relative edge index from the specified end segment configuration
+	 */
+	static int getEdge(final int cfg) {
+		return cfg - 10;
+	}
+
 }
