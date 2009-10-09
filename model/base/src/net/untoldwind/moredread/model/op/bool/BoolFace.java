@@ -1,16 +1,24 @@
 package net.untoldwind.moredread.model.op.bool;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.jme.math.Plane;
 
-public abstract class BoolFace {
+public class BoolFace {
 	Plane plane;
 	List<BoolVertex> vertices;
 	int split;
 	int tag;
-	int originalFace;
+	BoolFace originalFace;
 	List<BoolEdge> edges;
+
+	public BoolFace(final BoolVertex v1, final BoolVertex v2,
+			final BoolVertex v3, final Plane plane, final BoolFace originalFace) {
+		this.vertices = Arrays.asList(v1, v2, v2);
+		this.plane = plane;
+		this.originalFace = originalFace;
+	}
 
 	public BoolVertex getVertex(final int idx) {
 		return vertices.get(idx);
@@ -44,11 +52,15 @@ public abstract class BoolFace {
 		return tag;
 	}
 
-	public int getOriginalFace() {
+	public void setTAG(final int tag) {
+		this.tag = tag;
+	}
+
+	public BoolFace getOriginalFace() {
 		return originalFace;
 	}
 
-	public void setOriginalFace(final int originalFace) {
+	public void setOriginalFace(final BoolFace originalFace) {
 		this.originalFace = originalFace;
 	}
 

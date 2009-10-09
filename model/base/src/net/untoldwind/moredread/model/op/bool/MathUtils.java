@@ -130,6 +130,45 @@ public class MathUtils {
 		}
 	}
 
+	/**
+	 * Compares two scalar triplets with EPSILON accuracy.
+	 * 
+	 * @param A
+	 *            scalar triplet
+	 * @param B
+	 *            scalar triplet
+	 * @return 1 if A > B, -1 if A < B, 0 otherwise
+	 */
+	public static int comp(final Vector3f A, final Vector3f B) {
+		if (!VAR_EPSILON) {
+			if (A.x >= (B.x + EPSILON)) {
+				return 1;
+			} else if (B.x >= (A.x + EPSILON)) {
+				return -1;
+			} else if (A.y >= (B.y + EPSILON)) {
+				return 1;
+			} else if (B.y >= (A.y + EPSILON)) {
+				return -1;
+			} else if (A.z >= (B.z + EPSILON)) {
+				return 1;
+			} else if (B.z >= (A.z + EPSILON)) {
+				return -1;
+			} else {
+				return 0;
+			}
+		} else {
+			int result = comp(A.x, B.x);
+			if (result != 0) {
+				return result;
+			}
+			result = comp(A.y, B.y);
+			if (result != 0) {
+				return result;
+			}
+			return comp(A.z, B.z);
+		}
+	}
+
 	public static boolean fuzzyZero(final float x) {
 		return comp0(x) == 0;
 	}
@@ -148,6 +187,97 @@ public class MathUtils {
 	public static int classify(final Vector3f p, final Plane plane) {
 		// Compare plane - point distance with zero
 		return comp0(plane.pseudoDistance(p));
+	}
+
+	/**
+	 * Returns if three points lay on the same line (are collinears).
+	 * 
+	 * @param p1
+	 *            point
+	 * @param p2
+	 *            point
+	 * @param p3
+	 *            point
+	 * @return true if the three points lay on the same line, false otherwise
+	 */
+	public static boolean BOP_collinear(final Vector3f p1, final Vector3f p2,
+			final Vector3f p3) {
+		if (comp(p1, p2) == 0 || comp(p2, p3) == 0) {
+			return true;
+		}
+
+		final Vector3f v1 = p2.subtract(p1);
+		final Vector3f v2 = p3.subtract(p2);
+
+		/*
+		 * normalize vectors before taking their cross product, so its length
+		 * has some actual meaning
+		 */
+		// if(MT_fuzzyZero(v1.length()) || MT_fuzzyZero(v2.length())) return
+		// true;
+		v1.normalize();
+		v2.normalize();
+
+		final Vector3f w = v1.cross(v2);
+
+		return (fuzzyZero(w.x) && fuzzyZero(w.y) && fuzzyZero(w.z));
+	}
+
+	/**
+	 * Returns if a quad (coplanar) is convex.
+	 * 
+	 * @return true if the quad is convex, false otherwise
+	 */
+	public static boolean BOP_convex(final Vector3f p1, final Vector3f p2,
+			final Vector3f p3, final Vector3f p4) {
+		final Vector3f v1 = p3.subtract(p1);
+		final Vector3f v2 = p4.subtract(p2);
+		final Vector3f quadPlane = v1.cross(v2);
+		// plane1 is the perpendicular plane that contains the quad diagonal
+		// (p2,p4)
+		final Plane plane1 = createPlane(quadPlane.cross(v2), p2);
+		// if p1 and p3 are classified in the same region, the quad is not
+		// convex
+		if (classify(p1, plane1) == classify(p3, plane1)) {
+			return false;
+		} else {
+			// Test the other quad diagonal (p1,p3) and perpendicular plane
+			final Plane plane2 = createPlane(quadPlane.cross(v1), p1);
+			// if p2 and p4 are classified in the same region, the quad is not
+			// convex
+			return (classify(p2, plane2) != classify(p4, plane2));
+		}
+	}
+
+	/**
+	 * Returns if a quad (coplanar) is concave and where is the split edge.
+	 * 
+	 * @return 0 if is convex, 1 if is concave and split edge is p1-p3 and -1 if
+	 *         is cancave and split edge is p2-p4.
+	 */
+	public static int concave(final Vector3f p1, final Vector3f p2,
+			final Vector3f p3, final Vector3f p4) {
+		final Vector3f v1 = p3.subtract(p1);
+		final Vector3f v2 = p4.subtract(p2);
+		final Vector3f quadPlane = v1.cross(v2);
+		// plane1 is the perpendicular plane that contains the quad diagonal
+		// (p2,p4)
+		final Plane plane1 = createPlane(quadPlane.cross(v2), p2);
+		// if p1 and p3 are classified in the same region, the quad is not
+		// convex
+		if (classify(p1, plane1) == classify(p3, plane1)) {
+			return 1;
+		} else {
+			// Test the other quad diagonal (p1,p3) and perpendicular plane
+			final Plane plane2 = createPlane(quadPlane.cross(v1), p1);
+			// if p2 and p4 are classified in the same region, the quad is not
+			// convex
+			if (classify(p2, plane2) == classify(p4, plane2)) {
+				return -1;
+			} else {
+				return 0;
+			}
+		}
 	}
 
 	/**

@@ -1,15 +1,27 @@
 package net.untoldwind.moredread.model.op.bool;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import net.untoldwind.moredread.model.mesh.IEdge;
-
 public class BoolEdge {
-	List<BoolVertex> vertices;
-	List<BoolFace> boolFace;
-	IEdge edge;
+	BoolVertex v1;
+	BoolVertex v2;
+	List<BoolFace> faces;
+
+	public BoolEdge(final BoolVertex v1, final BoolVertex v2) {
+		this.v1 = v1;
+		this.v2 = v2;
+
+		this.v1.addEdges(this);
+		this.v2.addEdges(this);
+		this.faces = new ArrayList<BoolFace>();
+	}
 
 	public List<BoolFace> getFaces() {
-		return boolFace;
+		return faces;
+	}
+
+	void addFace(final BoolFace face) {
+		faces.add(face);
 	}
 }

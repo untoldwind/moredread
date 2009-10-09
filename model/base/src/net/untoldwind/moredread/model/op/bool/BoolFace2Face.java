@@ -158,7 +158,7 @@ public class BoolFace2Face {
 
 	{
 		final int oldSize = facesB.size();
-		final int originalFaceB = faceB.getOriginalFace();
+		final BoolFace originalFaceB = faceB.getOriginalFace();
 
 		final Vector3f p1 = faceA.getVertex(0).getPoint();
 		final Vector3f p2 = faceA.getVertex(1).getPoint();
