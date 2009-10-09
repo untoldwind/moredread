@@ -441,4 +441,317 @@ public class BSPNode {
 		return (plane.getNormal().dot(otherPlane.getNormal()) > 0);
 	}
 
+	/**
+	 * Simplified classification (optimized but requires that the face is not
+	 * INOUT; only works correctly with faces completely IN or OUT).
+	 * 
+	 * @param p1
+	 *            firts face vertex.
+	 * @param p2
+	 *            second face vertex.
+	 * @param p3
+	 *            third face vertex.
+	 * @param plane
+	 *            face plane.
+	 * @return TAG result: IN or OUT.
+	 */
+	int simplifiedClassifyFace(final Vector3f p1, final Vector3f p2,
+			final Vector3f p3, final Plane plane) {
+		final Vector3f ret[] = new Vector3f[3];
+
+		final int tag = BoolTag.createTAG(testPoint(p1), testPoint(p2),
+				testPoint(p3));
+
+		if ((tag & BoolTag.IN_IN_IN) != 0) {
+			if ((tag & BoolTag.OUT_OUT_OUT) != 0) {
+				if (splitTriangle(ret, plane, p1, p2, p3, tag) < 0) {
+					return simplifiedClassifyFaceIN(ret[0], ret[1], ret[2],
+							plane);
+				} else {
+					return simplifiedClassifyFaceOUT(ret[0], ret[1], ret[2],
+							plane);
+				}
+			} else {
+				return simplifiedClassifyFaceIN(p1, p2, p3, plane);
+			}
+		} else {
+			if ((tag & BoolTag.OUT_OUT_OUT) != 0) {
+				return simplifiedClassifyFaceOUT(p1, p2, p3, plane);
+			} else {
+				if (hasSameOrientation(plane)) {
+					return simplifiedClassifyFaceIN(p1, p2, p3, plane);
+				} else {
+					return simplifiedClassifyFaceOUT(p1, p2, p3, plane);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Simplified classify through IN subtree.
+	 * 
+	 * @param p1
+	 *            firts face vertex.
+	 * @param p2
+	 *            second face vertex.
+	 * @param p3
+	 *            third face vertex.
+	 * @param plane
+	 *            face plane.
+	 */
+	int simplifiedClassifyFaceIN(final Vector3f p1, final Vector3f p2,
+			final Vector3f p3, final Plane plane) {
+		if (inChild != null) {
+			return inChild.simplifiedClassifyFace(p1, p2, p3, plane);
+		} else {
+			return BoolTag.IN;
+		}
+	}
+
+	/**
+	 * Simplified classify through OUT subtree.
+	 * 
+	 * @param p1
+	 *            firts face vertex.
+	 * @param p2
+	 *            second face vertex.
+	 * @param p3
+	 *            third face vertex.
+	 * @param plane
+	 *            face plane.
+	 */
+	int simplifiedClassifyFaceOUT(final Vector3f p1, final Vector3f p2,
+			final Vector3f p3, final Plane plane) {
+		if (outChild != null) {
+			return outChild.simplifiedClassifyFace(p1, p2, p3, plane);
+		} else {
+			return BoolTag.OUT;
+		}
+	}
+
+	/**
+	 * Comparation between both childrens.
+	 * 
+	 * @return 0 equal deep, 1 inChild more deep than outChild and -1 otherwise.
+	 */
+	int compChildren() {
+		final int deep1 = (inChild == null ? 0 : inChild.getDeep());
+		final int deep2 = (outChild == null ? 0 : outChild.getDeep());
+
+		if (deep1 == deep2) {
+			return 0;
+		} else if (deep1 < deep2) {
+			return -1;
+		} else {
+			return 1;
+		}
+	}
+
+	/**
+	 * Extract a subtriangle from input triangle, is used for simplified
+	 * classification. The subtriangle is obtained spliting the input triangle
+	 * by input plane.
+	 * 
+	 * @param res
+	 *            output subtriangle result.
+	 * @param plane
+	 *            spliter plane.
+	 * @param p1
+	 *            first triangle point.
+	 * @param p2
+	 *            second triangle point.
+	 * @param p3
+	 *            third triangle point.
+	 * @param tag
+	 *            triangle orientation respect the plane.
+	 */
+	int splitTriangle(final Vector3f[] res, final Plane plane,
+			final Vector3f p1, final Vector3f p2, final Vector3f p3,
+			final int tag) {
+		switch (tag) {
+		case BoolTag.IN_OUT_ON:
+			if (compChildren() < 0) {
+				// f1: p1 new p3 || new = splitedge(p1,p2)
+				res[0] = p1;
+				res[1] = MathUtils.intersectPlane(plane, p1, p2);
+				res[2] = p3;
+				return -1;
+			} else {
+				// f1: p2 new p3 || new = splitedge(p1,p2)
+				res[0] = p2;
+				res[1] = p3;
+				res[2] = MathUtils.intersectPlane(plane, p1, p2);
+				return 1;
+			}
+		case BoolTag.OUT_IN_ON:
+			if (compChildren() < 0) {
+				// f1: p2 new p3 || new = splitedge(p1,p2)
+				res[0] = p2;
+				res[1] = p3;
+				res[2] = MathUtils.intersectPlane(plane, p1, p2);
+				return -1;
+			} else {
+				// f1: p1 new p3 || new = splitedge(p1,p2)
+				res[0] = p1;
+				res[1] = MathUtils.intersectPlane(plane, p1, p2);
+				res[2] = p3;
+				return 1;
+			}
+		case BoolTag.IN_ON_OUT:
+			if (compChildren() < 0) {
+				// f1: p1 p2 new || new = splitedge(p1,p3)
+				res[0] = p1;
+				res[1] = p2;
+				res[2] = MathUtils.intersectPlane(plane, p1, p3);
+				return -1;
+			} else {
+				// f1: p2 p3 new || new = splitedge(p1,p3)
+				res[0] = p2;
+				res[1] = p3;
+				res[2] = MathUtils.intersectPlane(plane, p1, p3);
+				return 1;
+			}
+		case BoolTag.OUT_ON_IN:
+			if (compChildren() < 0) {
+				// f1: p2 p3 new || new = splitedge(p1,p3)
+				res[0] = p2;
+				res[1] = p3;
+				res[2] = MathUtils.intersectPlane(plane, p1, p3);
+				return -1;
+			} else {
+				// f1: p1 p2 new || new = splitedge(p1,p3)
+				res[0] = p1;
+				res[1] = p2;
+				res[2] = MathUtils.intersectPlane(plane, p1, p3);
+				return 1;
+			}
+		case BoolTag.ON_IN_OUT:
+			if (compChildren() < 0) {
+				// f1: p1 p2 new || new = splitedge(p2,p3)
+				res[0] = p1;
+				res[1] = p2;
+				res[2] = MathUtils.intersectPlane(plane, p2, p3);
+				return -1;
+			} else {
+				// f1: p1 p3 new || new = splitedge(p2,p3)
+				res[0] = p1;
+				res[1] = MathUtils.intersectPlane(plane, p2, p3);
+				res[2] = p3;
+				return 1;
+			}
+		case BoolTag.ON_OUT_IN:
+			if (compChildren() < 0) {
+				// f1: p1 p2 new || new = splitedge(p2,p3)
+				res[0] = p1;
+				res[1] = MathUtils.intersectPlane(plane, p2, p3);
+				res[2] = p3;
+				return -1;
+			} else {
+				// f1: p1 p2 new || new = splitedge(p2,p3)
+				res[0] = p1;
+				res[1] = p2;
+				res[2] = MathUtils.intersectPlane(plane, p2, p3);
+				return 1;
+			}
+		case BoolTag.IN_OUT_OUT:
+			if (compChildren() <= 0) {
+				// f1: p1 new1 new2 || new1 = splitedge(p1,p2) new2 =
+				// splitedge(p1,p3)
+				res[0] = p1;
+				res[1] = MathUtils.intersectPlane(plane, p1, p2);
+				res[2] = MathUtils.intersectPlane(plane, p1, p3);
+				return -1;
+			} else {
+				// f1: p1 new1 new2 || new1 = splitedge(p1,p2) new2 =
+				// splitedge(p1,p3)
+				res[0] = MathUtils.intersectPlane(plane, p1, p2);
+				res[1] = p2;
+				res[2] = p3;
+				return 1;
+			}
+		case BoolTag.OUT_IN_IN:
+			if (compChildren() < 0) {
+				// f1: p1 new1 new2 || new1 = splitedge(p1,p2) new2 =
+				// splitedge(p1,p3)
+				res[0] = MathUtils.intersectPlane(plane, p1, p2);
+				res[1] = p2;
+				res[2] = p3;
+				return -1;
+			} else {
+				// f1: p1 new1 new2 || new1 = splitedge(p1,p2) new2 =
+				// splitedge(p1,p3)
+				res[0] = p1;
+				res[1] = MathUtils.intersectPlane(plane, p1, p2);
+				res[2] = MathUtils.intersectPlane(plane, p1, p3);
+				return 1;
+			}
+		case BoolTag.OUT_IN_OUT:
+			if (compChildren() <= 0) {
+				// f1: new1 p2 new2 || new1 = splitedge(p2,p1) new2 =
+				// splitedge(p2,p3)
+				res[0] = MathUtils.intersectPlane(plane, p2, p1);
+				res[1] = p2;
+				res[2] = MathUtils.intersectPlane(plane, p2, p3);
+				return -1;
+			} else {
+				// f1: new1 p2 new2 || new1 = splitedge(p2,p1) new2 =
+				// splitedge(p2,p3)
+				res[0] = p1;
+				res[1] = MathUtils.intersectPlane(plane, p2, p1);
+				res[2] = MathUtils.intersectPlane(plane, p2, p3);
+				return 1;
+			}
+		case BoolTag.IN_OUT_IN:
+			if (compChildren() < 0) {
+				// f1: new1 p2 new2 || new1 = splitedge(p2,p1) new2 =
+				// splitedge(p2,p3)
+				res[0] = p1;
+				res[1] = MathUtils.intersectPlane(plane, p2, p1);
+				res[2] = MathUtils.intersectPlane(plane, p2, p3);
+				return -1;
+			} else {
+				// f1: new1 p2 new2 || new1 = splitedge(p2,p1) new2 =
+				// splitedge(p2,p3)
+				res[0] = MathUtils.intersectPlane(plane, p2, p1);
+				res[1] = p2;
+				res[2] = MathUtils.intersectPlane(plane, p2, p3);
+				return 1;
+			}
+		case BoolTag.OUT_OUT_IN:
+			if (compChildren() <= 0) {
+				// f1: new1 new2 p2 || new1 = splitedge(p3,p1) new2 =
+				// splitedge(p3,p2)
+				res[0] = MathUtils.intersectPlane(plane, p3, p1);
+				res[1] = MathUtils.intersectPlane(plane, p3, p2);
+				res[2] = p3;
+				return -1;
+			} else {
+				// f1: new1 new2 p2 || new1 = splitedge(p3,p1) new2 =
+				// splitedge(p3,p2)
+				res[0] = MathUtils.intersectPlane(plane, p3, p1);
+				res[1] = p1;
+				res[2] = p2;
+				return 1;
+			}
+		case BoolTag.IN_IN_OUT:
+			if (compChildren() < 0) {
+				// f1: new1 new2 p2 || new1 = splitedge(p3,p1) new2 =
+				// splitedge(p3,p2)
+				res[0] = MathUtils.intersectPlane(plane, p3, p1);
+				res[1] = p1;
+				res[2] = p2;
+				return -1;
+			} else {
+				// f1: new1 new2 p2 || new1 = splitedge(p3,p1) new2 =
+				// splitedge(p3,p2)
+				res[0] = MathUtils.intersectPlane(plane, p3, p1);
+				res[1] = MathUtils.intersectPlane(plane, p3, p2);
+				res[2] = p3;
+				return 1;
+			}
+		default:
+			return 0;
+		}
+	}
+
 }
