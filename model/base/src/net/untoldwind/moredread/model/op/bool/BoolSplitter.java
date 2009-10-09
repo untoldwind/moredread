@@ -18,8 +18,7 @@ public class BoolSplitter {
 	 *            relative edge index
 	 * @return intersection point
 	 */
-	static Vector3f BOP_splitEdge(final Plane plane, final BoolFace f,
-			final int e) {
+	static Vector3f splitEdge(final Plane plane, final BoolFace f, final int e) {
 		BoolVertex v1, v2;
 
 		switch (e) {

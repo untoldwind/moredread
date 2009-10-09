@@ -262,6 +262,106 @@ public class BoolFace2Face {
 	}
 
 	/**
+	 * Obtains the points of the segment created from the intersection between
+	 * faceA and planeB.
+	 * 
+	 * @param mesh
+	 *            mesh that contains the faces, edges and vertices
+	 * @param faceA
+	 *            intersected face
+	 * @param sA
+	 *            segment of the intersection between faceA and planeB
+	 * @param planeB
+	 *            intersected plane
+	 * @param points
+	 *            array of points where the new points are saved
+	 * @param faces
+	 *            array of relative face index to the points
+	 * @param size
+	 *            size of arrays points and faces
+	 * @param faceValue
+	 *            relative face index of new points
+	 */
+	void getPoints(final Points points, final BoolMesh mesh,
+			final BoolFace faceA, final BoolSegment sA, final Plane planeB,
+			final int faceValue) {
+		Vector3f p1 = new Vector3f(), p2 = new Vector3f();
+
+		if (BoolSegment.isDefined(sA.cfg1)) {
+			if (BoolSegment.isEdge(sA.cfg1)) {
+				// the new point becomes of split faceA edge
+				p1 = BoolSplitter.splitEdge(planeB, faceA, BoolSegment
+						.getEdge(sA.cfg1));
+			} else if (BoolSegment.isVertex(sA.cfg1)) {
+				// the new point becomes of vertex faceA
+				p1 = sA.v1.getPoint();
+			}
+
+			if (BoolSegment.isDefined(sA.cfg2)) {
+				if (BoolSegment.isEdge(sA.cfg2)) {
+					p2 = BoolSplitter.splitEdge(planeB, faceA, BoolSegment
+							.getEdge(sA.cfg2));
+				} else if (BoolSegment.isVertex(sA.cfg2)) {
+					p2 = sA.v2.getPoint();
+				}
+				points.points[points.size] = p1;
+				points.points[points.size + 1] = p2;
+				points.faces[points.size] = faceValue;
+				points.faces[points.size + 1] = faceValue;
+				points.size += 2;
+			}
+
+			else {
+				points.points[points.size] = p1;
+				points.faces[points.size] = faceValue;
+				points.size++;
+			}
+		}
+	}
+
+	/**
+	 * Computes the vertex index of a point.
+	 * 
+	 * @param mesh
+	 *            mesh that contains the faces, edges and vertices
+	 * @param point
+	 *            input point
+	 * @param cfgA
+	 *            configuration of point on faceA
+	 * @param cfgB
+	 *            configuration of point on faceB
+	 * @param vA
+	 *            vertex index of point on faceA
+	 * @param vB
+	 *            vertex index of point on faceB
+	 * @param invert
+	 *            indicates if vA has priority over vB
+	 * @return final vertex index in the mesh
+	 */
+	BoolVertex BOP_getVertexIndex(final BoolMesh mesh, final Vector3f point,
+			final int cfgA, final int cfgB, final BoolVertex vA,
+			final BoolVertex vB, final boolean invert) {
+		if (BoolSegment.isVertex(cfgA)) { // exists vertex index on A
+			if (BoolSegment.isVertex(cfgB)) { // exists vertex index on B
+				// unify vertex indexs
+				if (invert) {
+					return mesh.replaceVertexIndex(vA, vB);
+				} else {
+					return mesh.replaceVertexIndex(vB, vA);
+				}
+			} else {
+				return vA;
+			}
+		} else {// does not exist vertex index on A
+			if (BoolSegment.isVertex(cfgB)) {
+				return vB;
+			} else {// does not exist vertex index on B
+				return mesh.addVertex(point);
+			}
+		}
+	}
+
+	/**
 	 * Computes the vertex index of a point.
 	 * 
 	 * @param mesh
