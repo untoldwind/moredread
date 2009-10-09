@@ -1,7 +1,5 @@
 package net.untoldwind.moredread.model.op.bool;
 
-import net.untoldwind.moredread.model.mesh.IVertex;
-
 import com.jme.math.Plane;
 import com.jme.math.Vector3f;
 
@@ -22,7 +20,7 @@ public class BoolSplitter {
 	 */
 	static Vector3f BOP_splitEdge(final Plane plane, final BoolFace f,
 			final int e) {
-		IVertex v1, v2;
+		BoolVertex v1, v2;
 
 		switch (e) {
 		case 1:
@@ -59,9 +57,9 @@ public class BoolSplitter {
 	 * @return segment if there is intersection, NULL otherwise
 	 */
 	static BoolSegment splitFace(final Plane plane, final BoolFace f) {
-		final IVertex v1 = f.getVertex(0);
-		final IVertex v2 = f.getVertex(1);
-		final IVertex v3 = f.getVertex(2);
+		final BoolVertex v1 = f.getVertex(0);
+		final BoolVertex v2 = f.getVertex(1);
+		final BoolVertex v3 = f.getVertex(2);
 
 		// Classify face vertices
 		final int tag1 = BoolTag.createTAG(MathUtils.classify(v1.getPoint(),

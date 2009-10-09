@@ -5,6 +5,7 @@ import java.util.List;
 import net.untoldwind.moredread.model.mesh.IEdge;
 
 public class BoolEdge {
+	List<BoolVertex> vertices;
 	List<BoolFace> boolFace;
 	IEdge edge;
 

@@ -1,6 +1,5 @@
 package net.untoldwind.moredread.model.op.bool;
 
-import net.untoldwind.moredread.model.mesh.IVertex;
 
 public class BoolSegment {
 	private final static int UNDEFINED = 0;
@@ -12,13 +11,13 @@ public class BoolSegment {
 	// 0X Coincident vertice X{1,2,3} of the face,
 	// 0 otherwise
 	int cfg1, cfg2;
-	IVertex v1, v2; // if cfgX >0, vX is the vertice index of the face
+	BoolVertex v1, v2; // if cfgX >0, vX is the vertice index of the face
 
 	/**
 	 * Inverts the segment, swapping ends data.
 	 */
 	void invert() {
-		final IVertex auxV = v1;
+		final BoolVertex auxV = v1;
 		v1 = v2;
 		v2 = auxV;
 		final int aux = cfg1;
