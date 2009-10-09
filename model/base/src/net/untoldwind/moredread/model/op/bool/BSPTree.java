@@ -156,4 +156,17 @@ public class BSPTree {
 			return BoolTag.OUT;
 		}
 	}
+
+	/**
+	 * Returns the deep of this BSP tree.
+	 * 
+	 * @return tree deep
+	 */
+	int getDeep() {
+		if (root != null) {
+			return root.getDeep();
+		} else {
+			return 0;
+		}
+	}
 }

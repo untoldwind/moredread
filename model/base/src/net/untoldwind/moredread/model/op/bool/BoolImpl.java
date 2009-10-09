@@ -32,7 +32,33 @@ public class BoolImpl {
 		final BSPTree bspB = new BSPTree();
 		bspB.addMesh(facesB);
 
-		// TODO
+		final int numVertices = meshC.getNumVertexs();
+
+		// mesh pre-filter
+		simplifiedMeshFilter(meshC, facesA, bspB, invertMeshB);
+		if ((0.25 * facesA.size()) > bspB.getDeep()) {
+			meshFilter(meshC, facesA, bspB);
+		}
+
+		simplifiedMeshFilter(meshC, facesB, bspA, invertMeshA);
+		if ((0.25 * facesB.size()) > bspA.getDeep()) {
+			meshFilter(meshC, facesB, bspA);
+		}
+
+		// Face 2 Face
+		BoolFace2Face.Face2Face(meshC, facesA, facesB);
+
+		// BSP classification
+		meshClassify(meshC, facesA, bspB);
+		meshClassify(meshC, facesB, bspA);
+
+		// Process overlapped faces
+		BoolFace2Face.removeOverlappedFaces(meshC, facesA, facesB);
+
+		// Sew two meshes
+		BoolFace2Face.sew(meshC, facesA, facesB);
+
+		new BoolMerge2().mergeFaces(meshC, numVertices);
 	}
 
 	/**

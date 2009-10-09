@@ -20,6 +20,10 @@ public class BoolMesh {
 		faces = new ArrayList<BoolFace>();
 	}
 
+	public int getNumVertexs() {
+		return vertices.size();
+	}
+
 	public int getNumFaces() {
 		return faces.size();
 	}
