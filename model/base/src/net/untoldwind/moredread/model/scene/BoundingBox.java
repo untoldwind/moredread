@@ -157,6 +157,26 @@ public class BoundingBox {
 		return box;
 	}
 
+	public boolean intersects(final BoundingBox bb) {
+		if (!Vector3f.isValidVector(center)
+				|| !Vector3f.isValidVector(bb.center)) {
+			return false;
+		}
+
+		if (center.x + xExtent < bb.center.x - bb.xExtent
+				|| center.x - xExtent > bb.center.x + bb.xExtent) {
+			return false;
+		} else if (center.y + yExtent < bb.center.y - bb.yExtent
+				|| center.y - yExtent > bb.center.y + bb.yExtent) {
+			return false;
+		} else if (center.z + zExtent < bb.center.z - bb.zExtent
+				|| center.z - zExtent > bb.center.z + bb.zExtent) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

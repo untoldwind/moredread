@@ -150,4 +150,17 @@ public class MathUtils {
 		return comp0(plane.pseudoDistance(p));
 	}
 
+	/**
+	 * Returns if a plane contains a point with EPSILON accuracy.
+	 * 
+	 * @param plane
+	 *            plane
+	 * @param point
+	 *            point
+	 * @return true if the point is on the plane, false otherwise
+	 */
+	public static boolean containsPoint(final Plane plane, final Vector3f point) {
+		return fuzzyZero(plane.pseudoDistance(point));
+	}
+
 }

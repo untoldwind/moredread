@@ -5,6 +5,7 @@ import java.util.List;
 import net.untoldwind.moredread.model.enums.GeometryType;
 import net.untoldwind.moredread.model.state.IStateHolder;
 
+import com.jme.math.Plane;
 import com.jme.math.Vector3f;
 
 public abstract class Face<T extends Mesh<?>> implements IStateHolder, IFace {
@@ -31,6 +32,7 @@ public abstract class Face<T extends Mesh<?>> implements IStateHolder, IFace {
 		return index;
 	}
 
+	@Override
 	public Vector3f getCenter() {
 		if (center == null) {
 			updateCenter();
@@ -38,11 +40,21 @@ public abstract class Face<T extends Mesh<?>> implements IStateHolder, IFace {
 		return center;
 	}
 
+	@Override
 	public Vector3f getMeanNormal() {
 		if (meanNormal == null) {
 			updateMeanNormal();
 		}
 		return meanNormal;
+	}
+
+	@Override
+	public Plane getPlane() {
+		final Vector3f n = getMeanNormal();
+
+		final float d = n.dot(getCenter());
+
+		return new Plane(n, d);
 	}
 
 	void markDirty() {

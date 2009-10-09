@@ -76,7 +76,7 @@ public class TriangleFace extends Face<TriangleMesh> {
 		meanNormal = v1.cross(v2);
 		final float len = meanNormal.length();
 
-		if (len < 1e-6) {
+		if (len == 0f) {
 			meanNormal.set(0, 0, 1);
 		} else {
 			meanNormal.divideLocal(len);
