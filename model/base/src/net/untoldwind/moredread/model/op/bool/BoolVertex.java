@@ -14,9 +14,9 @@ public class BoolVertex extends Point {
 	List<BoolEdge> edges;
 	int tag;
 
-	public BoolVertex(final Vector3f point) {
+	public BoolVertex(final Vector3f point, final int index) {
 		super(point);
-		index = -1;
+		this.index = index;
 
 		edges = new ArrayList<BoolEdge>();
 	}

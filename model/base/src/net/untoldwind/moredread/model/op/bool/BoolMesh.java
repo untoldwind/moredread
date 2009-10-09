@@ -7,6 +7,8 @@ import java.util.Map;
 
 import net.untoldwind.moredread.model.mesh.EdgeId;
 
+import com.jme.math.Vector3f;
+
 public class BoolMesh {
 	List<BoolVertex> vertices;
 	Map<EdgeId, BoolEdge> edges;
@@ -164,5 +166,12 @@ public class BoolMesh {
 		}
 
 		return null;
+	}
+
+	public BoolVertex addVertex(final Vector3f point) {
+		final BoolVertex vertex = new BoolVertex(point, vertices.size());
+		vertices.add(vertex);
+
+		return vertex;
 	}
 }

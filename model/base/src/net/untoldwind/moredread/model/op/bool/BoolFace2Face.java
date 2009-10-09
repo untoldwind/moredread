@@ -262,6 +262,26 @@ public class BoolFace2Face {
 	}
 
 	/**
+	 * Computes the vertex index of a point.
+	 * 
+	 * @param mesh
+	 *            mesh that contains the faces, edges and vertices
+	 * @param cfg
+	 *            configuration of point
+	 * @param v
+	 *            vertex index of point
+	 * @return final vertex index in the mesh
+	 */
+	BoolVertex getVertexIndex(final BoolMesh mesh, final Vector3f point,
+			final int cfg, final BoolVertex v) {
+		if (BoolSegment.isVertex(cfg)) {
+			return v;
+		} else {
+			return mesh.addVertex(point);
+		}
+	}
+
+	/**
 	 * Triangulates the input face according to the specified segment.
 	 * 
 	 * @param mesh
