@@ -151,6 +151,45 @@ public class MathUtils {
 	}
 
 	/**
+	 * Intersects a plane with the line that contains the specified points.
+	 * 
+	 * @param plane
+	 *            split plane
+	 * @param p1
+	 *            first line point
+	 * @param p2
+	 *            second line point
+	 * @return intersection between plane and line that contains p1 and p2
+	 */
+	public static Vector3f intersectPlane(final Plane plane, final Vector3f p1,
+			final Vector3f p2) {
+		// Compute intersection between plane and line ...
+		//
+		// L: (p2-p1)lambda + p1
+		//
+		// supposes resolve equation ...
+		//
+		// coefA*((p2.x - p1.y)*lambda + p1.x) + ... + coefD = 0
+
+		final Vector3f intersection = new Vector3f(0, 0, 0);
+		final Vector3f diff = p2.subtract(p1);
+
+		final float den = plane.getNormal().dot(diff);
+
+		if (den != 0) {
+			final float lambda = (plane.constant - plane.getNormal().dot(p1))
+					/ den;
+
+			intersection.set(diff);
+			intersection.multLocal(lambda);
+			intersection.addLocal(p1);
+
+			return intersection;
+		}
+		return intersection;
+	}
+
+	/**
 	 * Returns if a plane contains a point with EPSILON accuracy.
 	 * 
 	 * @param plane

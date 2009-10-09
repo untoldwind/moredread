@@ -110,6 +110,43 @@ public class BoolFace2Face {
 		}
 	}
 
+	/**
+	 * Computes intesections of coplanars faces from object A with faces from
+	 * object B.
+	 * 
+	 * @param mesh
+	 *            mesh that contains the faces, edges and vertices
+	 * @param facesA
+	 *            set of faces from object A
+	 * @param facesB
+	 *            set of faces from object B
+	 */
+	void sew(final List<BoolFace> facesA, final List<BoolFace> facesB) {
+		for (final BoolFace faceB : facesB) {
+			final Plane planeB = faceB.getPlane();
+			final Vector3f p1 = faceB.getVertices().get(0).getPoint();
+			final Vector3f p2 = faceB.getVertices().get(1).getPoint();
+			final Vector3f p3 = faceB.getVertices().get(2).getPoint();
+
+			for (int idxFaceA = 0; idxFaceA < facesA.size()
+					&& faceB.getTAG() != BoolTag.BROKEN
+					&& faceB.getTAG() != BoolTag.PHANTOM; idxFaceA++) {
+				final BoolFace faceA = facesA.get(idxFaceA);
+				if ((faceA.getTAG() != BoolTag.BROKEN)
+						&& (faceA.getTAG() != BoolTag.PHANTOM)) {
+					final Plane planeA = faceA.getPlane();
+					if (MathUtils.containsPoint(planeA, p1)
+							&& MathUtils.containsPoint(planeA, p2)
+							&& MathUtils.containsPoint(planeA, p3)) {
+						if (planeA.getNormal().dot(planeB.getNormal()) > 0) {
+							intersectCoplanarFaces(facesA, faceB, faceA, true);
+						}
+					}
+				}
+			}
+		}
+	}
+
 	void intersectCoplanarFaces(final List<BoolFace> facesB,
 			final BoolFace faceA, final BoolFace faceB, final boolean invert)
 
