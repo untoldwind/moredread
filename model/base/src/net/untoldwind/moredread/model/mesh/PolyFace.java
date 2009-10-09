@@ -55,6 +55,16 @@ public class PolyFace extends Face<PolyMesh> {
 	}
 
 	@Override
+	public int getVertexCount() {
+		return vertices.size();
+	}
+
+	@Override
+	public Vertex getVertex(final int index) {
+		return vertices.get(index);
+	}
+
+	@Override
 	public List<Vertex> getVertices() {
 		return vertices;
 	}

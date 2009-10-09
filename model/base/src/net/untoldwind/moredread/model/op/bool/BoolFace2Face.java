@@ -59,9 +59,9 @@ public class BoolFace2Face {
 	void Face2Face(final List<BoolFace> facesA, final List<BoolFace> facesB) {
 		for (final BoolFace faceA : facesA) {
 			final Plane planeA = faceA.getPlane();
-			final Vector3f p1 = faceA.getVertices().get(0).getPoint();
-			final Vector3f p2 = faceA.getVertices().get(1).getPoint();
-			final Vector3f p3 = faceA.getVertices().get(2).getPoint();
+			final Vector3f p1 = faceA.getVertex(0).getPoint();
+			final Vector3f p2 = faceA.getVertex(1).getPoint();
+			final Vector3f p3 = faceA.getVertex(2).getPoint();
 
 			/* get (or create) bounding box for face A */
 			final BoundingBox boxA = new BoundingBox(faceA.getVertices());
@@ -91,8 +91,8 @@ public class BoolFace2Face {
 										false);
 							}
 						} else {
-							BOP_intersectNonCoplanarFaces(facesA, facesB,
-									faceA, faceB);
+							intersectNonCoplanarFaces(facesA, facesB, faceA,
+									faceB);
 						}
 					}
 				}
@@ -124,9 +124,9 @@ public class BoolFace2Face {
 	void sew(final List<BoolFace> facesA, final List<BoolFace> facesB) {
 		for (final BoolFace faceB : facesB) {
 			final Plane planeB = faceB.getPlane();
-			final Vector3f p1 = faceB.getVertices().get(0).getPoint();
-			final Vector3f p2 = faceB.getVertices().get(1).getPoint();
-			final Vector3f p3 = faceB.getVertices().get(2).getPoint();
+			final Vector3f p1 = faceB.getVertex(0).getPoint();
+			final Vector3f p2 = faceB.getVertex(1).getPoint();
+			final Vector3f p3 = faceB.getVertex(2).getPoint();
 
 			for (int idxFaceA = 0; idxFaceA < facesA.size()
 					&& faceB.getTAG() != BoolTag.BROKEN
@@ -151,6 +151,88 @@ public class BoolFace2Face {
 			final BoolFace faceA, final BoolFace faceB, final boolean invert)
 
 	{
+		final int oldSize = facesB.size();
+		final int originalFaceB = faceB.getOriginalFace();
+
+		final Vector3f p1 = faceA.getVertex(0).getPoint();
+		final Vector3f p2 = faceA.getVertex(1).getPoint();
+		final Vector3f p3 = faceA.getVertex(2).getPoint();
+
+		final Vector3f normal = new Vector3f(faceA.getPlane().getNormal());
+		final Vector3f p1p2 = p2.subtract(p1);
+		final Plane plane1 = MathUtils.createPlane((p1p2.cross(normal)
+				.normalize()), p1);
+
+		final BoolSegment sA = new BoolSegment();
+		sA.cfg1 = BoolSegment.createVertexCfg(1);
+		sA.v1 = faceA.getVertex(0);
+		sA.cfg2 = BoolSegment.createVertexCfg(2);
+		sA.v2 = faceA.getVertex(1);
+
+		intersectCoplanarFaces(facesB, faceB, sA, plane1, invert);
+
+		final Vector3f p2p3 = p3.subtract(p2);
+		final Plane plane2 = MathUtils.createPlane((p2p3.cross(normal)
+				.normalize()), p2);
+
+		sA.cfg1 = BoolSegment.createVertexCfg(2);
+		sA.v1 = faceA.getVertex(1);
+		sA.cfg2 = BoolSegment.createVertexCfg(3);
+		sA.v2 = faceA.getVertex(2);
+
+		if (faceB.getTAG() == BoolTag.BROKEN) {
+			for (int idxFace = oldSize; idxFace < facesB.size(); idxFace++) {
+				final BoolFace face = facesB.get(idxFace);
+				if (face.getTAG() != BoolTag.BROKEN
+						&& originalFaceB == face.getOriginalFace()) {
+					intersectCoplanarFaces(facesB, face, sA, plane2, invert);
+				}
+			}
+		} else {
+			intersectCoplanarFaces(facesB, faceB, sA, plane2, invert);
+		}
+
+		final Vector3f p3p1 = p1.subtract(p3);
+		final Plane plane3 = MathUtils.createPlane((p3p1.cross(normal)
+				.normalize()), p3);
+
+		sA.cfg1 = BoolSegment.createVertexCfg(3);
+		sA.v1 = faceA.getVertex(2);
+		sA.cfg2 = BoolSegment.createVertexCfg(1);
+		sA.v2 = faceA.getVertex(0);
+
+		if (faceB.getTAG() == BoolTag.BROKEN) {
+			for (int idxFace = oldSize; idxFace < facesB.size(); idxFace++) {
+				final BoolFace face = facesB.get(idxFace);
+				if (face.getTAG() != BoolTag.BROKEN
+						&& originalFaceB == face.getOriginalFace()) {
+					intersectCoplanarFaces(facesB, face, sA, plane3, invert);
+				}
+			}
+		} else {
+			intersectCoplanarFaces(facesB, faceB, sA, plane3, invert);
+		}
+	}
+
+	/**
+	 * Triangulates faceB using segment sA and planeA.
+	 * 
+	 * @param mesh
+	 *            mesh that contains the faces, edges and vertices
+	 * @param facesB
+	 *            set of faces from object B
+	 * @param faceB
+	 *            face from object B
+	 * @param sA
+	 *            segment to intersect with faceB
+	 * @param planeA
+	 *            plane to intersect with faceB
+	 * @param invert
+	 *            indicates if sA has priority over faceB
+	 */
+	void intersectCoplanarFaces(final List<BoolFace> facesB,
+			final BoolFace faceB, final BoolSegment sA, final Plane planeA,
+			final boolean invert) {
 		// TODO
 	}
 
@@ -166,8 +248,16 @@ public class BoolFace2Face {
 	 * @param faceB
 	 *            face from object B
 	 */
-	void BOP_intersectNonCoplanarFaces(final List<BoolFace> facesA,
+	void intersectNonCoplanarFaces(final List<BoolFace> facesA,
 			final List<BoolFace> facesB, final BoolFace faceA,
 			final BoolFace faceB) {
+
+		// TODO
+	}
+
+	static class Points {
+		Vector3f[] points;
+		int[] faces;
+		int size;
 	}
 }

@@ -11,6 +11,11 @@ public class BoolFace {
 	IFace face;
 	int split;
 	int tag;
+	int originalFace;
+
+	public IVertex getVertex(final int idx) {
+		return face.getVertex(idx);
+	}
 
 	public List<? extends IVertex> getVertices() {
 		return face.getVertices();
@@ -29,10 +34,19 @@ public class BoolFace {
 	}
 
 	public int size() {
-		return face.getVertices().size();
+		return face.getVertexCount();
 	}
 
 	public int getTAG() {
 		return tag;
 	}
+
+	public int getOriginalFace() {
+		return originalFace;
+	}
+
+	public void setOriginalFace(final int originalFace) {
+		this.originalFace = originalFace;
+	}
+
 }

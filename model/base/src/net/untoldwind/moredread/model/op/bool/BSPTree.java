@@ -44,8 +44,8 @@ public class BSPTree {
 	 */
 
 	void addFace(final IFace face) {
-		addFace(face.getVertices().get(0).getPoint(), face.getVertices().get(1)
-				.getPoint(), face.getVertices().get(2).getPoint(), face
+		addFace(face.getVertex(0).getPoint(), face.getVertex(1)
+				.getPoint(), face.getVertex(2).getPoint(), face
 				.getPlane());
 	}
 

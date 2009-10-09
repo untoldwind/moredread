@@ -368,6 +368,13 @@ public class MathUtils {
 		return fuzzyZero(plane.pseudoDistance(point));
 	}
 
+	public static Plane createPlane(final Vector3f n, final Vector3f p) {
+		final Vector3f mn = n.normalize();
+		final float md = mn.dot(p);
+
+		return new Plane(n, md);
+	}
+
 	public static Plane createPlane(final Vector3f a, final Vector3f b,
 			final Vector3f c) {
 		final Vector3f l1 = b.subtract(a);

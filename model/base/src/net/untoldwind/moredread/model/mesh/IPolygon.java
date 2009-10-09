@@ -7,6 +7,8 @@ import com.jme.math.Vector3f;
 public interface IPolygon extends IGeometry {
 	Vector3f getMeanNormal();
 
+	int getVertexCount();
+
 	List<? extends IPoint> getVertices();
 
 	int[] getPolygonStripCounts();

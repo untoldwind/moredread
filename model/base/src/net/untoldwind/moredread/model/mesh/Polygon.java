@@ -39,6 +39,11 @@ public class Polygon implements IPolygon {
 	}
 
 	@Override
+	public int getVertexCount() {
+		return vertices.size();
+	}
+
+	@Override
 	public List<? extends IPoint> getVertices() {
 		return vertices;
 	}

@@ -29,6 +29,15 @@ public class QuadFace extends Face<QuadMesh> {
 	}
 
 	@Override
+	public int getVertexCount() {
+		return 4;
+	}
+
+	public Vertex getVertex(final int index) {
+		return vertices[index];
+	}
+
+	@Override
 	public List<Vertex> getVertices() {
 		return Arrays.asList(vertices);
 	}

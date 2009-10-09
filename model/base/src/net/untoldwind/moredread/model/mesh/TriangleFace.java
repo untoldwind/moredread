@@ -29,6 +29,15 @@ public class TriangleFace extends Face<TriangleMesh> {
 	}
 
 	@Override
+	public int getVertexCount() {
+		return 3;
+	}
+
+	public Vertex getVertex(final int index) {
+		return vertices[index];
+	}
+
+	@Override
 	public List<Vertex> getVertices() {
 		return Arrays.asList(vertices);
 	}
