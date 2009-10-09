@@ -93,4 +93,76 @@ public class BoolMesh {
 
 		return edge;
 	}
+
+	public BoolEdge getEdge(final BoolVertex v1, final BoolVertex v2) {
+		final EdgeId edgeId = new EdgeId(v1.getIndex(), v2.getIndex());
+
+		return edges.get(edgeId);
+	}
+
+	/**
+	 * Returns the mesh edge on the specified face and relative edge index.
+	 * 
+	 * @param face
+	 *            mesh face
+	 * @param edge
+	 *            face relative edge index
+	 * @return mesh edge on the specified face and relative index, NULL
+	 *         otherwise
+	 */
+	public BoolEdge getEdge(final BoolFace face, final int edge) {
+		if (face.size() == 3) {
+			return getEdge3(face, edge);
+		} else {
+			return getEdge4(face, edge);
+		}
+	}
+
+	/**
+	 * Returns the mesh edge on the specified triangle and relative edge index.
+	 * 
+	 * @param face
+	 *            mesh triangle
+	 * @param edge
+	 *            face relative edge index
+	 * @return mesh edge on the specified triangle and relative index, NULL
+	 *         otherwise
+	 */
+	public BoolEdge getEdge3(final BoolFace face, final int edge) {
+		switch (edge) {
+		case 1:
+			return getEdge(face.getVertex(0), face.getVertex(1));
+		case 2:
+			return getEdge(face.getVertex(1), face.getVertex(2));
+		case 3:
+			return getEdge(face.getVertex(2), face.getVertex(0));
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the mesh edge on the specified quad and relative edge index.
+	 * 
+	 * @param face
+	 *            mesh quad
+	 * @param edge
+	 *            face relative edge index
+	 * @return mesh edge on the specified quad and relative index, NULL
+	 *         otherwise
+	 */
+	public BoolEdge getEdge4(final BoolFace face, final int edge) {
+		switch (edge) {
+		case 1:
+			return getEdge(face.getVertex(0), face.getVertex(1));
+		case 2:
+			return getEdge(face.getVertex(1), face.getVertex(2));
+		case 3:
+			return getEdge(face.getVertex(2), face.getVertex(3));
+		case 4:
+			return getEdge(face.getVertex(3), face.getVertex(0));
+		}
+
+		return null;
+	}
 }

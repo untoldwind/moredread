@@ -1,6 +1,5 @@
 package net.untoldwind.moredread.model.op.bool;
 
-
 public class BoolSegment {
 	private final static int UNDEFINED = 0;
 
@@ -23,6 +22,16 @@ public class BoolSegment {
 		final int aux = cfg1;
 		cfg1 = cfg2;
 		cfg2 = aux;
+	}
+
+	/**
+	 * Returns if the specified end segment configuration is IN.
+	 * 
+	 * @return true if the specified end segment configuration is IN, false
+	 *         otherwise
+	 */
+	static boolean isIn(final int cfg) {
+		return (cfg == 20);
 	}
 
 	/**

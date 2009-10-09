@@ -30,8 +30,7 @@ public class BoolTriangulator {
 	 * @param e
 	 *            relative edge index used to triangulate the face
 	 */
-
-	void BOP_triangulateA(final BoolMesh mesh, final List<BoolFace> faces,
+	static void triangulateA(final BoolMesh mesh, final List<BoolFace> faces,
 			final BoolFace face, final BoolVertex v, final int e) {
 		BoolFace face1, face2;
 		if (e == 1) {
@@ -83,7 +82,7 @@ public class BoolTriangulator {
 	 * @param v
 	 *            vertex index that lays inside face
 	 */
-	void BOP_triangulateB(final BoolMesh mesh, final List<BoolFace> faces,
+	static void triangulateB(final BoolMesh mesh, final List<BoolFace> faces,
 			final BoolFace face, final BoolVertex v) {
 		final BoolFace face1 = new BoolFace(face.getVertex(0), face
 				.getVertex(1), v, face.getPlane(), face.getOriginalFace());

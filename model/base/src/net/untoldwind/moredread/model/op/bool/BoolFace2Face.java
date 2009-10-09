@@ -274,9 +274,87 @@ public class BoolFace2Face {
 	 * @param s
 	 *            segment used to triangulate face
 	 */
-	void triangulate(final List<BoolFace> faces, final BoolFace face,
-			final BoolSegment s) {
-		// TODO
+	void triangulate(final BoolMesh mesh, final List<BoolFace> faces,
+			final BoolFace face, final BoolSegment s) {
+		if (BoolSegment.isUndefined(s.cfg1)) {
+			// Nothing to do
+		} else if (BoolSegment.isVertex(s.cfg1)) {
+			// VERTEX(v1) + VERTEX(v2) => nothing to do
+		} else if (BoolSegment.isEdge(s.cfg1)) {
+			if (BoolSegment.isVertex(s.cfg2) || BoolSegment.isUndefined(s.cfg2)) {
+				// EDGE(v1) + VERTEX(v2)
+				final BoolEdge edge = mesh.getEdge(face, BoolSegment
+						.getEdge(s.cfg1));
+				BoolTriangulator.triangulateA(mesh, faces, face, s.v1,
+						BoolSegment.getEdge(s.cfg1));
+				final BoolFace opposite = getOppositeFace(faces, face, edge);
+				if (opposite != null) {
+					final int e = opposite.getEdgeIndex(edge.getVertex1(), edge
+							.getVertex2());
+					BoolTriangulator.triangulateA(mesh, faces, opposite, s.v1,
+							e);
+				}
+			} else {
+				// EDGE(v1) + EDGE(v2)
+				if (BoolSegment.getEdge(s.cfg1) == BoolSegment.getEdge(s.cfg2)) {
+					// EDGE(v1) == EDGE(v2)
+					final BoolEdge edge = mesh.getEdge(face, BoolSegment
+							.getEdge(s.cfg1));
+					BoolTriangulator.triangulateD(mesh, faces, face, s.v1,
+							s.v2, BoolSegment.getEdge(s.cfg1));
+					final BoolFace opposite = getOppositeFace(faces, face, edge);
+					if (opposite != null) {
+						final int e = opposite.getEdgeIndex(edge.getVertex1(),
+								edge.getVertex2());
+						BoolTriangulator.triangulateD(mesh, faces, opposite,
+								s.v1, s.v2, e);
+					}
+				} else { // EDGE(v1) != EDGE(v2)
+					final BoolEdge edge1 = mesh.getEdge(face, BoolSegment
+							.getEdge(s.cfg1));
+					final BoolEdge edge2 = mesh.getEdge(face, BoolSegment
+							.getEdge(s.cfg2));
+					BoolTriangulator.triangulateE(mesh, faces, face, s.v1,
+							s.v2, BoolSegment.getEdge(s.cfg1), BoolSegment
+									.getEdge(s.cfg2));
+					BoolFace opposite = getOppositeFace(faces, face, edge1);
+					if (opposite != null) {
+						final int e = opposite.getEdgeIndex(edge1.getVertex1(),
+								edge1.getVertex2());
+						BoolTriangulator.triangulateA(mesh, faces, opposite,
+								s.v1, e);
+					}
+					opposite = getOppositeFace(faces, face, edge2);
+					if (opposite != null) {
+						final int e = opposite.getEdgeIndex(edge2.getVertex1(),
+								edge2.getVertex2());
+						BoolTriangulator.triangulateA(mesh, faces, opposite,
+								s.v2, e);
+					}
+				}
+			}
+		} else if (BoolSegment.isIn(s.cfg1)) {
+			if (BoolSegment.isVertex(s.cfg2) || BoolSegment.isUndefined(s.cfg2)) {
+				// IN(v1) + VERTEX(v2)
+				BoolTriangulator.triangulateB(mesh, faces, face, s.v1);
+			} else if (BoolSegment.isEdge(s.cfg2)) {
+				// IN(v1) + EDGE(v2)
+				final BoolEdge edge = mesh.getEdge(face, BoolSegment
+						.getEdge(s.cfg2));
+				BoolTriangulator.triangulateF(mesh, faces, face, s.v1, s.v2,
+						BoolSegment.getEdge(s.cfg2));
+				final BoolFace opposite = getOppositeFace(faces, face, edge);
+				if (opposite != null) {
+					final int e = opposite.getEdgeIndex(edge.getVertex1(), edge
+							.getVertex2());
+					BoolTriangulator.triangulateA(mesh, faces, opposite, s.v2,
+							e);
+				}
+			} else {
+				BoolTriangulator.triangulateC(mesh, faces, face, s.v1, s.v2);
+			}
+		}
+
 	}
 
 	/**
@@ -292,8 +370,8 @@ public class BoolFace2Face {
 	 *            face's edge
 	 * @return first face that shares the edge of input face
 	 */
-	BoolFace BOP_getOppositeFace(final List<BoolFace> faces,
-			final BoolFace face, final BoolEdge edge) {
+	BoolFace getOppositeFace(final List<BoolFace> faces, final BoolFace face,
+			final BoolEdge edge) {
 		if (edge == null) {
 			return null;
 		}
@@ -308,5 +386,121 @@ public class BoolFace2Face {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Removes faces from facesB that are overlapped with anyone from facesA.
+	 * 
+	 * @param mesh
+	 *            mesh that contains the faces, edges and vertices
+	 * @param facesA
+	 *            set of faces from object A
+	 * @param facesB
+	 *            set of faces from object B
+	 */
+	void removeOverlappedFaces(final BoolMesh mesh,
+			final List<BoolFace> facesA, final List<BoolFace> facesB) {
+		for (final BoolFace faceI : facesA) {
+			if (faceI.getTAG() == BoolTag.BROKEN) {
+				continue;
+			}
+			boolean overlapped = false;
+			final Vector3f p1 = faceI.getVertex(0).getPoint();
+			final Vector3f p2 = faceI.getVertex(1).getPoint();
+			final Vector3f p3 = faceI.getVertex(2).getPoint();
+			for (int j = 0; j < facesB.size();) {
+				final BoolFace faceJ = facesB.get(j);
+
+				if (faceJ.getTAG() != BoolTag.BROKEN) {
+					final Plane planeJ = faceJ.getPlane();
+					if (MathUtils.containsPoint(planeJ, p1)
+							&& MathUtils.containsPoint(planeJ, p2)
+							&& MathUtils.containsPoint(planeJ, p3)) {
+						final Vector3f q1 = faceJ.getVertex(0).getPoint();
+						final Vector3f q2 = faceJ.getVertex(1).getPoint();
+						final Vector3f q3 = faceJ.getVertex(2).getPoint();
+
+						if (overlap(planeJ.getNormal(), p1, p2, p3, q1, q2, q3)) {
+							facesB.remove(j);
+							faceJ.setTAG(BoolTag.BROKEN);
+							overlapped = true;
+						} else {
+							j++;
+						}
+					} else {
+						j++;
+					}
+				} else {
+					j++;
+				}
+			}
+			if (overlapped) {
+				faceI.setTAG(BoolTag.OVERLAPPED);
+			}
+		}
+	}
+
+	/**
+	 * Computes if triangle p1,p2,p3 is overlapped with triangle q1,q2,q3.
+	 * 
+	 * @param normal
+	 *            normal of the triangle p1,p2,p3
+	 * @param p1
+	 *            point of first triangle
+	 * @param p2
+	 *            point of first triangle
+	 * @param p3
+	 *            point of first triangle
+	 * @param q1
+	 *            point of second triangle
+	 * @param q2
+	 *            point of second triangle
+	 * @param q3
+	 *            point of second triangle
+	 * @return if there is overlapping between both triangles
+	 */
+	boolean overlap(final Vector3f normal, final Vector3f p1,
+			final Vector3f p2, final Vector3f p3, final Vector3f q1,
+			final Vector3f q2, final Vector3f q3) {
+		final Vector3f p1p2 = p2.subtract(p1);
+		final Plane plane1 = MathUtils.createPlane(p1p2.cross(normal), p1);
+
+		final Vector3f p2p3 = p3.subtract(p2);
+		final Plane plane2 = MathUtils.createPlane(p2p3.cross(normal), p2);
+
+		final Vector3f p3p1 = p1.subtract(p3);
+		final Plane plane3 = MathUtils.createPlane(p3p1.cross(normal), p3);
+
+		int tag1 = BoolTag.createTAG(MathUtils.classify(q1, plane1));
+		int tag2 = BoolTag.createTAG(MathUtils.classify(q1, plane2));
+		int tag3 = BoolTag.createTAG(MathUtils.classify(q1, plane3));
+		final int tagQ1 = BoolTag.createTAG(tag1, tag2, tag3);
+		if (tagQ1 == BoolTag.IN_IN_IN) {
+			return true;
+		}
+
+		tag1 = BoolTag.createTAG(MathUtils.classify(q2, plane1));
+		tag2 = BoolTag.createTAG(MathUtils.classify(q2, plane2));
+		tag3 = BoolTag.createTAG(MathUtils.classify(q2, plane3));
+		final int tagQ2 = BoolTag.createTAG(tag1, tag2, tag3);
+		if (tagQ2 == BoolTag.IN_IN_IN) {
+			return true;
+		}
+
+		tag1 = BoolTag.createTAG(MathUtils.classify(q3, plane1));
+		tag2 = BoolTag.createTAG(MathUtils.classify(q3, plane2));
+		tag3 = BoolTag.createTAG(MathUtils.classify(q3, plane3));
+		final int tagQ3 = BoolTag.createTAG(tag1, tag2, tag3);
+		if (tagQ3 == BoolTag.IN_IN_IN) {
+			return true;
+		}
+
+		if ((tagQ1 & BoolTag.OUT_OUT_OUT) == 0
+				&& (tagQ2 & BoolTag.OUT_OUT_OUT) == 0
+				&& (tagQ3 & BoolTag.OUT_OUT_OUT) == 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

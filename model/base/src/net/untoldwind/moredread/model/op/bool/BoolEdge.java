@@ -17,6 +17,14 @@ public class BoolEdge {
 		this.faces = new ArrayList<BoolFace>();
 	}
 
+	public BoolVertex getVertex1() {
+		return v1;
+	}
+
+	public BoolVertex getVertex2() {
+		return v2;
+	}
+
 	public List<BoolFace> getFaces() {
 		return faces;
 	}
