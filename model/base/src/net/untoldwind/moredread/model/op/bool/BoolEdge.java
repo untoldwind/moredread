@@ -12,8 +12,8 @@ public class BoolEdge {
 		this.v1 = v1;
 		this.v2 = v2;
 
-		this.v1.addEdges(this);
-		this.v2.addEdges(this);
+		this.v1.addEdge(this);
+		this.v2.addEdge(this);
 		this.faces = new ArrayList<BoolFace>();
 	}
 
@@ -31,5 +31,21 @@ public class BoolEdge {
 
 	void addFace(final BoolFace face) {
 		faces.add(face);
+	}
+
+	/**
+	 * Replaces an edge vertex index.
+	 * 
+	 * @param oldIndex
+	 *            old vertex index
+	 * @param newIndex
+	 *            new vertex index
+	 */
+	void replaceVertexIndex(final BoolVertex oldIndex, final BoolVertex newIndex) {
+		if (v1 == oldIndex) {
+			v1 = newIndex;
+		} else if (v2 == oldIndex) {
+			v2 = newIndex;
+		}
 	}
 }

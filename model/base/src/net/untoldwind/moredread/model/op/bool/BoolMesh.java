@@ -174,4 +174,94 @@ public class BoolMesh {
 
 		return vertex;
 	}
+
+	/**
+	 * Marks faces which bad edges as BROKEN (invalid face, no further
+	 * processing).
+	 * 
+	 * @param edge
+	 *            edge which is being replaced
+	 * @param mesh
+	 *            mesh containing faces
+	 */
+
+	static void removeBrokenFaces(final BoolEdge edge) {
+		final List<BoolFace> edgeFaces = edge.getFaces();
+		for (final BoolFace face : edgeFaces) {
+			face.setTAG(BoolTag.BROKEN);
+		}
+	}
+
+	/**
+	 * Replaces a vertex index.
+	 * 
+	 * @param oldIndex
+	 *            old vertex index
+	 * @param newIndex
+	 *            new vertex index
+	 */
+	BoolVertex replaceVertexIndex(final BoolVertex oldIndex,
+			final BoolVertex newIndex) {
+		if (oldIndex == newIndex) {
+			return newIndex;
+		}
+
+		// Update faces, edges and vertices
+		final BoolVertex oldVertex = oldIndex;
+		final BoolVertex newVertex = newIndex;
+		final List<BoolEdge> oldEdges = oldVertex.getEdges();
+
+		// Update faces to the newIndex
+		for (final BoolEdge edge : oldEdges) {
+			if ((edge.getVertex1() == oldIndex && edge.getVertex2() == newIndex)
+					|| (edge.getVertex2() == oldIndex && edge.getVertex1() == newIndex)) {
+				// Remove old edge ==> set edge faces to BROKEN
+				removeBrokenFaces(edge);
+				oldVertex.removeEdge(edge);
+				newVertex.removeEdge(edge);
+			} else {
+				final List<BoolFace> faces = edge.getFaces();
+				for (final BoolFace face : faces) {
+					if (face.getTAG() != BoolTag.BROKEN) {
+						face.replaceVertexIndex(oldIndex, newIndex);
+					}
+				}
+			}
+		}
+
+		for (final BoolEdge edge : oldEdges) {
+			final BoolEdge edge2;
+			BoolVertex v1 = edge.getVertex1();
+
+			v1 = (v1 == oldIndex ? edge.getVertex2() : v1);
+			if ((edge2 = getEdge(newIndex, v1)) == null) {
+				edge.replaceVertexIndex(oldIndex, newIndex);
+				if (edge.getVertex1() == edge.getVertex2()) {
+					removeBrokenFaces(edge);
+					oldVertex.removeEdge(edge);
+				}
+
+				newVertex.addEdge(edge);
+			} else {
+				final List<BoolFace> faces = edge.getFaces();
+				for (final BoolFace f : faces) {
+					if (f.getTAG() != BoolTag.BROKEN) {
+						edge2.addFace(f);
+					}
+				}
+				final BoolVertex oppositeVertex = v1;
+				oppositeVertex.removeEdge(edge);
+				edge.replaceVertexIndex(oldIndex, newIndex);
+				if (edge.getVertex1() == edge.getVertex2()) {
+					removeBrokenFaces(edge);
+					oldVertex.removeEdge(edge);
+					newVertex.removeEdge(edge);
+				}
+
+			}
+		}
+		oldVertex.setTAG(BoolTag.BROKEN);
+
+		return newIndex;
+	}
 }

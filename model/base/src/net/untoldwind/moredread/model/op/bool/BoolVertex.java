@@ -25,7 +25,23 @@ public class BoolVertex extends Point {
 		return index;
 	}
 
-	public void addEdges(final BoolEdge edge) {
+	public void addEdge(final BoolEdge edge) {
 		edges.add(edge);
+	}
+
+	public void removeEdge(final BoolEdge edge) {
+		edges.remove(edge);
+	}
+
+	public List<BoolEdge> getEdges() {
+		return edges;
+	}
+
+	public int getTAG() {
+		return tag;
+	}
+
+	public void setTAG(final int tag) {
+		this.tag = tag;
 	}
 }

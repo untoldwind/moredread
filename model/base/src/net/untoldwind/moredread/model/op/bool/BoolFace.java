@@ -138,4 +138,43 @@ public class BoolFace {
 		}
 	}
 
+	/**
+	 * Replaces a face vertex index.
+	 * 
+	 * @param oldIndex
+	 *            old vertex index
+	 * @param newIndex
+	 *            new vertex index
+	 */
+	void replaceVertexIndex(final BoolVertex oldIndex, final BoolVertex newIndex) {
+		if (size() == 3) {
+			/*
+			 * if the old index really exists, and new index also exists
+			 * already, don't create an edge with both vertices == newIndex
+			 */
+
+			if ((vertices[0] == oldIndex || vertices[1] == oldIndex || vertices[2] == oldIndex)
+					&& (vertices[0] == newIndex || vertices[1] == newIndex || vertices[2] == newIndex)) {
+				setTAG(BoolTag.BROKEN);
+			}
+
+			if (vertices[0] == oldIndex) {
+				vertices[0] = newIndex;
+			} else if (vertices[1] == oldIndex) {
+				vertices[1] = newIndex;
+			} else if (vertices[2] == oldIndex) {
+				vertices[2] = newIndex;
+			}
+		} else {
+			if (vertices[0] == oldIndex) {
+				vertices[0] = newIndex;
+			} else if (vertices[1] == oldIndex) {
+				vertices[1] = newIndex;
+			} else if (vertices[2] == oldIndex) {
+				vertices[2] = newIndex;
+			} else if (vertices[3] == oldIndex) {
+				vertices[3] = newIndex;
+			}
+		}
+	}
 }
