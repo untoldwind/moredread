@@ -56,7 +56,8 @@ public class BSPBooleanOperation implements IBooleanOperation {
 			System.out.println(vertex);
 		}
 		for (final BoolFace face : meshC.getFaces()) {
-			if (face.getTAG() != BoolTag.BROKEN) {
+			if (face.getTAG() != BoolTag.BROKEN
+					&& face.getTAG() != BoolTag.PHANTOM) {
 				System.out.println(face);
 
 				result.addFace(face.getVertex(0).getIndex(), face.getVertex(1)
