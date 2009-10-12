@@ -46,16 +46,24 @@ public class BSPBooleanOperation implements IBooleanOperation {
 			facesB.add(new BoolFace(v1, v2, v3, plane, null));
 		}
 
-		BoolImpl.intersectionBoolOp(meshC, facesA, facesB, true, true);
+		BoolImpl.intersectionBoolOp(meshC, facesA, facesB, false, false);
+
+		final TriangleMesh result = new TriangleMesh();
 
 		System.out.println(">> Final ");
 		for (final BoolVertex vertex : meshC.getVertices()) {
+			result.addVertex(vertex.getPoint());
 			System.out.println(vertex);
 		}
 		for (final BoolFace face : meshC.getFaces()) {
-			System.out.println(face);
-		}
-		return null;
-	}
+			if (face.getTAG() != BoolTag.BROKEN) {
+				System.out.println(face);
 
+				result.addFace(face.getVertex(0).getIndex(), face.getVertex(1)
+						.getIndex(), face.getVertex(2).getIndex());
+			}
+		}
+
+		return result;
+	}
 }
