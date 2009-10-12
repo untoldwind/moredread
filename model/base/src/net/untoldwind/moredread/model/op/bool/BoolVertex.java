@@ -18,6 +18,7 @@ public class BoolVertex extends Point {
 		this.index = index;
 
 		edges = new ArrayList<BoolEdge>();
+		tag = BoolTag.UNCLASSIFIED;
 	}
 
 	public int getIndex() {

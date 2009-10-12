@@ -54,6 +54,7 @@ public class BoolMesh {
 	}
 
 	void addFace3(final BoolFace face) {
+		face.setIndex(faces.size());
 		faces.add(face);
 
 		final BoolVertex index1 = face.getVertex(0);
@@ -78,6 +79,7 @@ public class BoolMesh {
 	}
 
 	void addFace4(final BoolFace face) {
+		face.setIndex(faces.size());
 		faces.add(face);
 
 		final BoolVertex index1 = face.getVertex(0);
@@ -298,9 +300,8 @@ public class BoolMesh {
 					+ vertex.getPoint().x + " " + vertex.getPoint().y + " "
 					+ vertex.getPoint().z);
 		}
-		int faceIdx = 0;
 		for (final BoolFace face : faces) {
-			out.print("Face " + (faceIdx++) + " (" + face.getTAG() + ")");
+			out.print("Face " + face.getIndex() + " (" + face.getTAG() + ")");
 			for (final BoolVertex vertex : face.getVertices()) {
 				out.print(" ");
 				out.print(vertex.getIndex());

@@ -45,8 +45,12 @@ public class BoolImpl {
 			meshFilter(meshC, facesB, bspA);
 		}
 
+		meshC.dumpMesh(System.out);
+
 		// Face 2 Face
 		BoolFace2Face.Face2Face(meshC, facesA, facesB);
+
+		meshC.dumpMesh(System.out);
 
 		// BSP classification
 		meshClassify(meshC, facesA, bspB);

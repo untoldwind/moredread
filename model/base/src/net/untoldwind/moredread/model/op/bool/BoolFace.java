@@ -10,6 +10,7 @@ import com.jme.math.Plane;
 public class BoolFace {
 	Plane plane;
 	BoolVertex[] vertices;
+	int index;
 	int split;
 	int tag;
 	BoolFace originalFace;
@@ -21,6 +22,7 @@ public class BoolFace {
 		this.plane = plane;
 		this.originalFace = originalFace;
 		this.tag = BoolTag.UNCLASSIFIED;
+		this.split = 0;
 	}
 
 	public BoolVertex getVertex(final int idx) {
@@ -53,6 +55,14 @@ public class BoolFace {
 
 	public void setTAG(final int tag) {
 		this.tag = tag;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(final int index) {
+		this.index = index;
 	}
 
 	public BoolFace getOriginalFace() {
