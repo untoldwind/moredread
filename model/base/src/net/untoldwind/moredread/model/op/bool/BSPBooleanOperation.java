@@ -47,7 +47,13 @@ public class BSPBooleanOperation implements IBooleanOperation {
 		}
 
 		BoolImpl.intersectionBoolOp(meshC, facesA, facesB, false, false);
-		// TODO Auto-generated method stub
+
+		for (final BoolVertex vertex : meshC.getVertices()) {
+			System.out.println(vertex);
+		}
+		for (final BoolFace face : meshC.getFaces()) {
+			System.out.println(face);
+		}
 		return null;
 	}
 

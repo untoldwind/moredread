@@ -28,6 +28,10 @@ public class BoolMesh {
 		return vertices.get(index);
 	}
 
+	public List<BoolVertex> getVertices() {
+		return vertices;
+	}
+
 	public int getNumFaces() {
 		return faces.size();
 	}

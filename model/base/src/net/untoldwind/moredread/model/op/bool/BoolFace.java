@@ -177,4 +177,18 @@ public class BoolFace {
 			}
 		}
 	}
+
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("BoolFace [plane=");
+		builder.append(plane);
+		builder.append(", tag=");
+		builder.append(tag);
+		builder.append(", vertices=");
+		builder.append(Arrays.toString(vertices));
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

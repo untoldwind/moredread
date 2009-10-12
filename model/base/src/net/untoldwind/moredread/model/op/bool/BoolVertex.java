@@ -10,7 +10,6 @@ import com.jme.math.Vector3f;
 public class BoolVertex extends Point {
 	int index;
 
-	Vector3f point;
 	List<BoolEdge> edges;
 	int tag;
 
@@ -44,4 +43,20 @@ public class BoolVertex extends Point {
 	public void setTAG(final int tag) {
 		this.tag = tag;
 	}
+
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("BoolVertex [edges=");
+		builder.append(edges);
+		builder.append(", index=");
+		builder.append(index);
+		builder.append(", point=");
+		builder.append(getPoint());
+		builder.append(", tag=");
+		builder.append(tag);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }
