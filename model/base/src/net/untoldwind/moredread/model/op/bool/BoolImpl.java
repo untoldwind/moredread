@@ -22,9 +22,9 @@ public class BoolImpl {
 	 *            determines if object B is inverted
 	 * @return operation state: BOP_OK, BOP_NO_SOLID, BOP_ERROR
 	 */
-	void intersectionBoolOp(final BoolMesh meshC, final List<BoolFace> facesA,
-			final List<BoolFace> facesB, final boolean invertMeshA,
-			final boolean invertMeshB) {
+	static void intersectionBoolOp(final BoolMesh meshC,
+			final List<BoolFace> facesA, final List<BoolFace> facesB,
+			final boolean invertMeshA, final boolean invertMeshB) {
 		// Create BSPs trees for mesh A & B
 		final BSPTree bspA = new BSPTree();
 		bspA.addMesh(facesA);
@@ -71,7 +71,7 @@ public class BoolImpl {
 	 * @param bsp
 	 *            BSP tree used to filter
 	 */
-	void meshFilter(final BoolMesh meshC, final List<BoolFace> faces,
+	static void meshFilter(final BoolMesh meshC, final List<BoolFace> faces,
 			final BSPTree bsp) {
 		int tag;
 
@@ -105,8 +105,9 @@ public class BoolImpl {
 	 * @param inverted
 	 *            determines if the object is inverted
 	 */
-	void simplifiedMeshFilter(final BoolMesh meshC, final List<BoolFace> faces,
-			final BSPTree bsp, final boolean inverted) {
+	static void simplifiedMeshFilter(final BoolMesh meshC,
+			final List<BoolFace> faces, final BSPTree bsp,
+			final boolean inverted) {
 		final Iterator<BoolFace> it = faces.iterator();
 
 		while (it.hasNext()) {
@@ -135,7 +136,7 @@ public class BoolImpl {
 	 * @param bsp
 	 *            BSP tree used to face classify
 	 */
-	void meshClassify(final BoolMesh meshC, final List<BoolFace> faces,
+	static void meshClassify(final BoolMesh meshC, final List<BoolFace> faces,
 			final BSPTree bsp) {
 		for (final BoolFace face : faces) {
 			if (face.getTAG() != BoolTag.BROKEN) {
