@@ -3,6 +3,8 @@ package net.untoldwind.moredread.model.op.bool;
 import java.util.Arrays;
 import java.util.List;
 
+import net.untoldwind.moredread.model.scene.BoundingBox;
+
 import com.jme.math.Plane;
 
 public class BoolFace {
@@ -11,6 +13,7 @@ public class BoolFace {
 	int split;
 	int tag;
 	BoolFace originalFace;
+	BoundingBox boundingBox;
 
 	public BoolFace(final BoolVertex v1, final BoolVertex v2,
 			final BoolVertex v3, final Plane plane, final BoolFace originalFace) {
@@ -57,6 +60,13 @@ public class BoolFace {
 
 	public void setOriginalFace(final BoolFace originalFace) {
 		this.originalFace = originalFace;
+	}
+
+	public BoundingBox getBoundingBox() {
+		if (boundingBox == null) {
+			boundingBox = new BoundingBox(Arrays.asList(vertices));
+		}
+		return boundingBox;
 	}
 
 	/**
@@ -147,6 +157,7 @@ public class BoolFace {
 	 *            new vertex index
 	 */
 	void replaceVertexIndex(final BoolVertex oldIndex, final BoolVertex newIndex) {
+		boundingBox = null;
 		if (size() == 3) {
 			/*
 			 * if the old index really exists, and new index also exists

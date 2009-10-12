@@ -74,7 +74,7 @@ public class BoolFace2Face {
 			final Vector3f p3 = faceA.getVertex(2).getPoint();
 
 			/* get (or create) bounding box for face A */
-			final BoundingBox boxA = new BoundingBox(faceA.getVertices());
+			final BoundingBox boxA = faceA.getBoundingBox();
 
 			/* start checking B faces with the previously stored split index */
 
@@ -88,8 +88,7 @@ public class BoolFace2Face {
 						&& (faceB.getTAG() != BoolTag.PHANTOM)) {
 
 					/* get (or create) bounding box for face B */
-					final BoundingBox boxB = new BoundingBox(faceB
-							.getVertices());
+					final BoundingBox boxB = faceB.getBoundingBox();
 
 					if (boxA.intersects(boxB)) {
 						final Plane planeB = faceB.getPlane();
