@@ -233,7 +233,8 @@ public class BoolMesh {
 		// Update faces, edges and vertices
 		final BoolVertex oldVertex = oldIndex;
 		final BoolVertex newVertex = newIndex;
-		final List<BoolEdge> oldEdges = oldVertex.getEdges();
+		final List<BoolEdge> oldEdges = new ArrayList<BoolEdge>(oldVertex
+				.getEdges());
 
 		// Update faces to the newIndex
 		for (final BoolEdge edge : oldEdges) {

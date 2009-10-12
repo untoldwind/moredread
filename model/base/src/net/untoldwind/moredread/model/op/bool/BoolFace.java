@@ -14,7 +14,7 @@ public class BoolFace {
 
 	public BoolFace(final BoolVertex v1, final BoolVertex v2,
 			final BoolVertex v3, final Plane plane, final BoolFace originalFace) {
-		this.vertices = new BoolVertex[] { v1, v2, v2 };
+		this.vertices = new BoolVertex[] { v1, v2, v3 };
 		this.plane = plane;
 		this.originalFace = originalFace;
 	}

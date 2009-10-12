@@ -48,4 +48,16 @@ public class BoolEdge {
 			v2 = newIndex;
 		}
 	}
+
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("BoolEdge [v1=");
+		builder.append(v1.getIndex());
+		builder.append(", v2=");
+		builder.append(v2.getIndex());
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

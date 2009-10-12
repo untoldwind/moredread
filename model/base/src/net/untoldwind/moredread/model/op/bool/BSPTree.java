@@ -1,5 +1,6 @@
 package net.untoldwind.moredread.model.op.bool;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -167,6 +168,13 @@ public class BSPTree {
 			return root.getDeep();
 		} else {
 			return 0;
+		}
+	}
+
+	public void dumpTree(final PrintStream out) {
+		out.println("BSPTree");
+		if (root != null) {
+			root.dumpNode("", out);
 		}
 	}
 }

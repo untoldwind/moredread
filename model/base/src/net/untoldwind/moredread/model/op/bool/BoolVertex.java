@@ -47,12 +47,12 @@ public class BoolVertex extends Point {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		builder.append("BoolVertex [edges=");
-		builder.append(edges);
-		builder.append(", index=");
+		builder.append("BoolVertex [index=");
 		builder.append(index);
-		builder.append(", point=");
+		builder.append(", getPoint()=");
 		builder.append(getPoint());
+		builder.append(", edges=");
+		builder.append(edges);
 		builder.append(", tag=");
 		builder.append(tag);
 		builder.append("]");

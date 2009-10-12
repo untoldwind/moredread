@@ -1,5 +1,6 @@
 package net.untoldwind.moredread.model.op.bool;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,10 +69,7 @@ public class BSPNode {
 		if (tag == BoolTag.ON) {
 			// face lies on hyperplane: do nothing
 		} else if ((tag & BoolTag.IN) != 0 && (tag & BoolTag.OUT) == 0) { // face
-			// is
-			// entirely
-			// on
-			// inside
+			// is entirely on inside
 			if (inChild != null) {
 				newDeep = inChild.addFace(points, plane) + 1;
 			} else {
@@ -79,10 +77,7 @@ public class BSPNode {
 				newDeep = 2;
 			}
 		} else if ((tag & BoolTag.OUT) != 0 && (tag & BoolTag.IN) == 0) { // face
-			// is
-			// entirely
-			// on
-			// outside
+			// is entirely on outside
 			if (outChild != null) {
 				newDeep = outChild.addFace(points, plane) + 1;
 			} else {
@@ -754,4 +749,20 @@ public class BSPNode {
 		}
 	}
 
+	public void dumpNode(final String ident, final PrintStream out) {
+		out.print(ident);
+		out.print(deep);
+		out.print(" ");
+		out.println(plane);
+		if (inChild != null) {
+			out.print(ident);
+			out.println("IN");
+			inChild.dumpNode(ident + "  ", out);
+		}
+		if (outChild != null) {
+			out.print(ident);
+			out.println("OUT");
+			outChild.dumpNode(ident + "  ", out);
+		}
+	}
 }

@@ -46,8 +46,9 @@ public class BSPBooleanOperation implements IBooleanOperation {
 			facesB.add(new BoolFace(v1, v2, v3, plane, null));
 		}
 
-		BoolImpl.intersectionBoolOp(meshC, facesA, facesB, false, false);
+		BoolImpl.intersectionBoolOp(meshC, facesA, facesB, true, true);
 
+		System.out.println(">> Final ");
 		for (final BoolVertex vertex : meshC.getVertices()) {
 			System.out.println(vertex);
 		}

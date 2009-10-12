@@ -65,7 +65,9 @@ public class BoolFace2Face {
 	 */
 	static void Face2Face(final BoolMesh mesh, final List<BoolFace> facesA,
 			final List<BoolFace> facesB) {
-		for (final BoolFace faceA : facesA) {
+		for (int idxFaceA = 0; idxFaceA < facesA.size(); idxFaceA++) {
+			final BoolFace faceA = facesA.get(idxFaceA);
+
 			final Plane planeA = faceA.getPlane();
 			final Vector3f p1 = faceA.getVertex(0).getPoint();
 			final Vector3f p2 = faceA.getVertex(1).getPoint();
@@ -284,6 +286,8 @@ public class BoolFace2Face {
 		if (BoolSegment.isDefined(sA.cfg1) && BoolSegment.isDefined(sB.cfg1)) {
 			// There is an intesection, build the X-segment
 			final BoolSegment xSegment[] = new BoolSegment[2];
+			xSegment[0] = new BoolSegment();
+			xSegment[1] = new BoolSegment();
 			createXS(mesh, faceA, faceB, sA, sB, false, xSegment);
 
 			int sizefaces = mesh.getNumFaces();
