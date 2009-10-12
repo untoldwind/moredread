@@ -31,7 +31,9 @@ public class BSPBooleanOperation implements IBooleanOperation {
 			final BoolVertex v3 = meshC.getVertex(face.getVertex(2).getIndex());
 			final Plane plane = MathUtils.createPlane(v1.getPoint(), v2
 					.getPoint(), v3.getPoint());
-			facesA.add(new BoolFace(v1, v2, v3, plane, null));
+			final BoolFace boolFace = new BoolFace(v1, v2, v3, plane, null);
+			facesA.add(boolFace);
+			meshC.addFace(boolFace);
 		}
 		final List<BoolFace> facesB = new ArrayList<BoolFace>();
 		for (final TriangleFace face : meshB.getFaces()) {
@@ -43,7 +45,9 @@ public class BSPBooleanOperation implements IBooleanOperation {
 					+ offsetB);
 			final Plane plane = MathUtils.createPlane(v1.getPoint(), v2
 					.getPoint(), v3.getPoint());
-			facesB.add(new BoolFace(v1, v2, v3, plane, null));
+			final BoolFace boolFace = new BoolFace(v1, v2, v3, plane, null);
+			facesB.add(boolFace);
+			meshC.addFace(boolFace);
 		}
 
 		BoolImpl.intersectionBoolOp(meshC, facesA, facesB, false, false);
