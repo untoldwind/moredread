@@ -502,7 +502,7 @@ public class MathUtils {
 		final Vector3f mn = n.normalize();
 		final float md = mn.dot(p);
 
-		return new Plane(n, md);
+		return new Plane(mn, md);
 	}
 
 	public static Plane createPlane(final Vector3f a, final Vector3f b,
