@@ -1,5 +1,6 @@
 package net.untoldwind.moredread.model.op.bool;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -288,5 +289,23 @@ public class BoolMesh {
 		oldVertex.setTAG(BoolTag.BROKEN);
 
 		return newIndex;
+	}
+
+	public void dumpMesh(final PrintStream out) {
+		out.println("BSPMesh");
+		for (final BoolVertex vertex : vertices) {
+			out.println("Point " + vertex.getIndex() + ": "
+					+ vertex.getPoint().x + " " + vertex.getPoint().y + " "
+					+ vertex.getPoint().z);
+		}
+		int faceIdx = 0;
+		for (final BoolFace face : faces) {
+			out.print("Face " + (faceIdx++) + " (" + face.getTAG() + ")");
+			for (final BoolVertex vertex : face.getVertices()) {
+				out.print(" ");
+				out.print(vertex.getIndex());
+			}
+			out.println();
+		}
 	}
 }

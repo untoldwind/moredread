@@ -20,6 +20,7 @@ public class BoolFace {
 		this.vertices = new BoolVertex[] { v1, v2, v3 };
 		this.plane = plane;
 		this.originalFace = originalFace;
+		this.tag = BoolTag.UNCLASSIFIED;
 	}
 
 	public BoolVertex getVertex(final int idx) {
