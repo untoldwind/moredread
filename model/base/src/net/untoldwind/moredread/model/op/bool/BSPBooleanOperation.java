@@ -13,8 +13,12 @@ import com.jme.math.Plane;
 public class BSPBooleanOperation implements IBooleanOperation {
 
 	@Override
-	public TriangleMesh intersect(final TriangleMesh meshA,
-			final TriangleMesh meshB) {
+	public TriangleMesh performBoolean(final BoolOperation operation,
+			final TriangleMesh meshA, final TriangleMesh meshB) {
+		final boolean invertMeshA = (operation == BoolOperation.UNION);
+		final boolean invertMeshB = (operation != BoolOperation.INTERSECTION);
+		final boolean invertMeshC = (operation == BoolOperation.UNION);
+
 		final BoolMesh meshC = new BoolMesh();
 
 		for (final Vertex vertex : meshA.getVertices()) {
@@ -29,11 +33,20 @@ public class BSPBooleanOperation implements IBooleanOperation {
 			final BoolVertex v1 = meshC.getVertex(face.getVertex(0).getIndex());
 			final BoolVertex v2 = meshC.getVertex(face.getVertex(1).getIndex());
 			final BoolVertex v3 = meshC.getVertex(face.getVertex(2).getIndex());
-			final Plane plane = MathUtils.createPlane(v1.getPoint(), v2
-					.getPoint(), v3.getPoint());
-			final BoolFace boolFace = new BoolFace(v1, v2, v3, plane, null);
-			facesA.add(boolFace);
-			meshC.addFace(boolFace);
+
+			if (invertMeshA) {
+				final Plane plane = MathUtils.createPlane(v3.getPoint(), v2
+						.getPoint(), v1.getPoint());
+				final BoolFace boolFace = new BoolFace(v3, v2, v1, plane, null);
+				facesA.add(boolFace);
+				meshC.addFace(boolFace);
+			} else {
+				final Plane plane = MathUtils.createPlane(v1.getPoint(), v2
+						.getPoint(), v3.getPoint());
+				final BoolFace boolFace = new BoolFace(v1, v2, v3, plane, null);
+				facesA.add(boolFace);
+				meshC.addFace(boolFace);
+			}
 		}
 		final List<BoolFace> facesB = new ArrayList<BoolFace>();
 		for (final TriangleFace face : meshB.getFaces()) {
@@ -43,14 +56,23 @@ public class BSPBooleanOperation implements IBooleanOperation {
 					+ offsetB);
 			final BoolVertex v3 = meshC.getVertex(face.getVertex(2).getIndex()
 					+ offsetB);
-			final Plane plane = MathUtils.createPlane(v1.getPoint(), v2
-					.getPoint(), v3.getPoint());
-			final BoolFace boolFace = new BoolFace(v1, v2, v3, plane, null);
-			facesB.add(boolFace);
-			meshC.addFace(boolFace);
+			if (invertMeshB) {
+				final Plane plane = MathUtils.createPlane(v3.getPoint(), v2
+						.getPoint(), v1.getPoint());
+				final BoolFace boolFace = new BoolFace(v3, v2, v1, plane, null);
+				facesB.add(boolFace);
+				meshC.addFace(boolFace);
+			} else {
+				final Plane plane = MathUtils.createPlane(v1.getPoint(), v2
+						.getPoint(), v3.getPoint());
+				final BoolFace boolFace = new BoolFace(v1, v2, v3, plane, null);
+				facesB.add(boolFace);
+				meshC.addFace(boolFace);
+			}
 		}
 
-		BoolImpl.intersectionBoolOp(meshC, facesA, facesB, false, false);
+		BoolImpl.intersectionBoolOp(meshC, facesA, facesB, invertMeshA,
+				invertMeshB);
 
 		final TriangleMesh result = new TriangleMesh();
 
@@ -61,8 +83,15 @@ public class BSPBooleanOperation implements IBooleanOperation {
 			if (face.getTAG() != BoolTag.BROKEN
 					&& face.getTAG() != BoolTag.PHANTOM) {
 
-				result.addFace(face.getVertex(0).getIndex(), face.getVertex(1)
-						.getIndex(), face.getVertex(2).getIndex());
+				if (invertMeshC) {
+					result.addFace(face.getVertex(2).getIndex(), face
+							.getVertex(1).getIndex(), face.getVertex(0)
+							.getIndex());
+				} else {
+					result.addFace(face.getVertex(0).getIndex(), face
+							.getVertex(1).getIndex(), face.getVertex(2)
+							.getIndex());
+				}
 			}
 		}
 

@@ -7,6 +7,7 @@ public class BoolEdge {
 	BoolVertex v1;
 	BoolVertex v2;
 	List<BoolFace> faces;
+	boolean used;
 
 	public BoolEdge(final BoolVertex v1, final BoolVertex v2) {
 		this.v1 = v1;
@@ -15,6 +16,7 @@ public class BoolEdge {
 		this.v1.addEdge(this);
 		this.v2.addEdge(this);
 		this.faces = new ArrayList<BoolFace>();
+		this.used = true;
 	}
 
 	public BoolVertex getVertex1() {
@@ -30,7 +32,21 @@ public class BoolEdge {
 	}
 
 	void addFace(final BoolFace face) {
-		faces.add(face);
+		if (faces.contains(face)) {
+			faces.add(face);
+		}
+	}
+
+	void removeFace(final BoolFace face) {
+		faces.remove(face);
+	}
+
+	public boolean isUsed() {
+		return used;
+	}
+
+	public void setUsed(final boolean used) {
+		this.used = used;
 	}
 
 	/**

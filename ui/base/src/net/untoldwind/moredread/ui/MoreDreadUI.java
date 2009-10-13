@@ -241,10 +241,29 @@ public class MoreDreadUI extends AbstractUIPlugin {
 					.createBooleanOperation(BooleanOperationFactory.Implementation.BSP);
 
 			final SpatialNode node8 = new MeshNode(scene, "Intersect result",
-					booleanOperation.intersect(cube1, cube2));
+					booleanOperation.performBoolean(
+							IBooleanOperation.BoolOperation.INTERSECTION,
+							cube1, cube2));
 
 			node8.setLocalScale(new Vector3f(3.0f, 3.0f, 3.0f));
 			node8.setLocalTranslation(new Vector3f(-10f, -10f, 0));
+
+			final SpatialNode node9 = new MeshNode(scene, "Union result",
+					booleanOperation
+							.performBoolean(
+									IBooleanOperation.BoolOperation.UNION,
+									cube1, cube2));
+
+			node9.setLocalScale(new Vector3f(3.0f, 3.0f, 3.0f));
+			node9.setLocalTranslation(new Vector3f(-20f, -10f, 0));
+
+			final SpatialNode node10 = new MeshNode(scene, "Difference result",
+					booleanOperation.performBoolean(
+							IBooleanOperation.BoolOperation.DIFFERENCE, cube1,
+							cube2));
+
+			node10.setLocalScale(new Vector3f(3.0f, 3.0f, 3.0f));
+			node10.setLocalTranslation(new Vector3f(-30f, -10f, 0));
 		} finally {
 			scene.getSceneChangeHandler().commit();
 		}

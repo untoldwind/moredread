@@ -21,7 +21,8 @@ public class BooleanOpTest {
 		final IBooleanOperation booleanOperation = BooleanOperationFactory
 				.createBooleanOperation(BooleanOperationFactory.Implementation.BSP);
 
-		booleanOperation.intersect(cube1, cube2);
+		booleanOperation.performBoolean(
+				IBooleanOperation.BoolOperation.INTERSECTION, cube1, cube2);
 	}
 
 	public static void main(final String[] args) {

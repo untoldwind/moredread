@@ -2,6 +2,7 @@ package net.untoldwind.moredread.model.op.bool;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +36,10 @@ public class BoolMesh {
 
 	public int getNumFaces() {
 		return faces.size();
+	}
+
+	public Collection<BoolEdge> getEdges() {
+		return edges.values();
 	}
 
 	public BoolFace getFace(final int idx) {
