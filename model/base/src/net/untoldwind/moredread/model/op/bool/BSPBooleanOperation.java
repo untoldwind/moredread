@@ -24,7 +24,7 @@ public class BSPBooleanOperation implements IBooleanOperation {
 		for (final Vertex vertex : meshA.getVertices()) {
 			meshC.addVertex(vertex.getPoint());
 		}
-		final int offsetB = meshC.getNumVertexs();
+		final int vertexOffsetB = meshC.getNumVertexs();
 		for (final Vertex vertex : meshB.getVertices()) {
 			meshC.addVertex(vertex.getPoint());
 		}
@@ -37,13 +37,15 @@ public class BSPBooleanOperation implements IBooleanOperation {
 			if (invertMeshA) {
 				final Plane plane = MathUtils.createPlane(v3.getPoint(), v2
 						.getPoint(), v1.getPoint());
-				final BoolFace boolFace = new BoolFace(v3, v2, v1, plane, null);
+				final BoolFace boolFace = new BoolFace(v3, v2, v1, plane, face
+						.getIndex());
 				facesA.add(boolFace);
 				meshC.addFace(boolFace);
 			} else {
 				final Plane plane = MathUtils.createPlane(v1.getPoint(), v2
 						.getPoint(), v3.getPoint());
-				final BoolFace boolFace = new BoolFace(v1, v2, v3, plane, null);
+				final BoolFace boolFace = new BoolFace(v1, v2, v3, plane, face
+						.getIndex());
 				facesA.add(boolFace);
 				meshC.addFace(boolFace);
 			}
@@ -51,21 +53,25 @@ public class BSPBooleanOperation implements IBooleanOperation {
 		final List<BoolFace> facesB = new ArrayList<BoolFace>();
 		for (final TriangleFace face : meshB.getFaces()) {
 			final BoolVertex v1 = meshC.getVertex(face.getVertex(0).getIndex()
-					+ offsetB);
+					+ vertexOffsetB);
 			final BoolVertex v2 = meshC.getVertex(face.getVertex(1).getIndex()
-					+ offsetB);
+					+ vertexOffsetB);
 			final BoolVertex v3 = meshC.getVertex(face.getVertex(2).getIndex()
-					+ offsetB);
+					+ vertexOffsetB);
 			if (invertMeshB) {
 				final Plane plane = MathUtils.createPlane(v3.getPoint(), v2
 						.getPoint(), v1.getPoint());
-				final BoolFace boolFace = new BoolFace(v3, v2, v1, plane, null);
+				final BoolFace boolFace = new BoolFace(v3, v2, v1, plane, face
+						.getIndex()
+						+ facesA.size());
 				facesB.add(boolFace);
 				meshC.addFace(boolFace);
 			} else {
 				final Plane plane = MathUtils.createPlane(v1.getPoint(), v2
 						.getPoint(), v3.getPoint());
-				final BoolFace boolFace = new BoolFace(v1, v2, v3, plane, null);
+				final BoolFace boolFace = new BoolFace(v1, v2, v3, plane, face
+						.getIndex()
+						+ facesA.size());
 				facesB.add(boolFace);
 				meshC.addFace(boolFace);
 			}

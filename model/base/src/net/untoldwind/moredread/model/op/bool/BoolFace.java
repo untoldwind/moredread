@@ -13,14 +13,14 @@ public class BoolFace {
 	int index;
 	int split;
 	int tag;
-	BoolFace originalFace;
+	int originalFaceIndex;
 	BoundingBox boundingBox;
 
 	public BoolFace(final BoolVertex v1, final BoolVertex v2,
-			final BoolVertex v3, final Plane plane, final BoolFace originalFace) {
+			final BoolVertex v3, final Plane plane, final int originalFaceIndex) {
 		this.vertices = new BoolVertex[] { v1, v2, v3 };
 		this.plane = plane;
-		this.originalFace = originalFace;
+		this.originalFaceIndex = originalFaceIndex;
 		this.tag = BoolTag.UNCLASSIFIED;
 		this.split = 0;
 	}
@@ -31,6 +31,15 @@ public class BoolFace {
 
 	public List<BoolVertex> getVertices() {
 		return Arrays.asList(vertices);
+	}
+
+	public boolean containsVertex(final BoolVertex vertex) {
+		for (final BoolVertex v : vertices) {
+			if (v == vertex) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public Plane getPlane() {
@@ -65,12 +74,12 @@ public class BoolFace {
 		this.index = index;
 	}
 
-	public BoolFace getOriginalFace() {
-		return originalFace;
+	public int getOriginalFace() {
+		return originalFaceIndex;
 	}
 
-	public void setOriginalFace(final BoolFace originalFace) {
-		this.originalFace = originalFace;
+	public void setOriginalFace(final int originalFaceIndex) {
+		this.originalFaceIndex = originalFaceIndex;
 	}
 
 	public BoundingBox getBoundingBox() {

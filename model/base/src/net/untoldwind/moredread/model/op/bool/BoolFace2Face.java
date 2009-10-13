@@ -164,7 +164,7 @@ public class BoolFace2Face {
 
 	{
 		final int oldSize = facesB.size();
-		final BoolFace originalFaceB = faceB.getOriginalFace();
+		final int originalFaceBIndex = faceB.getOriginalFace();
 
 		final Vector3f p1 = faceA.getVertex(0).getPoint();
 		final Vector3f p2 = faceA.getVertex(1).getPoint();
@@ -196,7 +196,7 @@ public class BoolFace2Face {
 			for (int idxFace = oldSize; idxFace < facesB.size(); idxFace++) {
 				final BoolFace face = facesB.get(idxFace);
 				if (face.getTAG() != BoolTag.BROKEN
-						&& originalFaceB == face.getOriginalFace()) {
+						&& originalFaceBIndex == face.getOriginalFace()) {
 					intersectCoplanarFaces(mesh, facesB, face, sA, plane2,
 							invert);
 				}
@@ -218,7 +218,7 @@ public class BoolFace2Face {
 			for (int idxFace = oldSize; idxFace < facesB.size(); idxFace++) {
 				final BoolFace face = facesB.get(idxFace);
 				if (face.getTAG() != BoolTag.BROKEN
-						&& originalFaceB == face.getOriginalFace()) {
+						&& originalFaceBIndex == face.getOriginalFace()) {
 					intersectCoplanarFaces(mesh, facesB, face, sA, plane3,
 							invert);
 				}

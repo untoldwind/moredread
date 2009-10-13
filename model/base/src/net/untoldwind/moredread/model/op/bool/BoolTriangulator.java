@@ -497,7 +497,7 @@ public class BoolTriangulator {
 	 */
 	static void splitQuad(final Plane plane, final BoolVertex v1,
 			final BoolVertex v2, final BoolVertex v3, final BoolVertex v4,
-			final BoolFace triangles[], final BoolFace original) {
+			final BoolFace triangles[], final int original) {
 		final Vector3f p1 = v1.getPoint();
 		final Vector3f p2 = v2.getPoint();
 		final Vector3f p3 = v3.getPoint();
