@@ -94,8 +94,218 @@ public class BoolMerge2 {
 	}
 
 	private boolean mergeFaces(final List<BoolVertex> mergeVertices) {
+		// Check size > 0!
+		if (mergeVertices.size() == 0) {
+			return false;
+		}
+		boolean didMerge = false;
+
+		for (final BoolVertex vert : mergeVertices) {
+			final List<List<BoolFace>> facesByOriginalFace = new ArrayList<List<BoolFace>>();
+
+			if (vert.getTAG() != BoolTag.BROKEN) {
+				getFaces(facesByOriginalFace, vert);
+				switch (facesByOriginalFace.size()) {
+				case 0:
+					// vert has no unbroken faces (so it's a new BROKEN vertex)
+					freeVerts(vert);
+					vert.setTAG(BoolTag.BROKEN);
+					break;
+				case 2: {
+					final List<BoolFace> ff = facesByOriginalFace.get(0);
+					final List<BoolFace> fb = facesByOriginalFace.get(1);
+					final BoolEdge[] eindexs = new BoolEdge[2];
+					int ecount = 0;
+
+					for (final BoolEdge edge : vert.getEdges()) {
+						final List<BoolFace> faces = edge.getFaces();
+
+						if (faces.size() == 2) {
+							final BoolFace f0 = faces.get(0);
+							final BoolFace f1 = faces.get(1);
+							if (f0.getOriginalFace() != f1.getOriginalFace()) {
+								eindexs[ecount++] = edge;
+							}
+						}
+					}
+					if (ecount == 2) {
+						final BoolEdge edge = eindexs[0];
+						BoolVertex N = edge.getVertex1();
+						if (N == vert) {
+							N = edge.getVertex2();
+						}
+
+						mergeVertex(ff, vert, N);
+						mergeVertex(fb, vert, N);
+						// now remove v and its edges
+						vert.setTAG(BoolTag.BROKEN);
+						for (final BoolEdge tedge : vert.getEdges()) {
+							tedge.setUsed(false);
+						}
+						didMerge = true;
+					}
+				}
+					break;
+				default:
+					break;
+				}
+			}
+		}
 		// TODO Auto-generated method stub
-		return false;
+		return didMerge;
+	}
+
+	/**
+	 * remove edges from vertices when the vertex is removed
+	 */
+	void freeVerts(final BoolVertex vert) {
+		final List<BoolEdge> edges = new ArrayList<BoolEdge>(vert.getEdges());
+		BoolVertex other;
+
+		for (final BoolEdge edge : edges) {
+			if (edge.getVertex1() != vert) {
+				other = edge.getVertex1();
+			} else {
+				other = edge.getVertex2();
+			}
+
+			other.removeEdge(edge);
+			vert.removeEdge(edge);
+		}
+	}
+
+	void mergeVertex(final List<BoolFace> faces, final BoolVertex v1,
+			final BoolVertex v2) {
+		for (final BoolFace face : faces) {
+			if (face.size() == 3) {
+				mergeVertex3(face, v1, v2);
+			} else {
+				mergeVertex4(face, v1, v2);
+			}
+			face.setTAG(BoolTag.BROKEN);
+		}
+	}
+
+	/*
+	 * Remove a face from the mesh and from each edges's face list
+	 */
+
+	static void deleteFace(final BoolMesh m, final BoolFace face) {
+		BoolVertex l2 = face.getVertex(0);
+
+		final List<BoolFace> faces = m.getFaces();
+		for (int i = face.size(); i > 0; i--) {
+			final List<BoolEdge> edges = l2.getEdges();
+			final BoolVertex l1 = face.getVertex(i);
+
+			for (final BoolEdge edge : edges) {
+				if ((edge.getVertex1() == l1 && edge.getVertex2() == l2)
+						|| (edge.getVertex1() == l2 && edge.getVertex2() == l1)) {
+					final List<BoolFace> efs = new ArrayList<BoolFace>(edge
+							.getFaces());
+					for (final BoolFace ef : efs) {
+						if (efs == face) {
+							edge.removeFace(ef);
+							break;
+						}
+					}
+					break;
+				}
+			}
+			l2 = l1;
+		}
+		face.setTAG(BoolTag.BROKEN);
+	}
+
+	void mergeVertex3(final BoolFace face, final BoolVertex v1,
+			final BoolVertex v2) {
+		final BoolVertex neigbours[] = face.getNeighbours(v1);
+		final BoolVertex next = neigbours[0], prev = neigbours[1];
+
+		// if new vertex is not already in the tri, make a new tri
+		if (prev != v2 && next != v2) {
+			mesh.addFace(new BoolFace(prev, v2, next, face.getPlane(), face
+					.getOriginalFace()));
+
+		}
+		deleteFace(mesh, face);
+	}
+
+	void mergeVertex4(final BoolFace face, final BoolVertex v1,
+			final BoolVertex v2) {
+		final BoolVertex neigbours[] = face.getNeighbours(v1);
+		final BoolVertex next = neigbours[0], prev = neigbours[1], opp = neigbours[2];
+
+		// if new vertex is already in the quad, replace quad with new tri
+		if (prev == v2 || next == v2) {
+			mesh.addFace(new BoolFace(prev, next, opp, face.getPlane(), face
+					.getOriginalFace()));
+		}
+		// otherwise make a new quad
+		else {
+			mesh.addFace(new BoolFace(prev, v2, next, face.getPlane(), face
+					.getOriginalFace()));
+			mesh.addFace(new BoolFace(next, v2, opp, face.getPlane(), face
+					.getOriginalFace()));
+		}
+		deleteFace(mesh, face);
+	}
+
+	/**
+	 * Creates a list of lists L1, L2, ... LN where LX = mesh faces with vertex
+	 * v that come from the same original face
+	 * 
+	 * @param facesByOriginalFace
+	 *            list of faces lists
+	 * @param v
+	 *            vertex index
+	 */
+	void getFaces(final List<List<BoolFace>> facesByOriginalFace,
+			final BoolVertex v) {
+		// Get edges with vertex v
+		final List<BoolEdge> edges = v.getEdges();
+
+		for (final BoolEdge edge : edges) {
+			// For each edge, add its no broken faces to the output list
+			final List<BoolFace> faces = edge.getFaces();
+
+			for (final BoolFace face : faces) {
+				if (face.getTAG() != BoolTag.BROKEN) {
+					boolean found = false;
+					// Search if we already have created a list for the
+					// faces that come from the same original face
+					for (final List<BoolFace> facesByOriginalFaceX : facesByOriginalFace) {
+						if (facesByOriginalFaceX.get(0).getOriginalFace() == face
+								.getOriginalFace()) {
+							// Search that the face has not been added to the
+							// list before
+							for (int i = 0; i < facesByOriginalFaceX.size(); i++) {
+								if (facesByOriginalFaceX.get(i) == face) {
+									found = true;
+									break;
+								}
+							}
+							if (!found) {
+								// Add the face to the list
+								if (face.getTAG() == BoolTag.OVERLAPPED) {
+									facesByOriginalFaceX.add(0, face);
+								} else {
+									facesByOriginalFaceX.add(face);
+								}
+								found = true;
+							}
+							break;
+						}
+					}
+					if (!found) {
+						// Create a new list and add the current face
+						final List<BoolFace> facesByOriginalFaceX = new ArrayList<BoolFace>();
+						facesByOriginalFaceX.add(face);
+						facesByOriginalFace.add(facesByOriginalFaceX);
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -129,7 +339,36 @@ public class BoolMerge2 {
 						}
 					}
 
-					// TODO
+					if (!found) {
+						// Search if we already have created a list with the
+						// faces that come from the same original face
+						for (final List<BoolFace> facesByOriginalFaceX : facesByOriginalFace) {
+							if (facesByOriginalFaceX.get(0).getOriginalFace() == face
+									.getOriginalFace()) {
+								// Search that the face has not been added to
+								// the list before
+								for (int i = 0; i < facesByOriginalFaceX.size(); i++) {
+									if (facesByOriginalFaceX.get(i) == face) {
+										found = true;
+										break;
+									}
+								}
+								if (!found) {
+									if (face.getTAG() == BoolTag.OVERLAPPED) {
+										facesByOriginalFaceX.add(0, face);
+									} else {
+										facesByOriginalFaceX.add(face);
+									}
+									found = true;
+								}
+							}
+						}
+						if (!found) {
+							final List<BoolFace> facesByOriginalFaceX = new ArrayList<BoolFace>();
+							facesByOriginalFaceX.add(face);
+							facesByOriginalFace.add(facesByOriginalFaceX);
+						}
+					}
 				}
 			}
 		}

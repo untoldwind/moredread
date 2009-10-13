@@ -90,6 +90,61 @@ public class BoolFace {
 	}
 
 	/**
+	 * Returns the neighbours of the specified vertex index.
+	 * 
+	 * @param v
+	 *            vertex index
+	 * @param prev
+	 *            previous vertex index
+	 * @param next
+	 *            next vertex index
+	 * @return true if this face contains the vertex index v, false otherwise
+	 */
+	BoolVertex[] getNeighbours(final BoolVertex v) {
+		if (size() == 3) {
+			BoolVertex prev, next;
+			if (vertices[0] == v) {
+				prev = vertices[2];
+				next = vertices[1];
+			} else if (vertices[1] == v) {
+				prev = vertices[0];
+				next = vertices[2];
+			} else if (vertices[2] == v) {
+				prev = vertices[1];
+				next = vertices[0];
+			} else {
+				return null;
+			}
+
+			return new BoolVertex[] { next, prev };
+		} else {
+			BoolVertex prev, next, opp;
+			if (vertices[0] == v) {
+				prev = vertices[3];
+				next = vertices[1];
+				opp = vertices[2];
+			} else if (vertices[1] == v) {
+				prev = vertices[0];
+				next = vertices[2];
+				opp = vertices[3];
+			} else if (vertices[2] == v) {
+				prev = vertices[1];
+				next = vertices[3];
+				opp = vertices[0];
+			} else if (vertices[3] == v) {
+				prev = vertices[2];
+				next = vertices[0];
+				opp = vertices[1];
+			} else {
+				return null;
+			}
+
+			return new BoolVertex[] { next, prev, opp };
+
+		}
+	}
+
+	/**
 	 * Returns the relative edge index (1,2,3) for the specified vertex indexs.
 	 * 
 	 * @param v1
