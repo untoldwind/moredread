@@ -20,8 +20,6 @@ public class BoolMerge2 {
 
 		// Merge faces
 		mergeFaces();
-
-		// TODO
 	}
 
 	/**
@@ -151,7 +149,6 @@ public class BoolMerge2 {
 				}
 			}
 		}
-		// TODO Auto-generated method stub
 		return didMerge;
 	}
 
@@ -193,7 +190,6 @@ public class BoolMerge2 {
 	static void deleteFace(final BoolMesh m, final BoolFace face) {
 		BoolVertex l2 = face.getVertex(0);
 
-		final List<BoolFace> faces = m.getFaces();
 		for (int i = face.size(); i > 0; i--) {
 			final List<BoolEdge> edges = l2.getEdges();
 			final BoolVertex l1 = face.getVertex(i);
