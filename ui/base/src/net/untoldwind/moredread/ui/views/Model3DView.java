@@ -16,6 +16,7 @@ import net.untoldwind.moredread.model.scene.event.SceneSelectionModeEvent;
 import net.untoldwind.moredread.ui.MoreDreadUI;
 import net.untoldwind.moredread.ui.canvas.MDCanvas;
 import net.untoldwind.moredread.ui.canvas.MDCanvasImplementor;
+import net.untoldwind.moredread.ui.canvas.SceneSelectionProvider;
 import net.untoldwind.moredread.ui.controls.Modifier;
 import net.untoldwind.moredread.ui.input.UIInputPlugin;
 import net.untoldwind.moredread.ui.input.event.MoveDepthCameraUpdate;
@@ -173,6 +174,10 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 				.addSceneGeometryChangeListener(this);
 
 		createGlobalActionHandlers();
+
+		getSite().setSelectionProvider(
+				new SceneSelectionProvider(MoreDreadUI.getDefault()
+						.getSceneHolder().getScene()));
 	}
 
 	/**
@@ -212,40 +217,62 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 		canvas.queueRender();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void doSave(final IProgressMonitor monitor) {
 		ModelIOPlugin.getDefault().sceneSave(
 				MoreDreadUI.getDefault().getSceneHolder().getScene());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void doSaveAs() {
 		ModelIOPlugin.getDefault().sceneSaveAs(
 				MoreDreadUI.getDefault().getSceneHolder().getScene());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isDirty() {
 		// TODO: Use change handling to eval this
 		return true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isSaveAsAllowed() {
 		return true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean isSaveOnCloseNeeded() {
 		// TODO: Use change handling to eval this
 		return false;
 	}
 
+	/**
+	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(Class)
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object getAdapter(final Class adapter) {
 		if (adapter.equals(Scene.class)) {
 			return MoreDreadUI.getDefault().getSceneHolder().getScene();
+			/*
+			 * } else if (adapter == IPropertySheetPage.class) { return new
+			 * TabbedPropertySheetPage( new NodePropertySheetContributor());
+			 */
 		}
 		return super.getAdapter(adapter);
 	}

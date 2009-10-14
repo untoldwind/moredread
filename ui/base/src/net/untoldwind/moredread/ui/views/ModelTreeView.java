@@ -90,4 +90,17 @@ public class ModelTreeView extends ViewPart implements
 		modelViewer.getControl().setFocus();
 	}
 
+	/**
+	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(Class)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public Object getAdapter(final Class adapter) {
+		/*
+		 * if (adapter == IPropertySheetPage.class) { return new
+		 * TabbedPropertySheetPage( new NodePropertySheetContributor()); }
+		 */
+		return super.getAdapter(adapter);
+	}
+
 }

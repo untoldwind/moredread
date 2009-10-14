@@ -7,13 +7,17 @@ import net.untoldwind.moredread.model.mesh.IPoint;
 import net.untoldwind.moredread.model.mesh.IPolygon;
 import net.untoldwind.moredread.model.mesh.Point;
 import net.untoldwind.moredread.model.mesh.Polygon;
+import net.untoldwind.moredread.model.properties.SpatialNodePropertySource;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
 import net.untoldwind.moredread.model.scene.change.NodeTransformationChangeCommand;
+
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.ui.views.properties.IPropertySource;
 
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 
-public abstract class SpatialNode extends NodeBase implements INode {
+public abstract class SpatialNode extends NodeBase implements INode, IAdaptable {
 	/** The parent node (group). */
 	protected final Group parent;
 
@@ -135,4 +139,14 @@ public abstract class SpatialNode extends NodeBase implements INode {
 
 	public abstract void updateDisplayNode(
 			INodeRendererAdapter rendererAdapter, com.jme.scene.Node parent);
+
+	@Override
+	public Object getAdapter(final Class adapter) {
+		System.out.println(">>> Ask me: " + adapter);
+		if (adapter == IPropertySource.class) {
+			return new SpatialNodePropertySource(this);
+		}
+		return null;
+	}
+
 }

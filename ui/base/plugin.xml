@@ -141,5 +141,24 @@
             name="3DView">
       </page>
    </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertyContributor">
+      <propertyContributor
+            contributorId="net.untoldwind.moredread.properties.node">
+         <propertyCategory
+               category="Transformation"></propertyCategory>
+      </propertyContributor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertyTabs">
+      <propertyTabs
+            contributorId="net.untoldwind.moredread.properties.node">
+         <propertyTab
+               category="Transformation"
+               id="net.untoldwind.moredread.properties.node.transformation"
+               label="Transformation">
+         </propertyTab>
+      </propertyTabs>
+   </extension>
 
 </plugin>
