@@ -16,6 +16,8 @@ import com.jme.util.geom.BufferUtils;
  * A visual display of the bounding box of a scene element.
  */
 public class BoundingBoxNode extends Node {
+	private static final long serialVersionUID = 6974214094762466349L;
+
 	public BoundingBoxNode(final BoundingBox boundingBox) {
 		super("BoundingBox");
 
