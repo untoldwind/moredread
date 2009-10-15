@@ -25,6 +25,7 @@ import net.untoldwind.moredread.ui.input.event.MoveVerticalCameraUpdate;
 import net.untoldwind.moredread.ui.input.event.RotateAroundXCameraUpdate;
 import net.untoldwind.moredread.ui.input.event.RotateAroundYCameraUpdate;
 import net.untoldwind.moredread.ui.preferences.IPreferencesConstants;
+import net.untoldwind.moredread.ui.properties.NodePropertySheetContributor;
 
 import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -54,6 +55,8 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.operations.RedoActionHandler;
 import org.eclipse.ui.operations.UndoActionHandler;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.views.properties.IPropertySheetPage;
+import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
 import com.jme.input.KeyInput;
 import com.jme.math.Vector3f;
@@ -269,10 +272,9 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 	public Object getAdapter(final Class adapter) {
 		if (adapter.equals(Scene.class)) {
 			return MoreDreadUI.getDefault().getSceneHolder().getScene();
-			/*
-			 * } else if (adapter == IPropertySheetPage.class) { return new
-			 * TabbedPropertySheetPage( new NodePropertySheetContributor());
-			 */
+		} else if (adapter == IPropertySheetPage.class) {
+			return new TabbedPropertySheetPage(
+					new NodePropertySheetContributor());
 		}
 		return super.getAdapter(adapter);
 	}

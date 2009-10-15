@@ -11,6 +11,7 @@ import net.untoldwind.moredread.model.scene.event.ISceneSelectionChangeListener;
 import net.untoldwind.moredread.model.scene.event.SceneChangeEvent;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
 import net.untoldwind.moredread.ui.MoreDreadUI;
+import net.untoldwind.moredread.ui.properties.NodePropertySheetContributor;
 import net.untoldwind.moredread.ui.provider.NodeLabelProvider;
 import net.untoldwind.moredread.ui.provider.SceneContentProvider;
 
@@ -23,6 +24,8 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.views.properties.IPropertySheetPage;
+import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
 public class ModelTreeView extends ViewPart implements
 		ISceneSelectionChangeListener, ISceneChangeListener {
@@ -118,10 +121,10 @@ public class ModelTreeView extends ViewPart implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object getAdapter(final Class adapter) {
-		/*
-		 * if (adapter == IPropertySheetPage.class) { return new
-		 * TabbedPropertySheetPage( new NodePropertySheetContributor()); }
-		 */
+		if (adapter == IPropertySheetPage.class) {
+			return new TabbedPropertySheetPage(
+					new NodePropertySheetContributor());
+		}
 		return super.getAdapter(adapter);
 	}
 

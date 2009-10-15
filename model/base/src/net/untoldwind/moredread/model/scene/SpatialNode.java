@@ -140,9 +140,9 @@ public abstract class SpatialNode extends NodeBase implements INode, IAdaptable 
 	public abstract void updateDisplayNode(
 			INodeRendererAdapter rendererAdapter, com.jme.scene.Node parent);
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object getAdapter(final Class adapter) {
-		System.out.println(">>> Ask me: " + adapter);
 		if (adapter == IPropertySource.class) {
 			return new SpatialNodePropertySource(this);
 		}

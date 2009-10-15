@@ -5,6 +5,7 @@ import net.untoldwind.moredread.model.scene.SpatialNode;
 
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
+import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 public class SpatialNodePropertySource implements IPropertySource {
@@ -21,7 +22,7 @@ public class SpatialNodePropertySource implements IPropertySource {
 
 	@Override
 	public Object getEditableValue() {
-		return this;
+		return node;
 	}
 
 	@Override
@@ -32,9 +33,10 @@ public class SpatialNodePropertySource implements IPropertySource {
 		for (int i = 0; i < PropertiesTable.length; i++) {
 			// Add each property supported.
 
-			IPropertyDescriptor descriptor;
+			PropertyDescriptor descriptor;
 
-			descriptor = (IPropertyDescriptor) PropertiesTable[i][1];
+			descriptor = (PropertyDescriptor) PropertiesTable[i][1];
+			descriptor.setCategory("Basic");
 			propertyDescriptors[i] = descriptor;
 		}
 

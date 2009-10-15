@@ -146,7 +146,7 @@
       <propertyContributor
             contributorId="net.untoldwind.moredread.properties.node">
          <propertyCategory
-               category="Transformation"></propertyCategory>
+               category="Basic"></propertyCategory>
       </propertyContributor>
    </extension>
    <extension
@@ -154,11 +154,38 @@
       <propertyTabs
             contributorId="net.untoldwind.moredread.properties.node">
          <propertyTab
-               category="Transformation"
+               category="Basic"
                id="net.untoldwind.moredread.properties.node.transformation"
-               label="Transformation">
+               label="Basic">
+         </propertyTab>
+         <propertyTab
+               category="Basic"
+               id="net.untoldwind.moredread.properties.node.advanced"
+               label="Advanced">
          </propertyTab>
       </propertyTabs>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views.properties.tabbed.propertySections">
+      <propertySections
+            contributorId="net.untoldwind.moredread.properties.node">
+         <propertySection
+               class="net.untoldwind.moredread.ui.properties.NameSection"
+               id="net.untoldwind.moredread.properties.node.transformation.section1"
+               tab="net.untoldwind.moredread.properties.node.transformation">
+            <input
+                  type="net.untoldwind.moredread.model.scene.SpatialNode">
+            </input>
+         </propertySection>
+         <propertySection
+               class="org.eclipse.ui.views.properties.tabbed.AdvancedPropertySection"
+               id="net.untoldwind.moredread.properties.node.advanced.section1"
+               tab="net.untoldwind.moredread.properties.node.advanced">
+            <input
+                  type="net.untoldwind.moredread.model.scene.SpatialNode">
+            </input>
+         </propertySection>
+      </propertySections>
    </extension>
 
 </plugin>
