@@ -7,6 +7,7 @@ import net.untoldwind.moredread.model.generator.IMeshGenerator;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.Mesh;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
+import net.untoldwind.moredread.model.renderer.SubSelectionNodeRendererAdapter;
 
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Spatial;
@@ -90,18 +91,22 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 		worldBoundingBox = null;
 		localBoundingBox = null;
 		renderedGeometries = null;
+
+		// TODO: Don't just throw existing mesh away, rather queue a regenerate
+		// somewhere (Job). This needs some intelligence for cascading generator
+		// nodes
 		generatedMesh = null;
 	}
 
 	@Override
 	public void updateDisplayNode(final INodeRendererAdapter rendererAdapter,
-			final com.jme.scene.Node parent) {
+			final com.jme.scene.Node parent, final boolean reattach) {
 		worldBoundingBox = null;
 		localBoundingBox = null;
 
 		final SpatialNodeReference nodeRef = new SpatialNodeReference(this);
 
-		if (displayNode == null) {
+		if (displayNode == null || reattach) {
 			displayNode = new com.jme.scene.Node();
 
 			parent.attachChild(displayNode);
@@ -119,11 +124,27 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 
 			displayNode.detachAllChildren();
 
-			renderedGeometries.get(0).setUserData(
-					ISceneHolder.NODE_USERDATA_KEY, nodeRef);
+			if (renderedGeometries.size() > 0) {
+				renderedGeometries.get(0).setUserData(
+						ISceneHolder.NODE_USERDATA_KEY, nodeRef);
+			}
 
 			for (final Spatial geometry : renderedGeometries) {
 				displayNode.attachChild(geometry);
+			}
+
+			// Iterate childs only in case of a selection
+			if (getScene().getSceneSelection().isChildNodeSelected(this)) {
+				final SubSelectionNodeRendererAdapter subRendererAdapter = new SubSelectionNodeRendererAdapter(
+						rendererAdapter.getRenderer(), rendererAdapter
+								.getSelectionMode());
+
+				for (final IGeneratorInput child : children) {
+					if (child instanceof AbstractSpatialNode) {
+						((AbstractSpatialNode) child).updateDisplayNode(
+								subRendererAdapter, displayNode, true);
+					}
+				}
 			}
 		}
 	}

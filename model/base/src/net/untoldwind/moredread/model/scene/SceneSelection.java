@@ -13,6 +13,7 @@ import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
 public class SceneSelection {
 	private final Scene scene;
 	private Set<INode> selectedNodes;
+	private final Set<IComposite> selectedParentNodes;
 	private final Set<FaceSelection> selectedFaces;
 	private final Set<EdgeSelection> selectedEdges;
 	private final Set<VertexSelection> selectedVertices;
@@ -23,6 +24,7 @@ public class SceneSelection {
 		this.scene = scene;
 
 		selectedNodes = new HashSet<INode>();
+		selectedParentNodes = new HashSet<IComposite>();
 		selectedFaces = new HashSet<FaceSelection>();
 		selectedEdges = new HashSet<EdgeSelection>();
 		selectedVertices = new HashSet<VertexSelection>();
@@ -52,9 +54,16 @@ public class SceneSelection {
 			}
 
 			this.selectedNodes = selectedNodes;
+			this.selectedParentNodes.clear();
 
 			for (final INode selectNode : this.selectedNodes) {
 				selectNode.markDirty();
+
+				IComposite parent = selectNode.getParent();
+				while (parent != null) {
+					this.selectedParentNodes.add(parent);
+					parent = parent.getParent();
+				}
 			}
 
 			fireSceneSelectionChangeEvent(new SceneSelectionChangeEvent(scene,
@@ -69,6 +78,14 @@ public class SceneSelection {
 			}
 			selectedNodes.clear();
 			selectedNodes.add(node);
+
+			this.selectedParentNodes.clear();
+			IComposite parent = node.getParent();
+			while (parent != null) {
+				this.selectedParentNodes.add(parent);
+				parent = parent.getParent();
+			}
+
 			node.markDirty();
 
 			fireSceneSelectionChangeEvent(new SceneSelectionChangeEvent(scene,
@@ -83,6 +100,15 @@ public class SceneSelection {
 			selectedNodes.add(node);
 		}
 		node.markDirty();
+
+		this.selectedParentNodes.clear();
+		for (final INode selectedNode : selectedNodes) {
+			IComposite parent = selectedNode.getParent();
+			while (parent != null) {
+				this.selectedParentNodes.add(parent);
+				parent = parent.getParent();
+			}
+		}
 
 		fireSceneSelectionChangeEvent(new SceneSelectionChangeEvent(scene,
 				selectedNodes));
@@ -205,6 +231,10 @@ public class SceneSelection {
 
 	public boolean isNodeSelected(final INode node) {
 		return selectedNodes.contains(node);
+	}
+
+	public boolean isChildNodeSelected(final IComposite node) {
+		return selectedParentNodes.contains(node);
 	}
 
 	public boolean isFaceSelected(final IMeshNode node, final int faceIndex) {

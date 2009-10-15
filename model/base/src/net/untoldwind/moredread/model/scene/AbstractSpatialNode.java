@@ -147,8 +147,11 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 		return localScale;
 	}
 
+	// TODO: Replace this method by an NodeVisitor pattern (i.e. decouple model
+	// and view/render)
 	public abstract void updateDisplayNode(
-			INodeRendererAdapter rendererAdapter, com.jme.scene.Node parent);
+			INodeRendererAdapter rendererAdapter, com.jme.scene.Node parent,
+			boolean reattach);
 
 	@SuppressWarnings("unchecked")
 	@Override

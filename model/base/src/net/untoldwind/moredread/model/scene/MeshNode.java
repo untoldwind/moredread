@@ -87,13 +87,13 @@ public class MeshNode extends ObjectNode implements IMeshNode, IGeneratorInput {
 
 	@Override
 	public void updateDisplayNode(final INodeRendererAdapter rendererAdapter,
-			final com.jme.scene.Node parent) {
+			final com.jme.scene.Node parent, final boolean reattach) {
 		worldBoundingBox = null;
 		localBoundingBox = null;
 
 		final SpatialNodeReference nodeRef = new SpatialNodeReference(this);
 
-		if (displayNode == null) {
+		if (displayNode == null || reattach) {
 			displayNode = new com.jme.scene.Node();
 
 			parent.attachChild(displayNode);
@@ -111,8 +111,10 @@ public class MeshNode extends ObjectNode implements IMeshNode, IGeneratorInput {
 
 			displayNode.detachAllChildren();
 
-			renderedGeometries.get(0).setUserData(
-					ISceneHolder.NODE_USERDATA_KEY, nodeRef);
+			if (renderedGeometries.size() > 0) {
+				renderedGeometries.get(0).setUserData(
+						ISceneHolder.NODE_USERDATA_KEY, nodeRef);
+			}
 
 			for (final Spatial geometry : renderedGeometries) {
 				displayNode.attachChild(geometry);

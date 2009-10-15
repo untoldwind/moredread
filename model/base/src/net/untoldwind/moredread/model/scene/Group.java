@@ -69,11 +69,11 @@ public class Group extends AbstractSpatialComposite<AbstractSpatialNode> {
 
 	@Override
 	public void updateDisplayNode(final INodeRendererAdapter rendererAdapter,
-			final com.jme.scene.Node parent) {
+			final com.jme.scene.Node parent, final boolean reattach) {
 		worldBoundingBox = null;
 		localBoundingBox = null;
 
-		if (displayNode == null) {
+		if (displayNode == null || reattach) {
 			displayNode = new com.jme.scene.Node();
 
 			parent.attachChild(displayNode);
@@ -84,7 +84,7 @@ public class Group extends AbstractSpatialComposite<AbstractSpatialNode> {
 		displayNode.setLocalScale(localScale);
 
 		for (final AbstractSpatialNode child : children) {
-			child.updateDisplayNode(rendererAdapter, displayNode);
+			child.updateDisplayNode(rendererAdapter, displayNode, reattach);
 		}
 	}
 

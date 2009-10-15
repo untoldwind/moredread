@@ -44,6 +44,16 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 	}
 
 	@Override
+	public Renderer getRenderer() {
+		return renderer;
+	}
+
+	@Override
+	public SelectionMode getSelectionMode() {
+		return selectionMode;
+	}
+
+	@Override
 	public List<Spatial> renderNode(final IMeshNode node) {
 		final List<Spatial> geometries = new ArrayList<Spatial>();
 

@@ -90,7 +90,7 @@ public class SceneHolder implements ISceneHolder {
 		}
 
 		if (rendererAdapter != null) {
-			scene.updateDisplayNode(rendererAdapter, displayNode);
+			scene.updateDisplayNode(rendererAdapter, displayNode, false);
 			displayNode.updateGeometricState(0.0f, true);
 			displayNode.updateRenderState();
 		}
