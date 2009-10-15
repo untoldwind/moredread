@@ -4,8 +4,8 @@ import com.jme.math.Plane;
 import com.jme.math.Vector3f;
 
 public class MathUtils {
-	private static final boolean VAR_EPSILON = true;
-	private static final float EPSILON = 1e-7f;
+	private static final boolean VAR_EPSILON = false;
+	private static final float EPSILON = 1e-5f;
 
 	// private static final boolean VAR_EPSILON = true;
 	// private static final float EPSILON = 9.3132257461547852e-10f;
