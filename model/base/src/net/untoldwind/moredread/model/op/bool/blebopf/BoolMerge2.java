@@ -112,7 +112,8 @@ public class BoolMerge2 {
 				case 2: {
 					final List<BoolFace> ff = facesByOriginalFace.get(0);
 					final List<BoolFace> fb = facesByOriginalFace.get(1);
-					final BoolEdge[] eindexs = new BoolEdge[2];
+					final BoolEdge[] eindexs = new BoolEdge[vert.getEdges()
+							.size()];
 					int ecount = 0;
 
 					for (final BoolEdge edge : vert.getEdges()) {
@@ -190,7 +191,7 @@ public class BoolMerge2 {
 	static void deleteFace(final BoolMesh m, final BoolFace face) {
 		BoolVertex l2 = face.getVertex(0);
 
-		for (int i = face.size(); i > 0; i--) {
+		for (int i = face.size() - 1; i > 0; i--) {
 			final List<BoolEdge> edges = l2.getEdges();
 			final BoolVertex l1 = face.getVertex(i);
 
