@@ -27,6 +27,7 @@ public class SubSelectionNodeRendererAdapter implements INodeRendererAdapter {
 	private final Renderer renderer;
 	private final SelectionMode selectionMode;
 	private final WireframeMeshRenderer wireframeMeshRenderer;
+	private final IMeshRendererAdapter solidMeshRenderer;
 
 	public SubSelectionNodeRendererAdapter(final Renderer renderer,
 			final SelectionMode selectionMode) {
@@ -35,6 +36,7 @@ public class SubSelectionNodeRendererAdapter implements INodeRendererAdapter {
 		this.selectionMode = selectionMode;
 
 		this.wireframeMeshRenderer = new WireframeMeshRenderer(false, 3f, false);
+		this.solidMeshRenderer = new SolidMeshRenderer();
 	}
 
 	@Override
@@ -64,6 +66,18 @@ public class SubSelectionNodeRendererAdapter implements INodeRendererAdapter {
 		case EDGE:
 			colorProvider = getEdgeSelectionColors(node);
 			break;
+		}
+
+		if (colorProvider != null) {
+			final Geometry solidGeometry = solidMeshRenderer.renderMesh(node
+					.getRenderGeometry(), colorProvider);
+			if (solidGeometry != null) {
+				geometries.add(solidGeometry);
+				solidGeometry.setModelBound(new BoundingBox());
+				solidGeometry.updateModelBound();
+				solidGeometry.setDefaultColor(node.getModelColor(0.5f));
+				solidGeometry.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
+			}
 		}
 
 		final Geometry wireframeGeometry = wireframeMeshRenderer.renderMesh(
