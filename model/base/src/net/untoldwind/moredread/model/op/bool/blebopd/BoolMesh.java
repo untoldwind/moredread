@@ -298,11 +298,6 @@ public class BoolMesh {
 
 	public void dumpMesh(final PrintStream out) {
 		out.println("BSPMesh");
-		for (final BoolVertex vertex : vertices) {
-			out.println("Point " + vertex.getIndex() + ": "
-					+ vertex.getPoint().x + " " + vertex.getPoint().y + " "
-					+ vertex.getPoint().z);
-		}
 		for (final BoolFace face : faces) {
 			out.print("Face " + face.getIndex() + " (" + face.getTAG() + ")");
 			for (final BoolVertex vertex : face.getVertices()) {
@@ -310,6 +305,11 @@ public class BoolMesh {
 				out.print(vertex.getIndex());
 			}
 			out.println();
+		}
+		for (final BoolVertex vertex : vertices) {
+			out.println("Point " + vertex.getIndex() + ": "
+					+ vertex.getPoint().x + " " + vertex.getPoint().y + " "
+					+ vertex.getPoint().z);
 		}
 	}
 }

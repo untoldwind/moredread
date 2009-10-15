@@ -6,6 +6,8 @@ import java.util.List;
 import net.untoldwind.moredread.model.scene.BoundingBox;
 
 public class BoolFace2Face {
+	public static boolean dumpIt = false;
+
 	private final static int sA_sB = 12;
 	private final static int sB_sA = 21;
 	private final static int sX_sA = 31;
@@ -87,7 +89,20 @@ public class BoolFace2Face {
 					/* get (or create) bounding box for face B */
 					final BoundingBox boxB = faceB.getBoundingBox();
 
+					System.out.println(">>count: " + idxFaceA + " " + idxFaceB
+							+ " " + mesh.getNumFaces() + " "
+							+ mesh.getNumVertexs() + " "
+							+ boxA.intersects(boxB));
+
+					if (idxFaceA == 12 && idxFaceB == 20) {
+						System.out.println(">>BBA: " + boxA);
+						System.out.println(">>BBB: " + boxB);
+						System.out.println(">>FA: " + faceA.getVertices());
+						System.out.println(">>FB: " + faceB.getVertices());
+						mesh.dumpMesh(System.out);
+					}
 					if (boxA.intersects(boxB)) {
+
 						final Plane3d planeB = faceB.getPlane3d();
 						if (MathUtils.containsPoint(planeB, p1)
 								&& MathUtils.containsPoint(planeB, p2)
@@ -97,8 +112,18 @@ public class BoolFace2Face {
 										faceB, false);
 							}
 						} else {
+							if (idxFaceA == -1 && idxFaceB == 0) {
+								mesh.dumpMesh(System.out);
+								dumpIt = true;
+							}
+
 							intersectNonCoplanarFaces(mesh, facesA, facesB,
 									faceA, faceB);
+
+							if (idxFaceA == -1 && idxFaceB == 0) {
+								dumpIt = false;
+								mesh.dumpMesh(System.out);
+							}
 						}
 					}
 				}
@@ -286,15 +311,31 @@ public class BoolFace2Face {
 			final BoolSegment xSegment[] = new BoolSegment[2];
 			xSegment[0] = new BoolSegment();
 			xSegment[1] = new BoolSegment();
+			if (dumpIt) {
+				System.out.println(">>> XS_a: " + sA);
+				System.out.println(">>> XS_b: " + sB);
+			}
 			createXS(mesh, faceA, faceB, sA, sB, false, xSegment);
 
+			if (dumpIt) {
+				System.out.println("After 1");
+				mesh.dumpMesh(System.out);
+			}
 			int sizefaces = mesh.getNumFaces();
 			triangulate(mesh, facesA, faceA, xSegment[0]);
 			mergeVertexs(mesh, sizefaces);
 
+			if (dumpIt) {
+				System.out.println("After 2");
+				mesh.dumpMesh(System.out);
+			}
 			sizefaces = mesh.getNumFaces();
 			triangulate(mesh, facesB, faceB, xSegment[1]);
 			mergeVertexs(mesh, sizefaces);
+			if (dumpIt) {
+				System.out.println("After 3");
+				mesh.dumpMesh(System.out);
+			}
 		}
 	}
 
@@ -493,6 +534,11 @@ public class BoolFace2Face {
 			// Merge data
 			double d1 = sortedPoints[1].distance(sortedPoints[0]);
 			final double d2 = sortedPoints[1].distance(sortedPoints[2]);
+			if (dumpIt) {
+				System.out.println(">>> d1 " + d1 + " "
+						+ MathUtils.fuzzyZero(d1) + " " + d2 + " "
+						+ MathUtils.fuzzyZero(d2));
+			}
 			if (MathUtils.fuzzyZero(d1) && sortedFaces[1] != sortedFaces[0]) {
 				if (MathUtils.fuzzyZero(d2) && sortedFaces[1] != sortedFaces[2]) {
 					if (d1 < d2) {
@@ -625,6 +671,16 @@ public class BoolFace2Face {
 			final BoolSegment[] segments) {
 		final Points points = new Points();
 
+		if (dumpIt) {
+			System.out.println("XS: " + faceA);
+			System.out.println("XS: " + planeA);
+			System.out.println("XS: " + faceA);
+			System.out.println("XS: " + planeB);
+			System.out.println("XS: " + sA);
+			System.out.println("XS: " + sB);
+			System.out.println("XS: " + invert);
+		}
+
 		points.points = new Vector3d[4]; // points of the segments
 		points.face = new int[4]; // relative face indexs (1 => faceA, 2 =>
 		// faceB)
@@ -633,10 +689,24 @@ public class BoolFace2Face {
 		getPoints(points, mesh, faceA, sA, planeB, 1);
 		getPoints(points, mesh, faceB, sB, planeA, 2);
 
+		if (dumpIt) {
+			System.out.println("XS_p: " + points.size);
+			for (int i = 0; i < points.size; i++) {
+				System.out.println("XS_p1: " + points.points[i]);
+			}
+		}
+
 		points.invertA = false;
 		points.invertB = false;
 
 		mergeSort(points);
+
+		if (dumpIt) {
+			System.out.println("XS_p2: " + points.size);
+			for (int i = 0; i < points.size; i++) {
+				System.out.println("XS_p3: " + points.points[i]);
+			}
+		}
 
 		if (points.invertA) {
 			sA.invert();
@@ -992,6 +1062,10 @@ public class BoolFace2Face {
 	 */
 	static void triangulate(final BoolMesh mesh, final List<BoolFace> faces,
 			final BoolFace face, final BoolSegment s) {
+		if (dumpIt) {
+			System.out.println(">>> tri: " + s);
+		}
+
 		if (BoolSegment.isUndefined(s.cfg1)) {
 			// Nothing to do
 		} else if (BoolSegment.isVertex(s.cfg1)) {
@@ -1088,11 +1162,17 @@ public class BoolFace2Face {
 	 */
 	static BoolFace getOppositeFace(final List<BoolFace> faces,
 			final BoolFace face, final BoolEdge edge) {
+		if (dumpIt) {
+			System.out.println(">>> oppo: " + edge);
+		}
 		if (edge == null) {
 			return null;
 		}
 
 		final List<BoolFace> auxfaces = edge.getFaces();
+		if (dumpIt) {
+			System.out.println(">>> oppo: " + auxfaces);
+		}
 
 		for (final BoolFace auxface : auxfaces) {
 			if (auxface != face && auxface.getTAG() != BoolTag.BROKEN

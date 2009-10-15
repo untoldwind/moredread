@@ -190,7 +190,7 @@ public class BoolMerge2 {
 	static void deleteFace(final BoolMesh m, final BoolFace face) {
 		BoolVertex l2 = face.getVertex(0);
 
-		for (int i = face.size(); i > 0; i--) {
+		for (int i = face.size() - 1; i > 0; i--) {
 			final List<BoolEdge> edges = l2.getEdges();
 			final BoolVertex l1 = face.getVertex(i);
 

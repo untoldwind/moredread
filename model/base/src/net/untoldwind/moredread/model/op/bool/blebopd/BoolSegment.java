@@ -248,4 +248,19 @@ public class BoolSegment {
 		}
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("BoolSegment [cfg1=");
+		builder.append(cfg1);
+		builder.append(", cfg2=");
+		builder.append(cfg2);
+		builder.append(", v1=");
+		builder.append(v1);
+		builder.append(", v2=");
+		builder.append(v2);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

@@ -19,7 +19,7 @@ public class BooleanOpTest {
 				0.2f, 0.3f), 1f).generateMesh(null).toTriangleMesh();
 
 		final IBooleanOperation booleanOperation = BooleanOperationFactory
-				.createBooleanOperation(BooleanOperationFactory.Implementation.BLEBOPF);
+				.createBooleanOperation(BooleanOperationFactory.Implementation.BLEBOPD);
 
 		booleanOperation.performBoolean(
 				IBooleanOperation.BoolOperation.INTERSECTION, cube1, cube2);

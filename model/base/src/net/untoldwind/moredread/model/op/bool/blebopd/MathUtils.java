@@ -2,11 +2,11 @@ package net.untoldwind.moredread.model.op.bool.blebopd;
 
 
 public class MathUtils {
-	// private static final boolean VAR_EPSILON = true;
-	// private static final double EPSILON = 1e-7f;
+	private static final boolean VAR_EPSILON = false;
+	private static final double EPSILON = 1e-7f;
 
-	private static final boolean VAR_EPSILON = true;
-	private static final double EPSILON = 9.3132257461547852e-10f;
+	// private static final boolean VAR_EPSILON = true;
+	// private static final double EPSILON = 9.3132257461547852e-10f;
 
 	/**
 	 * Helper class to return result tuple of frexp()

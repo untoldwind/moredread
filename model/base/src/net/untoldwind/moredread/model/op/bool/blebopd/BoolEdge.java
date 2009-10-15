@@ -32,7 +32,7 @@ public class BoolEdge {
 	}
 
 	void addFace(final BoolFace face) {
-		if (faces.contains(face)) {
+		if (!faces.contains(face)) {
 			faces.add(face);
 		}
 	}
