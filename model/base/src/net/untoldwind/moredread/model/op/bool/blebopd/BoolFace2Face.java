@@ -3,8 +3,6 @@ package net.untoldwind.moredread.model.op.bool.blebopd;
 import java.util.Iterator;
 import java.util.List;
 
-import net.untoldwind.moredread.model.scene.BoundingBox;
-
 public class BoolFace2Face {
 	public static boolean dumpIt = false;
 
@@ -73,7 +71,7 @@ public class BoolFace2Face {
 			final Vector3d p3 = faceA.getVertex(2).getPoint3d();
 
 			/* get (or create) bounding box for face A */
-			final BoundingBox boxA = faceA.getBoundingBox();
+			final BoolBoundingBox boxA = faceA.getBoundingBox();
 
 			/* start checking B faces with the previously stored split index */
 
@@ -87,21 +85,15 @@ public class BoolFace2Face {
 						&& (faceB.getTAG() != BoolTag.PHANTOM)) {
 
 					/* get (or create) bounding box for face B */
-					final BoundingBox boxB = faceB.getBoundingBox();
+					final BoolBoundingBox boxB = faceB.getBoundingBox();
 
-					System.out.println(">>count: " + idxFaceA + " " + idxFaceB
-							+ " " + mesh.getNumFaces() + " "
-							+ mesh.getNumVertexs() + " "
-							+ boxA.intersects(boxB));
+					System.out
+							.println(">>count: " + idxFaceA + " " + idxFaceB
+									+ " " + mesh.getNumFaces() + " "
+									+ mesh.getNumVertexs() + " "
+									+ boxA.intersect(boxB));
 
-					if (idxFaceA == 12 && idxFaceB == 20) {
-						System.out.println(">>BBA: " + boxA);
-						System.out.println(">>BBB: " + boxB);
-						System.out.println(">>FA: " + faceA.getVertices());
-						System.out.println(">>FB: " + faceB.getVertices());
-						mesh.dumpMesh(System.out);
-					}
-					if (boxA.intersects(boxB)) {
+					if (boxA.intersect(boxB)) {
 
 						final Plane3d planeB = faceB.getPlane3d();
 						if (MathUtils.containsPoint(planeB, p1)

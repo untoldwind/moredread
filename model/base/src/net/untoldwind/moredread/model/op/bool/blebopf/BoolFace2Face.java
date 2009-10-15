@@ -3,8 +3,6 @@ package net.untoldwind.moredread.model.op.bool.blebopf;
 import java.util.Iterator;
 import java.util.List;
 
-import net.untoldwind.moredread.model.scene.BoundingBox;
-
 import com.jme.math.Plane;
 import com.jme.math.Vector3f;
 
@@ -74,7 +72,7 @@ public class BoolFace2Face {
 			final Vector3f p3 = faceA.getVertex(2).getPoint();
 
 			/* get (or create) bounding box for face A */
-			final BoundingBox boxA = faceA.getBoundingBox();
+			final BoolBoundingBox boxA = faceA.getBoundingBox();
 
 			/* start checking B faces with the previously stored split index */
 
@@ -88,9 +86,9 @@ public class BoolFace2Face {
 						&& (faceB.getTAG() != BoolTag.PHANTOM)) {
 
 					/* get (or create) bounding box for face B */
-					final BoundingBox boxB = faceB.getBoundingBox();
+					final BoolBoundingBox boxB = faceB.getBoundingBox();
 
-					if (boxA.intersects(boxB)) {
+					if (boxA.intersect(boxB)) {
 						final Plane planeB = faceB.getPlane();
 						if (MathUtils.containsPoint(planeB, p1)
 								&& MathUtils.containsPoint(planeB, p2)
