@@ -81,19 +81,23 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 
 		final Geometry solidGeometry = solidMeshRenderer.renderMesh(node
 				.getRenderGeometry(), colorProvider);
-		geometries.add(solidGeometry);
-		solidGeometry.setModelBound(new BoundingBox());
-		solidGeometry.updateModelBound();
-		solidGeometry.setDefaultColor(node.getModelColor(0.5f));
-		solidGeometry.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
+		if (solidGeometry != null) {
+			geometries.add(solidGeometry);
+			solidGeometry.setModelBound(new BoundingBox());
+			solidGeometry.updateModelBound();
+			solidGeometry.setDefaultColor(node.getModelColor(0.5f));
+			solidGeometry.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
+		}
 
 		final Geometry wireframeGeometry = selectedWireframeMeshRenderer
 				.renderMesh(node.getRenderGeometry(), colorProvider);
-		geometries.add(wireframeGeometry);
-		wireframeGeometry.setDefaultColor(ColorRGBA.black.clone());
-		wireframeGeometry.setModelBound(new BoundingBox());
-		wireframeGeometry.updateModelBound();
-		wireframeGeometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+		if (wireframeGeometry != null) {
+			geometries.add(wireframeGeometry);
+			wireframeGeometry.setDefaultColor(ColorRGBA.black.clone());
+			wireframeGeometry.setModelBound(new BoundingBox());
+			wireframeGeometry.updateModelBound();
+			wireframeGeometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+		}
 
 		if (parameters.isShowBoundingBoxOnSelected()) {
 			geometries.add(new BoundingBoxNode(node.getLocalBoundingBox()));
@@ -124,6 +128,16 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 			public ColorRGBA getEdgeColor(final EdgeId edgeIndex) {
 				return ColorRGBA.black.clone();
 			}
+
+			@Override
+			public boolean isFaceVisible(final int faceIndex) {
+				return true;
+			}
+
+			@Override
+			public boolean isEdgeVisible(final EdgeId edgeIndex) {
+				return true;
+			}
 		};
 	}
 
@@ -144,6 +158,16 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 			public ColorRGBA getEdgeColor(final EdgeId edgeIndex) {
 				return sceneSelection.isEdgeSelected(node, edgeIndex) ? selectedColor
 						: ColorRGBA.black.clone();
+			}
+
+			@Override
+			public boolean isFaceVisible(final int faceIndex) {
+				return true;
+			}
+
+			@Override
+			public boolean isEdgeVisible(final EdgeId edgeIndex) {
+				return true;
 			}
 		};
 	}
@@ -191,18 +215,22 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 			final List<Spatial> geometries) {
 		final Geometry solidGeometry = solidMeshRenderer.renderMesh(node
 				.getRenderGeometry(), null);
-		geometries.add(solidGeometry);
-		solidGeometry.setDefaultColor(node.getModelColor(1.0f));
-		solidGeometry.setModelBound(new BoundingBox());
-		solidGeometry.updateModelBound();
-		solidGeometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+		if (solidGeometry != null) {
+			geometries.add(solidGeometry);
+			solidGeometry.setDefaultColor(node.getModelColor(1.0f));
+			solidGeometry.setModelBound(new BoundingBox());
+			solidGeometry.updateModelBound();
+			solidGeometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+		}
 
 		final Geometry wireframeGeometry = wireframeMeshRenderer.renderMesh(
 				node.getRenderGeometry(), null);
-		geometries.add(wireframeGeometry);
-		wireframeGeometry.setDefaultColor(ColorRGBA.black.clone());
-		wireframeGeometry.setModelBound(new BoundingBox());
-		wireframeGeometry.updateModelBound();
-		wireframeGeometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+		if (wireframeGeometry != null) {
+			geometries.add(wireframeGeometry);
+			wireframeGeometry.setDefaultColor(ColorRGBA.black.clone());
+			wireframeGeometry.setModelBound(new BoundingBox());
+			wireframeGeometry.updateModelBound();
+			wireframeGeometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+		}
 	}
 }

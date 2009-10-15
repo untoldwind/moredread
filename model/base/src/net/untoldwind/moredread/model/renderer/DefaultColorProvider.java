@@ -18,8 +18,18 @@ public class DefaultColorProvider implements IColorProvider {
 	}
 
 	@Override
+	public boolean isFaceVisible(final int faceIndex) {
+		return true;
+	}
+
+	@Override
 	public ColorRGBA getEdgeColor(final EdgeId edgeIndex) {
 		return defaultColor;
+	}
+
+	@Override
+	public boolean isEdgeVisible(final EdgeId edgeIndex) {
+		return true;
 	}
 
 }
