@@ -1,4 +1,4 @@
-package net.untoldwind.moredread.model.op.bool;
+package net.untoldwind.moredread.model.op.bool.blebopf;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +10,7 @@ import net.untoldwind.moredread.model.op.IBooleanOperation;
 
 import com.jme.math.Plane;
 
-public class BSPBooleanOperation implements IBooleanOperation {
+public class BlebopfBooleanOperation implements IBooleanOperation {
 
 	@Override
 	public TriangleMesh performBoolean(final BoolOperation operation,

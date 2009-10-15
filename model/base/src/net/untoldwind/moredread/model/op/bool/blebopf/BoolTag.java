@@ -1,4 +1,4 @@
-package net.untoldwind.moredread.model.op.bool;
+package net.untoldwind.moredread.model.op.bool.blebopf;
 
 public class BoolTag {
 	public static final int IN = 0x02; // Below the plane

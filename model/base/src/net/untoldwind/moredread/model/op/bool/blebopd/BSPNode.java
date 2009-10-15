@@ -1,27 +1,24 @@
-package net.untoldwind.moredread.model.op.bool;
+package net.untoldwind.moredread.model.op.bool.blebopd;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jme.math.Plane;
-import com.jme.math.Vector3f;
-
 public class BSPNode {
 	BSPNode inChild;
 	BSPNode outChild;
-	Plane plane;
+	Plane3d plane;
 	int deep;
 
-	BSPNode(final Plane plane) {
+	BSPNode(final Plane3d plane) {
 		this.plane = plane;
 	}
 
-	public Plane getPlane() {
+	public Plane3d getPlane3d() {
 		return plane;
 	}
 
-	public void setPlane(final Plane plane) {
+	public void setPlane3d(final Plane3d plane) {
 		this.plane = plane;
 	}
 
@@ -57,12 +54,12 @@ public class BSPNode {
 	 * @param plane
 	 *            face plane.
 	 */
-	int addFace(final List<Vector3f> points, final Plane plane) {
+	int addFace(final List<Vector3d> points, final Plane3d plane) {
 		int newDeep = 0;
 		int tag = BoolTag.ON;
 
 		// find out if any points on the "face" lie in either half-space
-		for (final Vector3f itp : points) {
+		for (final Vector3d itp : points) {
 			tag = (tag | testPoint(itp));
 		}
 
@@ -85,9 +82,9 @@ public class BSPNode {
 				newDeep = 2;
 			}
 		} else { // face lies in both half-spaces: split it
-			final List<Vector3f> inside = new ArrayList<Vector3f>();
-			final List<Vector3f> outside = new ArrayList<Vector3f>();
-			Vector3f lpoint = points.get(points.size() - 1);
+			final List<Vector3d> inside = new ArrayList<Vector3d>();
+			final List<Vector3d> outside = new ArrayList<Vector3d>();
+			Vector3d lpoint = points.get(points.size() - 1);
 			int ltag = testPoint(lpoint);
 			int tstate = ltag;
 
@@ -95,7 +92,7 @@ public class BSPNode {
 			// different
 			// sides of the hyperplane.
 
-			for (final Vector3f npoint : points) {
+			for (final Vector3d npoint : points) {
 				final int ntag = testPoint(npoint);
 
 				if (ltag != BoolTag.ON) { // last point not on hyperplane
@@ -111,8 +108,8 @@ public class BSPNode {
 					if (ntag != BoolTag.ON && ntag != tstate) { // last, self in
 						// different
 						// half-spaces
-						final Vector3f mpoint = MathUtils.intersectPlane(plane,
-								lpoint, npoint);
+						final Vector3d mpoint = MathUtils.intersectPlane3d(
+								plane, lpoint, npoint);
 						if (inChild != null) {
 							inside.add(mpoint);
 						}
@@ -157,7 +154,7 @@ public class BSPNode {
 		return deep;
 	}
 
-	int testPoint(final Vector3f p) {
+	int testPoint(final Vector3d p) {
 		return BoolTag.createTAG(MathUtils.classify(p, plane));
 	}
 
@@ -174,10 +171,10 @@ public class BSPNode {
 	 *            face plane.
 	 * @return TAG result: IN, OUT or IN&OUT.
 	 */
-	int classifyFace(final Vector3f p1, final Vector3f p2, final Vector3f p3,
-			final Plane plane) {
+	int classifyFace(final Vector3d p1, final Vector3d p2, final Vector3d p3,
+			final Plane3d plane) {
 		// local variables
-		Vector3f auxp1, auxp2;
+		Vector3d auxp1, auxp2;
 		int auxtag1, auxtag2, auxtag3;
 
 		switch (BoolTag.createTAG(testPoint(p1), testPoint(p2), testPoint(p3))) {
@@ -214,42 +211,42 @@ public class BSPNode {
 			// Classify the face IN/OUT and one vertex ON
 			// becouse only one ON, only one way to subdivide the face
 		case BoolTag.IN_OUT_ON:
-			auxp1 = MathUtils.intersectPlane(plane, p1, p2);
+			auxp1 = MathUtils.intersectPlane3d(plane, p1, p2);
 			auxtag1 = classifyFaceIN(p1, auxp1, p3, plane);
 			auxtag2 = classifyFaceOUT(auxp1, p2, p3, plane);
 			return (BoolTag.compTAG(auxtag1, auxtag2) ? BoolTag.addON(auxtag1)
 					: BoolTag.INOUT);
 
 		case BoolTag.OUT_IN_ON:
-			auxp1 = MathUtils.intersectPlane(plane, p1, p2);
+			auxp1 = MathUtils.intersectPlane3d(plane, p1, p2);
 			auxtag1 = classifyFaceOUT(p1, auxp1, p3, plane);
 			auxtag2 = classifyFaceIN(auxp1, p2, p3, plane);
 			return (BoolTag.compTAG(auxtag1, auxtag2) ? BoolTag.addON(auxtag1)
 					: BoolTag.INOUT);
 
 		case BoolTag.IN_ON_OUT:
-			auxp1 = MathUtils.intersectPlane(plane, p1, p3);
+			auxp1 = MathUtils.intersectPlane3d(plane, p1, p3);
 			auxtag1 = classifyFaceIN(p1, p2, auxp1, plane);
 			auxtag2 = classifyFaceOUT(p2, p3, auxp1, plane);
 			return (BoolTag.compTAG(auxtag1, auxtag2) ? BoolTag.addON(auxtag1)
 					: BoolTag.INOUT);
 
 		case BoolTag.OUT_ON_IN:
-			auxp1 = MathUtils.intersectPlane(plane, p1, p3);
+			auxp1 = MathUtils.intersectPlane3d(plane, p1, p3);
 			auxtag1 = classifyFaceOUT(p1, p2, auxp1, plane);
 			auxtag2 = classifyFaceIN(p2, p3, auxp1, plane);
 			return (BoolTag.compTAG(auxtag1, auxtag2) ? BoolTag.addON(auxtag1)
 					: BoolTag.INOUT);
 
 		case BoolTag.ON_IN_OUT:
-			auxp1 = MathUtils.intersectPlane(plane, p2, p3);
+			auxp1 = MathUtils.intersectPlane3d(plane, p2, p3);
 			auxtag1 = classifyFaceIN(p1, p2, auxp1, plane);
 			auxtag2 = classifyFaceOUT(auxp1, p3, p1, plane);
 			return (BoolTag.compTAG(auxtag1, auxtag2) ? BoolTag.addON(auxtag1)
 					: BoolTag.INOUT);
 
 		case BoolTag.ON_OUT_IN:
-			auxp1 = MathUtils.intersectPlane(plane, p2, p3);
+			auxp1 = MathUtils.intersectPlane3d(plane, p2, p3);
 			auxtag1 = classifyFaceOUT(p1, p2, auxp1, plane);
 			auxtag2 = classifyFaceIN(auxp1, p3, p1, plane);
 			return (BoolTag.compTAG(auxtag1, auxtag2) ? BoolTag.addON(auxtag1)
@@ -259,8 +256,8 @@ public class BSPNode {
 			// Two ways to divide the triangle,
 			// will chose the least degenerated sub-triangles.
 		case BoolTag.IN_OUT_OUT:
-			auxp1 = MathUtils.intersectPlane(plane, p1, p2);
-			auxp2 = MathUtils.intersectPlane(plane, p1, p3);
+			auxp1 = MathUtils.intersectPlane3d(plane, p1, p2);
+			auxp2 = MathUtils.intersectPlane3d(plane, p1, p3);
 
 			// f1: p1 auxp1 , auxp1 auxp2
 			auxtag1 = classifyFaceIN(p1, auxp1, auxp2, plane);
@@ -279,8 +276,8 @@ public class BSPNode {
 					: BoolTag.INOUT);
 
 		case BoolTag.OUT_IN_IN:
-			auxp1 = MathUtils.intersectPlane(plane, p1, p2);
-			auxp2 = MathUtils.intersectPlane(plane, p1, p3);
+			auxp1 = MathUtils.intersectPlane3d(plane, p1, p2);
+			auxp2 = MathUtils.intersectPlane3d(plane, p1, p3);
 
 			// f1: p1 auxp1 , auxp1 auxp2
 			auxtag1 = classifyFaceOUT(p1, auxp1, auxp2, plane);
@@ -299,8 +296,8 @@ public class BSPNode {
 					: BoolTag.INOUT);
 
 		case BoolTag.OUT_IN_OUT:
-			auxp1 = MathUtils.intersectPlane(plane, p2, p1);
-			auxp2 = MathUtils.intersectPlane(plane, p2, p3);
+			auxp1 = MathUtils.intersectPlane3d(plane, p2, p1);
+			auxp2 = MathUtils.intersectPlane3d(plane, p2, p3);
 
 			// f1: auxp1 p2 , p2 auxp2
 			auxtag1 = classifyFaceIN(auxp1, p2, auxp2, plane);
@@ -319,8 +316,8 @@ public class BSPNode {
 					: BoolTag.INOUT);
 
 		case BoolTag.IN_OUT_IN:
-			auxp1 = MathUtils.intersectPlane(plane, p2, p1);
-			auxp2 = MathUtils.intersectPlane(plane, p2, p3);
+			auxp1 = MathUtils.intersectPlane3d(plane, p2, p1);
+			auxp2 = MathUtils.intersectPlane3d(plane, p2, p3);
 
 			// f1: auxp1 p2 , p2 auxp2
 			auxtag1 = classifyFaceOUT(auxp1, p2, auxp2, plane);
@@ -339,8 +336,8 @@ public class BSPNode {
 					: BoolTag.INOUT);
 
 		case BoolTag.OUT_OUT_IN:
-			auxp1 = MathUtils.intersectPlane(plane, p3, p1);
-			auxp2 = MathUtils.intersectPlane(plane, p3, p2);
+			auxp1 = MathUtils.intersectPlane3d(plane, p3, p1);
+			auxp2 = MathUtils.intersectPlane3d(plane, p3, p2);
 
 			// f1: auxp1 auxp2 , auxp2 p3
 			auxtag1 = classifyFaceIN(auxp1, auxp2, p3, plane);
@@ -359,8 +356,8 @@ public class BSPNode {
 					: BoolTag.INOUT);
 
 		case BoolTag.IN_IN_OUT:
-			auxp1 = MathUtils.intersectPlane(plane, p3, p1);
-			auxp2 = MathUtils.intersectPlane(plane, p3, p2);
+			auxp1 = MathUtils.intersectPlane3d(plane, p3, p1);
+			auxp2 = MathUtils.intersectPlane3d(plane, p3, p2);
 
 			// f1: auxp1 auxp2 , auxp2 p3
 			auxtag1 = classifyFaceOUT(auxp1, auxp2, p3, plane);
@@ -395,8 +392,8 @@ public class BSPNode {
 	 * @param plane
 	 *            face plane.
 	 */
-	int classifyFaceIN(final Vector3f p1, final Vector3f p2, final Vector3f p3,
-			final Plane plane) {
+	int classifyFaceIN(final Vector3d p1, final Vector3d p2, final Vector3d p3,
+			final Plane3d plane) {
 		if (inChild != null) {
 			return inChild.classifyFace(p1, p2, p3, plane);
 		} else {
@@ -416,8 +413,8 @@ public class BSPNode {
 	 * @param plane
 	 *            face plane.
 	 */
-	int classifyFaceOUT(final Vector3f p1, final Vector3f p2,
-			final Vector3f p3, final Plane plane) {
+	int classifyFaceOUT(final Vector3d p1, final Vector3d p2,
+			final Vector3d p3, final Plane3d plane) {
 		if (outChild != null) {
 			return outChild.classifyFace(p1, p2, p3, plane);
 		} else {
@@ -432,8 +429,8 @@ public class BSPNode {
 	 *            plane to test.
 	 * @return TRUE if have the same orientation, FALSE otherwise.
 	 */
-	boolean hasSameOrientation(final Plane otherPlane) {
-		return (plane.getNormal().dot(otherPlane.getNormal()) > 0);
+	boolean hasSameOrientation(final Plane3d otherPlane3d) {
+		return (plane.getNormal().dot(otherPlane3d.getNormal()) > 0);
 	}
 
 	/**
@@ -450,9 +447,9 @@ public class BSPNode {
 	 *            face plane.
 	 * @return TAG result: IN or OUT.
 	 */
-	int simplifiedClassifyFace(final Vector3f p1, final Vector3f p2,
-			final Vector3f p3, final Plane plane) {
-		final Vector3f ret[] = new Vector3f[3];
+	int simplifiedClassifyFace(final Vector3d p1, final Vector3d p2,
+			final Vector3d p3, final Plane3d plane) {
+		final Vector3d ret[] = new Vector3d[3];
 
 		final int tag = BoolTag.createTAG(testPoint(p1), testPoint(p2),
 				testPoint(p3));
@@ -494,8 +491,8 @@ public class BSPNode {
 	 * @param plane
 	 *            face plane.
 	 */
-	int simplifiedClassifyFaceIN(final Vector3f p1, final Vector3f p2,
-			final Vector3f p3, final Plane plane) {
+	int simplifiedClassifyFaceIN(final Vector3d p1, final Vector3d p2,
+			final Vector3d p3, final Plane3d plane) {
 		if (inChild != null) {
 			return inChild.simplifiedClassifyFace(p1, p2, p3, plane);
 		} else {
@@ -515,8 +512,8 @@ public class BSPNode {
 	 * @param plane
 	 *            face plane.
 	 */
-	int simplifiedClassifyFaceOUT(final Vector3f p1, final Vector3f p2,
-			final Vector3f p3, final Plane plane) {
+	int simplifiedClassifyFaceOUT(final Vector3d p1, final Vector3d p2,
+			final Vector3d p3, final Plane3d plane) {
 		if (outChild != null) {
 			return outChild.simplifiedClassifyFace(p1, p2, p3, plane);
 		} else {
@@ -560,22 +557,22 @@ public class BSPNode {
 	 * @param tag
 	 *            triangle orientation respect the plane.
 	 */
-	int splitTriangle(final Vector3f[] res, final Plane plane,
-			final Vector3f p1, final Vector3f p2, final Vector3f p3,
+	int splitTriangle(final Vector3d[] res, final Plane3d plane,
+			final Vector3d p1, final Vector3d p2, final Vector3d p3,
 			final int tag) {
 		switch (tag) {
 		case BoolTag.IN_OUT_ON:
 			if (compChildren() < 0) {
 				// f1: p1 new p3 || new = splitedge(p1,p2)
 				res[0] = p1;
-				res[1] = MathUtils.intersectPlane(plane, p1, p2);
+				res[1] = MathUtils.intersectPlane3d(plane, p1, p2);
 				res[2] = p3;
 				return -1;
 			} else {
 				// f1: p2 new p3 || new = splitedge(p1,p2)
 				res[0] = p2;
 				res[1] = p3;
-				res[2] = MathUtils.intersectPlane(plane, p1, p2);
+				res[2] = MathUtils.intersectPlane3d(plane, p1, p2);
 				return 1;
 			}
 		case BoolTag.OUT_IN_ON:
@@ -583,12 +580,12 @@ public class BSPNode {
 				// f1: p2 new p3 || new = splitedge(p1,p2)
 				res[0] = p2;
 				res[1] = p3;
-				res[2] = MathUtils.intersectPlane(plane, p1, p2);
+				res[2] = MathUtils.intersectPlane3d(plane, p1, p2);
 				return -1;
 			} else {
 				// f1: p1 new p3 || new = splitedge(p1,p2)
 				res[0] = p1;
-				res[1] = MathUtils.intersectPlane(plane, p1, p2);
+				res[1] = MathUtils.intersectPlane3d(plane, p1, p2);
 				res[2] = p3;
 				return 1;
 			}
@@ -597,13 +594,13 @@ public class BSPNode {
 				// f1: p1 p2 new || new = splitedge(p1,p3)
 				res[0] = p1;
 				res[1] = p2;
-				res[2] = MathUtils.intersectPlane(plane, p1, p3);
+				res[2] = MathUtils.intersectPlane3d(plane, p1, p3);
 				return -1;
 			} else {
 				// f1: p2 p3 new || new = splitedge(p1,p3)
 				res[0] = p2;
 				res[1] = p3;
-				res[2] = MathUtils.intersectPlane(plane, p1, p3);
+				res[2] = MathUtils.intersectPlane3d(plane, p1, p3);
 				return 1;
 			}
 		case BoolTag.OUT_ON_IN:
@@ -611,13 +608,13 @@ public class BSPNode {
 				// f1: p2 p3 new || new = splitedge(p1,p3)
 				res[0] = p2;
 				res[1] = p3;
-				res[2] = MathUtils.intersectPlane(plane, p1, p3);
+				res[2] = MathUtils.intersectPlane3d(plane, p1, p3);
 				return -1;
 			} else {
 				// f1: p1 p2 new || new = splitedge(p1,p3)
 				res[0] = p1;
 				res[1] = p2;
-				res[2] = MathUtils.intersectPlane(plane, p1, p3);
+				res[2] = MathUtils.intersectPlane3d(plane, p1, p3);
 				return 1;
 			}
 		case BoolTag.ON_IN_OUT:
@@ -625,12 +622,12 @@ public class BSPNode {
 				// f1: p1 p2 new || new = splitedge(p2,p3)
 				res[0] = p1;
 				res[1] = p2;
-				res[2] = MathUtils.intersectPlane(plane, p2, p3);
+				res[2] = MathUtils.intersectPlane3d(plane, p2, p3);
 				return -1;
 			} else {
 				// f1: p1 p3 new || new = splitedge(p2,p3)
 				res[0] = p1;
-				res[1] = MathUtils.intersectPlane(plane, p2, p3);
+				res[1] = MathUtils.intersectPlane3d(plane, p2, p3);
 				res[2] = p3;
 				return 1;
 			}
@@ -638,14 +635,14 @@ public class BSPNode {
 			if (compChildren() < 0) {
 				// f1: p1 p2 new || new = splitedge(p2,p3)
 				res[0] = p1;
-				res[1] = MathUtils.intersectPlane(plane, p2, p3);
+				res[1] = MathUtils.intersectPlane3d(plane, p2, p3);
 				res[2] = p3;
 				return -1;
 			} else {
 				// f1: p1 p2 new || new = splitedge(p2,p3)
 				res[0] = p1;
 				res[1] = p2;
-				res[2] = MathUtils.intersectPlane(plane, p2, p3);
+				res[2] = MathUtils.intersectPlane3d(plane, p2, p3);
 				return 1;
 			}
 		case BoolTag.IN_OUT_OUT:
@@ -653,13 +650,13 @@ public class BSPNode {
 				// f1: p1 new1 new2 || new1 = splitedge(p1,p2) new2 =
 				// splitedge(p1,p3)
 				res[0] = p1;
-				res[1] = MathUtils.intersectPlane(plane, p1, p2);
-				res[2] = MathUtils.intersectPlane(plane, p1, p3);
+				res[1] = MathUtils.intersectPlane3d(plane, p1, p2);
+				res[2] = MathUtils.intersectPlane3d(plane, p1, p3);
 				return -1;
 			} else {
 				// f1: p1 new1 new2 || new1 = splitedge(p1,p2) new2 =
 				// splitedge(p1,p3)
-				res[0] = MathUtils.intersectPlane(plane, p1, p2);
+				res[0] = MathUtils.intersectPlane3d(plane, p1, p2);
 				res[1] = p2;
 				res[2] = p3;
 				return 1;
@@ -668,7 +665,7 @@ public class BSPNode {
 			if (compChildren() < 0) {
 				// f1: p1 new1 new2 || new1 = splitedge(p1,p2) new2 =
 				// splitedge(p1,p3)
-				res[0] = MathUtils.intersectPlane(plane, p1, p2);
+				res[0] = MathUtils.intersectPlane3d(plane, p1, p2);
 				res[1] = p2;
 				res[2] = p3;
 				return -1;
@@ -676,24 +673,24 @@ public class BSPNode {
 				// f1: p1 new1 new2 || new1 = splitedge(p1,p2) new2 =
 				// splitedge(p1,p3)
 				res[0] = p1;
-				res[1] = MathUtils.intersectPlane(plane, p1, p2);
-				res[2] = MathUtils.intersectPlane(plane, p1, p3);
+				res[1] = MathUtils.intersectPlane3d(plane, p1, p2);
+				res[2] = MathUtils.intersectPlane3d(plane, p1, p3);
 				return 1;
 			}
 		case BoolTag.OUT_IN_OUT:
 			if (compChildren() <= 0) {
 				// f1: new1 p2 new2 || new1 = splitedge(p2,p1) new2 =
 				// splitedge(p2,p3)
-				res[0] = MathUtils.intersectPlane(plane, p2, p1);
+				res[0] = MathUtils.intersectPlane3d(plane, p2, p1);
 				res[1] = p2;
-				res[2] = MathUtils.intersectPlane(plane, p2, p3);
+				res[2] = MathUtils.intersectPlane3d(plane, p2, p3);
 				return -1;
 			} else {
 				// f1: new1 p2 new2 || new1 = splitedge(p2,p1) new2 =
 				// splitedge(p2,p3)
 				res[0] = p1;
-				res[1] = MathUtils.intersectPlane(plane, p2, p1);
-				res[2] = MathUtils.intersectPlane(plane, p2, p3);
+				res[1] = MathUtils.intersectPlane3d(plane, p2, p1);
+				res[2] = MathUtils.intersectPlane3d(plane, p2, p3);
 				return 1;
 			}
 		case BoolTag.IN_OUT_IN:
@@ -701,29 +698,29 @@ public class BSPNode {
 				// f1: new1 p2 new2 || new1 = splitedge(p2,p1) new2 =
 				// splitedge(p2,p3)
 				res[0] = p1;
-				res[1] = MathUtils.intersectPlane(plane, p2, p1);
-				res[2] = MathUtils.intersectPlane(plane, p2, p3);
+				res[1] = MathUtils.intersectPlane3d(plane, p2, p1);
+				res[2] = MathUtils.intersectPlane3d(plane, p2, p3);
 				return -1;
 			} else {
 				// f1: new1 p2 new2 || new1 = splitedge(p2,p1) new2 =
 				// splitedge(p2,p3)
-				res[0] = MathUtils.intersectPlane(plane, p2, p1);
+				res[0] = MathUtils.intersectPlane3d(plane, p2, p1);
 				res[1] = p2;
-				res[2] = MathUtils.intersectPlane(plane, p2, p3);
+				res[2] = MathUtils.intersectPlane3d(plane, p2, p3);
 				return 1;
 			}
 		case BoolTag.OUT_OUT_IN:
 			if (compChildren() <= 0) {
 				// f1: new1 new2 p2 || new1 = splitedge(p3,p1) new2 =
 				// splitedge(p3,p2)
-				res[0] = MathUtils.intersectPlane(plane, p3, p1);
-				res[1] = MathUtils.intersectPlane(plane, p3, p2);
+				res[0] = MathUtils.intersectPlane3d(plane, p3, p1);
+				res[1] = MathUtils.intersectPlane3d(plane, p3, p2);
 				res[2] = p3;
 				return -1;
 			} else {
 				// f1: new1 new2 p2 || new1 = splitedge(p3,p1) new2 =
 				// splitedge(p3,p2)
-				res[0] = MathUtils.intersectPlane(plane, p3, p1);
+				res[0] = MathUtils.intersectPlane3d(plane, p3, p1);
 				res[1] = p1;
 				res[2] = p2;
 				return 1;
@@ -732,15 +729,15 @@ public class BSPNode {
 			if (compChildren() < 0) {
 				// f1: new1 new2 p2 || new1 = splitedge(p3,p1) new2 =
 				// splitedge(p3,p2)
-				res[0] = MathUtils.intersectPlane(plane, p3, p1);
+				res[0] = MathUtils.intersectPlane3d(plane, p3, p1);
 				res[1] = p1;
 				res[2] = p2;
 				return -1;
 			} else {
 				// f1: new1 new2 p2 || new1 = splitedge(p3,p1) new2 =
 				// splitedge(p3,p2)
-				res[0] = MathUtils.intersectPlane(plane, p3, p1);
-				res[1] = MathUtils.intersectPlane(plane, p3, p2);
+				res[0] = MathUtils.intersectPlane3d(plane, p3, p1);
+				res[1] = MathUtils.intersectPlane3d(plane, p3, p2);
 				res[2] = p3;
 				return 1;
 			}

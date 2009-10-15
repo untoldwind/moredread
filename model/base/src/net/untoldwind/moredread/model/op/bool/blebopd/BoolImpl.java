@@ -1,9 +1,7 @@
-package net.untoldwind.moredread.model.op.bool;
+package net.untoldwind.moredread.model.op.bool.blebopd;
 
 import java.util.Iterator;
 import java.util.List;
-
-import com.jme.math.Vector3f;
 
 public class BoolImpl {
 	/**
@@ -80,10 +78,10 @@ public class BoolImpl {
 		while (it.hasNext()) {
 			final BoolFace face = it.next();
 
-			final Vector3f p1 = face.getVertex(0).getPoint();
-			final Vector3f p2 = face.getVertex(1).getPoint();
-			final Vector3f p3 = face.getVertex(2).getPoint();
-			if ((tag = bsp.classifyFace(p1, p2, p3, face.getPlane())) == BoolTag.OUT
+			final Vector3d p1 = face.getVertex(0).getPoint3d();
+			final Vector3d p2 = face.getVertex(1).getPoint3d();
+			final Vector3d p3 = face.getVertex(2).getPoint3d();
+			if ((tag = bsp.classifyFace(p1, p2, p3, face.getPlane3d())) == BoolTag.OUT
 					|| tag == BoolTag.OUTON) {
 				face.setTAG(BoolTag.BROKEN);
 				it.remove();
@@ -113,9 +111,9 @@ public class BoolImpl {
 		while (it.hasNext()) {
 			final BoolFace face = it.next();
 
-			final Vector3f p1 = face.getVertex(0).getPoint();
-			final Vector3f p2 = face.getVertex(1).getPoint();
-			final Vector3f p3 = face.getVertex(2).getPoint();
+			final Vector3d p1 = face.getVertex(0).getPoint3d();
+			final Vector3d p2 = face.getVertex(1).getPoint3d();
+			final Vector3d p3 = face.getVertex(2).getPoint3d();
 
 			if (bsp.filterFace(p1, p2, p3, face) == BoolTag.OUT) {
 				if (!inverted) {
@@ -140,10 +138,10 @@ public class BoolImpl {
 			final BSPTree bsp) {
 		for (final BoolFace face : faces) {
 			if (face.getTAG() != BoolTag.BROKEN) {
-				final Vector3f p1 = face.getVertex(0).getPoint();
-				final Vector3f p2 = face.getVertex(1).getPoint();
-				final Vector3f p3 = face.getVertex(2).getPoint();
-				if (bsp.simplifiedClassifyFace(p1, p2, p3, face.getPlane()) != BoolTag.IN) {
+				final Vector3d p1 = face.getVertex(0).getPoint3d();
+				final Vector3d p2 = face.getVertex(1).getPoint3d();
+				final Vector3d p3 = face.getVertex(2).getPoint3d();
+				if (bsp.simplifiedClassifyFace(p1, p2, p3, face.getPlane3d()) != BoolTag.IN) {
 					face.setTAG(BoolTag.BROKEN);
 				}
 			}

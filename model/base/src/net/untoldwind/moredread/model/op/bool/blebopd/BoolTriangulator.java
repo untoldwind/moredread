@@ -1,9 +1,6 @@
-package net.untoldwind.moredread.model.op.bool;
+package net.untoldwind.moredread.model.op.bool.blebopd;
 
 import java.util.List;
-
-import com.jme.math.Plane;
-import com.jme.math.Vector3f;
 
 public class BoolTriangulator {
 	/**
@@ -35,19 +32,19 @@ public class BoolTriangulator {
 		BoolFace face1, face2;
 		if (e == 1) {
 			face1 = new BoolFace(face.getVertex(0), v, face.getVertex(2), face
-					.getPlane(), face.getOriginalFace());
+					.getPlane3d(), face.getOriginalFace());
 			face2 = new BoolFace(v, face.getVertex(1), face.getVertex(2), face
-					.getPlane(), face.getOriginalFace());
+					.getPlane3d(), face.getOriginalFace());
 		} else if (e == 2) {
 			face1 = new BoolFace(face.getVertex(0), face.getVertex(1), v, face
-					.getPlane(), face.getOriginalFace());
+					.getPlane3d(), face.getOriginalFace());
 			face2 = new BoolFace(face.getVertex(0), v, face.getVertex(2), face
-					.getPlane(), face.getOriginalFace());
+					.getPlane3d(), face.getOriginalFace());
 		} else if (e == 3) {
 			face1 = new BoolFace(face.getVertex(0), face.getVertex(1), v, face
-					.getPlane(), face.getOriginalFace());
+					.getPlane3d(), face.getOriginalFace());
 			face2 = new BoolFace(face.getVertex(1), face.getVertex(2), v, face
-					.getPlane(), face.getOriginalFace());
+					.getPlane3d(), face.getOriginalFace());
 		} else {
 			return;
 		}
@@ -85,11 +82,11 @@ public class BoolTriangulator {
 	static void triangulateB(final BoolMesh mesh, final List<BoolFace> faces,
 			final BoolFace face, final BoolVertex v) {
 		final BoolFace face1 = new BoolFace(face.getVertex(0), face
-				.getVertex(1), v, face.getPlane(), face.getOriginalFace());
+				.getVertex(1), v, face.getPlane3d(), face.getOriginalFace());
 		final BoolFace face2 = new BoolFace(face.getVertex(1), face
-				.getVertex(2), v, face.getPlane(), face.getOriginalFace());
+				.getVertex(2), v, face.getPlane3d(), face.getOriginalFace());
 		final BoolFace face3 = new BoolFace(face.getVertex(2), face
-				.getVertex(0), v, face.getPlane(), face.getOriginalFace());
+				.getVertex(0), v, face.getPlane3d(), face.getOriginalFace());
 
 		addFace(mesh, faces, face1, face.getTAG());
 		addFace(mesh, faces, face2, face.getTAG());
@@ -172,11 +169,11 @@ public class BoolTriangulator {
 			final BoolVertex v4, final BoolVertex v5) {
 		final BoolVertex v = getTriangleVertex(v1, v2, v4, v5);
 		final BoolVertex w = (v == v4 ? v5 : v4);
-		final BoolFace face1 = new BoolFace(v1, v, w, face.getPlane(), face
+		final BoolFace face1 = new BoolFace(v1, v, w, face.getPlane3d(), face
 				.getOriginalFace());
-		final BoolFace face2 = new BoolFace(v1, v2, v, face.getPlane(), face
+		final BoolFace face2 = new BoolFace(v1, v2, v, face.getPlane3d(), face
 				.getOriginalFace());
-		final BoolFace face3 = new BoolFace(v1, w, v3, face.getPlane(), face
+		final BoolFace face3 = new BoolFace(v1, w, v3, face.getPlane3d(), face
 				.getOriginalFace());
 
 		// v1 v w defines the nice triangle in the correct order
@@ -194,7 +191,7 @@ public class BoolTriangulator {
 
 		final BoolFace faces45[] = new BoolFace[2];
 
-		splitQuad(face.getPlane(), v2, v3, w, v, faces45, face
+		splitQuad(face.getPlane3d(), v2, v3, w, v, faces45, face
 				.getOriginalFace());
 		addFace(mesh, faces, faces45[0], face.getTAG());
 		addFace(mesh, faces, faces45[1], face.getTAG());
@@ -272,11 +269,11 @@ public class BoolTriangulator {
 			final BoolVertex v4, final BoolVertex v5) {
 		final BoolVertex v = getNearestVertex(v1, v4, v5);
 		final BoolVertex w = (v == v4 ? v5 : v4);
-		final BoolFace face1 = new BoolFace(v1, v, v3, face.getPlane(), face
+		final BoolFace face1 = new BoolFace(v1, v, v3, face.getPlane3d(), face
 				.getOriginalFace());
-		final BoolFace face2 = new BoolFace(v, w, v3, face.getPlane(), face
+		final BoolFace face2 = new BoolFace(v, w, v3, face.getPlane3d(), face
 				.getOriginalFace());
-		final BoolFace face3 = new BoolFace(w, v2, v3, face.getPlane(), face
+		final BoolFace face3 = new BoolFace(w, v2, v3, face.getPlane3d(), face
 				.getOriginalFace());
 
 		addFace(mesh, faces, face1, face.getTAG());
@@ -333,21 +330,21 @@ public class BoolTriangulator {
 		final BoolFace faces23[] = new BoolFace[2];
 		if (e1 == 1 && e2 == 2) {
 			// the vertex is 2
-			face1 = new BoolFace(face.getVertex(1), v2, v1, face.getPlane(),
+			face1 = new BoolFace(face.getVertex(1), v2, v1, face.getPlane3d(),
 					face.getOriginalFace());
-			splitQuad(face.getPlane(), face.getVertex(2), face.getVertex(0),
+			splitQuad(face.getPlane3d(), face.getVertex(2), face.getVertex(0),
 					v1, v2, faces23, face.getOriginalFace());
 		} else if (e1 == 1 && e2 == 3) {
 			// the vertex is 1
-			face1 = new BoolFace(face.getVertex(0), v1, v2, face.getPlane(),
+			face1 = new BoolFace(face.getVertex(0), v1, v2, face.getPlane3d(),
 					face.getOriginalFace());
-			splitQuad(face.getPlane(), face.getVertex(1), face.getVertex(2),
+			splitQuad(face.getPlane3d(), face.getVertex(1), face.getVertex(2),
 					v2, v1, faces23, face.getOriginalFace());
 		} else if (e1 == 2 && e2 == 3) {
 			// the vertex is 3
-			face1 = new BoolFace(face.getVertex(2), v2, v1, face.getPlane(),
+			face1 = new BoolFace(face.getVertex(2), v2, v1, face.getPlane3d(),
 					face.getOriginalFace());
-			splitQuad(face.getPlane(), face.getVertex(0), face.getVertex(1),
+			splitQuad(face.getPlane3d(), face.getVertex(0), face.getVertex(1),
 					v1, v2, faces23, face.getOriginalFace());
 		} else {
 			return;
@@ -394,19 +391,19 @@ public class BoolTriangulator {
 		final BoolFace faces12[] = new BoolFace[2];
 		final BoolFace faces34[] = new BoolFace[2];
 		if (e == 1) {
-			splitQuad(face.getPlane(), face.getVertex(2), face.getVertex(0),
+			splitQuad(face.getPlane3d(), face.getVertex(2), face.getVertex(0),
 					v2, v1, faces12, face.getOriginalFace());
-			splitQuad(face.getPlane(), face.getVertex(1), face.getVertex(2),
+			splitQuad(face.getPlane3d(), face.getVertex(1), face.getVertex(2),
 					v1, v2, faces34, face.getOriginalFace());
 		} else if (e == 2) {
-			splitQuad(face.getPlane(), face.getVertex(0), face.getVertex(1),
+			splitQuad(face.getPlane3d(), face.getVertex(0), face.getVertex(1),
 					v2, v1, faces12, face.getOriginalFace());
-			splitQuad(face.getPlane(), face.getVertex(2), face.getVertex(0),
+			splitQuad(face.getPlane3d(), face.getVertex(2), face.getVertex(0),
 					v1, v2, faces34, face.getOriginalFace());
 		} else if (e == 3) {
-			splitQuad(face.getPlane(), face.getVertex(1), face.getVertex(2),
+			splitQuad(face.getPlane3d(), face.getVertex(1), face.getVertex(2),
 					v2, v1, faces12, face.getOriginalFace());
-			splitQuad(face.getPlane(), face.getVertex(0), face.getVertex(1),
+			splitQuad(face.getPlane3d(), face.getVertex(0), face.getVertex(1),
 					v1, v2, faces34, face.getOriginalFace());
 		} else {
 			return;
@@ -495,19 +492,19 @@ public class BoolTriangulator {
 	 * @param original
 	 *            face index to the new faces
 	 */
-	static void splitQuad(final Plane plane, final BoolVertex v1,
+	static void splitQuad(final Plane3d plane, final BoolVertex v1,
 			final BoolVertex v2, final BoolVertex v3, final BoolVertex v4,
 			final BoolFace triangles[], final int original) {
-		final Vector3f p1 = v1.getPoint();
-		final Vector3f p2 = v2.getPoint();
-		final Vector3f p3 = v3.getPoint();
-		final Vector3f p4 = v4.getPoint();
+		final Vector3d p1 = v1.getPoint3d();
+		final Vector3d p2 = v2.getPoint3d();
+		final Vector3d p3 = v3.getPoint3d();
+		final Vector3d p4 = v4.getPoint3d();
 
 		final int res = MathUtils.concave(p1, p2, p3, p4);
 
 		if (res == 0) {
-			final Plane plane1 = MathUtils.createPlane(p1, p2, p3);
-			final Plane plane2 = MathUtils.createPlane(p1, p3, p4);
+			final Plane3d plane1 = MathUtils.createPlane3d(p1, p2, p3);
+			final Plane3d plane2 = MathUtils.createPlane3d(p1, p3, p4);
 
 			if (isInsideCircle(v1, v2, v4, v3)
 					&& plane1.getNormal().dot(plane.getNormal()) != 0
@@ -567,9 +564,9 @@ public class BoolTriangulator {
 	 */
 	static BoolVertex getNearestVertex(final BoolVertex u, final BoolVertex v1,
 			final BoolVertex v2) {
-		final Vector3f q = u.getPoint();
-		final Vector3f p1 = v1.getPoint();
-		final Vector3f p2 = v2.getPoint();
+		final Vector3d q = u.getPoint3d();
+		final Vector3d p1 = v1.getPoint3d();
+		final Vector3d p2 = v2.getPoint3d();
 		if (MathUtils.comp(q.distance(p1), q.distance(p2)) > 0) {
 			return v2;
 		} else {
@@ -597,8 +594,8 @@ public class BoolTriangulator {
 	 */
 	static boolean isInsideCircle(final BoolVertex v1, final BoolVertex v2,
 			final BoolVertex v3, final BoolVertex v4, final BoolVertex v5) {
-		return MathUtils.isInsideCircle(v1.getPoint(), v2.getPoint(), v3
-				.getPoint(), v4.getPoint(), v5.getPoint());
+		return MathUtils.isInsideCircle(v1.getPoint3d(), v2.getPoint3d(), v3
+				.getPoint3d(), v4.getPoint3d(), v5.getPoint3d());
 	}
 
 	/**
@@ -619,7 +616,7 @@ public class BoolTriangulator {
 	 */
 	static boolean isInsideCircle(final BoolVertex v1, final BoolVertex v2,
 			final BoolVertex v3, final BoolVertex w) {
-		return MathUtils.isInsideCircle(v1.getPoint(), v2.getPoint(), v3
-				.getPoint(), w.getPoint());
+		return MathUtils.isInsideCircle(v1.getPoint3d(), v2.getPoint3d(), v3
+				.getPoint3d(), w.getPoint3d());
 	}
 }

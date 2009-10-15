@@ -1,4 +1,4 @@
-package net.untoldwind.moredread.model.op.bool;
+package net.untoldwind.moredread.model.op.bool.blebopf;
 
 import com.jme.math.Plane;
 import com.jme.math.Vector3f;

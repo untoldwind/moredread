@@ -1,4 +1,4 @@
-package net.untoldwind.moredread.model.op.bool;
+package net.untoldwind.moredread.model.op.bool.blebopf;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
