@@ -7,7 +7,7 @@ import java.util.Map;
 
 import net.untoldwind.moredread.model.scene.change.CompositeChangeCommand;
 import net.untoldwind.moredread.model.scene.change.ISceneChangeCommand;
-import net.untoldwind.moredread.model.scene.event.SceneGeometryChangeEvent;
+import net.untoldwind.moredread.model.scene.event.SceneChangeEvent;
 
 import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.core.commands.operations.OperationHistoryFactory;
@@ -52,7 +52,7 @@ public class SceneChangeHandler {
 		for (final INode node : affectedNodes) {
 			node.markDirty();
 		}
-		scene.fireSceneGeometryChangeEvent(new SceneGeometryChangeEvent(scene,
+		scene.fireSceneGeometryChangeEvent(new SceneChangeEvent(scene,
 				affectedNodes));
 
 	}
@@ -84,7 +84,7 @@ public class SceneChangeHandler {
 		for (final INode node : affectedNodes) {
 			node.markDirty();
 		}
-		scene.fireSceneGeometryChangeEvent(new SceneGeometryChangeEvent(scene,
+		scene.fireSceneGeometryChangeEvent(new SceneChangeEvent(scene,
 				affectedNodes));
 	}
 

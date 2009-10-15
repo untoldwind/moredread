@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.untoldwind.moredread.model.scene.event.ISceneGeometryChangeListener;
-import net.untoldwind.moredread.model.scene.event.SceneGeometryChangeEvent;
+import net.untoldwind.moredread.model.scene.event.ISceneChangeListener;
+import net.untoldwind.moredread.model.scene.event.SceneChangeEvent;
 
 public class Scene extends Group {
 	private final SceneSelection sceneSelection;
 	private final SceneChangeHandler sceneChangeHandler;
 	private final SceneMetadata sceneMetadata;
-	private final List<ISceneGeometryChangeListener> geometryListeners;
+	private final List<ISceneChangeListener> geometryListeners;
 
 	private final Map<Long, INode> nodesById;
 
@@ -22,7 +22,7 @@ public class Scene extends Group {
 		sceneSelection = new SceneSelection(this);
 		sceneChangeHandler = new SceneChangeHandler(this);
 		sceneMetadata = new SceneMetadata();
-		geometryListeners = new ArrayList<ISceneGeometryChangeListener>();
+		geometryListeners = new ArrayList<ISceneChangeListener>();
 		nodesById = new HashMap<Long, INode>();
 	}
 
@@ -42,15 +42,15 @@ public class Scene extends Group {
 		nodesById.put(node.getNodeId(), node);
 	}
 
-	public void addSceneGeometryChangeListener(
-			final ISceneGeometryChangeListener listener) {
+	public void addSceneChangeListener(
+			final ISceneChangeListener listener) {
 		synchronized (geometryListeners) {
 			geometryListeners.add(listener);
 		}
 	}
 
-	public void removeSceneGeometryChangeListener(
-			final ISceneGeometryChangeListener listener) {
+	public void removeSceneChangeListener(
+			final ISceneChangeListener listener) {
 		synchronized (geometryListeners) {
 			geometryListeners.remove(listener);
 		}
@@ -66,17 +66,17 @@ public class Scene extends Group {
 	}
 
 	protected void fireSceneGeometryChangeEvent(
-			final SceneGeometryChangeEvent event) {
-		final ISceneGeometryChangeListener listenerArray[];
+			final SceneChangeEvent event) {
+		final ISceneChangeListener listenerArray[];
 
 		synchronized (geometryListeners) {
 			listenerArray = geometryListeners
-					.toArray(new ISceneGeometryChangeListener[geometryListeners
+					.toArray(new ISceneChangeListener[geometryListeners
 							.size()]);
 		}
 
-		for (final ISceneGeometryChangeListener listener : listenerArray) {
-			listener.sceneGeometryChanged(event);
+		for (final ISceneChangeListener listener : listenerArray) {
+			listener.sceneChanged(event);
 		}
 
 	}

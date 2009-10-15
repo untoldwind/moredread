@@ -7,10 +7,10 @@ import net.untoldwind.moredread.model.io.ModelIOPlugin;
 import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.scene.SceneSelection;
-import net.untoldwind.moredread.model.scene.event.ISceneGeometryChangeListener;
+import net.untoldwind.moredread.model.scene.event.ISceneChangeListener;
 import net.untoldwind.moredread.model.scene.event.ISceneSelectionChangeListener;
 import net.untoldwind.moredread.model.scene.event.ISceneSelectionModeListener;
-import net.untoldwind.moredread.model.scene.event.SceneGeometryChangeEvent;
+import net.untoldwind.moredread.model.scene.event.SceneChangeEvent;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionModeEvent;
 import net.untoldwind.moredread.ui.MoreDreadUI;
@@ -64,7 +64,7 @@ import com.jmex.swt.lwjgl.LWJGLSWTConstants;
 
 public class Model3DView extends ViewPart implements ISaveablePart,
 		ISceneSelectionModeListener, ISceneSelectionChangeListener,
-		ISceneGeometryChangeListener {
+		ISceneChangeListener {
 
 	public static final String ID = "net.untoldwind.moredread.ui.model3dview";
 
@@ -171,7 +171,7 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 		MoreDreadUI.getDefault().getSceneHolder().getScene()
 				.getSceneSelection().addSceneSelectionChangeListener(this);
 		MoreDreadUI.getDefault().getSceneHolder().getScene()
-				.addSceneGeometryChangeListener(this);
+				.addSceneChangeListener(this);
 
 		createGlobalActionHandlers();
 
@@ -212,7 +212,7 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void sceneGeometryChanged(final SceneGeometryChangeEvent event) {
+	public void sceneChanged(final SceneChangeEvent event) {
 		implementor.updateDisplayNodes();
 		canvas.queueRender();
 	}

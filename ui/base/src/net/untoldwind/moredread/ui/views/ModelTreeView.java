@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 import net.untoldwind.moredread.model.scene.INode;
+import net.untoldwind.moredread.model.scene.event.ISceneChangeListener;
 import net.untoldwind.moredread.model.scene.event.ISceneSelectionChangeListener;
+import net.untoldwind.moredread.model.scene.event.SceneChangeEvent;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
 import net.untoldwind.moredread.ui.MoreDreadUI;
 import net.untoldwind.moredread.ui.provider.NodeLabelProvider;
@@ -23,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
 public class ModelTreeView extends ViewPart implements
-		ISceneSelectionChangeListener {
+		ISceneSelectionChangeListener, ISceneChangeListener {
 
 	public static final String ID = "net.untoldwind.moredread.ui.modelTreeView";
 
@@ -66,6 +68,8 @@ public class ModelTreeView extends ViewPart implements
 
 		MoreDreadUI.getDefault().getSceneHolder().getScene()
 				.getSceneSelection().addSceneSelectionChangeListener(this);
+		MoreDreadUI.getDefault().getSceneHolder().getScene()
+				.addSceneChangeListener(this);
 	}
 
 	public void sceneSelectionChanged(final SceneSelectionChangeEvent event) {
@@ -78,6 +82,24 @@ public class ModelTreeView extends ViewPart implements
 				modelViewer
 						.setSelection(new StructuredSelection(selectedNodes));
 
+			}
+		});
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void sceneChanged(final SceneChangeEvent event) {
+		modelViewer.getControl().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				final ISelection selection = modelViewer.getSelection();
+				final Object[] expanded = modelViewer.getExpandedElements();
+
+				modelViewer.setInput(MoreDreadUI.getDefault().getSceneHolder());
+
+				modelViewer.setExpandedElements(expanded);
+				modelViewer.setSelection(selection);
 			}
 		});
 	}

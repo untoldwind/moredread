@@ -2,6 +2,8 @@ package net.untoldwind.moredread.model.scene;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import net.untoldwind.moredread.model.scene.change.NodeNameChangeCommand;
+
 public abstract class NodeBase implements INode {
 
 	private final static AtomicLong NODE_ID_COUNTER = new AtomicLong(0);
@@ -32,6 +34,9 @@ public abstract class NodeBase implements INode {
 	}
 
 	public void setName(final String name) {
+		scene.getSceneChangeHandler().registerCommand(
+				new NodeNameChangeCommand(this));
+
 		this.name = name;
 	}
 

@@ -7,9 +7,9 @@ import net.untoldwind.moredread.model.mesh.IPoint;
 import net.untoldwind.moredread.model.mesh.IPolygon;
 import net.untoldwind.moredread.model.mesh.Point;
 import net.untoldwind.moredread.model.mesh.Polygon;
-import net.untoldwind.moredread.model.properties.SpatialNodePropertySource;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
 import net.untoldwind.moredread.model.scene.change.NodeTransformationChangeCommand;
+import net.untoldwind.moredread.model.scene.properties.SpatialNodePropertySource;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.views.properties.IPropertySource;
