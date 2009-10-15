@@ -7,12 +7,11 @@ import java.util.Set;
 
 import net.untoldwind.moredread.annotations.Singleton;
 import net.untoldwind.moredread.jme.MoreDreadJME;
+import net.untoldwind.moredread.model.generator.BooleanGenerator;
 import net.untoldwind.moredread.model.generator.CubeMeshGenerator;
 import net.untoldwind.moredread.model.generator.DodecahedronMeshGenerator;
 import net.untoldwind.moredread.model.generator.OctahedronMeshGenerator;
 import net.untoldwind.moredread.model.mesh.PolyMesh;
-import net.untoldwind.moredread.model.mesh.TriangleMesh;
-import net.untoldwind.moredread.model.op.BooleanOperationFactory;
 import net.untoldwind.moredread.model.op.IBooleanOperation;
 import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
@@ -232,37 +231,37 @@ public class MoreDreadUI extends AbstractUIPlugin {
 			node7.setLocalScale(new Vector3f(3.0f, 3.0f, 3.0f));
 			node7.setLocalTranslation(new Vector3f(0, -10f, 0));
 
-			final TriangleMesh cube1 = new CubeMeshGenerator(new Vector3f(0, 0,
-					0), 1f).generateMesh(null).toTriangleMesh();
-			// Clean intersection on each triangle (i.e. no edge/edge
-			// intersection
-			final TriangleMesh cube2 = new CubeMeshGenerator(new Vector3f(0.1f,
-					0.2f, 0.3f), 1f).generateMesh(null).toTriangleMesh();
+			final GeneratorNode node8 = new GeneratorNode(scene,
+					new BooleanGenerator(
+							IBooleanOperation.BoolOperation.INTERSECTION));
 
-			final IBooleanOperation booleanOperation = BooleanOperationFactory
-					.createDefault();
-
-			final AbstractSpatialNode node8 = new MeshNode(scene,
-					"Intersect result", booleanOperation.performBoolean(
-							IBooleanOperation.BoolOperation.INTERSECTION,
-							cube1, cube2));
+			new MeshNode(node8, "Cube1", new CubeMeshGenerator(new Vector3f(0,
+					0, 0), 1f).generateMesh(null));
+			new MeshNode(node8, "Cube2", new CubeMeshGenerator(new Vector3f(
+					0.1f, 0.2f, 0.3f), 1f).generateMesh(null));
 
 			node8.setLocalScale(new Vector3f(3.0f, 3.0f, 3.0f));
 			node8.setLocalTranslation(new Vector3f(-10f, -10f, 0));
 
-			final AbstractSpatialNode node9 = new MeshNode(scene,
-					"Union result", booleanOperation
-							.performBoolean(
-									IBooleanOperation.BoolOperation.UNION,
-									cube1, cube2));
+			final GeneratorNode node9 = new GeneratorNode(scene,
+					new BooleanGenerator(IBooleanOperation.BoolOperation.UNION));
+
+			new MeshNode(node9, "Cube1", new CubeMeshGenerator(new Vector3f(0,
+					0, 0), 1f).generateMesh(null));
+			new MeshNode(node9, "Cube2", new CubeMeshGenerator(new Vector3f(
+					0.1f, 0.2f, 0.3f), 1f).generateMesh(null));
 
 			node9.setLocalScale(new Vector3f(3.0f, 3.0f, 3.0f));
 			node9.setLocalTranslation(new Vector3f(-20f, -10f, 0));
 
-			final AbstractSpatialNode node10 = new MeshNode(scene,
-					"Difference result", booleanOperation.performBoolean(
-							IBooleanOperation.BoolOperation.DIFFERENCE, cube1,
-							cube2));
+			final GeneratorNode node10 = new GeneratorNode(scene,
+					new BooleanGenerator(
+							IBooleanOperation.BoolOperation.DIFFERENCE));
+
+			new MeshNode(node10, "Cube1", new CubeMeshGenerator(new Vector3f(0,
+					0, 0), 1f).generateMesh(null));
+			new MeshNode(node10, "Cube2", new CubeMeshGenerator(new Vector3f(
+					0.1f, 0.2f, 0.3f), 1f).generateMesh(null));
 
 			node10.setLocalScale(new Vector3f(3.0f, 3.0f, 3.0f));
 			node10.setLocalTranslation(new Vector3f(-30f, -10f, 0));
