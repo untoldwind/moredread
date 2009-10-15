@@ -78,6 +78,8 @@ public class MeshNode extends ObjectNode implements IMeshNode, IGeneratorInput {
 
 	@Override
 	public void markDirty() {
+		super.markDirty();
+
 		worldBoundingBox = null;
 		localBoundingBox = null;
 		renderedGeometries = null;

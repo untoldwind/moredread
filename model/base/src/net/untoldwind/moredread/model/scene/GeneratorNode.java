@@ -85,9 +85,12 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 
 	@Override
 	public void markDirty() {
+		super.markDirty();
+
 		worldBoundingBox = null;
 		localBoundingBox = null;
 		renderedGeometries = null;
+		generatedMesh = null;
 	}
 
 	@Override

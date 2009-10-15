@@ -61,6 +61,8 @@ public class Group extends AbstractSpatialComposite<AbstractSpatialNode> {
 
 	@Override
 	public void markDirty() {
+		super.markDirty();
+
 		worldBoundingBox = null;
 		localBoundingBox = null;
 	}

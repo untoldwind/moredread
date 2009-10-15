@@ -47,6 +47,13 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 		return parent;
 	}
 
+	@Override
+	public void markDirty() {
+		if (parent != null) {
+			parent.markDirty();
+		}
+	}
+
 	public boolean isSelected() {
 		return scene.getSceneSelection().isNodeSelected(this);
 	}

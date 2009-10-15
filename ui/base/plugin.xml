@@ -182,7 +182,7 @@
                id="net.untoldwind.moredread.properties.node.transformation.section1"
                tab="net.untoldwind.moredread.properties.node.transformation">
             <input
-                  type="net.untoldwind.moredread.model.scene.SpatialNode">
+                  type="net.untoldwind.moredread.model.scene.AbstractSpatialNode">
             </input>
          </propertySection>
          <propertySection
@@ -190,7 +190,7 @@
                id="net.untoldwind.moredread.properties.node.advanced.section1"
                tab="net.untoldwind.moredread.properties.node.advanced">
             <input
-                  type="net.untoldwind.moredread.model.scene.SpatialNode">
+                  type="net.untoldwind.moredread.model.scene.AbstractSpatialNode">
             </input>
          </propertySection>
       </propertySections>
