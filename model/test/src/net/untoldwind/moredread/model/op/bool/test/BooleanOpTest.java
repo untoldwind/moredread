@@ -13,10 +13,10 @@ public class BooleanOpTest {
 	@Test
 	public void testTwoCubes() throws Exception {
 		final TriangleMesh cube1 = new CubeMeshGenerator(new Vector3f(0, 0, 0),
-				1f).generateMesh().toTriangleMesh();
+				1f).generateMesh(null).toTriangleMesh();
 		// Clean intersection on each triangle (i.e. no edge/edge intersection
 		final TriangleMesh cube2 = new CubeMeshGenerator(new Vector3f(0.1f,
-				0.2f, 0.3f), 1f).generateMesh().toTriangleMesh();
+				0.2f, 0.3f), 1f).generateMesh(null).toTriangleMesh();
 
 		final IBooleanOperation booleanOperation = BooleanOperationFactory
 				.createBooleanOperation(BooleanOperationFactory.Implementation.BSP);

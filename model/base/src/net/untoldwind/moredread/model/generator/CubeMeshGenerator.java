@@ -1,5 +1,7 @@
 package net.untoldwind.moredread.model.generator;
 
+import java.util.List;
+
 import net.untoldwind.moredread.model.mesh.QuadMesh;
 
 import com.jme.math.Vector3f;
@@ -21,7 +23,7 @@ public class CubeMeshGenerator implements IMeshGenerator {
 		return "Cube";
 	}
 
-	public QuadMesh generateMesh() {
+	public QuadMesh generateMesh(final List<IGeneratorInput> generatorInputs) {
 		final QuadMesh mesh = new QuadMesh();
 
 		mesh.addVertex(new Vector3f(-size, -size, -size).addLocal(center));

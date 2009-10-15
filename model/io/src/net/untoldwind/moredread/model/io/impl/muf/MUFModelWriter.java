@@ -16,7 +16,7 @@ import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.ISceneVisitor;
 import net.untoldwind.moredread.model.scene.MeshNode;
 import net.untoldwind.moredread.model.scene.Scene;
-import net.untoldwind.moredread.model.scene.SpatialNode;
+import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
@@ -149,7 +149,7 @@ public class MUFModelWriter implements IModelWriter {
 		}
 
 		protected void addTransformationElements(final Element element,
-				final SpatialNode node) {
+				final AbstractSpatialNode node) {
 			final Vector3f localTranslation = node.getLocalTranslation();
 			final Vector3f localScale = node.getLocalScale();
 			final Quaternion localRotation = node.getLocalRotation();

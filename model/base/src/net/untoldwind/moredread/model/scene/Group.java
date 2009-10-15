@@ -5,8 +5,8 @@ import java.util.List;
 
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
 
-public class Group extends SpatialNode implements IComposite {
-	private final List<SpatialNode> children = new ArrayList<SpatialNode>();
+public class Group extends AbstractSpatialNode implements IComposite {
+	private final List<AbstractSpatialNode> children = new ArrayList<AbstractSpatialNode>();
 
 	private transient com.jme.scene.Node displayNode;
 	private transient BoundingBox worldBoundingBox;
@@ -16,7 +16,7 @@ public class Group extends SpatialNode implements IComposite {
 		super(parent, name);
 	}
 
-	void addNode(final SpatialNode node) {
+	void addNode(final AbstractSpatialNode node) {
 		children.add(node);
 	}
 
@@ -27,7 +27,7 @@ public class Group extends SpatialNode implements IComposite {
 	@Override
 	public BoundingBox getWorldBoundingBox() {
 		if (worldBoundingBox == null) {
-			for (final SpatialNode child : children) {
+			for (final AbstractSpatialNode child : children) {
 				final BoundingBox childBoundingBox = child
 						.getWorldBoundingBox();
 				if (childBoundingBox != null) {
@@ -49,7 +49,7 @@ public class Group extends SpatialNode implements IComposite {
 	@Override
 	public BoundingBox getLocalBoundingBox() {
 		if (localBoundingBox == null) {
-			for (final SpatialNode child : children) {
+			for (final AbstractSpatialNode child : children) {
 				final BoundingBox childBoundingBox = child
 						.getLocalBoundingBox();
 				if (childBoundingBox != null) {
@@ -93,7 +93,7 @@ public class Group extends SpatialNode implements IComposite {
 		displayNode.setLocalTranslation(localTranslation);
 		displayNode.setLocalScale(localScale);
 
-		for (final SpatialNode child : children) {
+		for (final AbstractSpatialNode child : children) {
 			child.updateDisplayNode(rendererAdapter, displayNode);
 		}
 	}

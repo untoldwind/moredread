@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import net.untoldwind.moredread.model.scene.change.NodeNameChangeCommand;
 
-public abstract class NodeBase implements INode {
+public abstract class AbstractNode implements INode {
 
 	private final static AtomicLong NODE_ID_COUNTER = new AtomicLong(0);
 
@@ -13,7 +13,7 @@ public abstract class NodeBase implements INode {
 	protected final long nodeId;
 	protected String name;
 
-	protected NodeBase(final IComposite parent, final String name) {
+	protected AbstractNode(final IComposite parent, final String name) {
 		nodeId = NODE_ID_COUNTER.getAndIncrement();
 		if (parent == null) {
 			scene = (Scene) this;

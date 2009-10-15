@@ -8,13 +8,13 @@ import com.jme.util.export.JMEImporter;
 import com.jme.util.export.Savable;
 
 public class SpatialNodeReference implements Savable {
-	WeakReference<SpatialNode> nodeRef;
+	WeakReference<AbstractSpatialNode> nodeRef;
 
-	public SpatialNodeReference(SpatialNode node) {
-		nodeRef = new WeakReference<SpatialNode>(node);
+	public SpatialNodeReference(AbstractSpatialNode node) {
+		nodeRef = new WeakReference<AbstractSpatialNode>(node);
 	}
 
-	public SpatialNode getNode() {
+	public AbstractSpatialNode getNode() {
 		return nodeRef.get();
 	}
 

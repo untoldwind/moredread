@@ -1,7 +1,7 @@
 package net.untoldwind.moredread.model.scene.properties;
 
 import net.untoldwind.moredread.model.scene.Scene;
-import net.untoldwind.moredread.model.scene.SpatialNode;
+import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
@@ -9,14 +9,14 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 public class SpatialNodePropertySource implements IPropertySource {
-	private final SpatialNode node;
+	private final AbstractSpatialNode node;
 
 	protected static final String PROPERTY_NAME = "name";
 
 	private final Object PropertiesTable[][] = { { PROPERTY_NAME,
 			new TextPropertyDescriptor(PROPERTY_NAME, "Name") }, };
 
-	public SpatialNodePropertySource(final SpatialNode node) {
+	public SpatialNodePropertySource(final AbstractSpatialNode node) {
 		this.node = node;
 	}
 

@@ -17,7 +17,7 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 
-public abstract class SpatialNode extends NodeBase implements INode, IAdaptable {
+public abstract class AbstractSpatialNode extends AbstractNode implements INode, IAdaptable {
 	/** The parent node (group). */
 	protected final Group parent;
 
@@ -28,7 +28,7 @@ public abstract class SpatialNode extends NodeBase implements INode, IAdaptable 
 	/** Spatial's scale relative to its parent. */
 	protected Vector3f localScale;
 
-	protected SpatialNode(final Group parent, final String name) {
+	protected AbstractSpatialNode(final Group parent, final String name) {
 		super(parent, name);
 
 		this.parent = parent;

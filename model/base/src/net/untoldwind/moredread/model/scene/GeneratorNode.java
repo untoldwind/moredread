@@ -107,7 +107,7 @@ public class GeneratorNode extends ObjectNode {
 	}
 
 	public void regenerate() {
-		generatedMesh = meshGenerator.generateMesh();
+		generatedMesh = meshGenerator.generateMesh(null);
 		renderedGeometries = null;
 	}
 

@@ -1,5 +1,7 @@
 package net.untoldwind.moredread.model.generator;
 
+import java.util.List;
+
 import net.untoldwind.moredread.model.mesh.PolyMesh;
 
 import com.jme.math.FastMath;
@@ -13,7 +15,7 @@ public class DodecahedronMeshGenerator implements IMeshGenerator {
 		return "Dodecahedron";
 	}
 
-	public PolyMesh generateMesh() {
+	public PolyMesh generateMesh(final List<IGeneratorInput> generatorInputs) {
 		final PolyMesh mesh = new PolyMesh();
 
 		float fA = 1.0f / FastMath.sqrt(3.0f);

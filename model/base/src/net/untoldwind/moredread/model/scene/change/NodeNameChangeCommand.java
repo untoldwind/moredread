@@ -3,9 +3,9 @@ package net.untoldwind.moredread.model.scene.change;
 import java.util.List;
 
 import net.untoldwind.moredread.model.scene.INode;
-import net.untoldwind.moredread.model.scene.NodeBase;
+import net.untoldwind.moredread.model.scene.AbstractNode;
 import net.untoldwind.moredread.model.scene.Scene;
-import net.untoldwind.moredread.model.scene.SpatialNode;
+import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.AbstractOperation;
@@ -20,7 +20,7 @@ public class NodeNameChangeCommand extends AbstractOperation implements
 	private String oldName;
 	private String newName;
 
-	public NodeNameChangeCommand(final NodeBase node) {
+	public NodeNameChangeCommand(final AbstractNode node) {
 		super("Node " + node.getName() + " name change");
 
 		nodeId = node.getNodeId();
@@ -33,7 +33,7 @@ public class NodeNameChangeCommand extends AbstractOperation implements
 
 	@Override
 	public void updateOriginalValues(final Scene scene) {
-		final SpatialNode node = (SpatialNode) scene.getNode(nodeId);
+		final AbstractSpatialNode node = (AbstractSpatialNode) scene.getNode(nodeId);
 
 		if (node == null) {
 			throw new RuntimeException("Node " + nodeId + " not found in scene");
@@ -72,7 +72,7 @@ public class NodeNameChangeCommand extends AbstractOperation implements
 	public IStatus redo(final IProgressMonitor monitor, final IAdaptable info)
 			throws ExecutionException {
 		final Scene scene = (Scene) info.getAdapter(Scene.class);
-		final NodeBase node = (NodeBase) scene.getNode(nodeId);
+		final AbstractNode node = (AbstractNode) scene.getNode(nodeId);
 
 		if (node == null) {
 			return Status.CANCEL_STATUS;
@@ -93,7 +93,7 @@ public class NodeNameChangeCommand extends AbstractOperation implements
 	public IStatus undo(final IProgressMonitor monitor, final IAdaptable info)
 			throws ExecutionException {
 		final Scene scene = (Scene) info.getAdapter(Scene.class);
-		final SpatialNode node = (SpatialNode) scene.getNode(nodeId);
+		final AbstractSpatialNode node = (AbstractSpatialNode) scene.getNode(nodeId);
 
 		if (node == null) {
 			return Status.CANCEL_STATUS;

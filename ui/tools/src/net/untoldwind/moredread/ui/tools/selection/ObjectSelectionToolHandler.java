@@ -7,7 +7,7 @@ import java.util.List;
 import net.untoldwind.moredread.annotations.Singleton;
 import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.Scene;
-import net.untoldwind.moredread.model.scene.SpatialNode;
+import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.Modifier;
 import net.untoldwind.moredread.ui.controls.impl.FullScreenModelControl;
@@ -31,7 +31,7 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 			final IDisplaySystem displaySystem) {
 		final List<IModelControl> controls = new ArrayList<IModelControl>();
 		for (final INode node : scene.getSceneSelection().getSelectedNodes()) {
-			if (node instanceof SpatialNode) {
+			if (node instanceof AbstractSpatialNode) {
 				controls.add(new MoveCrossModelControl(
 						new TransformToolAdapter(scene, displaySystem)));
 				break;
@@ -101,8 +101,8 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 			int count = 0;
 			for (final INode node : scene.getSceneSelection()
 					.getSelectedNodes()) {
-				if (node instanceof SpatialNode) {
-					final SpatialNode spatialNode = (SpatialNode) node;
+				if (node instanceof AbstractSpatialNode) {
+					final AbstractSpatialNode spatialNode = (AbstractSpatialNode) node;
 					center.addLocal(spatialNode.getWorldTranslation());
 					count++;
 				}
@@ -133,8 +133,8 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 
 				for (final INode node : scene.getSceneSelection()
 						.getSelectedNodes()) {
-					if (node instanceof SpatialNode) {
-						final SpatialNode spatialNode = (SpatialNode) node;
+					if (node instanceof AbstractSpatialNode) {
+						final AbstractSpatialNode spatialNode = (AbstractSpatialNode) node;
 						final Vector3f centerDiff = spatialNode
 								.getWorldTranslation().subtract(midCenter);
 

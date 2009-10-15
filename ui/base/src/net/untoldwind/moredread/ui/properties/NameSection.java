@@ -1,6 +1,6 @@
 package net.untoldwind.moredread.ui.properties;
 
-import net.untoldwind.moredread.model.scene.SpatialNode;
+import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.viewers.ISelection;
@@ -23,7 +23,7 @@ public class NameSection extends AbstractPropertySection {
 
 	private Text labelText;
 
-	private SpatialNode node;
+	private AbstractSpatialNode node;
 
 	private final ModifyListener listener = new ModifyListener() {
 
@@ -40,8 +40,8 @@ public class NameSection extends AbstractPropertySection {
 		Assert.isTrue(selection instanceof IStructuredSelection);
 		final Object input = ((IStructuredSelection) selection)
 				.getFirstElement();
-		Assert.isTrue(input instanceof SpatialNode);
-		this.node = (SpatialNode) input;
+		Assert.isTrue(input instanceof AbstractSpatialNode);
+		this.node = (AbstractSpatialNode) input;
 	}
 
 	@Override
