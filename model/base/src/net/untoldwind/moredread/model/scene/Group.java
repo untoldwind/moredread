@@ -2,9 +2,8 @@ package net.untoldwind.moredread.model.scene;
 
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
 
-public class Group extends
-		AbstractSpatialComposite<Group, AbstractSpatialNode<?>> implements
-		IComposite {
+public class Group extends AbstractSpatialComposite<AbstractSpatialNode> {
+
 	private transient com.jme.scene.Node displayNode;
 	private transient BoundingBox worldBoundingBox;
 	private transient BoundingBox localBoundingBox;
@@ -16,7 +15,7 @@ public class Group extends
 	@Override
 	public BoundingBox getWorldBoundingBox() {
 		if (worldBoundingBox == null) {
-			for (final AbstractSpatialNode<?> child : children) {
+			for (final AbstractSpatialNode child : children) {
 				final BoundingBox childBoundingBox = child
 						.getWorldBoundingBox();
 				if (childBoundingBox != null) {
@@ -38,7 +37,7 @@ public class Group extends
 	@Override
 	public BoundingBox getLocalBoundingBox() {
 		if (localBoundingBox == null) {
-			for (final AbstractSpatialNode<?> child : children) {
+			for (final AbstractSpatialNode child : children) {
 				final BoundingBox childBoundingBox = child
 						.getLocalBoundingBox();
 				if (childBoundingBox != null) {
@@ -82,7 +81,7 @@ public class Group extends
 		displayNode.setLocalTranslation(localTranslation);
 		displayNode.setLocalScale(localScale);
 
-		for (final AbstractSpatialNode<?> child : children) {
+		for (final AbstractSpatialNode child : children) {
 			child.updateDisplayNode(rendererAdapter, displayNode);
 		}
 	}

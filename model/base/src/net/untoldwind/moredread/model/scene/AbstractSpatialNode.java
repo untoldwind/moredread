@@ -17,10 +17,10 @@ import org.eclipse.ui.views.properties.IPropertySource;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 
-public abstract class AbstractSpatialNode<ParentT extends AbstractSpatialComposite>
-		extends AbstractNode implements INode, IAdaptable {
+public abstract class AbstractSpatialNode extends AbstractNode implements
+		INode, IAdaptable {
 	/** The parent node (group). */
-	protected final ParentT parent;
+	protected final AbstractSpatialComposite<? extends INode> parent;
 
 	/** Spatial's rotation relative to its parent. */
 	protected Quaternion localRotation;
@@ -29,7 +29,9 @@ public abstract class AbstractSpatialNode<ParentT extends AbstractSpatialComposi
 	/** Spatial's scale relative to its parent. */
 	protected Vector3f localScale;
 
-	protected AbstractSpatialNode(final ParentT parent, final String name) {
+	protected AbstractSpatialNode(
+			final AbstractSpatialComposite<? extends INode> parent,
+			final String name) {
 		super(parent, name);
 
 		this.parent = parent;
@@ -41,7 +43,7 @@ public abstract class AbstractSpatialNode<ParentT extends AbstractSpatialComposi
 		localScale = new Vector3f(1, 1, 1);
 	}
 
-	public ParentT getParent() {
+	public AbstractSpatialComposite<? extends INode> getParent() {
 		return parent;
 	}
 
