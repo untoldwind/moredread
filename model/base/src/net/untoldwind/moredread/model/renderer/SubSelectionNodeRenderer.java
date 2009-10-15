@@ -23,13 +23,13 @@ import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.MaterialState.MaterialFace;
 import com.jme.util.geom.BufferUtils;
 
-public class SubSelectionNodeRendererAdapter implements INodeRendererAdapter {
+public class SubSelectionNodeRenderer implements INodeRendererAdapter {
 	private final Renderer renderer;
 	private final SelectionMode selectionMode;
 	private final WireframeMeshRenderer wireframeMeshRenderer;
 	private final IMeshRendererAdapter solidMeshRenderer;
 
-	public SubSelectionNodeRendererAdapter(final Renderer renderer,
+	public SubSelectionNodeRenderer(final Renderer renderer,
 			final SelectionMode selectionMode) {
 
 		this.renderer = renderer;

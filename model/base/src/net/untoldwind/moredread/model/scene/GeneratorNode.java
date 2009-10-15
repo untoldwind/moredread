@@ -6,8 +6,9 @@ import net.untoldwind.moredread.model.generator.IGeneratorInput;
 import net.untoldwind.moredread.model.generator.IMeshGenerator;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.Mesh;
+import net.untoldwind.moredread.model.renderer.GhostNodeRenderer;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
-import net.untoldwind.moredread.model.renderer.SubSelectionNodeRendererAdapter;
+import net.untoldwind.moredread.model.renderer.SubSelectionNodeRenderer;
 
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Spatial;
@@ -120,7 +121,17 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 		displayNode.setLocalScale(localScale);
 
 		if (renderedGeometries == null) {
-			renderedGeometries = rendererAdapter.renderNode(this);
+			final boolean isChildNodeSelected = getScene().getSceneSelection()
+					.isChildNodeSelected(this);
+
+			if (isChildNodeSelected) {
+				final GhostNodeRenderer ghostNodeRenderer = new GhostNodeRenderer(
+						rendererAdapter.getRenderer(), rendererAdapter
+								.getSelectionMode());
+				renderedGeometries = ghostNodeRenderer.renderNode(this);
+			} else {
+				renderedGeometries = rendererAdapter.renderNode(this);
+			}
 
 			displayNode.detachAllChildren();
 
@@ -134,8 +145,8 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 			}
 
 			// Iterate childs only in case of a selection
-			if (getScene().getSceneSelection().isChildNodeSelected(this)) {
-				final SubSelectionNodeRendererAdapter subRendererAdapter = new SubSelectionNodeRendererAdapter(
+			if (isChildNodeSelected) {
+				final SubSelectionNodeRenderer subRendererAdapter = new SubSelectionNodeRenderer(
 						rendererAdapter.getRenderer(), rendererAdapter
 								.getSelectionMode());
 
