@@ -46,8 +46,6 @@ public class BoolImpl {
 		// Face 2 Face
 		BoolFace2Face.Face2Face(meshC, facesA, facesB);
 
-		meshC.dumpMesh(System.out);
-
 		// BSP classification
 		meshClassify(meshC, facesA, bspB);
 		meshClassify(meshC, facesB, bspA);

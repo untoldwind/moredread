@@ -29,9 +29,7 @@ public class BoolTriangulator {
 	 */
 	static void triangulateA(final BoolMesh mesh, final List<BoolFace> faces,
 			final BoolFace face, final BoolVertex v, final int e) {
-		if (BoolFace2Face.dumpIt) {
-			System.out.println(">>>> triA");
-		}
+
 		BoolFace face1, face2;
 		if (e == 1) {
 			face1 = new BoolFace(face.getVertex(0), v, face.getVertex(2), face
@@ -84,9 +82,7 @@ public class BoolTriangulator {
 	 */
 	static void triangulateB(final BoolMesh mesh, final List<BoolFace> faces,
 			final BoolFace face, final BoolVertex v) {
-		if (BoolFace2Face.dumpIt) {
-			System.out.println(">>>> triB");
-		}
+
 		final BoolFace face1 = new BoolFace(face.getVertex(0), face
 				.getVertex(1), v, face.getPlane3d(), face.getOriginalFace());
 		final BoolFace face2 = new BoolFace(face.getVertex(1), face
@@ -129,9 +125,6 @@ public class BoolTriangulator {
 	 */
 	static void triangulateC(final BoolMesh mesh, final List<BoolFace> faces,
 			final BoolFace face, final BoolVertex v1, final BoolVertex v2) {
-		if (BoolFace2Face.dumpIt) {
-			System.out.println(">>>> triC");
-		}
 
 		if (!isInsideCircle(face.getVertex(0), v1, v2, face.getVertex(1), face
 				.getVertex(2))) {
@@ -177,9 +170,6 @@ public class BoolTriangulator {
 			final List<BoolFace> faces, final BoolFace face,
 			final BoolVertex v1, final BoolVertex v2, final BoolVertex v3,
 			final BoolVertex v4, final BoolVertex v5) {
-		if (BoolFace2Face.dumpIt) {
-			System.out.println(">>>> triC_split");
-		}
 
 		final BoolVertex v = getTriangleVertex(v1, v2, v4, v5);
 		final BoolVertex w = (v == v4 ? v5 : v4);
@@ -244,9 +234,6 @@ public class BoolTriangulator {
 	static void triangulateD(final BoolMesh mesh, final List<BoolFace> faces,
 			final BoolFace face, final BoolVertex v1, final BoolVertex v2,
 			final int e) {
-		if (BoolFace2Face.dumpIt) {
-			System.out.println(">>>> triD");
-		}
 
 		if (e == 1) {
 			triangulateD_split(mesh, faces, face, face.getVertex(0), face
@@ -285,9 +272,6 @@ public class BoolTriangulator {
 			final List<BoolFace> faces, final BoolFace face,
 			final BoolVertex v1, final BoolVertex v2, final BoolVertex v3,
 			final BoolVertex v4, final BoolVertex v5) {
-		if (BoolFace2Face.dumpIt) {
-			System.out.println(">>>> triD_split");
-		}
 
 		final BoolVertex v = getNearestVertex(v1, v4, v5);
 		final BoolVertex w = (v == v4 ? v5 : v4);
@@ -338,9 +322,7 @@ public class BoolTriangulator {
 	 */
 	static void triangulateE(final BoolMesh mesh, final List<BoolFace> faces,
 			final BoolFace face, BoolVertex v1, BoolVertex v2, int e1, int e2) {
-		if (BoolFace2Face.dumpIt) {
-			System.out.println(">>>> triE");
-		}
+
 		// Sort the edges to reduce the cases
 		if (e1 > e2) {
 			final int aux = e1;
@@ -413,9 +395,6 @@ public class BoolTriangulator {
 	static void triangulateF(final BoolMesh mesh, final List<BoolFace> faces,
 			final BoolFace face, final BoolVertex v1, final BoolVertex v2,
 			final int e) {
-		if (BoolFace2Face.dumpIt) {
-			System.out.println(">>>> triF");
-		}
 
 		final BoolFace faces12[] = new BoolFace[2];
 		final BoolFace faces34[] = new BoolFace[2];
@@ -464,9 +443,6 @@ public class BoolTriangulator {
 	 */
 	static void addFace(final BoolMesh mesh, final List<BoolFace> faces,
 			final BoolFace face, final int tag) {
-		if (BoolFace2Face.dumpIt) {
-			System.out.println(">>>> addFace");
-		}
 
 		final BoolVertex av1 = face.getVertex(0);
 		final BoolVertex av2 = face.getVertex(1);
@@ -528,9 +504,6 @@ public class BoolTriangulator {
 	static void splitQuad(final Plane3d plane, final BoolVertex v1,
 			final BoolVertex v2, final BoolVertex v3, final BoolVertex v4,
 			final BoolFace triangles[], final int original) {
-		if (BoolFace2Face.dumpIt) {
-			System.out.println(">>>> splitQuad");
-		}
 
 		final Vector3d p1 = v1.getPoint3d();
 		final Vector3d p2 = v2.getPoint3d();
