@@ -7,7 +7,7 @@ import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.Mesh;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
 
-import com.jme.scene.Geometry;
+import com.jme.scene.Spatial;
 
 public class GeneratorNode extends ObjectNode {
 	private final IMeshGenerator meshGenerator;
@@ -15,8 +15,9 @@ public class GeneratorNode extends ObjectNode {
 	private transient com.jme.scene.Node displayNode;
 
 	private transient Mesh<?> generatedMesh;
-	private transient List<Geometry> renderedGeometries;
-	private transient BoundingBox boundingBox;
+	private transient List<Spatial> renderedGeometries;
+	private transient BoundingBox worldBoundingBox;
+	private transient BoundingBox localBoundingBox;
 
 	public GeneratorNode(final Group parent, final IMeshGenerator meshGenerator) {
 		super(parent, meshGenerator.getName());
@@ -45,24 +46,36 @@ public class GeneratorNode extends ObjectNode {
 
 	@Override
 	public BoundingBox getWorldBoundingBox() {
-		if (boundingBox == null) {
-			boundingBox = new BoundingBox(getRenderGeometry().getVertices());
-			boundingBox = boundingBox.transform(getWorldRotation(),
+		if (worldBoundingBox == null) {
+			worldBoundingBox = new BoundingBox(getRenderGeometry()
+					.getVertices());
+			worldBoundingBox = worldBoundingBox.transform(getWorldRotation(),
 					getWorldTranslation(), getWorldScale());
 		}
-		return boundingBox;
+		return worldBoundingBox;
+	}
+
+	@Override
+	public BoundingBox getLocalBoundingBox() {
+		if (localBoundingBox == null) {
+			localBoundingBox = new BoundingBox(getRenderGeometry()
+					.getVertices());
+		}
+		return localBoundingBox;
 	}
 
 	@Override
 	public void markDirty() {
-		boundingBox = null;
+		worldBoundingBox = null;
+		localBoundingBox = null;
 		renderedGeometries = null;
 	}
 
 	@Override
 	public void updateDisplayNode(final INodeRendererAdapter rendererAdapter,
 			final com.jme.scene.Node parent) {
-		boundingBox = null;
+		worldBoundingBox = null;
+		localBoundingBox = null;
 
 		final SpatialNodeReference nodeRef = new SpatialNodeReference(this);
 
@@ -87,7 +100,7 @@ public class GeneratorNode extends ObjectNode {
 			renderedGeometries.get(0).setUserData(
 					ISceneHolder.NODE_USERDATA_KEY, nodeRef);
 
-			for (final Geometry geometry : renderedGeometries) {
+			for (final Spatial geometry : renderedGeometries) {
 				displayNode.attachChild(geometry);
 			}
 		}

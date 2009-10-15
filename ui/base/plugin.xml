@@ -29,6 +29,7 @@
             restorable="true">
       </view>
       <view
+            allowMultiple="false"
             class="net.untoldwind.moredread.ui.views.ModelTreeView"
             id="net.untoldwind.moredread.ui.modelTreeView"
             name="Model"
@@ -51,6 +52,13 @@
             class="net.untoldwind.moredread.ui.views.UndoHistoryView"
             id="net.untoldwind.moredread.ui.undoHistoryView"
             name="Undo History"
+            restorable="true">
+      </view>
+      <view
+            allowMultiple="false"
+            class="net.untoldwind.moredread.ui.views.GeneratorTreeView"
+            id="net.untoldwind.moredread.ui.generatorTreeView"
+            name="Generators"
             restorable="true">
       </view>
    </extension>

@@ -156,6 +156,16 @@ public class BoundingBox {
 		zExtent = v2.z - center.z;
 	}
 
+	public Vector3f getMinPosition() {
+		return new Vector3f(center.x - xExtent, center.y - yExtent, center.z
+				- zExtent);
+	}
+
+	public Vector3f getMaxPosition() {
+		return new Vector3f(center.x + xExtent, center.y + yExtent, center.z
+				+ zExtent);
+	}
+
 	public BoundingBox transform(final Quaternion rotate,
 			final Vector3f translate, final Vector3f scale) {
 		final BoundingBox box = new BoundingBox();

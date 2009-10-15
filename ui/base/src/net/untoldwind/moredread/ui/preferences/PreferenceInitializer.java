@@ -21,6 +21,10 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		store.setDefault(
 				IPreferencesConstants.MODEL3DVIEW_SELECTED_SHOW_NORMALS, false);
 
+		store.setDefault(
+				IPreferencesConstants.MODEL3DVIEW_SELECTED_SHOW_BOUNDINGBOX,
+				true);
+
 		PreferenceConverter.setDefault(store,
 				IPreferencesConstants.MODEL3DVIEW_BACKGROUND_COLOR, PlatformUI
 						.getWorkbench().getDisplay().getSystemColor(

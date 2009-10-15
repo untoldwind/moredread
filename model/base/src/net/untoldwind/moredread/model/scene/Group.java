@@ -9,7 +9,8 @@ public class Group extends SpatialNode implements IComposite {
 	private final List<SpatialNode> children = new ArrayList<SpatialNode>();
 
 	private transient com.jme.scene.Node displayNode;
-	private transient BoundingBox boundingBox;
+	private transient BoundingBox worldBoundingBox;
+	private transient BoundingBox localBoundingBox;
 
 	public Group(final Group parent, final String name) {
 		super(parent, name);
@@ -25,39 +26,62 @@ public class Group extends SpatialNode implements IComposite {
 
 	@Override
 	public BoundingBox getWorldBoundingBox() {
-		if (boundingBox == null) {
+		if (worldBoundingBox == null) {
 			for (final SpatialNode child : children) {
 				final BoundingBox childBoundingBox = child
 						.getWorldBoundingBox();
 				if (childBoundingBox != null) {
-					if (boundingBox == null) {
-						boundingBox = new BoundingBox(childBoundingBox);
+					if (worldBoundingBox == null) {
+						worldBoundingBox = new BoundingBox(childBoundingBox);
 					} else {
-						boundingBox.mergeLocal(childBoundingBox);
+						worldBoundingBox.mergeLocal(childBoundingBox);
 					}
 				}
 			}
-			if (boundingBox == null) {
-				boundingBox = new BoundingBox();
-			} else {
-				boundingBox = boundingBox.transform(getWorldRotation(),
-						getWorldTranslation(), getWorldScale());
+			if (worldBoundingBox == null) {
+				worldBoundingBox = new BoundingBox();
+			}
+		}
+
+		return worldBoundingBox;
+	}
+
+	@Override
+	public BoundingBox getLocalBoundingBox() {
+		if (localBoundingBox == null) {
+			for (final SpatialNode child : children) {
+				final BoundingBox childBoundingBox = child
+						.getLocalBoundingBox();
+				if (childBoundingBox != null) {
+					childBoundingBox.transform(child.getLocalRotation(), child
+							.getLocalTranslation(), child.getLocalScale());
+					if (localBoundingBox == null) {
+						localBoundingBox = new BoundingBox(childBoundingBox);
+					} else {
+						localBoundingBox.mergeLocal(childBoundingBox);
+					}
+				}
+			}
+			if (localBoundingBox == null) {
+				localBoundingBox = new BoundingBox();
 			}
 
 		}
 
-		return boundingBox;
+		return localBoundingBox;
 	}
 
 	@Override
 	public void markDirty() {
-		boundingBox = null;
+		worldBoundingBox = null;
+		localBoundingBox = null;
 	}
 
 	@Override
 	public void updateDisplayNode(final INodeRendererAdapter rendererAdapter,
 			final com.jme.scene.Node parent) {
-		boundingBox = null;
+		worldBoundingBox = null;
+		localBoundingBox = null;
 
 		if (displayNode == null) {
 			displayNode = new com.jme.scene.Node();

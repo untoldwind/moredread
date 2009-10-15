@@ -146,7 +146,12 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 							.getDefault()
 							.getPreferenceStore()
 							.getBoolean(
-									IPreferencesConstants.MODEL3DVIEW_SELECTED_SHOW_NORMALS));
+									IPreferencesConstants.MODEL3DVIEW_SELECTED_SHOW_NORMALS),
+					MoreDreadUI
+							.getDefault()
+							.getPreferenceStore()
+							.getBoolean(
+									IPreferencesConstants.MODEL3DVIEW_SELECTED_SHOW_BOUNDINGBOX));
 
 			sceneHolder.render(renderer, new SolidNodeRenderer(renderer,
 					sceneHolder.getSelectionMode(), rendererParam));

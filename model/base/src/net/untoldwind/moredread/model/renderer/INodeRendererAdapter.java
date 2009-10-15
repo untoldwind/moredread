@@ -4,8 +4,8 @@ import java.util.List;
 
 import net.untoldwind.moredread.model.scene.IMeshNode;
 
-import com.jme.scene.Geometry;
+import com.jme.scene.Spatial;
 
 public interface INodeRendererAdapter {
-	List<Geometry> renderNode(IMeshNode node);
+	List<Spatial> renderNode(IMeshNode node);
 }

@@ -17,11 +17,13 @@ import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Geometry;
 import com.jme.scene.Point;
+import com.jme.scene.Spatial;
 import com.jme.scene.state.MaterialState;
 import com.jme.scene.state.MaterialState.MaterialFace;
 import com.jme.util.geom.BufferUtils;
 
 public class SolidNodeRenderer implements INodeRendererAdapter {
+	private final SolidNodeRendererParam parameters;
 	private final IMeshRendererAdapter wireframeMeshRenderer;
 	private final IMeshRendererAdapter selectedWireframeMeshRenderer;
 	private final IMeshRendererAdapter solidMeshRenderer;
@@ -31,6 +33,7 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 	public SolidNodeRenderer(final Renderer renderer,
 			final SelectionMode selectionMode,
 			final SolidNodeRendererParam param) {
+		this.parameters = param;
 		this.renderer = renderer;
 		this.selectionMode = selectionMode;
 		this.wireframeMeshRenderer = new WireframeMeshRenderer(false, 1f, true);
@@ -41,8 +44,8 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 	}
 
 	@Override
-	public List<Geometry> renderNode(final IMeshNode node) {
-		final List<Geometry> geometries = new ArrayList<Geometry>();
+	public List<Spatial> renderNode(final IMeshNode node) {
+		final List<Spatial> geometries = new ArrayList<Spatial>();
 
 		if (node.isSelected()) {
 			renderSelected(node, geometries);
@@ -54,7 +57,7 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 	}
 
 	private void renderSelected(final IMeshNode node,
-			final List<Geometry> geometries) {
+			final List<Spatial> geometries) {
 		IColorProvider colorProvider = null;
 
 		switch (selectionMode) {
@@ -81,6 +84,10 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 		wireframeGeometry.setModelBound(new BoundingBox());
 		wireframeGeometry.updateModelBound();
 		wireframeGeometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+
+		if (parameters.isShowBoundingBoxOnSelected()) {
+			geometries.add(new BoundingBoxNode(node.getLocalBoundingBox()));
+		}
 
 		switch (selectionMode) {
 		case VERTEX:
@@ -132,7 +139,7 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 	}
 
 	private void renderVertexSelections(final IMeshNode node,
-			final List<Geometry> geometries) {
+			final List<Spatial> geometries) {
 		final IMesh mesh = node.getRenderGeometry();
 		final SceneSelection sceneSelection = node.getScene()
 				.getSceneSelection();
@@ -171,7 +178,7 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 	}
 
 	private void renderNormal(final IMeshNode node,
-			final List<Geometry> geometries) {
+			final List<Spatial> geometries) {
 		final Geometry solidGeometry = solidMeshRenderer.renderMesh(node
 				.getRenderGeometry(), null);
 		geometries.add(solidGeometry);

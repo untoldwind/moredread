@@ -34,6 +34,9 @@ public class Model3DViewPreferencesPage extends FieldEditorPreferencePage
 		addField(new BooleanFieldEditor(
 				IPreferencesConstants.MODEL3DVIEW_SELECTED_SHOW_NORMALS,
 				"Show normals on selected objects", getFieldEditorParent()));
+		addField(new BooleanFieldEditor(
+				IPreferencesConstants.MODEL3DVIEW_SELECTED_SHOW_BOUNDINGBOX,
+				"Show bounding box on selected objects", getFieldEditorParent()));
 		addField(new ColorFieldEditor(
 				IPreferencesConstants.MODEL3DVIEW_BACKGROUND_COLOR,
 				"Background", getFieldEditorParent()));
