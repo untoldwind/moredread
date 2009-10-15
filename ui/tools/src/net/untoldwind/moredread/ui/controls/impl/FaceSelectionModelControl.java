@@ -89,8 +89,7 @@ public class FaceSelectionModelControl extends TriMesh implements IModelControl 
 
 	void updateGeometry() {
 		final IMesh mesh = node.getGeometry();
-		final ITriangulator triangulator = TriangulatorFactory
-				.createTriangulator(TriangulatorFactory.Implementation.FIST);
+		final ITriangulator triangulator = TriangulatorFactory.createDefault();
 		final IPolygon face = node.localToWorld(mesh.getFace(faceIndex));
 		final Vector3f normal = face.getMeanNormal();
 		final List<? extends IPoint> vertices = face.getVertices();

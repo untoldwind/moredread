@@ -16,4 +16,9 @@ public class BooleanOperationFactory {
 
 		throw new RuntimeException("Unknown implementation: " + implementation);
 	}
+
+	public static IBooleanOperation createDefault() {
+		// Kind of pointless to make this configurable at this point
+		return createBooleanOperation(Implementation.BSP);
+	}
 }

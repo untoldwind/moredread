@@ -2,12 +2,12 @@ package net.untoldwind.moredread.model.scene;
 
 import com.jme.renderer.ColorRGBA;
 
-public abstract class ObjectNode extends AbstractSpatialNode implements
-		IMeshNode {
+public abstract class ObjectNode extends AbstractSpatialNode {
 
 	private ColorRGBA modelColor;
 
-	public ObjectNode(final Group parent, final String name) {
+	public ObjectNode(final AbstractSpatialComposite<? extends INode> parent,
+			final String name) {
 		super(parent, name);
 
 		modelColor = ColorRGBA.red.clone();

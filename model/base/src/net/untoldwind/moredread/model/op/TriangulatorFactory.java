@@ -7,11 +7,17 @@ public class TriangulatorFactory {
 		FIST
 	};
 
-	public static ITriangulator createTriangulator(Implementation implementation) {
+	public static ITriangulator createTriangulator(
+			final Implementation implementation) {
 		switch (implementation) {
 		case FIST:
 			return new FISTTriangulator();
 		}
 		throw new RuntimeException("Unknown implementation: " + implementation);
+	}
+
+	public static ITriangulator createDefault() {
+		// Kind of pointless to make this configurable at this point
+		return createTriangulator(Implementation.FIST);
 	}
 }

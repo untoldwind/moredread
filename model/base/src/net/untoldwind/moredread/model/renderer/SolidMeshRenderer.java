@@ -141,8 +141,7 @@ public class SolidMeshRenderer implements IMeshRendererAdapter {
 			colors = new ArrayList<ColorRGBA>();
 		}
 
-		final ITriangulator triangulator = TriangulatorFactory
-				.createTriangulator(TriangulatorFactory.Implementation.FIST);
+		final ITriangulator triangulator = TriangulatorFactory.createDefault();
 
 		for (final PolyFace face : mesh.getFaces()) {
 			final Vector3f normal = face.getMeanNormal();

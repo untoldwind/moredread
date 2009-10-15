@@ -240,7 +240,7 @@ public class MoreDreadUI extends AbstractUIPlugin {
 					0.2f, 0.3f), 1f).generateMesh(null).toTriangleMesh();
 
 			final IBooleanOperation booleanOperation = BooleanOperationFactory
-					.createBooleanOperation(BooleanOperationFactory.Implementation.BSP);
+					.createDefault();
 
 			final AbstractSpatialNode node8 = new MeshNode(scene,
 					"Intersect result", booleanOperation.performBoolean(

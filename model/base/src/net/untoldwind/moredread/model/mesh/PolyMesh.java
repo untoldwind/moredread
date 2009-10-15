@@ -80,8 +80,7 @@ public class PolyMesh extends Mesh<PolyFace> {
 	@Override
 	public TriangleMesh toTriangleMesh() {
 		final TriangleMesh triangleMesh = new TriangleMesh();
-		final ITriangulator triangulator = TriangulatorFactory
-				.createTriangulator(TriangulatorFactory.Implementation.FIST);
+		final ITriangulator triangulator = TriangulatorFactory.createDefault();
 
 		for (final Vertex vertex : vertices) {
 			triangleMesh.addVertex(vertex.getPoint(), vertex.isSmooth());

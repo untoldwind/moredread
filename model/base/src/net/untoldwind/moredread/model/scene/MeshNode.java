@@ -2,6 +2,7 @@ package net.untoldwind.moredread.model.scene;
 
 import java.util.List;
 
+import net.untoldwind.moredread.model.generator.IGeneratorInput;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.Mesh;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
@@ -9,7 +10,7 @@ import net.untoldwind.moredread.model.scene.change.MeshNodeGeometryChangedComman
 
 import com.jme.scene.Spatial;
 
-public class MeshNode extends ObjectNode {
+public class MeshNode extends ObjectNode implements IMeshNode, IGeneratorInput {
 	private Mesh<?> mesh;
 
 	private transient com.jme.scene.Node displayNode;
@@ -18,13 +19,15 @@ public class MeshNode extends ObjectNode {
 	private transient BoundingBox worldBoundingBox;
 	private transient BoundingBox localBoundingBox;
 
-	public MeshNode(final Group parent, final Mesh<?> mesh) {
+	public MeshNode(final AbstractSpatialComposite<? extends INode> parent,
+			final Mesh<?> mesh) {
 		super(parent, "Mesh");
 
 		this.mesh = mesh;
 	}
 
-	public MeshNode(final Group parent, final String name, final Mesh<?> mesh) {
+	public MeshNode(final AbstractSpatialComposite<? extends INode> parent,
+			final String name, final Mesh<?> mesh) {
 		super(parent, name);
 
 		this.mesh = mesh;
