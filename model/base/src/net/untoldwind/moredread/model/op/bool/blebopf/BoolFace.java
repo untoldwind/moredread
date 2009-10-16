@@ -3,6 +3,8 @@ package net.untoldwind.moredread.model.op.bool.blebopf;
 import java.util.Arrays;
 import java.util.List;
 
+import net.untoldwind.moredread.model.mesh.TriangleFaceId;
+
 import com.jme.math.Plane;
 
 public class BoolFace {
@@ -11,11 +13,12 @@ public class BoolFace {
 	int index;
 	int split;
 	int tag;
-	int originalFaceIndex;
+	TriangleFaceId originalFaceIndex;
 	BoolBoundingBox boundingBox;
 
 	public BoolFace(final BoolVertex v1, final BoolVertex v2,
-			final BoolVertex v3, final Plane plane, final int originalFaceIndex) {
+			final BoolVertex v3, final Plane plane,
+			final TriangleFaceId originalFaceIndex) {
 		this.vertices = new BoolVertex[] { v1, v2, v3 };
 		this.plane = plane;
 		this.originalFaceIndex = originalFaceIndex;
@@ -72,11 +75,11 @@ public class BoolFace {
 		this.index = index;
 	}
 
-	public int getOriginalFace() {
+	public TriangleFaceId getOriginalFace() {
 		return originalFaceIndex;
 	}
 
-	public void setOriginalFace(final int originalFaceIndex) {
+	public void setOriginalFace(final TriangleFaceId originalFaceIndex) {
 		this.originalFaceIndex = originalFaceIndex;
 	}
 

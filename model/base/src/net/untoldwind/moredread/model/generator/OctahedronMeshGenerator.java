@@ -15,7 +15,7 @@ public class OctahedronMeshGenerator implements IMeshGenerator {
 		return "Octahedron";
 	}
 
-	public Mesh<?> generateMesh(final List<IGeneratorInput> generatorInputs) {
+	public Mesh<?, ?> generateMesh(final List<IGeneratorInput> generatorInputs) {
 		final TriangleMesh mesh = new TriangleMesh();
 
 		mesh.addVertex(new Vector3f(size, 0, 0).addLocal(center));

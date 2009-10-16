@@ -7,6 +7,7 @@ import java.util.List;
 
 import net.untoldwind.moredread.model.enums.SelectionMode;
 import net.untoldwind.moredread.model.mesh.EdgeId;
+import net.untoldwind.moredread.model.mesh.FaceId;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IVertex;
 import net.untoldwind.moredread.model.scene.IMeshNode;
@@ -108,7 +109,7 @@ public class SubSelectionNodeRenderer implements INodeRendererAdapter {
 
 		return new IColorProvider() {
 			@Override
-			public ColorRGBA getFaceColor(final int faceIndex) {
+			public ColorRGBA getFaceColor(final FaceId faceIndex) {
 				return sceneSelection.isFaceSelected(node, faceIndex) ? selectedColor
 						: modelColor;
 			}
@@ -119,7 +120,7 @@ public class SubSelectionNodeRenderer implements INodeRendererAdapter {
 			}
 
 			@Override
-			public boolean isFaceVisible(final int faceIndex) {
+			public boolean isFaceVisible(final FaceId faceIndex) {
 				return sceneSelection.isFaceSelected(node, faceIndex);
 			}
 
@@ -139,7 +140,7 @@ public class SubSelectionNodeRenderer implements INodeRendererAdapter {
 				.getSceneSelection();
 		return new IColorProvider() {
 			@Override
-			public ColorRGBA getFaceColor(final int faceIndex) {
+			public ColorRGBA getFaceColor(final FaceId faceIndex) {
 				return modelColor;
 			}
 
@@ -150,7 +151,7 @@ public class SubSelectionNodeRenderer implements INodeRendererAdapter {
 			}
 
 			@Override
-			public boolean isFaceVisible(final int faceIndex) {
+			public boolean isFaceVisible(final FaceId faceIndex) {
 				return false;
 			}
 

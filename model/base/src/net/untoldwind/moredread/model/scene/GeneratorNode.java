@@ -61,7 +61,7 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 	}
 
 	@Override
-	public Mesh<?> getEditableGeometry() {
+	public Mesh<?, ?> getEditableGeometry() {
 		return null;
 	}
 

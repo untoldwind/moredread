@@ -158,7 +158,7 @@ public class VertexSelectionToolHandler implements IToolHandler {
 				for (final VertexSelection vertexSelection : scene
 						.getSceneSelection().getSelectedVertices()) {
 					final IMeshNode node = vertexSelection.getNode();
-					final Mesh<?> mesh = node.getEditableGeometry();
+					final Mesh<?, ?> mesh = node.getEditableGeometry();
 					final Vertex vertex = mesh.getVertex(vertexSelection
 							.getVertexIndex());
 

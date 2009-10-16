@@ -9,7 +9,9 @@ import net.untoldwind.moredread.model.op.ITriangulator;
 import net.untoldwind.moredread.model.op.TriangulatorFactory;
 import net.untoldwind.moredread.model.state.IStateReader;
 
-public class PolyMesh extends Mesh<PolyFace> {
+public class PolyMesh extends Mesh<PolyFaceId, PolyFace> {
+
+	private int faceCounter = 0;
 
 	public PolyMesh() {
 	}
@@ -39,10 +41,10 @@ public class PolyMesh extends Mesh<PolyFace> {
 			edgeList.add(addEdge(vertex1, vertex2));
 		}
 
-		final PolyFace face = new PolyFace(this, faces.size(), vertexList,
-				edgeList);
+		final PolyFace face = new PolyFace(this, new PolyFaceId(faceCounter++),
+				vertexList, edgeList);
 
-		faces.add(face);
+		faces.put(face.getIndex(), face);
 
 		return face;
 	}
@@ -68,10 +70,10 @@ public class PolyMesh extends Mesh<PolyFace> {
 			}
 		}
 
-		final PolyFace face = new PolyFace(this, faces.size(), vertexStrips,
-				edgeList);
+		final PolyFace face = new PolyFace(this, new PolyFaceId(faceCounter++),
+				vertexStrips, edgeList);
 
-		faces.add(face);
+		faces.put(face.getIndex(), face);
 
 		return face;
 
@@ -86,7 +88,7 @@ public class PolyMesh extends Mesh<PolyFace> {
 			triangleMesh.addVertex(vertex.getPoint(), vertex.isSmooth());
 		}
 
-		for (final PolyFace face : faces) {
+		for (final PolyFace face : faces.values()) {
 			final List<Vertex> vertices = face.getVertices();
 			final int[] indices = triangulator.triangulate(face);
 

@@ -1,6 +1,7 @@
 package net.untoldwind.moredread.model.renderer;
 
 import net.untoldwind.moredread.model.mesh.EdgeId;
+import net.untoldwind.moredread.model.mesh.FaceId;
 
 import com.jme.renderer.ColorRGBA;
 
@@ -13,12 +14,12 @@ public class DefaultColorProvider implements IColorProvider {
 	}
 
 	@Override
-	public ColorRGBA getFaceColor(final int faceIndex) {
+	public ColorRGBA getFaceColor(final FaceId faceIndex) {
 		return defaultColor;
 	}
 
 	@Override
-	public boolean isFaceVisible(final int faceIndex) {
+	public boolean isFaceVisible(final FaceId faceIndex) {
 		return true;
 	}
 

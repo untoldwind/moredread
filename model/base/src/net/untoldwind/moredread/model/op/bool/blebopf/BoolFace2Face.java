@@ -3,6 +3,8 @@ package net.untoldwind.moredread.model.op.bool.blebopf;
 import java.util.Iterator;
 import java.util.List;
 
+import net.untoldwind.moredread.model.mesh.TriangleFaceId;
+
 import com.jme.math.Plane;
 import com.jme.math.Vector3f;
 
@@ -162,7 +164,7 @@ public class BoolFace2Face {
 
 	{
 		final int oldSize = facesB.size();
-		final int originalFaceBIndex = faceB.getOriginalFace();
+		final TriangleFaceId originalFaceBIndex = faceB.getOriginalFace();
 
 		final Vector3f p1 = faceA.getVertex(0).getPoint();
 		final Vector3f p2 = faceA.getVertex(1).getPoint();
@@ -194,7 +196,7 @@ public class BoolFace2Face {
 			for (int idxFace = oldSize; idxFace < facesB.size(); idxFace++) {
 				final BoolFace face = facesB.get(idxFace);
 				if (face.getTAG() != BoolTag.BROKEN
-						&& originalFaceBIndex == face.getOriginalFace()) {
+						&& originalFaceBIndex.equals(face.getOriginalFace())) {
 					intersectCoplanarFaces(mesh, facesB, face, sA, plane2,
 							invert);
 				}

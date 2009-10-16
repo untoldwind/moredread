@@ -11,19 +11,19 @@ import net.untoldwind.moredread.model.state.IStateWriter;
 import com.jme.math.Vector3f;
 
 public class Vertex implements IStateHolder, IVertex {
-	private final Mesh<?> owner;
+	private final Mesh<?, ?> owner;
 	private final int index;
 	private Vector3f point;
 	private boolean smooth;
 	private final Set<Edge> edges;
-	private final Set<Face<?>> faces;
+	private final Set<Face<?, ?>> faces;
 
-	Vertex(final Mesh<?> owner, final int index, final Vector3f point) {
+	Vertex(final Mesh<?, ?> owner, final int index, final Vector3f point) {
 		this.owner = owner;
 		this.index = index;
 		this.point = point;
 		this.edges = new HashSet<Edge>();
-		this.faces = new HashSet<Face<?>>();
+		this.faces = new HashSet<Face<?, ?>>();
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class Vertex implements IStateHolder, IVertex {
 		return GeometryType.POINT;
 	}
 
-	public Mesh<?> getOwner() {
+	public Mesh<?, ?> getOwner() {
 		return owner;
 	}
 
@@ -54,7 +54,7 @@ public class Vertex implements IStateHolder, IVertex {
 
 	public void setPoint(final Vector3f point) {
 		this.point = point;
-		for (final Face<?> face : faces) {
+		for (final Face<?, ?> face : faces) {
 			face.markDirty();
 		}
 	}
@@ -63,7 +63,7 @@ public class Vertex implements IStateHolder, IVertex {
 		return edges;
 	}
 
-	public Set<Face<?>> getFaces() {
+	public Set<Face<?, ?>> getFaces() {
 		return faces;
 	}
 

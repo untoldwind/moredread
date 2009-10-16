@@ -2,6 +2,8 @@ package net.untoldwind.moredread.model.op.bool.blebopd;
 
 import java.util.List;
 
+import net.untoldwind.moredread.model.mesh.TriangleFaceId;
+
 public class BoolTriangulator {
 	/**
 	 * Triangulates the face in two new faces by splitting one edge.
@@ -503,7 +505,7 @@ public class BoolTriangulator {
 	 */
 	static void splitQuad(final Plane3d plane, final BoolVertex v1,
 			final BoolVertex v2, final BoolVertex v3, final BoolVertex v4,
-			final BoolFace triangles[], final int original) {
+			final BoolFace triangles[], final TriangleFaceId original) {
 
 		final Vector3d p1 = v1.getPoint3d();
 		final Vector3d p2 = v2.getPoint3d();

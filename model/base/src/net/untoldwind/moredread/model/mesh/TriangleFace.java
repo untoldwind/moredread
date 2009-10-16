@@ -8,11 +8,11 @@ import net.untoldwind.moredread.model.state.IStateWriter;
 
 import com.jme.math.Vector3f;
 
-public class TriangleFace extends Face<TriangleMesh> {
+public class TriangleFace extends Face<TriangleFaceId, TriangleMesh> {
 	private final Vertex[] vertices;
 	private final Edge[] edges;
 
-	TriangleFace(final TriangleMesh owner, final int index,
+	TriangleFace(final TriangleMesh owner, final TriangleFaceId index,
 			final Vertex[] vertices, final Edge[] edges) {
 		super(owner, index);
 
@@ -97,30 +97,6 @@ public class TriangleFace extends Face<TriangleMesh> {
 		for (final Vertex vertex : vertices) {
 			writer.writeInt("vertexIndex", vertex.getIndex());
 		}
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (obj == this) {
-			return true;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-
-		final TriangleFace castObj = (TriangleFace) obj;
-
-		return index == castObj.index
-				&& Arrays.equals(vertices, castObj.vertices)
-				&& Arrays.equals(edges, castObj.edges);
-	}
-
-	@Override
-	public int hashCode() {
-		return index;
 	}
 
 	@Override

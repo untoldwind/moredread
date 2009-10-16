@@ -5,7 +5,7 @@ import java.util.List;
 import com.jme.math.Plane;
 
 public interface IFace extends IPolygon {
-	int getIndex();
+	FaceId getIndex();
 
 	IVertex getVertex(final int index);
 

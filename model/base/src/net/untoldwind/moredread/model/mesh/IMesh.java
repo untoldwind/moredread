@@ -16,9 +16,9 @@ public interface IMesh extends IGeometry {
 
 	IEdge getEdge(final EdgeId edgeIndex);
 
-	List<? extends IFace> getFaces();
+	Collection<? extends IFace> getFaces();
 
-	IFace getFace(final int faceIndex);
+	IFace getFace(final FaceId faceIndex);
 
 	TriangleMesh toTriangleMesh();
 }

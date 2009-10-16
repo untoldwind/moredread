@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.untoldwind.moredread.model.mesh.EdgeId;
+import net.untoldwind.moredread.model.mesh.FaceId;
 import net.untoldwind.moredread.model.scene.event.ISceneSelectionChangeListener;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
 
@@ -114,7 +115,7 @@ public class SceneSelection {
 				selectedNodes));
 	}
 
-	public void setSelectedFace(final IMeshNode node, final int faceIndex) {
+	public void setSelectedFace(final IMeshNode node, final FaceId faceIndex) {
 		if (!selectedNodes.contains(node)) {
 			return;
 		}
@@ -133,7 +134,7 @@ public class SceneSelection {
 		}
 	}
 
-	public void switchSelectedFace(final IMeshNode node, final int faceIndex) {
+	public void switchSelectedFace(final IMeshNode node, final FaceId faceIndex) {
 		if (!selectedNodes.contains(node)) {
 			return;
 		}
@@ -237,7 +238,7 @@ public class SceneSelection {
 		return selectedParentNodes.contains(node);
 	}
 
-	public boolean isFaceSelected(final IMeshNode node, final int faceIndex) {
+	public boolean isFaceSelected(final IMeshNode node, final FaceId faceIndex) {
 		return selectedFaces.contains(new FaceSelection(node, faceIndex));
 	}
 
@@ -281,9 +282,9 @@ public class SceneSelection {
 
 	public static class FaceSelection {
 		private final IMeshNode node;
-		private final int faceIndex;
+		private final FaceId faceIndex;
 
-		FaceSelection(final IMeshNode node, final int faceIndex) {
+		FaceSelection(final IMeshNode node, final FaceId faceIndex) {
 			this.node = node;
 			this.faceIndex = faceIndex;
 		}
@@ -292,13 +293,13 @@ public class SceneSelection {
 			return node;
 		}
 
-		public int getFaceIndex() {
+		public FaceId getFaceIndex() {
 			return faceIndex;
 		}
 
 		@Override
 		public int hashCode() {
-			return 31 * node.hashCode() + faceIndex;
+			return 31 * node.hashCode() + faceIndex.hashCode();
 		}
 
 		@Override
@@ -313,7 +314,7 @@ public class SceneSelection {
 				return false;
 			}
 			final FaceSelection other = (FaceSelection) obj;
-			return node.equals(other.node) && faceIndex == other.faceIndex;
+			return node.equals(other.node) && faceIndex.equals(other.faceIndex);
 		}
 
 		@Override

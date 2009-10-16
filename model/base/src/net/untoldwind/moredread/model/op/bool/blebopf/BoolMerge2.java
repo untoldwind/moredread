@@ -122,7 +122,8 @@ public class BoolMerge2 {
 						if (faces.size() == 2) {
 							final BoolFace f0 = faces.get(0);
 							final BoolFace f1 = faces.get(1);
-							if (f0.getOriginalFace() != f1.getOriginalFace()) {
+							if (!f0.getOriginalFace().equals(
+									f1.getOriginalFace())) {
 								eindexs[ecount++] = edge;
 							}
 						}
@@ -272,8 +273,8 @@ public class BoolMerge2 {
 					// Search if we already have created a list for the
 					// faces that come from the same original face
 					for (final List<BoolFace> facesByOriginalFaceX : facesByOriginalFace) {
-						if (facesByOriginalFaceX.get(0).getOriginalFace() == face
-								.getOriginalFace()) {
+						if (facesByOriginalFaceX.get(0).getOriginalFace()
+								.equals(face.getOriginalFace())) {
 							// Search that the face has not been added to the
 							// list before
 							for (int i = 0; i < facesByOriginalFaceX.size(); i++) {
@@ -340,8 +341,8 @@ public class BoolMerge2 {
 						// Search if we already have created a list with the
 						// faces that come from the same original face
 						for (final List<BoolFace> facesByOriginalFaceX : facesByOriginalFace) {
-							if (facesByOriginalFaceX.get(0).getOriginalFace() == face
-									.getOriginalFace()) {
+							if (facesByOriginalFaceX.get(0).getOriginalFace()
+									.equals(face.getOriginalFace())) {
 								// Search that the face has not been added to
 								// the list before
 								for (int i = 0; i < facesByOriginalFaceX.size(); i++) {

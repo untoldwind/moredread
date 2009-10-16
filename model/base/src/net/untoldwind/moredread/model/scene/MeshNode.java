@@ -11,7 +11,7 @@ import net.untoldwind.moredread.model.scene.change.MeshNodeGeometryChangedComman
 import com.jme.scene.Spatial;
 
 public class MeshNode extends ObjectNode implements IMeshNode, IGeneratorInput {
-	private Mesh<?> mesh;
+	private Mesh<?, ?> mesh;
 
 	private transient com.jme.scene.Node displayNode;
 
@@ -20,14 +20,14 @@ public class MeshNode extends ObjectNode implements IMeshNode, IGeneratorInput {
 	private transient BoundingBox localBoundingBox;
 
 	public MeshNode(final AbstractSpatialComposite<? extends INode> parent,
-			final Mesh<?> mesh) {
+			final Mesh<?, ?> mesh) {
 		super(parent, "Mesh");
 
 		this.mesh = mesh;
 	}
 
 	public MeshNode(final AbstractSpatialComposite<? extends INode> parent,
-			final String name, final Mesh<?> mesh) {
+			final String name, final Mesh<?, ?> mesh) {
 		super(parent, name);
 
 		this.mesh = mesh;
@@ -44,14 +44,14 @@ public class MeshNode extends ObjectNode implements IMeshNode, IGeneratorInput {
 	}
 
 	@Override
-	public Mesh<?> getEditableGeometry() {
+	public Mesh<?, ?> getEditableGeometry() {
 		scene.getSceneChangeHandler().registerCommand(
 				new MeshNodeGeometryChangedCommand(this));
 
 		return mesh;
 	}
 
-	public void setMesh(final Mesh<?> mesh) {
+	public void setMesh(final Mesh<?, ?> mesh) {
 		scene.getSceneChangeHandler().registerCommand(
 				new MeshNodeGeometryChangedCommand(this));
 

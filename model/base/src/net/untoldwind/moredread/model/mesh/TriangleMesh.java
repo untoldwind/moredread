@@ -5,7 +5,7 @@ import java.io.IOException;
 import net.untoldwind.moredread.model.enums.MeshType;
 import net.untoldwind.moredread.model.state.IStateReader;
 
-public class TriangleMesh extends Mesh<TriangleFace> {
+public class TriangleMesh extends Mesh<TriangleFaceId, TriangleFace> {
 	@Override
 	public MeshType getMeshType() {
 		return MeshType.TRIANGLE;
@@ -25,10 +25,10 @@ public class TriangleMesh extends Mesh<TriangleFace> {
 		edgeArr[1] = addEdge(vertexArr[1], vertexArr[2]);
 		edgeArr[2] = addEdge(vertexArr[2], vertexArr[0]);
 
-		final TriangleFace face = new TriangleFace(this, faces.size(),
-				vertexArr, edgeArr);
+		final TriangleFace face = new TriangleFace(this, new TriangleFaceId(
+				vertexIndex1, vertexIndex2, vertexIndex3), vertexArr, edgeArr);
 
-		faces.add(face);
+		faces.put(face.getIndex(), face);
 
 		return face;
 	}

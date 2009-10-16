@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,16 +16,17 @@ import net.untoldwind.moredread.model.state.IStateWriter;
 
 import com.jme.math.Vector3f;
 
-public abstract class Mesh<T extends Face<?>> implements IMesh, IStateHolder {
+public abstract class Mesh<FaceK extends FaceId, FaceT extends Face<?, ?>>
+		implements IMesh, IStateHolder {
 	protected int vertexCount = 0;
 	protected final List<Vertex> vertices;
 	protected final Map<EdgeId, Edge> edges;
-	protected final List<T> faces;
+	protected final Map<FaceK, FaceT> faces;
 
 	protected Mesh() {
 		vertices = new ArrayList<Vertex>();
 		edges = new HashMap<EdgeId, Edge>();
-		faces = new ArrayList<T>();
+		faces = new LinkedHashMap<FaceK, FaceT>();
 	}
 
 	@Override
@@ -73,11 +75,12 @@ public abstract class Mesh<T extends Face<?>> implements IMesh, IStateHolder {
 		return edges.values();
 	}
 
-	public List<T> getFaces() {
-		return faces;
+	@Override
+	public Collection<FaceT> getFaces() {
+		return faces.values();
 	}
 
-	public T getFace(final int faceIndex) {
+	public FaceT getFace(final FaceId faceIndex) {
 		return faces.get(faceIndex);
 	}
 
@@ -89,7 +92,7 @@ public abstract class Mesh<T extends Face<?>> implements IMesh, IStateHolder {
 	public void writeState(final IStateWriter writer) throws IOException {
 		writer.writeInt("type", getMeshType().getCode());
 		writer.writeCollection("vertices", vertices);
-		writer.writeCollection("faces", faces);
+		writer.writeCollection("faces", faces.values());
 	}
 
 	public class VertexInstanceCreator implements
@@ -106,10 +109,10 @@ public abstract class Mesh<T extends Face<?>> implements IMesh, IStateHolder {
 	}
 
 	public static class MeshInstanceCreator implements
-			IStateReader.InstanceCreator<Mesh<?>> {
+			IStateReader.InstanceCreator<Mesh<?, ?>> {
 
 		@Override
-		public Mesh<?> createInstance(final IStateReader reader)
+		public Mesh<?, ?> createInstance(final IStateReader reader)
 				throws IOException {
 			final MeshType meshType = MeshType.forCode(reader.readInt());
 
@@ -119,23 +122,19 @@ public abstract class Mesh<T extends Face<?>> implements IMesh, IStateHolder {
 				triangleMesh.vertices
 						.addAll(reader
 								.readCollection(triangleMesh.new VertexInstanceCreator()));
-				triangleMesh.faces
-						.addAll(reader
-								.readCollection(triangleMesh.new FaceInstanceCreator()));
+				reader.readCollection(triangleMesh.new FaceInstanceCreator());
 				return triangleMesh;
 			case QUAD:
 				final QuadMesh quadMesh = new QuadMesh();
 				quadMesh.vertices.addAll(reader
 						.readCollection(quadMesh.new VertexInstanceCreator()));
-				quadMesh.faces.addAll(reader
-						.readCollection(quadMesh.new FaceInstanceCreator()));
+				reader.readCollection(quadMesh.new FaceInstanceCreator());
 				return quadMesh;
 			case POLY:
 				final PolyMesh polyMesh = new PolyMesh();
 				polyMesh.vertices.addAll(reader
 						.readCollection(polyMesh.new VertexInstanceCreator()));
-				polyMesh.faces.addAll(reader
-						.readCollection(polyMesh.new FaceInstanceCreator()));
+				reader.readCollection(polyMesh.new FaceInstanceCreator());
 				return polyMesh;
 			default:
 				throw new RuntimeException("Invalid mesh type: " + meshType);

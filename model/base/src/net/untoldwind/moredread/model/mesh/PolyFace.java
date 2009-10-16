@@ -8,12 +8,12 @@ import net.untoldwind.moredread.model.state.IStateWriter;
 
 import com.jme.math.Vector3f;
 
-public class PolyFace extends Face<PolyMesh> {
+public class PolyFace extends Face<PolyFaceId, PolyMesh> {
 	private final List<Vertex> vertices;
 	private final List<Edge> edges;
 	private final List<Integer> stripCounts;
 
-	PolyFace(final PolyMesh owner, final int index,
+	PolyFace(final PolyMesh owner, final PolyFaceId index,
 			final List<Vertex> vertices, final List<Edge> edges) {
 		super(owner, index);
 
@@ -31,7 +31,7 @@ public class PolyFace extends Face<PolyMesh> {
 		}
 	}
 
-	PolyFace(final PolyMesh owner, final int index,
+	PolyFace(final PolyMesh owner, final PolyFaceId index,
 			final Vertex[][] vertexStrips, final List<Edge> edges) {
 		super(owner, index);
 
@@ -132,29 +132,6 @@ public class PolyFace extends Face<PolyMesh> {
 		for (final Vertex vertex : vertices) {
 			writer.writeInt("vertexIndex", vertex.getIndex());
 		}
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (obj == this) {
-			return true;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-
-		final PolyFace castObj = (PolyFace) obj;
-
-		return index == castObj.index && vertices.equals(castObj.vertices)
-				&& edges.equals(castObj.edges);
-	}
-
-	@Override
-	public int hashCode() {
-		return index;
 	}
 
 	@Override

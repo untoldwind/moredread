@@ -8,12 +8,12 @@ import net.untoldwind.moredread.model.state.IStateWriter;
 
 import com.jme.math.Vector3f;
 
-public class QuadFace extends Face<QuadMesh> {
+public class QuadFace extends Face<QuadFaceId, QuadMesh> {
 	private final Vertex[] vertices;
 	private final Edge[] edges;
 
-	QuadFace(final QuadMesh owner, final int index, final Vertex[] vertices,
-			final Edge[] edges) {
+	QuadFace(final QuadMesh owner, final QuadFaceId index,
+			final Vertex[] vertices, final Edge[] edges) {
 		super(owner, index);
 
 		this.vertices = vertices;
@@ -99,30 +99,6 @@ public class QuadFace extends Face<QuadMesh> {
 		for (final Vertex vertex : vertices) {
 			writer.writeInt("vertexIndex", vertex.getIndex());
 		}
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (obj == this) {
-			return true;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-
-		final QuadFace castObj = (QuadFace) obj;
-
-		return index == castObj.index
-				&& Arrays.equals(vertices, castObj.vertices)
-				&& Arrays.equals(edges, castObj.edges);
-	}
-
-	@Override
-	public int hashCode() {
-		return index;
 	}
 
 	@Override

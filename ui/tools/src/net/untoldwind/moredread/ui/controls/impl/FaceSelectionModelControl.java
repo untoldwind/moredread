@@ -5,6 +5,7 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.untoldwind.moredread.model.mesh.FaceId;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IPoint;
 import net.untoldwind.moredread.model.mesh.IPolygon;
@@ -31,12 +32,12 @@ public class FaceSelectionModelControl extends TriMesh implements IModelControl 
 	private final IToolAdapter toolAdapter;
 
 	private final IMeshNode node;
-	private final int faceIndex;
+	private final FaceId faceIndex;
 
 	private transient PolygonControlHandle polygonControlHandle;
 
-	public FaceSelectionModelControl(final IMeshNode node, final int faceIndex,
-			final IToolAdapter toolAdapter) {
+	public FaceSelectionModelControl(final IMeshNode node,
+			final FaceId faceIndex, final IToolAdapter toolAdapter) {
 		this.toolAdapter = toolAdapter;
 		this.node = node;
 		this.faceIndex = faceIndex;

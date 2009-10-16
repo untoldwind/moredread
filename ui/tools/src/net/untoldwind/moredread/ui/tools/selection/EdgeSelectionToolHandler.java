@@ -162,7 +162,7 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 				for (final EdgeSelection edgeSelection : scene
 						.getSceneSelection().getSelectedEdges()) {
 					final IMeshNode node = edgeSelection.getNode();
-					final Mesh<?> mesh = node.getEditableGeometry();
+					final Mesh<?, ?> mesh = node.getEditableGeometry();
 					final Edge edge = mesh
 							.getEdge(edgeSelection.getEdgeIndex());
 

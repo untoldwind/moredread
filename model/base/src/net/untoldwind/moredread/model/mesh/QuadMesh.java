@@ -5,7 +5,7 @@ import java.io.IOException;
 import net.untoldwind.moredread.model.enums.MeshType;
 import net.untoldwind.moredread.model.state.IStateReader;
 
-public class QuadMesh extends Mesh<QuadFace> {
+public class QuadMesh extends Mesh<QuadFaceId, QuadFace> {
 	@Override
 	public MeshType getMeshType() {
 		return MeshType.QUAD;
@@ -27,10 +27,10 @@ public class QuadMesh extends Mesh<QuadFace> {
 		edgeArr[2] = addEdge(vertexArr[2], vertexArr[3]);
 		edgeArr[3] = addEdge(vertexArr[3], vertexArr[0]);
 
-		final QuadFace face = new QuadFace(this, faces.size(), vertexArr,
-				edgeArr);
+		final QuadFace face = new QuadFace(this, new QuadFaceId(vertexIndex1,
+				vertexIndex2, vertexIndex3, vertexIndex4), vertexArr, edgeArr);
 
-		faces.add(face);
+		faces.put(face.getIndex(), face);
 
 		return face;
 	}
@@ -43,7 +43,7 @@ public class QuadMesh extends Mesh<QuadFace> {
 			mesh.addVertex(vertex.getPoint(), vertex.isSmooth());
 		}
 
-		for (final QuadFace face : faces) {
+		for (final QuadFace face : faces.values()) {
 			final Vertex vertices[] = face.getVertexArray();
 
 			mesh.addFace(vertices[0].getIndex(), vertices[1].getIndex(),
