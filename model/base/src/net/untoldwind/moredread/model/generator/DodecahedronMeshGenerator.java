@@ -15,6 +15,7 @@ public class DodecahedronMeshGenerator implements IMeshGenerator {
 		return "Dodecahedron";
 	}
 
+	@Override
 	public PolyMesh generateMesh(final List<IGeneratorInput> generatorInputs) {
 		final PolyMesh mesh = new PolyMesh();
 
