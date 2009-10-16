@@ -48,7 +48,9 @@ public abstract class RenderStrategyBase implements ISceneVisitor<Spatial> {
 		for (final INode node : group.getChildren()) {
 			final Spatial renderedChild = node.accept(this);
 
-			displayNode.attachChild(renderedChild);
+			if (!displayNode.hasChild(renderedChild)) {
+				displayNode.attachChild(renderedChild);
+			}
 			updatedSet.add(renderedChild);
 		}
 
@@ -124,7 +126,9 @@ public abstract class RenderStrategyBase implements ISceneVisitor<Spatial> {
 		for (final INode node : scene.getChildren()) {
 			final Spatial renderedChild = node.accept(this);
 
-			displayNode.attachChild(renderedChild);
+			if (!displayNode.hasChild(renderedChild)) {
+				displayNode.attachChild(renderedChild);
+			}
 			updatedSet.add(renderedChild);
 		}
 

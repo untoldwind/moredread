@@ -5,8 +5,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import net.untoldwind.moredread.model.renderer.SolidNodeRenderer;
 import net.untoldwind.moredread.model.renderer.SolidNodeRendererParam;
+import net.untoldwind.moredread.model.renderer.SolidRenderStrategy;
 import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.ISceneHolder;
 import net.untoldwind.moredread.model.scene.SpatialNodeReference;
@@ -55,8 +55,7 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 	private IControlHandle activeControlHandle;
 
 	private final ISceneHolder sceneHolder;
-
-	boolean updateNecessary = true;
+	private SolidRenderStrategy renderStrategy;
 
 	public MDCanvasImplementor(final int width, final int height,
 			final ISceneHolder sceneHolder) {
@@ -71,6 +70,23 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 		backdropNode = new Node("backdropNode");
 
 		rootNode.attachChild(backdropNode);
+
+		final SolidNodeRendererParam rendererParam = new SolidNodeRendererParam(
+				MoreDreadUI
+						.getDefault()
+						.getPreferenceStore()
+						.getBoolean(
+								IPreferencesConstants.MODEL3DVIEW_SELECTED_SHOW_NORMALS),
+				MoreDreadUI
+						.getDefault()
+						.getPreferenceStore()
+						.getBoolean(
+								IPreferencesConstants.MODEL3DVIEW_SELECTED_SHOW_BOUNDINGBOX));
+
+		renderStrategy = new SolidRenderStrategy(renderer, sceneHolder
+				.getSelectionMode(), rendererParam);
+
+		rootNode.attachChild(sceneHolder.getScene().accept(renderStrategy));
 
 		final ZBufferState zBufferState = renderer.createZBufferState();
 		zBufferState.setEnabled(false);
@@ -108,7 +124,8 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 	}
 
 	public void updateDisplayNodes() {
-		updateNecessary = true;
+		sceneHolder.getScene().accept(renderStrategy);
+
 		if (controlsNode.getChildren() != null) {
 			for (final IModelControl modelControl : modelControls) {
 				modelControl.updatePositions();
@@ -140,27 +157,6 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 
 	@Override
 	public void simpleRender() {
-		if (updateNecessary) {
-			final SolidNodeRendererParam rendererParam = new SolidNodeRendererParam(
-					MoreDreadUI
-							.getDefault()
-							.getPreferenceStore()
-							.getBoolean(
-									IPreferencesConstants.MODEL3DVIEW_SELECTED_SHOW_NORMALS),
-					MoreDreadUI
-							.getDefault()
-							.getPreferenceStore()
-							.getBoolean(
-									IPreferencesConstants.MODEL3DVIEW_SELECTED_SHOW_BOUNDINGBOX));
-
-			sceneHolder.render(renderer, new SolidNodeRenderer(renderer,
-					sceneHolder.getSelectionMode(), rendererParam));
-
-			updateNecessary = false;
-		} else {
-			sceneHolder.render(renderer, null);
-		}
-
 		renderer.renderQueue();
 		renderer.clearZBuffer();
 		renderer.draw(controlsNode);
@@ -198,7 +194,7 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 				ray.direction).subtractLocal(ray.origin).normalizeLocal();
 
 		results.setCheckDistance(true);
-		sceneHolder.findPick(ray, results);
+		rootNode.findPick(ray, results);
 
 		for (int i = 0; i < results.getNumber(); i++) {
 			final PickData pick = results.getPickData(i);
