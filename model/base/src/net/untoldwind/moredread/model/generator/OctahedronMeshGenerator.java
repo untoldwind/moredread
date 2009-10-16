@@ -2,7 +2,6 @@ package net.untoldwind.moredread.model.generator;
 
 import java.util.List;
 
-import net.untoldwind.moredread.model.mesh.Mesh;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
 
 import com.jme.math.Vector3f;
@@ -11,11 +10,13 @@ public class OctahedronMeshGenerator implements IMeshGenerator {
 	private final Vector3f center = new Vector3f();
 	private final float size = 1f;
 
+	@Override
 	public String getName() {
 		return "Octahedron";
 	}
 
-	public Mesh<?, ?> generateMesh(final List<IGeneratorInput> generatorInputs) {
+	@Override
+	public TriangleMesh generateMesh(final List<IGeneratorInput> generatorInputs) {
 		final TriangleMesh mesh = new TriangleMesh();
 
 		mesh.addVertex(new Vector3f(size, 0, 0).addLocal(center));
