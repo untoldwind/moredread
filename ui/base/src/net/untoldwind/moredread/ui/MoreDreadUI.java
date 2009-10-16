@@ -10,6 +10,7 @@ import net.untoldwind.moredread.jme.MoreDreadJME;
 import net.untoldwind.moredread.model.generator.BooleanGenerator;
 import net.untoldwind.moredread.model.generator.CubeMeshGenerator;
 import net.untoldwind.moredread.model.generator.DodecahedronMeshGenerator;
+import net.untoldwind.moredread.model.generator.GeosphereMeshGenerator;
 import net.untoldwind.moredread.model.generator.IcosahedronMeshGenerator;
 import net.untoldwind.moredread.model.generator.OctahedronMeshGenerator;
 import net.untoldwind.moredread.model.mesh.PolyMesh;
@@ -273,6 +274,13 @@ public class MoreDreadUI extends AbstractUIPlugin {
 
 			node11.setLocalScale(new Vector3f(3.0f, 3.0f, 3.0f));
 			node11.setLocalTranslation(new Vector3f(-20f, 10f, 0));
+
+			final AbstractSpatialNode node12 = new MeshNode(scene,
+					"Mesh Geosphere", new GeosphereMeshGenerator(5)
+							.generateMesh(null));
+
+			node12.setLocalScale(new Vector3f(5.0f, 5.0f, 5.0f));
+			node12.setLocalTranslation(new Vector3f(-30f, 10f, 0));
 
 		} finally {
 			scene.getSceneChangeHandler().commit();
