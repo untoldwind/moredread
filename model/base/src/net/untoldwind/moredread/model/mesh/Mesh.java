@@ -22,6 +22,7 @@ public abstract class Mesh<FaceK extends FaceId, FaceT extends Face<?, ?>>
 	protected final List<Vertex> vertices;
 	protected final Map<EdgeId, Edge> edges;
 	protected final Map<FaceK, FaceT> faces;
+	protected boolean dirty = false;
 
 	protected Mesh() {
 		vertices = new ArrayList<Vertex>();
@@ -82,6 +83,18 @@ public abstract class Mesh<FaceK extends FaceId, FaceT extends Face<?, ?>>
 
 	public FaceT getFace(final FaceId faceIndex) {
 		return faces.get(faceIndex);
+	}
+
+	void markDirty() {
+		dirty = true;
+	}
+
+	public boolean clearDirty() {
+		if (dirty) {
+			dirty = false;
+			return true;
+		}
+		return false;
 	}
 
 	public abstract MeshType getMeshType();
