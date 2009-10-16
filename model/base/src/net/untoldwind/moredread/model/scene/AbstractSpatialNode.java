@@ -49,6 +49,7 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 
 	@Override
 	public void markDirty() {
+		super.markDirty();
 		if (parent != null) {
 			parent.markDirty();
 		}
