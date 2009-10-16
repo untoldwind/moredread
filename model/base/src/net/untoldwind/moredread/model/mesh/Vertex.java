@@ -57,6 +57,7 @@ public class Vertex implements IStateHolder, IVertex {
 		for (final Face<?> face : faces) {
 			face.markDirty();
 		}
+		owner.markDirty();
 	}
 
 	public Set<Edge> getEdges() {

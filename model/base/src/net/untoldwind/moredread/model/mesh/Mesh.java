@@ -20,6 +20,7 @@ public abstract class Mesh<T extends Face<?>> implements IMesh, IStateHolder {
 	protected final List<Vertex> vertices;
 	protected final Map<EdgeId, Edge> edges;
 	protected final List<T> faces;
+	protected boolean dirty = false;
 
 	protected Mesh() {
 		vertices = new ArrayList<Vertex>();
@@ -79,6 +80,18 @@ public abstract class Mesh<T extends Face<?>> implements IMesh, IStateHolder {
 
 	public T getFace(final int faceIndex) {
 		return faces.get(faceIndex);
+	}
+
+	void markDirty() {
+		dirty = true;
+	}
+
+	public boolean clearDirty() {
+		if (dirty) {
+			dirty = false;
+			return true;
+		}
+		return false;
 	}
 
 	public abstract MeshType getMeshType();
