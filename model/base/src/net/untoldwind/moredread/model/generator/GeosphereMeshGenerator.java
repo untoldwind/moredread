@@ -9,7 +9,6 @@ import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
 
 public class GeosphereMeshGenerator implements IMeshGenerator {
-	private final Vector3f center = new Vector3f();
 	private final float size = 1f;
 	private final int numLevels;
 
