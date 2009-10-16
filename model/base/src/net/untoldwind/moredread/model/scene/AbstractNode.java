@@ -13,6 +13,8 @@ public abstract class AbstractNode implements INode {
 	protected final long nodeId;
 	protected String name;
 
+	protected transient int eTag = 0;
+
 	protected AbstractNode(final IComposite parent, final String name) {
 		nodeId = NODE_ID_COUNTER.getAndIncrement();
 		if (parent == null) {
@@ -42,6 +44,18 @@ public abstract class AbstractNode implements INode {
 
 	public Scene getScene() {
 		return scene;
+	}
+
+	public int getETag() {
+		return eTag;
+	}
+
+	@Override
+	public void markDirty() {
+		eTag++;
+		if (getParent() != null) {
+			getParent().markDirty();
+		}
 	}
 
 }
