@@ -1,6 +1,7 @@
 package net.untoldwind.moredread.model.op.merge.coplanar;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -18,6 +19,7 @@ import net.untoldwind.moredread.model.mesh.PolyMesh;
 import net.untoldwind.moredread.model.op.IUnaryOperation;
 
 import com.jme.math.FastMath;
+import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 
 public class CoplanarMergeOperation implements IUnaryOperation {
@@ -179,6 +181,52 @@ public class CoplanarMergeOperation implements IUnaryOperation {
 			it = borderEdges.entrySet().iterator();
 		}
 
+		if (sourceStrips.isEmpty()) {
+			ModelPlugin.getDefault().logWarn(getClass(),
+					"Empty source strips. Should not happen");
+			return;
+		}
+
+		final Vector3f n = source.getFace(faces.iterator().next())
+				.getMeanNormal();
+		final Vector3f vx = sourceStrips.get(0).get(1).getPoint().subtract(
+				sourceStrips.get(0).get(0).getPoint());
+		vx.normalizeLocal();
+		final Vector3f vy = vx.cross(n).normalizeLocal();
+
+		sortStrips(vx, vy, sourceStrips);
+
+		for (int i = 0; i < sourceStrips.size(); i++) {
+			final Vector3f pn = calculateMeanNormal(sourceStrips.get(i));
+
+			if (n.dot(pn) < 0) {
+				if (i == 0) {
+					Collections.reverse(sourceStrips.get(i));
+				}
+			} else if (i > 0) {
+				Collections.reverse(sourceStrips.get(i));
+			}
+		}
+
+		final int targetStrips[][] = new int[sourceStrips.size()][];
+
+		for (int i = 0; i < targetStrips.length; i++) {
+			targetStrips[i] = new int[sourceStrips.get(i).size()];
+			for (int j = 0; j < targetStrips[i].length; j++) {
+				final IVertex sourceVertex = sourceStrips.get(i).get(j);
+				Integer newIndex = vertexMap.get(sourceVertex.getIndex());
+
+				if (newIndex == null) {
+					newIndex = target.addVertex(sourceVertex.getPoint(),
+							sourceVertex.isSmooth()).getIndex();
+					vertexMap.put(sourceVertex.getIndex(), newIndex);
+				}
+
+				targetStrips[i][j] = newIndex;
+			}
+		}
+
+		target.addFace(targetStrips);
 	}
 
 	private void collectCoplanarNeigbours(final IFace face,
@@ -193,13 +241,66 @@ public class CoplanarMergeOperation implements IUnaryOperation {
 		}
 	}
 
+	private void sortStrips(final Vector3f vx, final Vector3f vy,
+			final List<List<IVertex>> sourceStrips) {
+		for (int i = 1; i < sourceStrips.size(); i++) {
+			if (isInside(vx, vy, sourceStrips.get(0).get(0), sourceStrips
+					.get(i))) {
+				Collections.swap(sourceStrips, 0, i);
+			}
+		}
+	}
+
+	private boolean isInside(final Vector3f vx, final Vector3f vy,
+			final IVertex vertex, final List<IVertex> polygon) {
+		final int polySides = polygon.size();
+		if (polySides == 0) {
+			return false;
+		}
+
+		final Vector2f v = new Vector2f(vertex.getPoint().dot(vx), vertex
+				.getPoint().dot(vy));
+		int i, j = polySides - 1;
+
+		boolean oddNodes = false;
+
+		for (i = 0; i < polySides; i++) {
+			final Vector3f vi = polygon.get(i).getPoint();
+			final Vector3f vj = polygon.get(j).getPoint();
+			final Vector2f pi = new Vector2f(vi.dot(vx), vi.dot(vy));
+			final Vector2f pj = new Vector2f(vj.dot(vx), vj.dot(vy));
+
+			if (pi.y < v.y && pj.y >= v.y || pj.y < v.y && pi.y >= v.y) {
+				if (pi.x + (v.y - pi.y) / (pj.y - pi.y) * (pj.x - pi.x) < v.x) {
+					oddNodes = !oddNodes;
+				}
+			}
+			j = i;
+		}
+
+		return oddNodes;
+	}
+
+	private Vector3f calculateMeanNormal(final List<IVertex> sourceStrip) {
+		final Vector3f meanNormal = new Vector3f(0, 0, 0);
+		final int outerStripCount = sourceStrip.size();
+		for (int i = 0; i < outerStripCount; i++) {
+			final Vector3f v1 = sourceStrip.get(i).getPoint();
+			final Vector3f v2 = sourceStrip.get((i + 1) % outerStripCount)
+					.getPoint();
+			meanNormal.addLocal(v1.cross(v2));
+		}
+		meanNormal.normalizeLocal();
+
+		return meanNormal;
+	}
+
 	private boolean checkCoplanar(final IFace face1, final IFace face2) {
-		// Using angleBetween might be a better (more user-friendly) approach
-		final Vector3f diff = face1.getMeanNormal().subtract(
+		final Vector3f cross = face1.getMeanNormal().cross(
 				face2.getMeanNormal());
 
-		return FastMath.abs(diff.x) < FastMath.FLT_EPSILON
-				&& FastMath.abs(diff.y) < FastMath.FLT_EPSILON
-				&& FastMath.abs(diff.z) < FastMath.FLT_EPSILON;
+		return FastMath.abs(cross.x) < FastMath.FLT_EPSILON
+				&& FastMath.abs(cross.y) < FastMath.FLT_EPSILON
+				&& FastMath.abs(cross.z) < FastMath.FLT_EPSILON;
 	}
 }

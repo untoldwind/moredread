@@ -99,6 +99,17 @@ public class PolyMesh extends Mesh<PolyFace> {
 		return triangleMesh;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("PolyMesh [vertices=");
+		builder.append(vertices);
+		builder.append(", faces=");
+		builder.append(faces);
+		builder.append("]");
+		return builder.toString();
+	}
+
 	public class FaceInstanceCreator implements
 			IStateReader.InstanceCreator<PolyFace> {
 
