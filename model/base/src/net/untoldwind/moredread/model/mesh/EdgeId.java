@@ -9,6 +9,14 @@ public class EdgeId {
 		this.i2 = i1 < i2 ? i2 : i1;
 	}
 
+	public int getIndex1() {
+		return i1;
+	}
+
+	public int getIndex2() {
+		return i2;
+	}
+
 	@Override
 	public int hashCode() {
 		return 31 * i1 + i2;

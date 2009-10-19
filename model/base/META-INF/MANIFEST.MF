@@ -20,3 +20,4 @@ Export-Package: net.untoldwind.moredread.model.enums,
  net.untoldwind.moredread.model.scene.change,
  net.untoldwind.moredread.model.scene.event,
  net.untoldwind.moredread.model.state
+Bundle-Activator: net.untoldwind.moredread.model.ModelPlugin

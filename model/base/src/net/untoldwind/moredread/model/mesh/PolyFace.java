@@ -112,9 +112,10 @@ public class PolyFace extends Face<PolyMesh> {
 	@Override
 	public void updateMeanNormal() {
 		meanNormal = new Vector3f(0, 0, 0);
-		for (int i = 0; i < vertices.size(); i++) {
+		final int outerStripCount = stripCounts.get(0);
+		for (int i = 0; i < outerStripCount; i++) {
 			final Vector3f v1 = vertices.get(i).getPoint();
-			final Vector3f v2 = vertices.get((i + 1) % vertices.size())
+			final Vector3f v2 = vertices.get((i + 1) % outerStripCount)
 					.getPoint();
 			meanNormal.addLocal(v1.cross(v2));
 		}
