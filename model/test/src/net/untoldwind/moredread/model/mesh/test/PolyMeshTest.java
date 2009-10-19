@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import net.untoldwind.moredread.model.mesh.PolyFace;
+import net.untoldwind.moredread.model.mesh.PolyFaceId;
 import net.untoldwind.moredread.model.mesh.PolyMesh;
 import net.untoldwind.moredread.model.mesh.Vertex;
 import net.untoldwind.moredread.model.state.XMLStateWriter;
@@ -62,27 +63,27 @@ public class PolyMeshTest {
 
 		final PolyFace bottom = cube.addFace(0, 1, 2, 3);
 		assertNotNull("bottom", bottom);
-		assertEquals("bottom.index", 0, bottom.getIndex());
+		assertEquals("bottom.index", new PolyFaceId(0), bottom.getIndex());
 		assertEquals("bottom.verticies", 4, bottom.getVertices().size());
 		final PolyFace top = cube.addFace(4, 5, 6, 7);
 		assertNotNull("top", top);
-		assertEquals("top.index", 1, top.getIndex());
+		assertEquals("top.index", new PolyFaceId(1), top.getIndex());
 		assertEquals("top.verticies", 4, top.getVertices().size());
 		final PolyFace left = cube.addFace(0, 3, 7, 4);
 		assertNotNull("left", left);
-		assertEquals("left.index", 2, left.getIndex());
+		assertEquals("left.index", new PolyFaceId(2), left.getIndex());
 		assertEquals("left.verticies", 4, left.getVertices().size());
 		final PolyFace right = cube.addFace(1, 2, 6, 5);
 		assertNotNull("right", right);
-		assertEquals("right.index", 3, right.getIndex());
+		assertEquals("right.index", new PolyFaceId(3), right.getIndex());
 		assertEquals("right.verticies", 4, right.getVertices().size());
 		final PolyFace back = cube.addFace(0, 1, 5, 4);
 		assertNotNull("back", back);
-		assertEquals("back.index", 4, back.getIndex());
+		assertEquals("back.index", new PolyFaceId(4), back.getIndex());
 		assertEquals("back.verticies", 4, back.getVertices().size());
 		final PolyFace front = cube.addFace(2, 3, 7, 6);
 		assertNotNull("front", front);
-		assertEquals("front.index", 5, front.getIndex());
+		assertEquals("front.index", new PolyFaceId(5), front.getIndex());
 		assertEquals("front.verticies", 4, front.getVertices().size());
 
 		assertEquals("vertex 0", vertex1, cube.getVertex(0));
