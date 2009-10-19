@@ -52,6 +52,8 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISaveablePart;
 import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.contexts.IContextActivation;
+import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.operations.RedoActionHandler;
 import org.eclipse.ui.operations.UndoActionHandler;
 import org.eclipse.ui.part.ViewPart;
@@ -71,9 +73,13 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 
 	public static final String ID = "net.untoldwind.moredread.ui.model3dview";
 
-	DisplaySystem displaySystem;
-	MDCanvasImplementor implementor;
-	MDCanvas canvas;
+	public static final String CONTEXT_ID = "net.untoldwind.moredread.ui.context.3dview";
+
+	private DisplaySystem displaySystem;
+	private MDCanvasImplementor implementor;
+	private MDCanvas canvas;
+
+	private IContextActivation contextActivation;
 
 	/**
 	 * {@inheritDoc}
@@ -181,6 +187,19 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 		getSite().setSelectionProvider(
 				new SceneSelectionProvider(MoreDreadUI.getDefault()
 						.getSceneHolder().getScene()));
+
+		final IContextService contextService = (IContextService) getSite()
+				.getService(IContextService.class);
+		contextActivation = contextService.activateContext(CONTEXT_ID);
+	}
+
+	@Override
+	public void dispose() {
+		final IContextService contextService = (IContextService) getSite()
+				.getService(IContextService.class);
+		contextService.deactivateContext(contextActivation);
+
+		super.dispose();
 	}
 
 	/**

@@ -38,9 +38,11 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		try {
 			for (final IToolCategoryDescriptor toolCategory : UIToolsPlugin
 					.getDefault().getToolCategories()) {
-				getWindowConfigurer().getWindow().getActivePage().showView(
-						ToolSelectionView.ID, toolCategory.getId(),
-						IWorkbenchPage.VIEW_VISIBLE);
+				if (toolCategory.isVisible()) {
+					getWindowConfigurer().getWindow().getActivePage().showView(
+							ToolSelectionView.ID, toolCategory.getId(),
+							IWorkbenchPage.VIEW_VISIBLE);
+				}
 			}
 		} catch (final Exception e) {
 			MoreDreadUI.getDefault().log(e);

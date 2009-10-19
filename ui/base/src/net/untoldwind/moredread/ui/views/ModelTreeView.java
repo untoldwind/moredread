@@ -15,6 +15,8 @@ import net.untoldwind.moredread.ui.properties.NodePropertySheetContributor;
 import net.untoldwind.moredread.ui.provider.NodeLabelProvider;
 import net.untoldwind.moredread.ui.provider.SceneContentProvider;
 
+import org.eclipse.jface.action.GroupMarker;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -23,6 +25,8 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
@@ -68,6 +72,16 @@ public class ModelTreeView extends ViewPart implements
 				});
 
 		getSite().setSelectionProvider(modelViewer);
+
+		final MenuManager menuMgr = new MenuManager();
+
+		menuMgr.add(new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
+
+		final Menu menu = menuMgr.createContextMenu(modelViewer.getControl());
+
+		modelViewer.getControl().setMenu(menu);
+		getSite()
+				.registerContextMenu(menuMgr, getSite().getSelectionProvider());
 
 		MoreDreadUI.getDefault().getSceneHolder().getScene()
 				.getSceneSelection().addSceneSelectionChangeListener(this);
