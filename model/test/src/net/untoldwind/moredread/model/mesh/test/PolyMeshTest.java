@@ -21,64 +21,66 @@ import org.junit.Test;
 import com.jme.math.Vector3f;
 
 public class PolyMeshTest {
+	private final static boolean DEBUG = false;
+
 	@Test
 	public void testSimpleCreate() {
-		PolyMesh cube = new PolyMesh();
+		final PolyMesh cube = new PolyMesh();
 
 		// Left Back Bottom
-		Vertex vertex1 = cube.addVertex(new Vector3f(-1, -1, -1));
+		final Vertex vertex1 = cube.addVertex(new Vector3f(-1, -1, -1));
 		assertNotNull("vertex1", vertex1);
 		assertEquals("vertex1.index", 0, vertex1.getIndex());
 		// Right Back Bottom
-		Vertex vertex2 = cube.addVertex(new Vector3f(1, -1, -1));
+		final Vertex vertex2 = cube.addVertex(new Vector3f(1, -1, -1));
 		assertNotNull("vertex2", vertex2);
 		assertEquals("vertex2.index", 1, vertex2.getIndex());
 		// Right Front Bottom
-		Vertex vertex3 = cube.addVertex(new Vector3f(1, 1, -1));
+		final Vertex vertex3 = cube.addVertex(new Vector3f(1, 1, -1));
 		assertNotNull("vertex3", vertex3);
 		assertEquals("vertex3.index", 2, vertex3.getIndex());
 		// Left Front Bottom
-		Vertex vertex4 = cube.addVertex(new Vector3f(-1, 1, -1));
+		final Vertex vertex4 = cube.addVertex(new Vector3f(-1, 1, -1));
 		assertNotNull("vertex4", vertex4);
 		assertEquals("vertex4.index", 3, vertex4.getIndex());
 		// Left Back Top
-		Vertex vertex5 = cube.addVertex(new Vector3f(-1, -1, 1));
+		final Vertex vertex5 = cube.addVertex(new Vector3f(-1, -1, 1));
 		assertNotNull("vertex5", vertex5);
 		assertEquals("vertex5.index", 4, vertex5.getIndex());
 		// Right Back Top
-		Vertex vertex6 = cube.addVertex(new Vector3f(1, -1, 1));
+		final Vertex vertex6 = cube.addVertex(new Vector3f(1, -1, 1));
 		assertNotNull("vertex6", vertex6);
 		assertEquals("vertex6.index", 5, vertex6.getIndex());
 		// Right Front Top
-		Vertex vertex7 = cube.addVertex(new Vector3f(1, 1, 1));
+		final Vertex vertex7 = cube.addVertex(new Vector3f(1, 1, 1));
 		assertNotNull("vertex7", vertex7);
 		assertEquals("vertex7.index", 6, vertex7.getIndex());
 		// Left Front Top
-		Vertex vertex8 = cube.addVertex(new Vector3f(-1, 1, 1));
+		final Vertex vertex8 = cube.addVertex(new Vector3f(-1, 1, 1));
 		assertNotNull("vertex8", vertex8);
 		assertEquals("vertex8.index", 7, vertex8.getIndex());
 
-		PolyFace bottom = cube.addFace(0, 1, 2, 3);
+		final PolyFace bottom = cube.addFace(0, 1, 2, 3);
 		assertNotNull("bottom", bottom);
 		assertEquals("bottom.index", 0, bottom.getIndex());
 		assertEquals("bottom.verticies", 4, bottom.getVertices().size());
-		PolyFace top = cube.addFace(4, 5, 6, 7);
+		final PolyFace top = cube.addFace(4, 5, 6, 7);
 		assertNotNull("top", top);
 		assertEquals("top.index", 1, top.getIndex());
 		assertEquals("top.verticies", 4, top.getVertices().size());
-		PolyFace left = cube.addFace(0, 3, 7, 4);
+		final PolyFace left = cube.addFace(0, 3, 7, 4);
 		assertNotNull("left", left);
 		assertEquals("left.index", 2, left.getIndex());
 		assertEquals("left.verticies", 4, left.getVertices().size());
-		PolyFace right = cube.addFace(1, 2, 6, 5);
+		final PolyFace right = cube.addFace(1, 2, 6, 5);
 		assertNotNull("right", right);
 		assertEquals("right.index", 3, right.getIndex());
 		assertEquals("right.verticies", 4, right.getVertices().size());
-		PolyFace back = cube.addFace(0, 1, 5, 4);
+		final PolyFace back = cube.addFace(0, 1, 5, 4);
 		assertNotNull("back", back);
 		assertEquals("back.index", 4, back.getIndex());
 		assertEquals("back.verticies", 4, back.getVertices().size());
-		PolyFace front = cube.addFace(2, 3, 7, 6);
+		final PolyFace front = cube.addFace(2, 3, 7, 6);
 		assertNotNull("front", front);
 		assertEquals("front.index", 5, front.getIndex());
 		assertEquals("front.verticies", 4, front.getVertices().size());
@@ -135,47 +137,50 @@ public class PolyMeshTest {
 
 	@Test
 	public void writeStateTest() throws Exception {
-		PolyMesh cube = createCube();
-		XMLStateWriter writer = new XMLStateWriter("mesh");
+		final PolyMesh cube = createCube();
+		final XMLStateWriter writer = new XMLStateWriter("mesh");
 
 		cube.writeState(writer);
 
-		SAXReader reader = new SAXReader();
+		final SAXReader reader = new SAXReader();
 		reader.setIgnoreComments(true);
 		reader.setStripWhitespaceText(true);
-		Document expected = reader.read(getClass().getResourceAsStream(
+		final Document expected = reader.read(getClass().getResourceAsStream(
 				"polymesh-state1.xml"));
 
-		XMLWriter xmlWriter = new XMLWriter(System.out, OutputFormat
-				.createPrettyPrint());
-		xmlWriter.write(writer.getDocument());
-		xmlWriter.flush();
+		if (DEBUG) {
+			final XMLWriter xmlWriter = new XMLWriter(System.out, OutputFormat
+					.createPrettyPrint());
+			xmlWriter.write(writer.getDocument());
+			xmlWriter.flush();
+		}
 
 		assertDocument(expected, writer.getDocument());
 	}
 
-	private void assertDocument(Document expected, Document actual) {
+	private void assertDocument(final Document expected, final Document actual) {
 		assertElement(expected.getRootElement(), actual.getRootElement());
 
 	}
 
 	@SuppressWarnings("unchecked")
-	private void assertElement(Element expected, Element actual) {
+	private void assertElement(final Element expected, final Element actual) {
 		assertEquals(expected.getPath(), expected.getName(), actual.getName());
 		assertEquals(expected.getPath(), expected.getText().trim(), actual
 				.getText().trim());
 
-		List<Element> expectedElements = expected.elements();
-		List<Element> actualElements = actual.elements();
+		final List<Element> expectedElements = expected.elements();
+		final List<Element> actualElements = actual.elements();
 
 		assertEquals(expected.getPath(), expectedElements.size(),
 				actualElements.size());
-		for (int i = 0; i < expectedElements.size(); i++)
+		for (int i = 0; i < expectedElements.size(); i++) {
 			assertElement(expectedElements.get(i), actualElements.get(i));
+		}
 	}
 
 	private PolyMesh createCube() {
-		PolyMesh cube = new PolyMesh();
+		final PolyMesh cube = new PolyMesh();
 
 		cube.addVertex(new Vector3f(-1, -1, -1));
 		cube.addVertex(new Vector3f(1, -1, -1));

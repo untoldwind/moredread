@@ -8,8 +8,17 @@ import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
 
 public class DodecahedronMeshGenerator implements IMeshGenerator {
-	private final Vector3f center = new Vector3f();
-	private final float size = 1f;
+	private final Vector3f center;
+	private final float size;
+
+	public DodecahedronMeshGenerator() {
+		this(new Vector3f(0, 0, 0), 1f);
+	}
+
+	public DodecahedronMeshGenerator(final Vector3f center, final float size) {
+		this.center = center;
+		this.size = size;
+	}
 
 	public String getName() {
 		return "Dodecahedron";
