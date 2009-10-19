@@ -195,5 +195,18 @@
          </propertySection>
       </propertySections>
    </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="false"
+            id="net.untoldwind.moredread.ui.generatorNode.objectContribution"
+            objectClass="net.untoldwind.moredread.model.scene.GeneratorNode">
+         <action
+               class="net.untoldwind.moredread.ui.actions.GeneratorNodeActionDelegate"
+               id="net.untoldwind.moredread.ui.generatorNode.collapse"
+               label="Collapse">
+         </action>
+      </objectContribution>
+   </extension>
 
 </plugin>
