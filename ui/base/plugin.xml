@@ -65,38 +65,78 @@
    <extension
          point="org.eclipse.ui.commands">
       <category
-            name="Mail"
-            id="net.untoldwind.moredread.ui.category">
+            description="Selection mode"
+            id="net.untoldwind.moredread.ui.selectionMode.category"
+            name="Selection mode">
       </category>
       <command
-            name="Open Mailbox"
-            description="Opens a mailbox"
-            categoryId="net.untoldwind.moredread.ui.category"
-            id="net.untoldwind.moredread.ui.open">
-      </command>
-      <command
-            name="Open Message Dialog"
-            description="Open a message dialog"
-            categoryId="net.untoldwind.moredread.ui.category"
-            id="net.untoldwind.moredread.ui.openMessage">
+            categoryId="net.untoldwind.moredread.ui.selectionMode.category"
+            defaultHandler="net.untoldwind.moredread.ui.handlers.SelectionModeHandler"
+            description="Selection mode"
+            id="net.untoldwind.moredread.ui.selectionMode"
+            name="Selection mode">
+         <commandParameter
+               id="net.untoldwind.moredread.ui.selectionMode"
+               name="SelectionMode"
+               optional="false"
+               typeId="net.untoldwind.moredread.ui.selectionMode"
+               values="net.untoldwind.moredread.ui.handlers.SelectionModeParameterValues">
+         </commandParameter>
       </command>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
       <key
-            commandId="net.untoldwind.moredread.ui.open"
+            commandId="net.untoldwind.moredread.ui.selectionMode"
+            contextId="net.untoldwind.moredread.ui.context.3dview"
+            locale="de"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="CTRL+2">
+            sequence="Y">
+         <parameter
+               id="net.untoldwind.moredread.ui.selectionMode"
+               value="OBJECT">
+         </parameter>
       </key>
       <key
-            commandId="net.untoldwind.moredread.ui.openMessage"
+            commandId="net.untoldwind.moredread.ui.selectionMode"
+            contextId="net.untoldwind.moredread.ui.context.3dview"
+            locale="en"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="CTRL+3">
+            sequence="Z">
+         <parameter
+               id="net.untoldwind.moredread.ui.selectionMode"
+               value="OBJECT">
+         </parameter>
       </key>
       <key
-            commandId="org.eclipse.ui.file.exit"
+            commandId="net.untoldwind.moredread.ui.selectionMode"
+            contextId="net.untoldwind.moredread.ui.context.3dview"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="CTRL+X">
+            sequence="X">
+         <parameter
+               id="net.untoldwind.moredread.ui.selectionMode"
+               value="FACE">
+         </parameter>
+      </key>
+      <key
+            commandId="net.untoldwind.moredread.ui.selectionMode"
+            contextId="net.untoldwind.moredread.ui.context.3dview"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="C">
+         <parameter
+               id="net.untoldwind.moredread.ui.selectionMode"
+               value="EDGE">
+         </parameter>
+      </key>
+      <key
+            commandId="net.untoldwind.moredread.ui.selectionMode"
+            contextId="net.untoldwind.moredread.ui.context.3dview"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="V">
+         <parameter
+               id="net.untoldwind.moredread.ui.selectionMode"
+               value="VERTEX">
+         </parameter>
       </key>
    </extension>
    <extension
@@ -147,6 +187,11 @@
             class="net.untoldwind.moredread.ui.preferences.Model3DViewPreferencesPage"
             id="net.untoldwind.moredread.ui.mode3dview.preferences"
             name="3DView">
+      </page>
+      <page
+            class="org.eclipse.ui.ExtensionFactory:newKeysPreferencePage"
+            id="net.untoldwind.moredread.ui.preferences.KeyBindings"
+            name="Keys">
       </page>
    </extension>
    <extension
@@ -207,6 +252,14 @@
                label="Collapse">
          </action>
       </objectContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            id="net.untoldwind.moredread.ui.context.3dview"
+            name="In 3D view"
+            parentId="org.eclipse.ui.contexts.window">
+      </context>
    </extension>
 
 </plugin>
