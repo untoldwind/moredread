@@ -163,17 +163,19 @@ public class CoplanarMergeOperation implements IUnaryOperation {
 			boolean stripClosed = false;
 
 			while (!stripClosed
-					&& borderEdges.containsKey(sourceStrip.get(0).getIndex())) {
+					&& borderEdges.containsKey(sourceStrip.get(
+							sourceStrip.size() - 1).getIndex())) {
 				final List<Integer> nextVertices = borderEdges
-						.remove(sourceStrip.get(0).getIndex());
+						.remove(sourceStrip.get(sourceStrip.size() - 1)
+								.getIndex());
 				int nextVertex = nextVertices.get(0);
-				if (sourceStrip.get(1).getIndex() == nextVertex) {
+				if (sourceStrip.get(sourceStrip.size() - 2).getIndex() == nextVertex) {
 					nextVertex = nextVertices.get(1);
 				}
-				if (sourceStrip.get(sourceStrip.size() - 1).getIndex() == nextVertex) {
+				if (sourceStrip.get(0).getIndex() == nextVertex) {
 					stripClosed = true;
 				} else {
-					sourceStrip.add(0, source.getVertex(nextVertex));
+					sourceStrip.add(source.getVertex(nextVertex));
 				}
 			}
 
@@ -299,8 +301,8 @@ public class CoplanarMergeOperation implements IUnaryOperation {
 		final Vector3f cross = face1.getMeanNormal().cross(
 				face2.getMeanNormal());
 
-		return FastMath.abs(cross.x) < FastMath.FLT_EPSILON
-				&& FastMath.abs(cross.y) < FastMath.FLT_EPSILON
-				&& FastMath.abs(cross.z) < FastMath.FLT_EPSILON;
+		return FastMath.abs(cross.x) < FastMath.ZERO_TOLERANCE
+				&& FastMath.abs(cross.y) < FastMath.ZERO_TOLERANCE
+				&& FastMath.abs(cross.z) < FastMath.ZERO_TOLERANCE;
 	}
 }
