@@ -37,7 +37,7 @@ public class MergeCoplanarToolHandler implements IToolHandler {
 					.createOperation(Implementation.COPLANAR_MERGE);
 
 			for (final MeshNode meshNode : meshNodes) {
-				final Mesh<?> mesh = meshNode.getEditableGeometry();
+				final Mesh<?, ?> mesh = meshNode.getEditableGeometry();
 
 				meshNode.setMesh(mergeOperation.perform(mesh));
 			}
