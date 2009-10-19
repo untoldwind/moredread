@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.untoldwind.moredread.model.mesh.FaceId;
 import net.untoldwind.moredread.model.mesh.IFace;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.Mesh;
@@ -13,15 +14,15 @@ import net.untoldwind.moredread.model.op.IUnaryOperation;
 public class CoplanarMergeOperation implements IUnaryOperation {
 
 	@Override
-	public Mesh<?> perform(final IMesh mesh) {
-		final Set<Integer> visitedFaces = new HashSet<Integer>();
+	public Mesh<?, ?> perform(final IMesh mesh) {
+		final Set<FaceId> visitedFaces = new HashSet<FaceId>();
 
 		for (final IFace face : mesh.getFaces()) {
 			if (visitedFaces.contains(face.getIndex())) {
 				continue;
 			}
 
-			final List<Integer> coplanarFaces = new ArrayList<Integer>();
+			final List<FaceId> coplanarFaces = new ArrayList<FaceId>();
 
 			collectCoplanarNeigbours(face, coplanarFaces, visitedFaces);
 		}
@@ -30,7 +31,7 @@ public class CoplanarMergeOperation implements IUnaryOperation {
 	}
 
 	private void collectCoplanarNeigbours(final IFace face,
-			final List<Integer> coplanarFaces, final Set<Integer> visitedFaces) {
+			final List<FaceId> coplanarFaces, final Set<FaceId> visitedFaces) {
 		for (final IFace neighbour : face.getNeighbours()) {
 
 		}
