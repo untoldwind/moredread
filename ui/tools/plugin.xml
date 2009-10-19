@@ -80,6 +80,7 @@
       <tool
             categoryId="net.untoldwind.moredread.ui.tool.category.utilities"
             class="net.untoldwind.moredread.ui.tools.utilities.MergeCoplanarToolHandler"
+            icon="icons/MergeCoplanar.png"
             id="net.untoldwind.moredread.ui.tool.mergecoplanar"
             label="Merge coplanar faces"
             type="PUSH">
