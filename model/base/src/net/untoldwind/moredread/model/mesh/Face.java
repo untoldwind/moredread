@@ -1,5 +1,6 @@
 package net.untoldwind.moredread.model.mesh;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.untoldwind.moredread.model.enums.GeometryType;
@@ -31,6 +32,21 @@ public abstract class Face<FaceK extends FaceId, MeshT extends Mesh<?, ?>>
 
 	public FaceK getIndex() {
 		return index;
+	}
+
+	@Override
+	public List<? extends IFace> getNeighbours() {
+		final List<IFace> neighbours = new ArrayList<IFace>();
+
+		for (final IEdge edge : getEdges()) {
+			for (final IFace face : edge.getFaces()) {
+				if (face != this) {
+					neighbours.add(face);
+				}
+			}
+		}
+
+		return neighbours;
 	}
 
 	@Override

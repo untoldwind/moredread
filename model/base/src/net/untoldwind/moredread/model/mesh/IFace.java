@@ -15,4 +15,5 @@ public interface IFace extends IPolygon {
 
 	Plane getPlane();
 
+	List<? extends IFace> getNeighbours();
 }
