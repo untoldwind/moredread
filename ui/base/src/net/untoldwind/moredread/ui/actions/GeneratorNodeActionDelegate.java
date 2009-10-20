@@ -27,7 +27,7 @@ public class GeneratorNodeActionDelegate implements IObjectActionDelegate {
 				final GeneratorNode selectedGeneratorNode = (GeneratorNode) selectedNode;
 				final IMesh mesh = selectedGeneratorNode.getRenderGeometry();
 
-				if (mesh instanceof Mesh<?>) {
+				if (mesh instanceof Mesh<?, ?>) {
 					MeshNode collapsedNode;
 					final SceneChangeHandler sceneChangeHandler = selectedNode
 							.getScene().getSceneChangeHandler();
@@ -37,7 +37,7 @@ public class GeneratorNodeActionDelegate implements IObjectActionDelegate {
 						final AbstractSpatialComposite<?> parent = ((GeneratorNode) selectedNode)
 								.getParent();
 
-						collapsedNode = new MeshNode(parent, (Mesh<?>) mesh);
+						collapsedNode = new MeshNode(parent, (Mesh<?, ?>) mesh);
 
 						collapsedNode.setName(selectedNode.getName());
 						collapsedNode.setLocalTranslation(selectedGeneratorNode
