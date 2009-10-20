@@ -98,8 +98,12 @@ public class ToolSelectionView extends ViewPart implements
 	}
 
 	protected void selectTool(final IToolDescriptor toolDescriptor) {
-		toolDescriptor.activate(MoreDreadUI.getDefault().getSceneHolder()
-				.getScene());
+		try {
+			toolDescriptor.activate(MoreDreadUI.getDefault().getSceneHolder()
+					.getScene());
+		} catch (final Throwable e) {
+			e.printStackTrace();
+		}
 	}
 
 	protected void updateTools() {
