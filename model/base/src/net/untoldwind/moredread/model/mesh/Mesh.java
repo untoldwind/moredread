@@ -50,6 +50,9 @@ public abstract class Mesh<T extends Face<?>> implements IMesh, IStateHolder {
 	}
 
 	public Vertex getVertex(final int vertexIndes) {
+		if (vertexIndes < 0 || vertexIndes >= vertices.size()) {
+			return null;
+		}
 		return vertices.get(vertexIndes);
 	}
 
@@ -79,6 +82,9 @@ public abstract class Mesh<T extends Face<?>> implements IMesh, IStateHolder {
 	}
 
 	public T getFace(final int faceIndex) {
+		if (faceIndex < 0 || faceIndex >= faces.size()) {
+			return null;
+		}
 		return faces.get(faceIndex);
 	}
 

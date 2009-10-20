@@ -91,6 +91,11 @@ public class FaceSelectionModelControl extends TriMesh implements IModelControl 
 		final IMesh mesh = node.getGeometry();
 		final ITriangulator triangulator = TriangulatorFactory.createDefault();
 		final IPolygon face = node.localToWorld(mesh.getFace(faceIndex));
+
+		if (face == null) {
+			return;
+		}
+
 		final Vector3f normal = face.getMeanNormal();
 		final List<? extends IPoint> vertices = face.getVertices();
 		final FloatBuffer vertexBuffer = BufferUtils
