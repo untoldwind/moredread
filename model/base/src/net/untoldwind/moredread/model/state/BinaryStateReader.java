@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 
@@ -35,6 +36,11 @@ public class BinaryStateReader implements IStateReader {
 	}
 
 	@Override
+	public String readString() throws IOException {
+		return input.readUTF();
+	}
+
+	@Override
 	public Vector2f readVector2f() throws IOException {
 		return new Vector2f(input.readFloat(), input.readFloat());
 	}
@@ -43,6 +49,12 @@ public class BinaryStateReader implements IStateReader {
 	public Vector3f readVector3f() throws IOException {
 		return new Vector3f(input.readFloat(), input.readFloat(), input
 				.readFloat());
+	}
+
+	@Override
+	public Quaternion readQuaternion() throws IOException {
+		return new Quaternion(input.readFloat(), input.readFloat(), input
+				.readFloat(), input.readFloat());
 	}
 
 	@Override

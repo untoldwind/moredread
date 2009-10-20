@@ -1,6 +1,10 @@
 package net.untoldwind.moredread.model.scene;
 
+import java.io.IOException;
+
+import net.untoldwind.moredread.model.enums.NodeType;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
+import net.untoldwind.moredread.model.state.IStateWriter;
 
 public class Group extends AbstractSpatialComposite<AbstractSpatialNode> {
 
@@ -91,6 +95,15 @@ public class Group extends AbstractSpatialComposite<AbstractSpatialNode> {
 	@Override
 	public <T> T accept(final ISceneVisitor<T> visitor) {
 		return visitor.visitGroup(this);
+	}
+
+	@Override
+	public void writeState(final IStateWriter writer) throws IOException {
+		writer.writeInt("nodeType", NodeType.GROUP.getCode());
+		writer.writeVector3f("localTranslation", localTranslation);
+		writer.writeVector3f("localScale", localScale);
+		writer.writeQuaternion("localRotation", localRotation);
+		writer.writeCollection("children", children);
 	}
 
 }

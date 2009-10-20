@@ -3,6 +3,7 @@ package net.untoldwind.moredread.model.state;
 import java.io.IOException;
 import java.util.Collection;
 
+import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 
@@ -13,9 +14,13 @@ public interface IStateReader {
 
 	float readFloat() throws IOException;
 
+	String readString() throws IOException;
+
 	Vector2f readVector2f() throws IOException;
 
 	Vector3f readVector3f() throws IOException;
+
+	Quaternion readQuaternion() throws IOException;
 
 	<T extends IStateHolder> T readObject(InstanceCreator<T> instanceCreator)
 			throws IOException;

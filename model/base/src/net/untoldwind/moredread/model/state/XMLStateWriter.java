@@ -7,6 +7,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 
+import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 
@@ -42,6 +43,12 @@ public class XMLStateWriter implements IStateWriter {
 		element.addElement(tag).setText(String.valueOf(value));
 	}
 
+	@Override
+	public void writeString(final String tag, final String value)
+			throws IOException {
+		element.addElement(tag).setText(value);
+	}
+
 	public void writeVector2f(final String tag, final Vector2f value)
 			throws IOException {
 		final Element vectorElement = element.addElement(tag);
@@ -57,6 +64,17 @@ public class XMLStateWriter implements IStateWriter {
 		vectorElement.addAttribute("x", String.valueOf(value.x));
 		vectorElement.addAttribute("y", String.valueOf(value.y));
 		vectorElement.addAttribute("z", String.valueOf(value.y));
+	}
+
+	@Override
+	public void writeQuaternion(final String tag, final Quaternion quaterion)
+			throws IOException {
+		final Element quaternionElement = element.addElement(tag);
+
+		quaternionElement.addAttribute("x", String.valueOf(quaterion.x));
+		quaternionElement.addAttribute("y", String.valueOf(quaterion.y));
+		quaternionElement.addAttribute("z", String.valueOf(quaterion.z));
+		quaternionElement.addAttribute("w", String.valueOf(quaterion.w));
 	}
 
 	public void writeObject(final String tag, final IStateHolder obj)
