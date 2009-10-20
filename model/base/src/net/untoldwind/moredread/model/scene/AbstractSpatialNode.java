@@ -9,6 +9,7 @@ import net.untoldwind.moredread.model.mesh.Point;
 import net.untoldwind.moredread.model.mesh.Polygon;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
 import net.untoldwind.moredread.model.scene.change.NodeTransformationChangeCommand;
+import net.untoldwind.moredread.model.scene.change.SceneRemoveNodeChangeCommand;
 import net.untoldwind.moredread.model.scene.properties.SpatialNodePropertySource;
 
 import org.eclipse.core.runtime.IAdaptable;
@@ -36,7 +37,7 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 
 		this.parent = parent;
 		if (parent != null) {
-			parent.addNode(this);
+			parent.addChild(this);
 		}
 		localRotation = new Quaternion();
 		localTranslation = new Vector3f();
@@ -138,6 +139,20 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 			return parent.getWorldScale().mult(localScale);
 		}
 		return localScale;
+	}
+
+	@Override
+	public void remove() {
+		if (parent == null) {
+			throw new RuntimeException(
+					"Can not remove node without parent (e.g. scene node)");
+		}
+
+		scene.getSceneChangeHandler().registerCommand(
+				new SceneRemoveNodeChangeCommand(parent, this));
+
+		parent.removeChild(this);
+		scene.unregisterNode(this);
 	}
 
 	// TODO: Replace this method by an NodeVisitor pattern (i.e. decouple model

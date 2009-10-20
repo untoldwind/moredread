@@ -42,15 +42,17 @@ public class Scene extends Group {
 		nodesById.put(node.getNodeId(), node);
 	}
 
-	public void addSceneChangeListener(
-			final ISceneChangeListener listener) {
+	void unregisterNode(final INode node) {
+		nodesById.remove(node.getNodeId());
+	}
+
+	public void addSceneChangeListener(final ISceneChangeListener listener) {
 		synchronized (geometryListeners) {
 			geometryListeners.add(listener);
 		}
 	}
 
-	public void removeSceneChangeListener(
-			final ISceneChangeListener listener) {
+	public void removeSceneChangeListener(final ISceneChangeListener listener) {
 		synchronized (geometryListeners) {
 			geometryListeners.remove(listener);
 		}
@@ -65,14 +67,12 @@ public class Scene extends Group {
 		return visitor.visitScene(this);
 	}
 
-	protected void fireSceneGeometryChangeEvent(
-			final SceneChangeEvent event) {
+	protected void fireSceneGeometryChangeEvent(final SceneChangeEvent event) {
 		final ISceneChangeListener listenerArray[];
 
 		synchronized (geometryListeners) {
 			listenerArray = geometryListeners
-					.toArray(new ISceneChangeListener[geometryListeners
-							.size()]);
+					.toArray(new ISceneChangeListener[geometryListeners.size()]);
 		}
 
 		for (final ISceneChangeListener listener : listenerArray) {

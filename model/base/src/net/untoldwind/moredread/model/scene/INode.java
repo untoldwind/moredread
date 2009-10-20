@@ -1,6 +1,8 @@
 package net.untoldwind.moredread.model.scene;
 
-public interface INode {
+import net.untoldwind.moredread.model.state.IStateHolder;
+
+public interface INode extends IStateHolder {
 	long getNodeId();
 
 	Scene getScene();
@@ -18,4 +20,6 @@ public interface INode {
 	void markDirty();
 
 	<T> T accept(ISceneVisitor<T> visitor);
+
+	void remove();
 }

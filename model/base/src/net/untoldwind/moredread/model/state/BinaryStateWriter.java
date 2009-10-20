@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
 
+import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 
@@ -34,6 +35,12 @@ public class BinaryStateWriter implements IStateWriter {
 	}
 
 	@Override
+	public void writeString(final String tag, final String value)
+			throws IOException {
+		output.writeUTF(value);
+	}
+
+	@Override
 	public void writeVector2f(final String tag, final Vector2f value)
 			throws IOException {
 		output.writeFloat(value.x);
@@ -46,6 +53,15 @@ public class BinaryStateWriter implements IStateWriter {
 		output.writeFloat(value.x);
 		output.writeFloat(value.y);
 		output.writeFloat(value.z);
+	}
+
+	@Override
+	public void writeQuaternion(final String tag, final Quaternion quaterion)
+			throws IOException {
+		output.writeFloat(quaterion.x);
+		output.writeFloat(quaterion.y);
+		output.writeFloat(quaterion.z);
+		output.writeFloat(quaterion.w);
 	}
 
 	@Override

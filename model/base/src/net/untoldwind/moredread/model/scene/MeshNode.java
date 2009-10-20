@@ -1,12 +1,15 @@
 package net.untoldwind.moredread.model.scene;
 
+import java.io.IOException;
 import java.util.List;
 
+import net.untoldwind.moredread.model.enums.NodeType;
 import net.untoldwind.moredread.model.generator.IGeneratorInput;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.Mesh;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
 import net.untoldwind.moredread.model.scene.change.MeshNodeGeometryChangedCommand;
+import net.untoldwind.moredread.model.state.IStateWriter;
 
 import com.jme.scene.Spatial;
 
@@ -95,6 +98,7 @@ public class MeshNode extends ObjectNode implements IMeshNode, IGeneratorInput {
 
 		if (displayNode == null || reattach) {
 			displayNode = new com.jme.scene.Node();
+			renderedGeometries = null;
 
 			parent.attachChild(displayNode);
 		}
@@ -125,6 +129,15 @@ public class MeshNode extends ObjectNode implements IMeshNode, IGeneratorInput {
 	@Override
 	public <T> T accept(final ISceneVisitor<T> visitor) {
 		return visitor.visitMeshNode(this);
+	}
+
+	@Override
+	public void writeState(final IStateWriter writer) throws IOException {
+		writer.writeInt("nodeType", NodeType.MESH.getCode());
+		writer.writeVector3f("localTranslation", localTranslation);
+		writer.writeVector3f("localScale", localScale);
+		writer.writeQuaternion("localRotation", localRotation);
+		writer.writeObject("mesh", mesh);
 	}
 
 }
