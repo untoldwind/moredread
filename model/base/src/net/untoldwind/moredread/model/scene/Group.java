@@ -11,9 +11,22 @@ public class Group extends AbstractSpatialComposite<AbstractSpatialNode> {
 	private transient com.jme.scene.Node displayNode;
 	private transient BoundingBox worldBoundingBox;
 	private transient BoundingBox localBoundingBox;
+	private transient boolean structuralChange;
 
 	public Group(final Group parent, final String name) {
 		super(parent, name);
+	}
+
+	@Override
+	void addChild(final AbstractSpatialNode node) {
+		super.addChild(node);
+		structuralChange = true;
+	}
+
+	@Override
+	void removeChild(final AbstractSpatialNode node) {
+		super.removeChild(node);
+		structuralChange = true;
 	}
 
 	@Override
@@ -73,7 +86,7 @@ public class Group extends AbstractSpatialComposite<AbstractSpatialNode> {
 
 	@Override
 	public void updateDisplayNode(final INodeRendererAdapter rendererAdapter,
-			final com.jme.scene.Node parent, final boolean reattach) {
+			final com.jme.scene.Node parent, boolean reattach) {
 		worldBoundingBox = null;
 		localBoundingBox = null;
 
@@ -87,9 +100,16 @@ public class Group extends AbstractSpatialComposite<AbstractSpatialNode> {
 		displayNode.setLocalTranslation(localTranslation);
 		displayNode.setLocalScale(localScale);
 
+		if (structuralChange) {
+			displayNode.detachAllChildren();
+
+			reattach = true;
+		}
+
 		for (final AbstractSpatialNode child : children) {
 			child.updateDisplayNode(rendererAdapter, displayNode, reattach);
 		}
+		structuralChange = false;
 	}
 
 	@Override

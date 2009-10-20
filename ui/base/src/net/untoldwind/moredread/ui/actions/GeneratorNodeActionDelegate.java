@@ -23,14 +23,12 @@ public class GeneratorNodeActionDelegate implements IObjectActionDelegate {
 		final String id = action.getId();
 
 		if ("net.untoldwind.moredread.ui.generatorNode.collapse".equals(id)) {
-			System.out.println(">> dodo");
 			if (selectedNode != null && selectedNode instanceof GeneratorNode) {
-				System.out.println(">> dodo2");
-				final IMesh mesh = ((GeneratorNode) selectedNode)
-						.getRenderGeometry();
+				final GeneratorNode selectedGeneratorNode = (GeneratorNode) selectedNode;
+				final IMesh mesh = selectedGeneratorNode.getRenderGeometry();
 
 				if (mesh instanceof Mesh<?>) {
-					System.out.println(">> dodo3");
+					MeshNode collapsedNode;
 					final SceneChangeHandler sceneChangeHandler = selectedNode
 							.getScene().getSceneChangeHandler();
 
@@ -38,9 +36,18 @@ public class GeneratorNodeActionDelegate implements IObjectActionDelegate {
 					try {
 						final AbstractSpatialComposite<?> parent = ((GeneratorNode) selectedNode)
 								.getParent();
-						selectedNode.remove();
 
-						new MeshNode(parent, (Mesh<?>) mesh);
+						collapsedNode = new MeshNode(parent, (Mesh<?>) mesh);
+
+						collapsedNode.setName(selectedNode.getName());
+						collapsedNode.setLocalTranslation(selectedGeneratorNode
+								.getLocalTranslation());
+						collapsedNode.setLocalScale(selectedGeneratorNode
+								.getLocalScale());
+						collapsedNode.setLocalRotation(selectedGeneratorNode
+								.getLocalRotation());
+
+						selectedNode.remove();
 					} finally {
 						sceneChangeHandler.commit();
 					}

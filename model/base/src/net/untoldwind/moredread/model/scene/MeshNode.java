@@ -98,6 +98,7 @@ public class MeshNode extends ObjectNode implements IMeshNode, IGeneratorInput {
 
 		if (displayNode == null || reattach) {
 			displayNode = new com.jme.scene.Node();
+			renderedGeometries = null;
 
 			parent.attachChild(displayNode);
 		}
