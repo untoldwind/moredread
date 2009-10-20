@@ -27,10 +27,12 @@ public abstract class AbstractNode implements INode {
 		this.name = name;
 	}
 
+	@Override
 	public long getNodeId() {
 		return nodeId;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -42,6 +44,7 @@ public abstract class AbstractNode implements INode {
 		this.name = name;
 	}
 
+	@Override
 	public Scene getScene() {
 		return scene;
 	}

@@ -18,4 +18,6 @@ public interface INode {
 	void markDirty();
 
 	<T> T accept(ISceneVisitor<T> visitor);
+
+	void remove();
 }
