@@ -2,6 +2,11 @@ package net.untoldwind.moredread.model.scene;
 
 import net.untoldwind.moredread.model.state.IStateHolder;
 
+/**
+ * A generic node inside a scene tree.
+ * 
+ * This actually may be anything, not necessarily visible in the 3D view.
+ */
 public interface INode extends IStateHolder {
 	long getNodeId();
 
@@ -12,10 +17,6 @@ public interface INode extends IStateHolder {
 	IComposite getParent();
 
 	boolean isSelected();
-
-	BoundingBox getWorldBoundingBox();
-
-	BoundingBox getLocalBoundingBox();
 
 	void markDirty();
 

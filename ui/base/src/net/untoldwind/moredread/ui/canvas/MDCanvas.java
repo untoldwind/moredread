@@ -25,14 +25,11 @@ import com.jme.system.canvas.JMECanvasImplementor;
 import com.jme.system.lwjgl.LWJGLDisplaySystem;
 import com.jme.util.GameTaskQueue;
 import com.jme.util.GameTaskQueueManager;
-import com.jmex.swt.lwjgl.LWJGLSWTCanvas;
 
 public class MDCanvas extends GLCanvas implements JMECanvas, IUIInputReceiver {
 
-	private static final Logger logger = Logger.getLogger(LWJGLSWTCanvas.class
+	private static final Logger logger = Logger.getLogger(MDCanvas.class
 			.getName());
-
-	private static final long serialVersionUID = 1L;
 
 	private final AtomicInteger renderQueueCount = new AtomicInteger(0);
 	private JMECanvasImplementor impl;
@@ -119,14 +116,14 @@ public class MDCanvas extends GLCanvas implements JMECanvas, IUIInputReceiver {
 						InputSystem.update();
 					}
 
-					GameTaskQueueManager.getManager().getQueue(
-							GameTaskQueue.UPDATE).execute();
+					GameTaskQueueManager.getManager()
+							.getQueue(GameTaskQueue.UPDATE).execute();
 
 					impl.doUpdate();
 
 					if (!drawWhenDirty || dirty) {
-						GameTaskQueueManager.getManager().getQueue(
-								GameTaskQueue.RENDER).execute();
+						GameTaskQueueManager.getManager()
+								.getQueue(GameTaskQueue.RENDER).execute();
 
 						impl.doRender();
 

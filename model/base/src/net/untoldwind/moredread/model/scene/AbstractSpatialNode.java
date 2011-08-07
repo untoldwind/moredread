@@ -11,6 +11,8 @@ import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
 import net.untoldwind.moredread.model.scene.change.NodeTransformationChangeCommand;
 import net.untoldwind.moredread.model.scene.change.SceneRemoveNodeChangeCommand;
 import net.untoldwind.moredread.model.scene.properties.SpatialNodePropertySource;
+import net.untoldwind.moredread.model.transform.ITransformation;
+import net.untoldwind.moredread.model.transform.MatrixTransformation;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.views.properties.IPropertySource;
@@ -19,7 +21,7 @@ import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 
 public abstract class AbstractSpatialNode extends AbstractNode implements
-		INode, IAdaptable {
+		ISpatialNode, IAdaptable {
 	/** The parent node (group). */
 	protected final AbstractSpatialComposite<? extends INode> parent;
 
@@ -52,6 +54,7 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 		return scene.getSceneSelection().isNodeSelected(this);
 	}
 
+	@Override
 	public Quaternion getLocalRotation() {
 		return localRotation;
 	}
@@ -63,6 +66,7 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 		this.localRotation = localRotation;
 	}
 
+	@Override
 	public Vector3f getLocalTranslation() {
 		return localTranslation;
 	}
@@ -74,6 +78,7 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 		this.localTranslation = localTranslation;
 	}
 
+	@Override
 	public Vector3f getLocalScale() {
 		return localScale;
 	}
@@ -85,6 +90,13 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 		this.localScale = localScale;
 	}
 
+	@Override
+	public ITransformation getLocalTransformation() {
+		return new MatrixTransformation(localScale, localRotation,
+				localTranslation);
+	}
+
+	@Override
 	public Vector3f localToWorld(final Vector3f in, Vector3f store) {
 		if (store == null) {
 			store = new Vector3f();
@@ -96,10 +108,12 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 				getWorldTranslation());
 	}
 
+	@Override
 	public IPoint localToWorld(final IPoint point) {
 		return new Point(localToWorld(point.getPoint(), new Vector3f()));
 	}
 
+	@Override
 	public IPolygon localToWorld(final IPolygon polygon) {
 		final List<IPoint> points = new ArrayList<IPoint>();
 
@@ -111,6 +125,7 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 				polygon.getPolygonContourCounts(), polygon.isClosed());
 	}
 
+	@Override
 	public Vector3f worldToLocal(final Vector3f in, Vector3f store) {
 		if (store == null) {
 			store = new Vector3f();

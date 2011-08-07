@@ -37,8 +37,8 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 		this.renderer = renderer;
 		this.selectionMode = selectionMode;
 		this.wireframeMeshRenderer = new WireframeMeshRenderer(false, 1f, true);
-		this.selectedWireframeMeshRenderer = new WireframeMeshRenderer(param
-				.isShowNormalsOnSelected(), 3f, false);
+		this.selectedWireframeMeshRenderer = new WireframeMeshRenderer(
+				param.isShowNormalsOnSelected(), 3f, false);
 		this.solidMeshRenderer = new SolidMeshRenderer();
 
 	}
@@ -79,8 +79,8 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 			break;
 		}
 
-		final Geometry solidGeometry = solidMeshRenderer.renderMesh(node
-				.getRenderGeometry(), colorProvider);
+		final Geometry solidGeometry = solidMeshRenderer.renderMesh(
+				node.getRenderGeometry(), colorProvider);
 		if (solidGeometry != null) {
 			geometries.add(solidGeometry);
 			solidGeometry.setModelBound(new BoundingBox());
@@ -213,8 +213,8 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 
 	private void renderNormal(final IMeshNode node,
 			final List<Spatial> geometries) {
-		final Geometry solidGeometry = solidMeshRenderer.renderMesh(node
-				.getRenderGeometry(), null);
+		final Geometry solidGeometry = solidMeshRenderer.renderMesh(
+				node.getRenderGeometry(), null);
 		if (solidGeometry != null) {
 			geometries.add(solidGeometry);
 			solidGeometry.setDefaultColor(node.getModelColor(1.0f));

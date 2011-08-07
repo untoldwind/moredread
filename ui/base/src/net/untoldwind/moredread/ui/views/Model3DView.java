@@ -5,6 +5,7 @@ import java.util.HashMap;
 import net.untoldwind.moredread.jme.MoreDreadJME;
 import net.untoldwind.moredread.model.io.ModelIOPlugin;
 import net.untoldwind.moredread.model.scene.INode;
+import net.untoldwind.moredread.model.scene.ISpatialNode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.scene.SceneSelection;
 import net.untoldwind.moredread.model.scene.event.ISceneChangeListener;
@@ -41,7 +42,6 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.opengl.GLData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.CoolItem;
@@ -124,9 +124,6 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 
 		cameraToolBar.addMouseListener(dragToolbarListener);
 		cameraToolBar.addMouseMoveListener(dragToolbarListener);
-
-		final GLData data = new GLData();
-		data.doubleBuffer = true;
 
 		displaySystem = MoreDreadJME.getDefault().getDisplaySystem();
 		implementor = new MDCanvasImplementor(100, 100, MoreDreadUI
@@ -286,9 +283,8 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 	/**
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(Class)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
-	public Object getAdapter(final Class adapter) {
+	public Object getAdapter(@SuppressWarnings("rawtypes") final Class adapter) {
 		if (adapter.equals(Scene.class)) {
 			return MoreDreadUI.getDefault().getSceneHolder().getScene();
 		} else if (adapter == IPropertySheetPage.class) {
@@ -311,10 +307,10 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 
 	private void createGlobalActionHandlers() {
 		// set up action handlers that operate on the current context
-		final UndoActionHandler undoAction = new UndoActionHandler(this
-				.getSite(), IOperationHistory.GLOBAL_UNDO_CONTEXT);
-		final RedoActionHandler redoAction = new RedoActionHandler(this
-				.getSite(), IOperationHistory.GLOBAL_UNDO_CONTEXT);
+		final UndoActionHandler undoAction = new UndoActionHandler(
+				this.getSite(), IOperationHistory.GLOBAL_UNDO_CONTEXT);
+		final RedoActionHandler redoAction = new RedoActionHandler(
+				this.getSite(), IOperationHistory.GLOBAL_UNDO_CONTEXT);
 		final IActionBars actionBars = getViewSite().getActionBars();
 		actionBars.setGlobalActionHandler(ActionFactory.UNDO.getId(),
 				undoAction);
@@ -342,8 +338,8 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 
 		public void mouseUp(final MouseEvent e) {
 			if (!drag) {
-				implementor.handleClick(e.x, e.y, Modifier
-						.fromStateMask(e.stateMask));
+				implementor.handleClick(e.x, e.y,
+						Modifier.fromStateMask(e.stateMask));
 			} else if (drag) {
 				implementor.handleDrag(dragStartX, dragStartY, e.x, e.y,
 						Modifier.fromStateMask(e.stateMask), true);
@@ -451,10 +447,17 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 					.getSceneHolder().getScene().getSceneSelection();
 
 			if (!sceneSelection.getSelectedNodes().isEmpty()) {
+				int counter = 0;
 				for (final INode node : sceneSelection.getSelectedNodes()) {
-					center.addLocal(node.getWorldBoundingBox().getCenter());
+					if (node instanceof ISpatialNode) {
+						center.addLocal(((ISpatialNode) node)
+								.getWorldBoundingBox().getCenter());
+						counter++;
+					}
 				}
-				center.divideLocal(sceneSelection.getSelectedNodes().size());
+				if (counter > 0) {
+					center.divideLocal(counter);
+				}
 			}
 			if (xDiff != 0) {
 				canvas.queueCameraUpdate(new RotateAroundXCameraUpdate(factor
