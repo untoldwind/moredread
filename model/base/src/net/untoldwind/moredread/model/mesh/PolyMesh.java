@@ -92,8 +92,8 @@ public class PolyMesh extends Mesh<PolyFace> {
 
 			for (int i = 0; i < indices.length; i += 3) {
 				triangleMesh.addFace(vertices.get(indices[i]).getIndex(),
-						vertices.get(indices[i + 1]).getIndex(), vertices.get(
-								indices[i + 2]).getIndex());
+						vertices.get(indices[i + 1]).getIndex(),
+						vertices.get(indices[i + 2]).getIndex());
 			}
 		}
 		return triangleMesh;

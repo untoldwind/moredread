@@ -5,9 +5,9 @@ import java.util.EnumSet;
 import java.util.List;
 
 import net.untoldwind.moredread.annotations.Singleton;
+import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.Scene;
-import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.Modifier;
 import net.untoldwind.moredread.ui.controls.impl.FullScreenModelControl;
@@ -33,7 +33,7 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 		for (final INode node : scene.getSceneSelection().getSelectedNodes()) {
 			if (node instanceof AbstractSpatialNode) {
 				controls.add(new MoveCrossModelControl(
-						new TransformToolAdapter(scene, displaySystem)));
+						new TransformToolAdapter(scene)));
 				break;
 			}
 		}
@@ -87,12 +87,9 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 
 	private static class TransformToolAdapter implements IToolAdapter {
 		private final Scene scene;
-		private final IDisplaySystem displaySystem;
 
-		private TransformToolAdapter(final Scene scene,
-				final IDisplaySystem displaySystem) {
+		private TransformToolAdapter(final Scene scene) {
 			this.scene = scene;
-			this.displaySystem = displaySystem;
 		}
 
 		@Override

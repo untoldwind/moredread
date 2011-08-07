@@ -50,30 +50,26 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 					for (final IEdge edge : mesh.getEdges()) {
 						controls.add(new EdgeSelectionModelControl(meshNode,
 								edge.getIndex(), new SelectToolAdapter(scene,
-										displaySystem, meshNode, edge
-												.getIndex())));
+										meshNode, edge.getIndex())));
 					}
 				}
 			}
 		}
 		if (!scene.getSceneSelection().getSelectedEdges().isEmpty()) {
 			controls.add(new MoveCrossModelControl(new TransformToolAdapter(
-					scene, displaySystem)));
+					scene)));
 		}
 		return controls;
 	}
 
 	private static class SelectToolAdapter implements IToolAdapter {
 		private final Scene scene;
-		private final IDisplaySystem displaySystem;
 		private final IMeshNode node;
 		private final EdgeId edgeIndex;
 
-		private SelectToolAdapter(final Scene scene,
-				final IDisplaySystem displaySystem, final IMeshNode node,
+		private SelectToolAdapter(final Scene scene, final IMeshNode node,
 				final EdgeId edgeIndex) {
 			this.scene = scene;
-			this.displaySystem = displaySystem;
 			this.node = node;
 			this.edgeIndex = edgeIndex;
 		}
@@ -109,12 +105,9 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 
 	private static class TransformToolAdapter implements IToolAdapter {
 		private final Scene scene;
-		private final IDisplaySystem displaySystem;
 
-		private TransformToolAdapter(final Scene scene,
-				final IDisplaySystem displaySystem) {
+		private TransformToolAdapter(final Scene scene) {
 			this.scene = scene;
-			this.displaySystem = displaySystem;
 		}
 
 		@Override
@@ -171,8 +164,8 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 							vertex1.getIndex());
 					if (!updatedVertices.contains(vertex1Id)) {
 						updatedVertices.add(vertex1Id);
-						final Vector3f worldPoint = node.localToWorld(vertex1
-								.getPoint(), new Vector3f());
+						final Vector3f worldPoint = node.localToWorld(
+								vertex1.getPoint(), new Vector3f());
 						worldPoint.subtractLocal(centerDiff);
 						vertex1.setPoint(node.worldToLocal(worldPoint,
 								new Vector3f()));
@@ -183,8 +176,8 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 							vertex2.getIndex());
 					if (!updatedVertices.contains(vertex2Id)) {
 						updatedVertices.add(vertex2Id);
-						final Vector3f worldPoint = node.localToWorld(vertex2
-								.getPoint(), new Vector3f());
+						final Vector3f worldPoint = node.localToWorld(
+								vertex2.getPoint(), new Vector3f());
 						worldPoint.subtractLocal(centerDiff);
 						vertex2.setPoint(node.worldToLocal(worldPoint,
 								new Vector3f()));

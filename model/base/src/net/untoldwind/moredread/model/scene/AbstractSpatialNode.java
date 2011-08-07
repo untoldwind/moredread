@@ -161,9 +161,8 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 			INodeRendererAdapter rendererAdapter, com.jme.scene.Node parent,
 			boolean reattach);
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Object getAdapter(final Class adapter) {
+	public Object getAdapter(@SuppressWarnings("rawtypes") final Class adapter) {
 		if (adapter == IPropertySource.class) {
 			return new SpatialNodePropertySource(this);
 		}

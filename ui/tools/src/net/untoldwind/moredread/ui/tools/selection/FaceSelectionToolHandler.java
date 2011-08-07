@@ -48,30 +48,26 @@ public class FaceSelectionToolHandler implements IToolHandler {
 					for (final IFace face : mesh.getFaces()) {
 						controls.add(new FaceSelectionModelControl(meshNode,
 								face.getIndex(), new SelectToolAdapter(scene,
-										displaySystem, meshNode, face
-												.getIndex())));
+										meshNode, face.getIndex())));
 					}
 				}
 			}
 		}
 		if (!scene.getSceneSelection().getSelectedFaces().isEmpty()) {
 			controls.add(new MoveCrossModelControl(new TransformToolAdapter(
-					scene, displaySystem)));
+					scene)));
 		}
 		return controls;
 	}
 
 	private static class SelectToolAdapter implements IToolAdapter {
 		private final Scene scene;
-		private final IDisplaySystem displaySystem;
 		private final IMeshNode node;
 		private final int faceIndex;
 
-		private SelectToolAdapter(final Scene scene,
-				final IDisplaySystem displaySystem, final IMeshNode node,
+		private SelectToolAdapter(final Scene scene, final IMeshNode node,
 				final int faceIndex) {
 			this.scene = scene;
-			this.displaySystem = displaySystem;
 			this.node = node;
 			this.faceIndex = faceIndex;
 		}
@@ -107,12 +103,9 @@ public class FaceSelectionToolHandler implements IToolHandler {
 
 	private static class TransformToolAdapter implements IToolAdapter {
 		private final Scene scene;
-		private final IDisplaySystem displaySystem;
 
-		private TransformToolAdapter(final Scene scene,
-				final IDisplaySystem displaySystem) {
+		private TransformToolAdapter(final Scene scene) {
 			this.scene = scene;
-			this.displaySystem = displaySystem;
 		}
 
 		@Override

@@ -46,15 +46,14 @@ public class VertexSelectionToolHandler implements IToolHandler {
 					for (final IVertex vertex : mesh.getVertices()) {
 						controls.add(new VertexSelectionModelControl(meshNode,
 								vertex.getIndex(), new SelectToolAdapter(scene,
-										displaySystem, meshNode, vertex
-												.getIndex())));
+										meshNode, vertex.getIndex())));
 					}
 				}
 			}
 		}
 		if (!scene.getSceneSelection().getSelectedVertices().isEmpty()) {
 			controls.add(new MoveCrossModelControl(new TransformToolAdapter(
-					scene, displaySystem)));
+					scene)));
 		}
 
 		return controls;
@@ -62,15 +61,12 @@ public class VertexSelectionToolHandler implements IToolHandler {
 
 	private static class SelectToolAdapter implements IToolAdapter {
 		private final Scene scene;
-		private final IDisplaySystem displaySystem;
 		private final IMeshNode node;
 		private final int vertexIndex;
 
-		private SelectToolAdapter(final Scene scene,
-				final IDisplaySystem displaySystem, final IMeshNode node,
+		private SelectToolAdapter(final Scene scene, final IMeshNode node,
 				final int vertexIndex) {
 			this.scene = scene;
-			this.displaySystem = displaySystem;
 			this.node = node;
 			this.vertexIndex = vertexIndex;
 		}
@@ -107,12 +103,9 @@ public class VertexSelectionToolHandler implements IToolHandler {
 
 	private static class TransformToolAdapter implements IToolAdapter {
 		private final Scene scene;
-		private final IDisplaySystem displaySystem;
 
-		private TransformToolAdapter(final Scene scene,
-				final IDisplaySystem displaySystem) {
+		private TransformToolAdapter(final Scene scene) {
 			this.scene = scene;
-			this.displaySystem = displaySystem;
 		}
 
 		@Override
@@ -162,8 +155,8 @@ public class VertexSelectionToolHandler implements IToolHandler {
 					final Vertex vertex = mesh.getVertex(vertexSelection
 							.getVertexIndex());
 
-					final Vector3f worldPoint = node.localToWorld(vertex
-							.getPoint(), new Vector3f());
+					final Vector3f worldPoint = node.localToWorld(
+							vertex.getPoint(), new Vector3f());
 					worldPoint.subtractLocal(centerDiff);
 					vertex.setPoint(node.worldToLocal(worldPoint,
 							new Vector3f()));
