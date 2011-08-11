@@ -132,9 +132,8 @@ public class ModelTreeView extends ViewPart implements
 	/**
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(Class)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
-	public Object getAdapter(final Class adapter) {
+	public Object getAdapter(@SuppressWarnings("rawtypes") final Class adapter) {
 		if (adapter == IPropertySheetPage.class) {
 			return new TabbedPropertySheetPage(
 					new NodePropertySheetContributor());

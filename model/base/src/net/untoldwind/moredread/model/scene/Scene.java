@@ -62,6 +62,16 @@ public class Scene extends Group {
 		return nodesById.get(nodeId);
 	}
 
+	public void notUndoableChange(final ISceneOperation operation) {
+		sceneChangeHandler.begin(false);
+
+		try {
+			operation.perform(this);
+		} finally {
+			sceneChangeHandler.commit();
+		}
+	}
+
 	@Override
 	public <T> T accept(final ISceneVisitor<T> visitor) {
 		return visitor.visitScene(this);
