@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="jme-swt.jar" sourcepath="/Users/junglas/workspaces/w5/jME2_0_1-Stable/src"/>
 	<classpathentry exported="true" kind="lib" path="jme.jar" sourcepath="/Users/junglas/workspaces/w5/jME2_0_1-Stable/src"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>

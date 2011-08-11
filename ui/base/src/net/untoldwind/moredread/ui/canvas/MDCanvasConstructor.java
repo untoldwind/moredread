@@ -13,25 +13,28 @@ import com.jme.system.DisplaySystem;
 import com.jme.system.JmeException;
 import com.jme.system.canvas.CanvasConstructor;
 import com.jme.system.canvas.JMECanvas;
-import com.jmex.swt.lwjgl.LWJGLSWTConstants;
 
 public class MDCanvasConstructor implements CanvasConstructor {
+	public static final String PARENT = "_parent";
+	public static final String STYLE = "_style";
+	public static final String DEPTH_BITS = "_depthBits";
+	public static final String ALPHA_BITS = "_alphaBits";
+	public static final String STENCIL_BITS = "_stencilBits";
+	public static final String SAMPLES = "_samples";
 
 	public JMECanvas makeCanvas(final HashMap<String, Object> props) {
 		try {
-			final Composite parent = (Composite) props
-					.get(LWJGLSWTConstants.PARENT);
+			final Composite parent = (Composite) props.get(PARENT);
 
 			final GLData data = new GLData();
 			data.doubleBuffer = true;
 
-			Integer style = (Integer) props.get(LWJGLSWTConstants.STYLE);
+			Integer style = (Integer) props.get(STYLE);
 			if (style == null) {
 				style = SWT.NONE;
 			}
 
-			final Integer depthBits = (Integer) props
-					.get(LWJGLSWTConstants.DEPTH_BITS);
+			final Integer depthBits = (Integer) props.get(DEPTH_BITS);
 			if (depthBits != null) {
 				data.depthSize = depthBits;
 			} else {
@@ -39,8 +42,7 @@ public class MDCanvasConstructor implements CanvasConstructor {
 						.getMinDepthBits();
 			}
 
-			final Integer alphaBits = (Integer) props
-					.get(LWJGLSWTConstants.ALPHA_BITS);
+			final Integer alphaBits = (Integer) props.get(ALPHA_BITS);
 			if (alphaBits != null) {
 				data.alphaSize = alphaBits;
 			} else {
@@ -48,8 +50,7 @@ public class MDCanvasConstructor implements CanvasConstructor {
 						.getMinAlphaBits();
 			}
 
-			final Integer stencilBits = (Integer) props
-					.get(LWJGLSWTConstants.STENCIL_BITS);
+			final Integer stencilBits = (Integer) props.get(STENCIL_BITS);
 			if (alphaBits != null) {
 				data.stencilSize = stencilBits;
 			} else {
@@ -58,8 +59,7 @@ public class MDCanvasConstructor implements CanvasConstructor {
 			}
 
 			// NOTE: SWT does not actually implement samples yet.
-			final Integer samples = (Integer) props
-					.get(LWJGLSWTConstants.SAMPLES);
+			final Integer samples = (Integer) props.get(SAMPLES);
 			if (samples != null) {
 				data.samples = samples;
 			} else {

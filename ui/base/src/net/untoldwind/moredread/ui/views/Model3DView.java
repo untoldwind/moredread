@@ -2,6 +2,7 @@ package net.untoldwind.moredread.ui.views;
 
 import java.util.HashMap;
 
+import net.untoldwind.moredread.jme.MDKeyInput;
 import net.untoldwind.moredread.jme.MoreDreadJME;
 import net.untoldwind.moredread.model.io.ModelIOPlugin;
 import net.untoldwind.moredread.model.scene.INode;
@@ -16,6 +17,7 @@ import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionModeEvent;
 import net.untoldwind.moredread.ui.MoreDreadUI;
 import net.untoldwind.moredread.ui.canvas.MDCanvas;
+import net.untoldwind.moredread.ui.canvas.MDCanvasConstructor;
 import net.untoldwind.moredread.ui.canvas.MDCanvasImplementor;
 import net.untoldwind.moredread.ui.canvas.SceneSelectionProvider;
 import net.untoldwind.moredread.ui.controls.Modifier;
@@ -64,8 +66,6 @@ import com.jme.input.KeyInput;
 import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
-import com.jmex.swt.input.SWTKeyInput;
-import com.jmex.swt.lwjgl.LWJGLSWTConstants;
 
 public class Model3DView extends ViewPart implements ISaveablePart,
 		ISceneSelectionModeListener, ISceneSelectionChangeListener,
@@ -131,9 +131,9 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 
 		final HashMap<String, Object> props = new HashMap<String, Object>();
 
-		props.put(LWJGLSWTConstants.PARENT, top);
-		props.put(LWJGLSWTConstants.STYLE, SWT.NONE);
-		props.put(LWJGLSWTConstants.DEPTH_BITS, 8);
+		props.put(MDCanvasConstructor.PARENT, top);
+		props.put(MDCanvasConstructor.STYLE, SWT.NONE);
+		props.put(MDCanvasConstructor.DEPTH_BITS, 8);
 		canvas = (MDCanvas) displaySystem.createCanvas(100, 100, "MD", props);
 		canvas.setImplementor(implementor);
 		canvas.setDrawWhenDirty(false);
@@ -149,7 +149,7 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 			}
 		});
 
-		canvas.addKeyListener((SWTKeyInput) KeyInput.get());
+		canvas.addKeyListener((MDKeyInput) KeyInput.get());
 		canvas.addKeyListener(new KeyListener() {
 			public void keyReleased(final KeyEvent e) {
 			}

@@ -6,9 +6,6 @@ import org.osgi.framework.BundleContext;
 import com.jme.input.KeyInput;
 import com.jme.input.MouseInput;
 import com.jme.system.DisplaySystem;
-import com.jmex.swt.input.SWTKeyInput;
-import com.jmex.swt.input.SWTMouseInput;
-import com.jmex.swt.lwjgl.LWJGLSWTCanvasConstructor;
 
 public class MoreDreadJME extends Plugin {
 
@@ -24,22 +21,20 @@ public class MoreDreadJME extends Plugin {
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void start(BundleContext context) throws Exception {
+	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
 
 		displaySystem = DisplaySystem.getDisplaySystem("LWJGL");
-		displaySystem.registerCanvasConstructor("SWT",
-				LWJGLSWTCanvasConstructor.class);
-		KeyInput.setProvider(SWTKeyInput.class.getCanonicalName());
-		MouseInput.setProvider(SWTMouseInput.class.getCanonicalName());
+		KeyInput.setProvider(MDKeyInput.class.getCanonicalName());
+		MouseInput.setProvider(MDMouseInput.class.getCanonicalName());
 	}
 
 	/**
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
 	 */
 	@Override
-	public void stop(BundleContext context) throws Exception {
+	public void stop(final BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
 	}
