@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.untoldwind.moredread.annotations.Singleton;
-import net.untoldwind.moredread.model.mesh.Edge;
+import net.untoldwind.moredread.model.mesh.AbstractEdge;
 import net.untoldwind.moredread.model.mesh.EdgeId;
 import net.untoldwind.moredread.model.mesh.IEdge;
 import net.untoldwind.moredread.model.mesh.IMesh;
@@ -156,7 +156,7 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 						.getSceneSelection().getSelectedEdges()) {
 					final IMeshNode node = edgeSelection.getNode();
 					final Mesh<?> mesh = node.getEditableGeometry();
-					final Edge edge = mesh
+					final AbstractEdge edge = mesh
 							.getEdge(edgeSelection.getEdgeIndex());
 
 					final Vertex vertex1 = edge.getVertex1();

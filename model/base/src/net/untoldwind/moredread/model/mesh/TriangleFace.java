@@ -1,19 +1,21 @@
 package net.untoldwind.moredread.model.mesh;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import net.untoldwind.moredread.model.state.IStateWriter;
+import net.untoldwind.moredread.model.transform.ITransformation;
 
 import com.jme.math.Vector3f;
 
-public class TriangleFace extends Face<TriangleMesh> {
+public class TriangleFace extends AbstractFace<TriangleMesh> {
 	private final Vertex[] vertices;
-	private final Edge[] edges;
+	private final AbstractEdge[] edges;
 
 	TriangleFace(final TriangleMesh owner, final int index,
-			final Vertex[] vertices, final Edge[] edges) {
+			final Vertex[] vertices, final AbstractEdge[] edges) {
 		super(owner, index);
 
 		this.vertices = vertices;
@@ -23,7 +25,7 @@ public class TriangleFace extends Face<TriangleMesh> {
 			vertex.getFaces().add(this);
 		}
 
-		for (final Edge edge : edges) {
+		for (final AbstractEdge edge : edges) {
 			edge.getFaces().add(this);
 		}
 	}
@@ -46,7 +48,7 @@ public class TriangleFace extends Face<TriangleMesh> {
 		return vertices;
 	}
 
-	public List<Edge> getEdges() {
+	public List<AbstractEdge> getEdges() {
 		return Arrays.asList(edges);
 	}
 
@@ -90,6 +92,18 @@ public class TriangleFace extends Face<TriangleMesh> {
 		} else {
 			meanNormal.divideLocal(len);
 		}
+	}
+
+	@Override
+	public IPolygon transform(final ITransformation transformation) {
+		final List<IPoint> new_vertices = new ArrayList<IPoint>(vertices.length);
+
+		for (final IPoint point : vertices) {
+			new_vertices.add(point.transform(transformation));
+		}
+
+		return new Polygon(new_vertices, null, getPolygonStripCounts(),
+				getPolygonContourCounts(), true);
 	}
 
 	@Override

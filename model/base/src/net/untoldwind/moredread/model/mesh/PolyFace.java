@@ -5,16 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.untoldwind.moredread.model.state.IStateWriter;
+import net.untoldwind.moredread.model.transform.ITransformation;
 
 import com.jme.math.Vector3f;
 
-public class PolyFace extends Face<PolyMesh> {
+public class PolyFace extends AbstractFace<PolyMesh> {
 	private final List<Vertex> vertices;
-	private final List<Edge> edges;
+	private final List<AbstractEdge> edges;
 	private final List<Integer> stripCounts;
 
 	PolyFace(final PolyMesh owner, final int index,
-			final List<Vertex> vertices, final List<Edge> edges) {
+			final List<Vertex> vertices, final List<AbstractEdge> edges) {
 		super(owner, index);
 
 		this.vertices = vertices;
@@ -26,13 +27,13 @@ public class PolyFace extends Face<PolyMesh> {
 			vertex.getFaces().add(this);
 		}
 
-		for (final Edge edge : edges) {
+		for (final AbstractEdge edge : edges) {
 			edge.getFaces().add(this);
 		}
 	}
 
 	PolyFace(final PolyMesh owner, final int index,
-			final Vertex[][] vertexStrips, final List<Edge> edges) {
+			final Vertex[][] vertexStrips, final List<AbstractEdge> edges) {
 		super(owner, index);
 
 		this.edges = edges;
@@ -49,7 +50,7 @@ public class PolyFace extends Face<PolyMesh> {
 			vertex.getFaces().add(this);
 		}
 
-		for (final Edge edge : edges) {
+		for (final AbstractEdge edge : edges) {
 			edge.getFaces().add(this);
 		}
 	}
@@ -69,7 +70,7 @@ public class PolyFace extends Face<PolyMesh> {
 		return vertices;
 	}
 
-	public List<Edge> getEdges() {
+	public List<AbstractEdge> getEdges() {
 		return edges;
 	}
 
@@ -126,6 +127,18 @@ public class PolyFace extends Face<PolyMesh> {
 		} else {
 			meanNormal.divideLocal(len);
 		}
+	}
+
+	@Override
+	public IPolygon transform(final ITransformation transformation) {
+		final List<IPoint> new_vertices = new ArrayList<IPoint>(vertices.size());
+
+		for (final IPoint point : vertices) {
+			new_vertices.add(point.transform(transformation));
+		}
+
+		return new Polygon(new_vertices, null, getPolygonStripCounts(),
+				getPolygonContourCounts(), true);
 	}
 
 	public void writeState(final IStateWriter writer) throws IOException {

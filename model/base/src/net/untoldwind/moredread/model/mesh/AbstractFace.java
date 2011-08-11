@@ -9,13 +9,13 @@ import net.untoldwind.moredread.model.state.IStateHolder;
 import com.jme.math.Plane;
 import com.jme.math.Vector3f;
 
-public abstract class Face<T extends Mesh<?>> implements IStateHolder, IFace {
+public abstract class AbstractFace<T extends Mesh<?>> implements IStateHolder, IFace {
 	private final T owner;
 	protected final int index;
 	protected Vector3f center;
 	protected Vector3f meanNormal;
 
-	protected Face(final T owner, final int index) {
+	protected AbstractFace(final T owner, final int index) {
 		this.owner = owner;
 		this.index = index;
 	}

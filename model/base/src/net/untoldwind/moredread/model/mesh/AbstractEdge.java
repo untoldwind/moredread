@@ -3,20 +3,20 @@ package net.untoldwind.moredread.model.mesh;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Edge implements IEdge {
+public class AbstractEdge implements IEdge {
 	private final Mesh<?> owner;
 	private final EdgeId index;
 	private final Vertex vertex1;
 	private final Vertex vertex2;
 	private boolean smooth;
-	private final Set<Face<?>> faces;
+	private final Set<AbstractFace<?>> faces;
 
-	Edge(final Mesh<?> owner, final Vertex vertex1, final Vertex vertex2) {
+	AbstractEdge(final Mesh<?> owner, final Vertex vertex1, final Vertex vertex2) {
 		this.owner = owner;
 		this.index = new EdgeId(vertex1.getIndex(), vertex2.getIndex());
 		this.vertex1 = vertex1;
 		this.vertex2 = vertex2;
-		this.faces = new HashSet<Face<?>>();
+		this.faces = new HashSet<AbstractFace<?>>();
 
 		vertex1.getEdges().add(this);
 		vertex2.getEdges().add(this);
@@ -46,7 +46,7 @@ public class Edge implements IEdge {
 		this.smooth = smooth;
 	}
 
-	public Set<Face<?>> getFaces() {
+	public Set<AbstractFace<?>> getFaces() {
 		return faces;
 	}
 
@@ -62,7 +62,7 @@ public class Edge implements IEdge {
 			return false;
 		}
 
-		final Edge castObj = (Edge) obj;
+		final AbstractEdge castObj = (AbstractEdge) obj;
 
 		return index.equals(castObj.index) && smooth == castObj.smooth
 				&& vertex1.equals(castObj.vertex1)

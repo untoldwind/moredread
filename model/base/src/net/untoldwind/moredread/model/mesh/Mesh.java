@@ -15,16 +15,16 @@ import net.untoldwind.moredread.model.state.IStateWriter;
 
 import com.jme.math.Vector3f;
 
-public abstract class Mesh<T extends Face<?>> implements IMesh, IStateHolder {
+public abstract class Mesh<T extends AbstractFace<?>> implements IMesh, IStateHolder {
 	protected int vertexCount = 0;
 	protected final List<Vertex> vertices;
-	protected final Map<EdgeId, Edge> edges;
+	protected final Map<EdgeId, AbstractEdge> edges;
 	protected final List<T> faces;
 	protected boolean dirty = false;
 
 	protected Mesh() {
 		vertices = new ArrayList<Vertex>();
-		edges = new HashMap<EdgeId, Edge>();
+		edges = new HashMap<EdgeId, AbstractEdge>();
 		faces = new ArrayList<T>();
 	}
 
@@ -56,16 +56,16 @@ public abstract class Mesh<T extends Face<?>> implements IMesh, IStateHolder {
 		return vertices.get(vertexIndes);
 	}
 
-	public Edge getEdge(final EdgeId edgeIndex) {
+	public AbstractEdge getEdge(final EdgeId edgeIndex) {
 		return edges.get(edgeIndex);
 	}
 
-	protected Edge addEdge(final Vertex vertex1, final Vertex vertex2) {
-		Edge edge = edges
+	protected AbstractEdge addEdge(final Vertex vertex1, final Vertex vertex2) {
+		AbstractEdge edge = edges
 				.get(new EdgeId(vertex1.getIndex(), vertex2.getIndex()));
 
 		if (edge == null) {
-			edge = new Edge(this, vertex1, vertex2);
+			edge = new AbstractEdge(this, vertex1, vertex2);
 
 			edges.put(edge.getIndex(), edge);
 		}
@@ -73,7 +73,7 @@ public abstract class Mesh<T extends Face<?>> implements IMesh, IStateHolder {
 		return edge;
 	}
 
-	public Collection<Edge> getEdges() {
+	public Collection<AbstractEdge> getEdges() {
 		return edges.values();
 	}
 

@@ -17,12 +17,25 @@ public class MatrixTransformation implements ITransformation {
 	}
 
 	@Override
-	public Vector3f transform(final Vector3f vec) {
+	public Vector3f transformPoint(final Vector3f vec) {
 		return transformation.mult(vec);
 	}
 
 	@Override
-	public Vector3f transform(final Vector3f vec, final Vector3f store) {
-		return transform(vec, store);
+	public Vector3f transformPoint(final Vector3f vec, final Vector3f store) {
+		return transformation.mult(vec, store);
+	}
+
+	@Override
+	public Vector3f transformVector(final Vector3f vec) {
+		final Vector3f result = new Vector3f(vec);
+		transformation.rotateVect(result);
+		return result;
+	}
+
+	@Override
+	public Vector3f transformVector(final Vector3f vec, final Vector3f store) {
+		transformation.rotateVect(store);
+		return store;
 	}
 }

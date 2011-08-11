@@ -7,6 +7,7 @@ import java.util.Set;
 import net.untoldwind.moredread.model.enums.GeometryType;
 import net.untoldwind.moredread.model.state.IStateHolder;
 import net.untoldwind.moredread.model.state.IStateWriter;
+import net.untoldwind.moredread.model.transform.ITransformation;
 
 import com.jme.math.Vector3f;
 
@@ -15,15 +16,15 @@ public class Vertex implements IStateHolder, IVertex {
 	private final int index;
 	private Vector3f point;
 	private boolean smooth;
-	private final Set<Edge> edges;
-	private final Set<Face<?>> faces;
+	private final Set<AbstractEdge> edges;
+	private final Set<AbstractFace<?>> faces;
 
 	Vertex(final Mesh<?> owner, final int index, final Vector3f point) {
 		this.owner = owner;
 		this.index = index;
 		this.point = point;
-		this.edges = new HashSet<Edge>();
-		this.faces = new HashSet<Face<?>>();
+		this.edges = new HashSet<AbstractEdge>();
+		this.faces = new HashSet<AbstractFace<?>>();
 	}
 
 	@Override
@@ -54,18 +55,23 @@ public class Vertex implements IStateHolder, IVertex {
 
 	public void setPoint(final Vector3f point) {
 		this.point = point;
-		for (final Face<?> face : faces) {
+		for (final AbstractFace<?> face : faces) {
 			face.markDirty();
 		}
 		owner.markDirty();
 	}
 
-	public Set<Edge> getEdges() {
+	public Set<AbstractEdge> getEdges() {
 		return edges;
 	}
 
-	public Set<Face<?>> getFaces() {
+	public Set<AbstractFace<?>> getFaces() {
 		return faces;
+	}
+
+	@Override
+	public IPoint transform(final ITransformation transformation) {
+		return new Point(transformation.transformPoint(point));
 	}
 
 	@Override

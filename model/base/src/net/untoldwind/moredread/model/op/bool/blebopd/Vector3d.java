@@ -8,8 +8,6 @@ public class Vector3d {
 	private static final Logger logger = Logger.getLogger(Vector3d.class
 			.getName());
 
-	private static final long serialVersionUID = 1L;
-
 	public final static Vector3d ZERO = new Vector3d(0, 0, 0);
 
 	public final static Vector3d UNIT_X = new Vector3d(1, 0, 0);
@@ -498,7 +496,7 @@ public class Vector3d {
 	 * 'store' with replaced values will be returned, to facilitate chaining.
 	 * </P>
 	 * <P>
-	 *'This' is not modified; and the starting value of 'store' (if any) is
+	 * 'This' is not modified; and the starting value of 'store' (if any) is
 	 * ignored (and over-written).
 	 * <P>
 	 * The resultant Vector is comprised of elements which are the product of

@@ -20,7 +20,7 @@ public class QuadMesh extends Mesh<QuadFace> {
 		vertexArr[2] = vertices.get(vertexIndex3);
 		vertexArr[3] = vertices.get(vertexIndex4);
 
-		final Edge edgeArr[] = new Edge[4];
+		final AbstractEdge edgeArr[] = new AbstractEdge[4];
 
 		edgeArr[0] = addEdge(vertexArr[0], vertexArr[1]);
 		edgeArr[1] = addEdge(vertexArr[1], vertexArr[2]);

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.untoldwind.moredread.annotations.Singleton;
-import net.untoldwind.moredread.model.mesh.Face;
+import net.untoldwind.moredread.model.mesh.AbstractFace;
 import net.untoldwind.moredread.model.mesh.IFace;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.Mesh;
@@ -152,7 +152,7 @@ public class FaceSelectionToolHandler implements IToolHandler {
 						.getSceneSelection().getSelectedFaces()) {
 					final IMeshNode node = faceSelection.getNode();
 					final Mesh<?> mesh = node.getEditableGeometry();
-					final Face<?> face = mesh.getFace(faceSelection
+					final AbstractFace<?> face = mesh.getFace(faceSelection
 							.getFaceIndex());
 
 					for (final Vertex vertex : face.getVertices()) {

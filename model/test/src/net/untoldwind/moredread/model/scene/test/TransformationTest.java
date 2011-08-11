@@ -53,10 +53,10 @@ public class TransformationTest {
 				final ITransformation transformation = node
 						.getLocalTransformation();
 
-				final Vector3f r3 = transformation.transform(new Vector3f(0, 0,
-						0));
-				final Vector3f r4 = transformation.transform(new Vector3f(3, 2,
-						1));
+				final Vector3f r3 = transformation.transformPoint(new Vector3f(
+						0, 0, 0));
+				final Vector3f r4 = transformation.transformPoint(new Vector3f(
+						3, 2, 1));
 
 				assertVectorEquals(new Vector3f(1, 2, 3), r3, 1e-5f);
 				assertVectorEquals(new Vector3f(4, 4, 4), r4, 1e-5f);
@@ -82,10 +82,10 @@ public class TransformationTest {
 				final ITransformation transformation = node
 						.getLocalTransformation();
 
-				final Vector3f r3 = transformation.transform(new Vector3f(1, 1,
-						1));
-				final Vector3f r4 = transformation.transform(new Vector3f(6, 3,
-						2));
+				final Vector3f r3 = transformation.transformPoint(new Vector3f(
+						1, 1, 1));
+				final Vector3f r4 = transformation.transformPoint(new Vector3f(
+						6, 3, 2));
 
 				assertVectorEquals(new Vector3f(1, 2, 3), r3, 1e-5f);
 				assertVectorEquals(new Vector3f(6, 6, 6), r4, 1e-5f);
@@ -115,10 +115,10 @@ public class TransformationTest {
 				final ITransformation transformation = node
 						.getLocalTransformation();
 
-				final Vector3f r3 = transformation.transform(new Vector3f(1, 0,
-						0));
-				final Vector3f r4 = transformation.transform(new Vector3f(0, 1,
-						0));
+				final Vector3f r3 = transformation.transformPoint(new Vector3f(
+						1, 0, 0));
+				final Vector3f r4 = transformation.transformPoint(new Vector3f(
+						0, 1, 0));
 
 				assertVectorEquals(new Vector3f(SQRT_2_2, 0, -SQRT_2_2), r3,
 						1e-5f);
@@ -158,12 +158,12 @@ public class TransformationTest {
 					final ITransformation transformation = node
 							.getLocalTransformation();
 
-					final Vector3f r4 = transformation.transform(new Vector3f(
-							1, 0, 0));
-					final Vector3f r5 = transformation.transform(new Vector3f(
-							0, 1, 0));
-					final Vector3f r6 = transformation.transform(new Vector3f(
-							0, 0, 1));
+					final Vector3f r4 = transformation
+							.transformPoint(new Vector3f(1, 0, 0));
+					final Vector3f r5 = transformation
+							.transformPoint(new Vector3f(0, 1, 0));
+					final Vector3f r6 = transformation
+							.transformPoint(new Vector3f(0, 0, 1));
 
 					assertVectorEquals(r1, r4, 1e-5f);
 					assertVectorEquals(r2, r5, 1e-5f);

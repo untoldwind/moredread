@@ -1,11 +1,13 @@
 package net.untoldwind.moredread.model.mesh;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import net.untoldwind.moredread.model.enums.GeometryType;
 import net.untoldwind.moredread.model.state.IStateWriter;
+import net.untoldwind.moredread.model.transform.ITransformation;
 
 import com.jme.math.Vector3f;
 
@@ -93,6 +95,18 @@ public class Polygon implements IPolygon {
 		center.divideLocal(vertices.size());
 
 		return center;
+	}
+
+	@Override
+	public IPolygon transform(final ITransformation transformation) {
+		final List<IPoint> new_vertices = new ArrayList<IPoint>(vertices.size());
+
+		for (final IPoint point : vertices) {
+			new_vertices.add(point.transform(transformation));
+		}
+
+		return new Polygon(new_vertices, null, stripCounts, contourCounts,
+				closed);
 	}
 
 	@Override

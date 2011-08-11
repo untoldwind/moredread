@@ -19,7 +19,7 @@ public class TriangleMesh extends Mesh<TriangleFace> {
 		vertexArr[1] = vertices.get(vertexIndex2);
 		vertexArr[2] = vertices.get(vertexIndex3);
 
-		final Edge edgeArr[] = new Edge[3];
+		final AbstractEdge edgeArr[] = new AbstractEdge[3];
 
 		edgeArr[0] = addEdge(vertexArr[0], vertexArr[1]);
 		edgeArr[1] = addEdge(vertexArr[1], vertexArr[2]);

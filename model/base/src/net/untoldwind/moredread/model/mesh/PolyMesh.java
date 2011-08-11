@@ -29,7 +29,7 @@ public class PolyMesh extends Mesh<PolyFace> {
 			vertexList.add(vertex);
 		}
 
-		final List<Edge> edgeList = new ArrayList<Edge>(vertexIndices.length);
+		final List<AbstractEdge> edgeList = new ArrayList<AbstractEdge>(vertexIndices.length);
 
 		for (int i = 0; i < vertexIndices.length; i++) {
 			final Vertex vertex1 = vertexList.get(i);
@@ -49,7 +49,7 @@ public class PolyMesh extends Mesh<PolyFace> {
 
 	public PolyFace addFace(final int[][] vertexStripIndices) {
 		final Vertex[][] vertexStrips = new Vertex[vertexStripIndices.length][];
-		final List<Edge> edgeList = new ArrayList<Edge>();
+		final List<AbstractEdge> edgeList = new ArrayList<AbstractEdge>();
 
 		for (int k = 0; k < vertexStripIndices.length; k++) {
 			final int[] vertexIndices = vertexStripIndices[k];

@@ -7,8 +7,6 @@ public class Plane3d {
 	private static final Logger logger = Logger.getLogger(Plane3d.class
 			.getName());
 
-	private static final long serialVersionUID = 1L;
-
 	/** Vector normal to the Plane3d. */
 	public Vector3d normal;
 

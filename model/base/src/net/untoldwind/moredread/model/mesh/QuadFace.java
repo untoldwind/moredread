@@ -1,19 +1,21 @@
 package net.untoldwind.moredread.model.mesh;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import net.untoldwind.moredread.model.state.IStateWriter;
+import net.untoldwind.moredread.model.transform.ITransformation;
 
 import com.jme.math.Vector3f;
 
-public class QuadFace extends Face<QuadMesh> {
+public class QuadFace extends AbstractFace<QuadMesh> {
 	private final Vertex[] vertices;
-	private final Edge[] edges;
+	private final AbstractEdge[] edges;
 
 	QuadFace(final QuadMesh owner, final int index, final Vertex[] vertices,
-			final Edge[] edges) {
+			final AbstractEdge[] edges) {
 		super(owner, index);
 
 		this.vertices = vertices;
@@ -23,7 +25,7 @@ public class QuadFace extends Face<QuadMesh> {
 			vertex.getFaces().add(this);
 		}
 
-		for (final Edge edge : edges) {
+		for (final AbstractEdge edge : edges) {
 			edge.getFaces().add(this);
 		}
 	}
@@ -46,7 +48,7 @@ public class QuadFace extends Face<QuadMesh> {
 		return vertices;
 	}
 
-	public List<Edge> getEdges() {
+	public List<AbstractEdge> getEdges() {
 		return Arrays.asList(edges);
 	}
 
@@ -92,6 +94,18 @@ public class QuadFace extends Face<QuadMesh> {
 		} else {
 			meanNormal.divideLocal(len);
 		}
+	}
+
+	@Override
+	public IPolygon transform(final ITransformation transformation) {
+		final List<IPoint> new_vertices = new ArrayList<IPoint>(vertices.length);
+
+		for (final IPoint point : vertices) {
+			new_vertices.add(point.transform(transformation));
+		}
+
+		return new Polygon(new_vertices, null, getPolygonStripCounts(),
+				getPolygonContourCounts(), true);
 	}
 
 	@Override

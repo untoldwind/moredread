@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import net.untoldwind.moredread.model.enums.GeometryType;
 import net.untoldwind.moredread.model.state.IStateWriter;
+import net.untoldwind.moredread.model.transform.ITransformation;
 
 import com.jme.math.Vector3f;
 
@@ -26,6 +27,11 @@ public class Point implements IPoint {
 	@Override
 	public Vector3f getPoint() {
 		return point;
+	}
+
+	@Override
+	public IPoint transform(final ITransformation transformation) {
+		return new Point(transformation.transformPoint(point));
 	}
 
 	@Override

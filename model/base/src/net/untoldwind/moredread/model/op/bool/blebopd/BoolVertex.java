@@ -6,7 +6,9 @@ import java.util.List;
 
 import net.untoldwind.moredread.model.enums.GeometryType;
 import net.untoldwind.moredread.model.mesh.IPoint;
+import net.untoldwind.moredread.model.mesh.Point;
 import net.untoldwind.moredread.model.state.IStateWriter;
+import net.untoldwind.moredread.model.transform.ITransformation;
 
 import com.jme.math.Vector3f;
 
@@ -56,6 +58,11 @@ public class BoolVertex implements IPoint {
 
 	public Vector3d getPoint3d() {
 		return point;
+	}
+
+	@Override
+	public IPoint transform(final ITransformation transformation) {
+		return new Point(transformation.transformPoint(point.toVector3f()));
 	}
 
 	@Override
