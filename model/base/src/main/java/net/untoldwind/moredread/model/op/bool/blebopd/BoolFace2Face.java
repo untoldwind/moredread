@@ -169,8 +169,8 @@ public class BoolFace2Face {
 
 		final Vector3d normal = new Vector3d(faceA.getPlane3d().getNormal());
 		final Vector3d p1p2 = p2.subtract(p1);
-		final Plane3d plane1 = MathUtils.createPlane3d((p1p2.cross(normal)
-				.normalize()), p1);
+		final Plane3d plane1 = MathUtils.createPlane3d(
+				(p1p2.cross(normal).normalize()), p1);
 
 		final BoolSegment sA = new BoolSegment();
 		sA.cfg1 = BoolSegment.createVertexCfg(1);
@@ -181,8 +181,8 @@ public class BoolFace2Face {
 		intersectCoplanarFaces(mesh, facesB, faceB, sA, plane1, invert);
 
 		final Vector3d p2p3 = p3.subtract(p2);
-		final Plane3d plane2 = MathUtils.createPlane3d((p2p3.cross(normal)
-				.normalize()), p2);
+		final Plane3d plane2 = MathUtils.createPlane3d(
+				(p2p3.cross(normal).normalize()), p2);
 
 		sA.cfg1 = BoolSegment.createVertexCfg(2);
 		sA.v1 = faceA.getVertex(1);
@@ -203,8 +203,8 @@ public class BoolFace2Face {
 		}
 
 		final Vector3d p3p1 = p1.subtract(p3);
-		final Plane3d plane3 = MathUtils.createPlane3d((p3p1.cross(normal)
-				.normalize()), p3);
+		final Plane3d plane3 = MathUtils.createPlane3d(
+				(p3p1.cross(normal).normalize()), p3);
 
 		sA.cfg1 = BoolSegment.createVertexCfg(3);
 		sA.v1 = faceA.getVertex(2);
@@ -354,8 +354,8 @@ public class BoolFace2Face {
 		if (BoolSegment.isDefined(sA.cfg1)) {
 			if (BoolSegment.isEdge(sA.cfg1)) {
 				// the new point becomes of split faceA edge
-				p1 = BoolSplitter.splitEdge(planeB, faceA, BoolSegment
-						.getEdge(sA.cfg1));
+				p1 = BoolSplitter.splitEdge(planeB, faceA,
+						BoolSegment.getEdge(sA.cfg1));
 			} else if (BoolSegment.isVertex(sA.cfg1)) {
 				// the new point becomes of vertex faceA
 				p1 = sA.v1.getPoint3d();
@@ -363,8 +363,8 @@ public class BoolFace2Face {
 
 			if (BoolSegment.isDefined(sA.cfg2)) {
 				if (BoolSegment.isEdge(sA.cfg2)) {
-					p2 = BoolSplitter.splitEdge(planeB, faceA, BoolSegment
-							.getEdge(sA.cfg2));
+					p2 = BoolSplitter.splitEdge(planeB, faceA,
+							BoolSegment.getEdge(sA.cfg2));
 				} else if (BoolSegment.isVertex(sA.cfg2)) {
 					p2 = sA.v2.getPoint3d();
 				}
@@ -458,7 +458,7 @@ public class BoolFace2Face {
 			points.invertB = false;
 			if (points.face[1] == 1) {
 
-				// invertAÀ?
+				// invert
 				for (i = 0; i < points.size; i++) {
 					if (position[i] == 1) {
 						points.invertA = true;
@@ -468,7 +468,7 @@ public class BoolFace2Face {
 					}
 				}
 
-				// invertBÀ?
+				// invert
 				if (points.size == 4) {
 					for (i = 0; i < points.size; i++) {
 						if (position[i] == 3) {
@@ -480,7 +480,7 @@ public class BoolFace2Face {
 					}
 				}
 			} else if (points.face[1] == 2) {
-				// invertBÀ?
+				// invert
 				for (i = 0; i < points.size; i++) {
 					if (position[i] == 2) {
 						points.invertB = true;
@@ -1002,14 +1002,14 @@ public class BoolFace2Face {
 		} else if (BoolSegment.isEdge(s.cfg1)) {
 			if (BoolSegment.isVertex(s.cfg2) || BoolSegment.isUndefined(s.cfg2)) {
 				// EDGE(v1) + VERTEX(v2)
-				final BoolEdge edge = mesh.getEdge(face, BoolSegment
-						.getEdge(s.cfg1));
+				final BoolEdge edge = mesh.getEdge(face,
+						BoolSegment.getEdge(s.cfg1));
 				BoolTriangulator.triangulateA(mesh, faces, face, s.v1,
 						BoolSegment.getEdge(s.cfg1));
 				final BoolFace opposite = getOppositeFace(faces, face, edge);
 				if (opposite != null) {
-					final int e = opposite.getEdgeIndex(edge.getVertex1(), edge
-							.getVertex2());
+					final int e = opposite.getEdgeIndex(edge.getVertex1(),
+							edge.getVertex2());
 					BoolTriangulator.triangulateA(mesh, faces, opposite, s.v1,
 							e);
 				}
@@ -1017,8 +1017,8 @@ public class BoolFace2Face {
 				// EDGE(v1) + EDGE(v2)
 				if (BoolSegment.getEdge(s.cfg1) == BoolSegment.getEdge(s.cfg2)) {
 					// EDGE(v1) == EDGE(v2)
-					final BoolEdge edge = mesh.getEdge(face, BoolSegment
-							.getEdge(s.cfg1));
+					final BoolEdge edge = mesh.getEdge(face,
+							BoolSegment.getEdge(s.cfg1));
 					BoolTriangulator.triangulateD(mesh, faces, face, s.v1,
 							s.v2, BoolSegment.getEdge(s.cfg1));
 					final BoolFace opposite = getOppositeFace(faces, face, edge);
@@ -1029,13 +1029,13 @@ public class BoolFace2Face {
 								s.v1, s.v2, e);
 					}
 				} else { // EDGE(v1) != EDGE(v2)
-					final BoolEdge edge1 = mesh.getEdge(face, BoolSegment
-							.getEdge(s.cfg1));
-					final BoolEdge edge2 = mesh.getEdge(face, BoolSegment
-							.getEdge(s.cfg2));
+					final BoolEdge edge1 = mesh.getEdge(face,
+							BoolSegment.getEdge(s.cfg1));
+					final BoolEdge edge2 = mesh.getEdge(face,
+							BoolSegment.getEdge(s.cfg2));
 					BoolTriangulator.triangulateE(mesh, faces, face, s.v1,
-							s.v2, BoolSegment.getEdge(s.cfg1), BoolSegment
-									.getEdge(s.cfg2));
+							s.v2, BoolSegment.getEdge(s.cfg1),
+							BoolSegment.getEdge(s.cfg2));
 					BoolFace opposite = getOppositeFace(faces, face, edge1);
 					if (opposite != null) {
 						final int e = opposite.getEdgeIndex(edge1.getVertex1(),
@@ -1058,14 +1058,14 @@ public class BoolFace2Face {
 				BoolTriangulator.triangulateB(mesh, faces, face, s.v1);
 			} else if (BoolSegment.isEdge(s.cfg2)) {
 				// IN(v1) + EDGE(v2)
-				final BoolEdge edge = mesh.getEdge(face, BoolSegment
-						.getEdge(s.cfg2));
+				final BoolEdge edge = mesh.getEdge(face,
+						BoolSegment.getEdge(s.cfg2));
 				BoolTriangulator.triangulateF(mesh, faces, face, s.v1, s.v2,
 						BoolSegment.getEdge(s.cfg2));
 				final BoolFace opposite = getOppositeFace(faces, face, edge);
 				if (opposite != null) {
-					final int e = opposite.getEdgeIndex(edge.getVertex1(), edge
-							.getVertex2());
+					final int e = opposite.getEdgeIndex(edge.getVertex1(),
+							edge.getVertex2());
 					BoolTriangulator.triangulateA(mesh, faces, opposite, s.v2,
 							e);
 				}

@@ -11,9 +11,16 @@
   	<modules>
 	  <module>ui</module>
 	  <module>engine</module>
+	  <module>model</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>com.ibm</groupId>
+				<artifactId>icu</artifactId>
+				<version>4.4.2</version>
+			</dependency>
+			
 			<dependency>
 				<groupId>org.eclipse</groupId>
 				<artifactId>osgi</artifactId>
@@ -52,6 +59,12 @@
 				<version>3.7.0</version>
 			</dependency>
 			<dependency>
+				<groupId>org.eclipse.ui</groupId>
+				<artifactId>views</artifactId>
+				<version>3.6.0</version>
+			</dependency>
+
+			<dependency>
 				<groupId>org.eclipse</groupId>
 				<artifactId>swt</artifactId>
 				<version>3.7.0</version>
@@ -68,6 +81,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.core</groupId>
+				<artifactId>contenttype</artifactId>
+				<version>3.4.100</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.core</groupId>
 				<artifactId>jobs</artifactId>
 				<version>3.5.100</version>
 			</dependency>
@@ -76,6 +94,13 @@
 				<artifactId>runtime</artifactId>
 				<version>3.7.0</version>
 			</dependency>
+
+			<dependency>
+				<groupId>dom4j</groupId>
+				<artifactId>dom4j</artifactId>
+				<version>1.6.1</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 	<build>
