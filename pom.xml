@@ -23,6 +23,11 @@
 			
 			<dependency>
 				<groupId>org.eclipse</groupId>
+				<artifactId>jface</artifactId>
+				<version>3.7.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse</groupId>
 				<artifactId>osgi</artifactId>
 				<version>3.7.0</version>
 			</dependency>
@@ -31,6 +36,7 @@
 				<artifactId>ui</artifactId>
 				<version>3.7.0</version>
 			</dependency>
+			
 			<dependency>
 				<groupId>org.eclipse.equinox</groupId>
 				<artifactId>app</artifactId>
@@ -62,6 +68,16 @@
 				<groupId>org.eclipse.ui</groupId>
 				<artifactId>views</artifactId>
 				<version>3.6.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.ui</groupId>
+				<artifactId>forms</artifactId>
+				<version>3.5.100</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.ui.views.properties</groupId>
+				<artifactId>tabbed</artifactId>
+				<version>3.5.200</version>
 			</dependency>
 
 			<dependency>

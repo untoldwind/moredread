@@ -11,7 +11,8 @@
 	<packaging>pom</packaging>
 	<name>MoreDread :: UI</name>
 	<modules>
+		<module>base</module>
 		<module>tools</module>
-<!-- 		<module>base</module> -->
+		<module>input</module>
 	</modules>
 </project>

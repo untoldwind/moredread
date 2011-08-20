@@ -30,6 +30,39 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<artifactId>maven-install-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>lwjgl-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+						<configuration>
+							<file>${project.basedir}/lwjgl.jar</file>
+				        	<groupId>org.lwjgl</groupId>
+					        <artifactId>lwjgl</artifactId>
+					        <version>2.1.0</version>
+					        <packaging>jar</packaging>
+						</configuration>
+					</execution>
+					<execution>
+						<id>jinput-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+						<configuration>
+							<file>${project.basedir}/jinput.jar</file>
+				        	<groupId>net.java.games</groupId>
+					        <artifactId>jinput</artifactId>
+					        <version>2.1.0</version>
+					        <packaging>jar</packaging>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>

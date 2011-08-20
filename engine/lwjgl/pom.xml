@@ -9,6 +9,28 @@
 	<artifactId>lwjgl</artifactId>
 	<packaging>jar</packaging>
 	<name>MoreDread :: Engine :: LwjGL</name>
+	<dependencies>
+		<dependency>
+			<groupId>net.untoldwind.moredread.engine</groupId>
+			<artifactId>lwjgl-linux</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.untoldwind.moredread.engine</groupId>
+			<artifactId>lwjgl-linux64</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.untoldwind.moredread.engine</groupId>
+			<artifactId>lwjgl-macosx</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.untoldwind.moredread.engine</groupId>
+			<artifactId>lwjgl-win32</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
