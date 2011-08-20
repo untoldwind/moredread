@@ -17,6 +17,6 @@
 		<module>lwjgl-linux64</module>
 		<module>lwjgl-win32</module>
 		<module>jme</module>
-<!-- 		<module>base</module> -->
+		<module>utils</module>
 	</modules>
 </project>

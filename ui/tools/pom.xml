@@ -6,13 +6,18 @@
 		<relativePath>..</relativePath>
 	</parent>	
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>ui</artifactId>
+	<artifactId>tools</artifactId>
 	<packaging>jar</packaging>
-	<name>MoreDread :: UI :: Base</name>
+	<name>MoreDread :: UI :: Tools</name>
 	<dependencies>
 		<dependency>
 			<groupId>net.untoldwind.moredread.engine</groupId>
 			<artifactId>jme</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.untoldwind.moredread.engine</groupId>
+			<artifactId>utils</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
@@ -59,24 +64,6 @@
 							<descriptors>
 								<descriptor>${basedir}/src/main/assembly/plugin-jar.xml</descriptor>
 							</descriptors>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<artifactId>maven-install-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>install-file</goal>
-						</goals>
-						<configuration>
-							<file>${project.basedir}/jme.jar</file>
-				        	<groupId>com.jmonkeyengine</groupId>
-					        <artifactId>jme</artifactId>
-					        <version>2.0.1</version>
-					        <packaging>jar</packaging>
 						</configuration>
 					</execution>
 				</executions>
