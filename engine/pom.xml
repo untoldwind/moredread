@@ -12,6 +12,8 @@
 	<name>MoreDread :: Engine</name>
 	<modules>
 		<module>lwjgl</module>
+		<module>lwjgl-macosx</module>
+		<module>lwjgl-linux64</module>
 <!-- 		<module>base</module> -->
 	</modules>
 </project>

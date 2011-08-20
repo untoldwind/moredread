@@ -9,5 +9,13 @@
 			<directory>target/classes</directory>
 			<outputDirectory>/</outputDirectory>
 		</fileSet>
+		<fileSet>
+			<directory></directory>
+			<outputDirectory>/</outputDirectory>
+			<includes>
+				<include>*.jar</include>
+				<include>*.so</include>
+			</includes>
+		</fileSet>
 	</fileSets>
 </assembly>
