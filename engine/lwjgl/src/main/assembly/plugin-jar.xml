@@ -1,0 +1,21 @@
+<assembly>
+	<id>plugin</id>
+	<formats>
+		<format>jar</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<fileSets>
+		<fileSet>
+			<directory>target/classes</directory>
+			<outputDirectory>/</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>target/dependency</directory>
+			<outputDirectory>/target/dependency
+			</outputDirectory>
+			<excludes>
+				<exclude>testng-jdk15</exclude>
+			</excludes>
+		</fileSet>
+	</fileSets>
+</assembly>

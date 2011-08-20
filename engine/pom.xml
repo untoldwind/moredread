@@ -6,11 +6,12 @@
 		<relativePath>..</relativePath>
 	</parent>	
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.untoldwind.moredread.ui</groupId>
+	<groupId>net.untoldwind.moredread.engine</groupId>
 	<artifactId>parent</artifactId>
 	<packaging>pom</packaging>
-	<name>MoreDread :: UI</name>
+	<name>MoreDread :: Engine</name>
 	<modules>
+		<module>lwjgl</module>
 <!-- 		<module>base</module> -->
 	</modules>
 </project>
