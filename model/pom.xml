@@ -12,5 +12,6 @@
 	<name>MoreDread :: Model</name>
 	<modules>
 		<module>base</module>
+		<module>io</module>
 	</modules>
 </project>
