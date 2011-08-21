@@ -51,7 +51,7 @@ public class MoreDreadUI extends AbstractUIPlugin {
 	private ISceneHolder sceneHolder;
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "net.untoldwind.moredread.ui";
+	public static final String PLUGIN_ID = "net.untoldwind.moredread.ui.base";
 
 	// The shared instance
 	private static MoreDreadUI plugin;

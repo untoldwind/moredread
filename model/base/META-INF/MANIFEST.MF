@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: MoreDread Model
-Bundle-SymbolicName: net.untoldwind.moredread.model;singleton:=true
+Bundle-SymbolicName: net.untoldwind.moredread.model.base;singleton:=true
 Bundle-Version: 0.9.0
 Require-Bundle: net.untoldwind.moredread.jme;bundle-version="2.0.1",
  net.untoldwind.moredread.utils;bundle-version="0.9.0",
