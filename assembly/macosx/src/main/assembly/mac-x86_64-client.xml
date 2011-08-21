@@ -9,13 +9,13 @@
 			<outputDirectory></outputDirectory>
 			<excludes>
 				<exclude>MoreDread.app/Contents/MacOS/MoreDread</exclude>
-<!-- 				<exclude>MoreDread.app/Contents/Resources/Java/configuration/config.ini</exclude> -->
+ 				<exclude>MoreDread.app/Contents/Resources/Java/configuration/config.ini</exclude>
 			</excludes>
 		</fileSet>
-<!-- 		<fileSet>
+ 		<fileSet>
 			<directory>target/gen</directory>
 			<outputDirectory>MoreDread.app/Contents/Resources/Java</outputDirectory>
-		</fileSet> -->
+		</fileSet>
 	</fileSets>
  	<files>
 		<file>
@@ -23,52 +23,49 @@
 			<outputDirectory>MoreDread.app/Contents/MacOS</outputDirectory>
 			<fileMode>755</fileMode>
 		</file>
-<!-- 		<file>
+ 		<file>
 			<source>src/main/launcher/MoreDread.app/Contents/Resources/Java/configuration/config.ini</source>
 			<outputDirectory>MoreDread.app/Contents/Resources/Java/configuration</outputDirectory>
 			<filtered>true</filtered>
-		</file> -->
+		</file>
 	</files>
 	<dependencySets>
 		<dependencySet>
 			<outputFileNameMapping>
-				${artifact.artifactId}_${artifact.version}.${artifact.extension}
+				${artifact.groupId}.${artifact.artifactId}_${artifact.version}.${artifact.extension}
 			</outputFileNameMapping>
-			<outputDirectory>Time4U.app/Contents/Resources/Java/plugins
+			<outputDirectory>MoreDread.app/Contents/Resources/Java/plugins
 			</outputDirectory>
 			<includes>
-				<include>de.objectcode.time4u.client:de.objectcode.time4u.client.store:jar:plugin
-				</include>
-				<include>de.objectcode.time4u.client:de.objectcode.time4u.client.store.backend:jar:plugin
-				</include>
-				<include>de.objectcode.time4u.client:de.objectcode.time4u.client.store.derby:jar:plugin
-				</include>
-				<include>de.objectcode.time4u.client:de.objectcode.time4u.client.connection:jar:plugin
-				</include>
-				<include>de.objectcode.time4u.client:de.objectcode.time4u.client.connection.ui:jar:plugin
-				</include>
-				<include>de.objectcode.time4u.client:de.objectcode.time4u.client.ui:jar:plugin
-				</include>
+				<include>net.untoldwind.moredread.engine:jme:jar:plugin</include>
+				<include>net.untoldwind.moredread.engine:lwjgl:jar:plugin</include>
+				<include>net.untoldwind.moredread.engine:lwjgl-macosx:jar:plugin</include>
+				<include>net.untoldwind.moredread.engine:utils:jar:plugin</include>
+				<include>net.untoldwind.moredread.model:base:jar:plugin</include>
+				<include>net.untoldwind.moredread.model:io:jar:plugin</include>
+				<include>net.untoldwind.moredread.ui:base:jar:plugin</include>
+				<include>net.untoldwind.moredread.ui:input:jar:plugin</include>
+				<include>net.untoldwind.moredread.ui:tools:jar:plugin</include>
 			</includes>
 		</dependencySet>
-		<dependencySet>
+ 		<dependencySet>
 			<outputFileNameMapping>
-				${artifact.artifactId}_${artifact.version}.${artifact.extension}
+				${artifact.groupId}.${artifact.artifactId}_${artifact.version}.${artifact.extension}
 			</outputFileNameMapping>
 			<outputDirectory>
-				Time4U.app/Contents/Resources/Java/features/de.objectcode.time4u.client.feature_${pom.version}
+				MoreDread.app/Contents/Resources/Java/features/net.untoldwind.moredread.feature_${pom.version}
 			</outputDirectory>
 			<unpack>true</unpack>
 			<includes>
-				<include>de.objectcode.time4u.client:de.objectcode.time4u.client.feature:jar:feature
+				<include>net.untoldwind.moredread:feature:jar:feature
 				</include>
-			</includes>
+			</includes> 
 		</dependencySet>
 		<dependencySet>
 			<outputFileNameMapping>
 				${artifact.groupId}.${artifact.artifactId}_${artifact.version}.${artifact.extension}
 			</outputFileNameMapping>
-			<outputDirectory>Time4U.app/Contents/Resources/Java/plugins
+			<outputDirectory>MoreDread.app/Contents/Resources/Java/plugins
 			</outputDirectory>
 			<includes>
 				<include>com.ibm:icu</include>
@@ -100,9 +97,12 @@
 				<include>org.eclipse.equinox:util</include>
 				<include>org.eclipse.ui:workbench</include>
 				<include>org.eclipse.ui:cocoa</include>
+				<include>org.eclipse.ui:forms</include>
+				<include>org.eclipse.ui:views</include>
+				<include>org.eclipse.ui.views.properties:tabbed</include>
 				<include>org.eclipse.swt.cocoa.macosx:x86_64</include>
 				<include>org.eclipse.update:configurator</include>
 			</includes>
 		</dependencySet>
-	</dependencySets> -->
+	</dependencySets>
 </assembly>

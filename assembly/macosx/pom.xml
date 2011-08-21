@@ -64,6 +64,128 @@
 			<version>${project.version}</version>
 			<classifier>plugin</classifier>
 		</dependency>
+		<dependency>
+			<groupId>net.untoldwind.moredread</groupId>
+			<artifactId>feature</artifactId>
+			<version>${project.version}</version>
+			<classifier>feature</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>osgi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.osgi</groupId>
+			<artifactId>services</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>ui</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>rcp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>help</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>runtime</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core.runtime.compatibility</groupId>
+			<artifactId>auth</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>commands</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>contenttype</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>databinding</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>expressions</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core</groupId>
+			<artifactId>jobs</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core.databinding</groupId>
+			<artifactId>beans</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core.databinding</groupId>
+			<artifactId>observable</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.core.databinding</groupId>
+			<artifactId>property</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>app</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>launcher</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>preferences</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>registry</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>ds</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>util</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.equinox</groupId>
+			<artifactId>simpleconfigurator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.ui</groupId>
+			<artifactId>workbench</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>jface</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jface</groupId>
+			<artifactId>databinding</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>swt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.update</groupId>
+			<artifactId>configurator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm</groupId>
+			<artifactId>icu</artifactId>
+		</dependency>
 	</dependencies>
 	<profiles>
 		<profile>
@@ -95,7 +217,7 @@
 			</dependencies>
 			<build>
 				<plugins>
-<!-- 					<plugin>
+					<plugin>
 						<groupId>org.codehaus.groovy.maven</groupId>
 						<artifactId>gmaven-plugin</artifactId>
 						<executions>
@@ -110,7 +232,7 @@
 								</configuration>
 							</execution>
 						</executions>
-					</plugin> -->
+					</plugin>
 					<plugin>
 						<artifactId>maven-assembly-plugin</artifactId>
 						<executions>
