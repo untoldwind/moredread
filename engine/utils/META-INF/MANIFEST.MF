@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: MoreDread utils
-Bundle-SymbolicName: net.untoldwind.moredread.utils
+Bundle-SymbolicName: net.untoldwind.moredread.engine.utils
 Bundle-Version: 0.9.0
 Bundle-Vendor: untoldwind.net
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

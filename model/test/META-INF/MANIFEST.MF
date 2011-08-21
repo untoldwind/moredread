@@ -7,6 +7,6 @@ Bundle-Vendor: untoldwind.net
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: net.untoldwind.moredread.model.base;bundle-version="0.9.0",
  org.junit4;bundle-version="4.5.0",
- net.untoldwind.moredread.jme;bundle-version="0.9.0",
- net.untoldwind.moredread.utils;bundle-version="0.9.0",
+ net.untoldwind.moredread.engine.jme;bundle-version="0.9.0",
+ net.untoldwind.moredread.engine.utils;bundle-version="0.9.0",
  org.eclipse.equinox.common
