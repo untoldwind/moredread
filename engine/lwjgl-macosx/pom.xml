@@ -43,7 +43,7 @@
 							<file>${project.basedir}/lwjgl.jar</file>
 				        	<groupId>org.lwjgl</groupId>
 					        <artifactId>lwjgl</artifactId>
-					        <version>2.1.0</version>
+					        <version>2.7.1</version>
 					        <packaging>jar</packaging>
 						</configuration>
 					</execution>
@@ -57,7 +57,7 @@
 							<file>${project.basedir}/jinput.jar</file>
 				        	<groupId>net.java.games</groupId>
 					        <artifactId>jinput</artifactId>
-					        <version>2.1.0</version>
+					        <version>2.7.1</version>
 					        <packaging>jar</packaging>
 						</configuration>
 					</execution>

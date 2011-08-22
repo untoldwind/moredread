@@ -3,7 +3,7 @@ Eclipse-PlatformFilter: (& (osgi.os=win32) (osgi.arch=x86) )
 Bundle-ManifestVersion: 2
 Bundle-Name: Moredread lwjgl win32
 Bundle-SymbolicName: net.untoldwind.moredread.engine.lwjgl-win32
-Bundle-Version: 2.1.0
+Bundle-Version: 2.7.1
 Bundle-Vendor: untoldwind.net
 Fragment-Host: net.untoldwind.moredread.engine.lwjgl;bundle-version="2.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

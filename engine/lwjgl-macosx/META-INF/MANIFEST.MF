@@ -3,7 +3,7 @@ Eclipse-PlatformFilter: (& (osgi.os=macosx) (|(osgi.arch=x86)(osgi.arch=x86_64)(
 Bundle-ManifestVersion: 2
 Bundle-Name: Moredread Lwjgl MacOSX
 Bundle-SymbolicName: net.untoldwind.moredread.engine.lwjgl-macosx
-Bundle-Version: 2.1.0
+Bundle-Version: 2.7.1
 Bundle-Vendor: untoldwind.net
 Fragment-Host: net.untoldwind.moredread.engine.lwjgl;bundle-version="2.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

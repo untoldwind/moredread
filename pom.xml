@@ -7,6 +7,7 @@
 	<name>MoreDread</name>
 	<properties>
     	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    	<lwjgl.version>2.7.1</lwjgl.version>
   	</properties>
   	<modules>
 	  <module>ui</module>
