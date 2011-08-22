@@ -13,6 +13,11 @@
             label="Utilities"
             visible="true">
       </category>
+      <category
+            id="net.untoldwind.moredread.ui.tool.category.creation"
+            label="Creation"
+            visible="true">
+      </category>
       <tool
             categoryId="net.untoldwind.moredread.ui.tool.category.default"
             class="net.untoldwind.moredread.ui.tools.selection.ObjectSelectionToolHandler"
@@ -93,6 +98,18 @@
                selectionMode="FACE">
          </activation>
       </tool>
+      <tool
+            categoryId="net.untoldwind.moredread.ui.tool.category.creation"
+            class="net.untoldwind.moredread.ui.tools.creation.CubeCreationToolHandler"
+            icon="icons/MergeCoplanar.png"
+            id="net.untoldwind.moredread.ui.tool.create.cube"
+            label="Create cube"
+            type="PUSH">
+         <activation
+               selectionCount="0-*"
+               selectionMode="OBJECT">
+         </activation>
+     </tool>
    </extension>
 
 </plugin>

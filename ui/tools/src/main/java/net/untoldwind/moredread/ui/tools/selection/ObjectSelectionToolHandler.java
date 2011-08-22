@@ -22,8 +22,7 @@ import com.jme.math.Vector3f;
 @Singleton
 public class ObjectSelectionToolHandler implements IToolHandler {
 	@Override
-	public boolean activate(final Scene scene) {
-		return true;
+	public void activate(final Scene scene) {
 	}
 
 	@Override
@@ -59,7 +58,7 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public boolean handleClick(final Vector3f point,
+		public void handleClick(final Vector3f point,
 				final EnumSet<Modifier> modifiers) {
 			if (modifiers.contains(Modifier.LEFT_MOUSE_BUTTON)) {
 				final INode node = displaySystem.pickNode(new Vector2f(point.x,
@@ -71,17 +70,14 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 					} else {
 						scene.getSceneSelection().setSelectedNode(node);
 					}
-					return true;
 				}
 			}
-			return false;
 		}
 
 		@Override
-		public boolean handleDrag(final Vector3f point,
+		public void handleDrag(final Vector3f point,
 				final EnumSet<Modifier> modifiers, final boolean finished) {
 			// Do nothing
-			return false;
 		}
 	}
 
@@ -112,14 +108,13 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public boolean handleClick(final Vector3f point,
+		public void handleClick(final Vector3f point,
 				final EnumSet<Modifier> modifiers) {
 			// Do nothing
-			return false;
 		}
 
 		@Override
-		public boolean handleDrag(final Vector3f point,
+		public void handleDrag(final Vector3f point,
 				final EnumSet<Modifier> modifiers, final boolean finished) {
 			final Vector3f midCenter = getCenter();
 
@@ -154,9 +149,6 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 					scene.getSceneChangeHandler().savepoint();
 				}
 			}
-			return true;
 		}
-
 	}
-
 }

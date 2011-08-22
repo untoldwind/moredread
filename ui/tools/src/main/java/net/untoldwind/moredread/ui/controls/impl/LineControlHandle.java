@@ -80,7 +80,7 @@ public class LineControlHandle implements IControlHandle {
 	}
 
 	@Override
-	public boolean handleClick(final Vector2f position,
+	public void handleClick(final Vector2f position,
 			final EnumSet<Modifier> modifiers) {
 		final Vector2f diff = position.subtract(screenStart);
 		final float amount = diff.dot(screenDirection)
@@ -88,11 +88,11 @@ public class LineControlHandle implements IControlHandle {
 
 		final Vector3f v = worldDirection.mult(amount).addLocal(moveStart);
 
-		return toolAdapter.handleClick(v, modifiers);
+		toolAdapter.handleClick(v, modifiers);
 	}
 
 	@Override
-	public boolean handleDrag(final Vector2f dragStart, final Vector2f dragEnd,
+	public void handleDrag(final Vector2f dragStart, final Vector2f dragEnd,
 			final EnumSet<Modifier> modifiers, final boolean finished) {
 		final Vector2f diff = dragEnd.subtract(dragStart);
 		final float amount = diff.dot(screenDirection)
@@ -103,12 +103,10 @@ public class LineControlHandle implements IControlHandle {
 		}
 		final Vector3f v = worldDirection.mult(amount).addLocal(moveStart);
 
-		final boolean result = toolAdapter.handleDrag(v, modifiers, finished);
+		toolAdapter.handleDrag(v, modifiers, finished);
 
 		if (finished) {
 			moveStart = null;
 		}
-
-		return result;
 	}
 }

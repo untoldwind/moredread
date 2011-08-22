@@ -91,8 +91,8 @@ public class ToolDescriptor implements IToolDescriptor {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean activate(final Scene scene) {
-		return toolHandler.activate(scene);
+	public void activate(final Scene scene) {
+		toolHandler.activate(scene);
 	}
 
 	/**

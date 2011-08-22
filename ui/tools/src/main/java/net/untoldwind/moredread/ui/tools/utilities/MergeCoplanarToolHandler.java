@@ -19,7 +19,7 @@ import net.untoldwind.moredread.ui.tools.spi.IToolHandler;
 public class MergeCoplanarToolHandler implements IToolHandler {
 
 	@Override
-	public boolean activate(final Scene scene) {
+	public void activate(final Scene scene) {
 		final SceneSelection sceneSelection = scene.getSceneSelection();
 
 		final List<MeshNode> meshNodes = new ArrayList<MeshNode>();
@@ -44,8 +44,6 @@ public class MergeCoplanarToolHandler implements IToolHandler {
 		} finally {
 			scene.getSceneChangeHandler().commit();
 		}
-
-		return false;
 	}
 
 	@Override

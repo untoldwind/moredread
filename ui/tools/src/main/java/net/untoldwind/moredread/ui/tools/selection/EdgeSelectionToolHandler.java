@@ -32,8 +32,7 @@ import com.jme.math.Vector3f;
 public class EdgeSelectionToolHandler implements IToolHandler {
 
 	@Override
-	public boolean activate(final Scene scene) {
-		return true;
+	public void activate(final Scene scene) {
 	}
 
 	@Override
@@ -81,7 +80,7 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public boolean handleClick(final Vector3f point,
+		public void handleClick(final Vector3f point,
 				final EnumSet<Modifier> modifiers) {
 			// Click anywhere inside face is ok
 			if (modifiers.contains(Modifier.LEFT_MOUSE_BUTTON)) {
@@ -92,14 +91,12 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 					scene.getSceneSelection().setSelectedEdge(node, edgeIndex);
 				}
 			}
-			return true;
 		}
 
 		@Override
-		public boolean handleDrag(final Vector3f point,
+		public void handleDrag(final Vector3f point,
 				final EnumSet<Modifier> modifiers, final boolean finished) {
 			// Do nothing
-			return false;
 		}
 	}
 
@@ -134,14 +131,13 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public boolean handleClick(final Vector3f point,
+		public void handleClick(final Vector3f point,
 				final EnumSet<Modifier> modifiers) {
 			// Do nothing
-			return false;
 		}
 
 		@Override
-		public boolean handleDrag(final Vector3f point,
+		public void handleDrag(final Vector3f point,
 				final EnumSet<Modifier> modifiers, final boolean finished) {
 			scene.getSceneChangeHandler().begin(true);
 
@@ -156,8 +152,8 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 						.getSceneSelection().getSelectedEdges()) {
 					final IMeshNode node = edgeSelection.getNode();
 					final Mesh<?> mesh = node.getEditableGeometry();
-					final AbstractEdge edge = mesh
-							.getEdge(edgeSelection.getEdgeIndex());
+					final AbstractEdge edge = mesh.getEdge(edgeSelection
+							.getEdgeIndex());
 
 					final Vertex vertex1 = edge.getVertex1();
 					final VertexSelection vertex1Id = new VertexSelection(node,
@@ -192,7 +188,6 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 					scene.getSceneChangeHandler().savepoint();
 				}
 			}
-			return true;
 		}
 	}
 

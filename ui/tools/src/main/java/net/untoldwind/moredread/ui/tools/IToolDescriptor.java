@@ -16,7 +16,7 @@ public interface IToolDescriptor {
 
 	ImageDescriptor getIcon();
 
-	boolean activate(Scene scene);
+	void activate(Scene scene);
 
 	List<? extends IModelControl> getModelControls(Scene scene,
 			IDisplaySystem displaySystem);
