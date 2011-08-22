@@ -2,11 +2,9 @@ package net.untoldwind.moredread.model.mesh;
 
 import java.util.List;
 
-import net.untoldwind.moredread.model.transform.ITransformable;
-
 import com.jme.math.Vector3f;
 
-public interface IPolygon extends IGeometry, ITransformable<IPolygon> {
+public interface IPolygon extends IGeometry<IPolygon> {
 	Vector3f getMeanNormal();
 
 	int getVertexCount();

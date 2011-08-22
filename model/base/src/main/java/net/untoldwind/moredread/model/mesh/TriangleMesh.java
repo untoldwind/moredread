@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import net.untoldwind.moredread.model.enums.MeshType;
 import net.untoldwind.moredread.model.state.IStateReader;
+import net.untoldwind.moredread.model.transform.ITransformation;
 
 public class TriangleMesh extends Mesh<TriangleFace> {
 	@Override
@@ -36,6 +37,20 @@ public class TriangleMesh extends Mesh<TriangleFace> {
 	@Override
 	public TriangleMesh toTriangleMesh() {
 		return this;
+	}
+
+	@Override
+	public IMesh transform(final ITransformation transformation) {
+		final TriangleMesh newMesh = new TriangleMesh();
+
+		for (final IVertex vertex : vertices) {
+			newMesh.addVertex(vertex.transform(transformation).getPoint());
+		}
+		for (final TriangleFace face : faces) {
+			newMesh.addFace(face.getVertex(0).getIndex(), face.getVertex(1)
+					.getIndex(), face.getVertex(2).getIndex());
+		}
+		return newMesh;
 	}
 
 	public class FaceInstanceCreator implements

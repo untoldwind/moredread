@@ -2,12 +2,14 @@ package net.untoldwind.moredread.model.mesh;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import net.untoldwind.moredread.model.enums.MeshType;
 import net.untoldwind.moredread.model.op.ITriangulator;
 import net.untoldwind.moredread.model.op.TriangulatorFactory;
 import net.untoldwind.moredread.model.state.IStateReader;
+import net.untoldwind.moredread.model.transform.ITransformation;
 
 public class PolyMesh extends Mesh<PolyFace> {
 
@@ -29,7 +31,8 @@ public class PolyMesh extends Mesh<PolyFace> {
 			vertexList.add(vertex);
 		}
 
-		final List<AbstractEdge> edgeList = new ArrayList<AbstractEdge>(vertexIndices.length);
+		final List<AbstractEdge> edgeList = new ArrayList<AbstractEdge>(
+				vertexIndices.length);
 
 		for (int i = 0; i < vertexIndices.length; i++) {
 			final Vertex vertex1 = vertexList.get(i);
@@ -97,6 +100,30 @@ public class PolyMesh extends Mesh<PolyFace> {
 			}
 		}
 		return triangleMesh;
+	}
+
+	@Override
+	public IMesh transform(final ITransformation transformation) {
+		final PolyMesh newMesh = new PolyMesh();
+
+		for (final IVertex vertex : vertices) {
+			newMesh.addVertex(vertex.transform(transformation).getPoint());
+		}
+		for (final PolyFace face : faces) {
+			final int[] stripCounts = face.getPolygonStripCounts();
+			final int[][] vertexStripIndices = new int[stripCounts.length][];
+			final Iterator<Vertex> it = face.getVertices().iterator();
+			for (int i = 0; i < stripCounts.length; i++) {
+				vertexStripIndices[i] = new int[stripCounts[i]];
+				for (int j = 0; j < stripCounts[i]; j++) {
+					vertexStripIndices[i][j] = it.next().getIndex();
+				}
+			}
+			newMesh.addFace(face.getVertex(0).getIndex(), face.getVertex(1)
+					.getIndex(), face.getVertex(2).getIndex(), face
+					.getVertex(3).getIndex());
+		}
+		return newMesh;
 	}
 
 	@Override

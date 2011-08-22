@@ -6,10 +6,17 @@ import com.jme.math.Vector3f;
 
 public class MatrixTransformation implements ITransformation {
 	private final Matrix4f transformation;
+	private final Quaternion rotation;
+	private final Vector3f translation;
+	private final Vector3f scale;
 
 	public MatrixTransformation(final Vector3f scale,
 			final Quaternion rotation, final Vector3f translation) {
 		transformation = new Matrix4f();
+
+		this.rotation = rotation;
+		this.translation = translation;
+		this.scale = scale;
 
 		transformation.multLocal(rotation);
 		transformation.scale(scale);
@@ -38,4 +45,20 @@ public class MatrixTransformation implements ITransformation {
 		transformation.rotateVect(store);
 		return store;
 	}
+
+	@Override
+	public Quaternion getRotation() {
+		return rotation;
+	}
+
+	@Override
+	public Vector3f getTranslation() {
+		return translation;
+	}
+
+	@Override
+	public Vector3f getScale() {
+		return scale;
+	}
+
 }

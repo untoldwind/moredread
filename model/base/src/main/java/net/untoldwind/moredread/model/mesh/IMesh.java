@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.untoldwind.moredread.model.enums.MeshType;
 
-public interface IMesh extends IGeometry {
+public interface IMesh extends IGeometry<IMesh> {
 	MeshType getMeshType();
 
 	List<? extends IVertex> getVertices();

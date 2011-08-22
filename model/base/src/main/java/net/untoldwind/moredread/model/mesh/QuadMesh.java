@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import net.untoldwind.moredread.model.enums.MeshType;
 import net.untoldwind.moredread.model.state.IStateReader;
+import net.untoldwind.moredread.model.transform.ITransformation;
 
 public class QuadMesh extends Mesh<QuadFace> {
 	@Override
@@ -53,6 +54,21 @@ public class QuadMesh extends Mesh<QuadFace> {
 		}
 
 		return mesh;
+	}
+
+	@Override
+	public IMesh transform(final ITransformation transformation) {
+		final QuadMesh newMesh = new QuadMesh();
+
+		for (final IVertex vertex : vertices) {
+			newMesh.addVertex(vertex.transform(transformation).getPoint());
+		}
+		for (final QuadFace face : faces) {
+			newMesh.addFace(face.getVertex(0).getIndex(), face.getVertex(1)
+					.getIndex(), face.getVertex(2).getIndex(), face
+					.getVertex(3).getIndex());
+		}
+		return newMesh;
 	}
 
 	public class FaceInstanceCreator implements

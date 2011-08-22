@@ -130,8 +130,8 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 
 			if (isChildNodeSelected) {
 				final GhostNodeRenderer ghostNodeRenderer = new GhostNodeRenderer(
-						rendererAdapter.getRenderer(), rendererAdapter
-								.getSelectionMode());
+						rendererAdapter.getRenderer(),
+						rendererAdapter.getSelectionMode());
 				renderedGeometries = ghostNodeRenderer.renderNode(this);
 			} else {
 				renderedGeometries = rendererAdapter.renderNode(this);
@@ -151,8 +151,8 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 			// Iterate childs only in case of a selection
 			if (isChildNodeSelected) {
 				final SubSelectionNodeRenderer subRendererAdapter = new SubSelectionNodeRenderer(
-						rendererAdapter.getRenderer(), rendererAdapter
-								.getSelectionMode());
+						rendererAdapter.getRenderer(),
+						rendererAdapter.getSelectionMode());
 
 				for (final IGeneratorInput child : children) {
 					if (child instanceof AbstractSpatialNode) {
