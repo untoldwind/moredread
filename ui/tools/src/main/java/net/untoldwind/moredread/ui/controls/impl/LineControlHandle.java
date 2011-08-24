@@ -18,6 +18,7 @@ public class LineControlHandle implements IControlHandle {
 	private final Float fixedSalience;
 	private Vector2f screenStart;
 	private Vector2f screenDirection;
+	private Vector2f dragScreenDirection;
 
 	private final IToolAdapter toolAdapter;
 
@@ -92,21 +93,36 @@ public class LineControlHandle implements IControlHandle {
 	}
 
 	@Override
-	public void handleDrag(final Vector2f dragStart, final Vector2f dragEnd,
-			final EnumSet<Modifier> modifiers, final boolean finished) {
-		final Vector2f diff = dragEnd.subtract(dragStart);
-		final float amount = diff.dot(screenDirection)
-				/ screenDirection.lengthSquared();
+	public void handleDragStart(final Vector2f dragStart,
+			final EnumSet<Modifier> modifiers) {
+		dragScreenDirection = screenDirection.clone();
+		moveStart = toolAdapter.getCenter().clone();
+	}
 
-		if (moveStart == null) {
-			moveStart = toolAdapter.getCenter().clone();
-		}
+	@Override
+	public void handleDragMove(final Vector2f dragStart,
+			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
+		final Vector2f diff = dragEnd.subtract(dragStart);
+		final float amount = diff.dot(dragScreenDirection)
+				/ dragScreenDirection.lengthSquared();
+
 		final Vector3f v = worldDirection.mult(amount).addLocal(moveStart);
 
-		toolAdapter.handleDrag(v, modifiers, finished);
-
-		if (finished) {
-			moveStart = null;
-		}
+		toolAdapter.handleDragMove(v, modifiers);
 	}
+
+	@Override
+	public void handleDragEnd(final Vector2f dragStart, final Vector2f dragEnd,
+			final EnumSet<Modifier> modifiers) {
+		final Vector2f diff = dragEnd.subtract(dragStart);
+		final float amount = diff.dot(dragScreenDirection)
+				/ dragScreenDirection.lengthSquared();
+
+		final Vector3f v = worldDirection.mult(amount).addLocal(moveStart);
+
+		toolAdapter.handleDragEnd(v, modifiers);
+
+		moveStart = null;
+	}
+
 }

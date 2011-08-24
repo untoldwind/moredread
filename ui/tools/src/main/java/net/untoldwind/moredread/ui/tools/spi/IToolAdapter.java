@@ -32,6 +32,8 @@ public interface IToolAdapter {
 	 */
 	void handleClick(final Vector3f point, final EnumSet<Modifier> modifiers);
 
+	void handleDragStart(Vector3f point, final EnumSet<Modifier> modifiers);
+
 	/**
 	 * Handle/react to a drap event
 	 * 
@@ -40,10 +42,8 @@ public interface IToolAdapter {
 	 *            do all 3D-transformation stuff)
 	 * @param modifiers
 	 *            Modifier (mouse-button, keyboard ...)
-	 * @param finished
-	 *            <tt>true</tt> if the drag is completed, <tt>false</tt> if drag
-	 *            is still ongoing
 	 */
-	void handleDrag(final Vector3f point, final EnumSet<Modifier> modifiers,
-			final boolean finished);
+	void handleDragMove(final Vector3f point, final EnumSet<Modifier> modifiers);
+
+	void handleDragEnd(Vector3f point, final EnumSet<Modifier> modifiers);
 }

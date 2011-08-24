@@ -94,8 +94,20 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public void handleDrag(final Vector3f point,
-				final EnumSet<Modifier> modifiers, final boolean finished) {
+		public void handleDragStart(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
+			// Do nothing
+		}
+
+		@Override
+		public void handleDragMove(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
+			// Do nothing
+		}
+
+		@Override
+		public void handleDragEnd(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
 			// Do nothing
 		}
 	}
@@ -137,56 +149,73 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public void handleDrag(final Vector3f point,
-				final EnumSet<Modifier> modifiers, final boolean finished) {
+		public void handleDragStart(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
+		}
+
+		@Override
+		public void handleDragMove(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
 			scene.getSceneChangeHandler().begin(true);
 
 			try {
-				final Vector3f centerDiff = getCenter();
-				centerDiff.subtractLocal(point);
-
-				final Set<INode> changedNodes = new HashSet<INode>();
-				final Set<VertexSelection> updatedVertices = new HashSet<VertexSelection>();
-
-				for (final EdgeSelection edgeSelection : scene
-						.getSceneSelection().getSelectedEdges()) {
-					final IMeshNode node = edgeSelection.getNode();
-					final Mesh<?> mesh = node.getEditableGeometry();
-					final AbstractEdge edge = mesh.getEdge(edgeSelection
-							.getEdgeIndex());
-
-					final Vertex vertex1 = edge.getVertex1();
-					final VertexSelection vertex1Id = new VertexSelection(node,
-							vertex1.getIndex());
-					if (!updatedVertices.contains(vertex1Id)) {
-						updatedVertices.add(vertex1Id);
-						final Vector3f worldPoint = node.localToWorld(
-								vertex1.getPoint(), new Vector3f());
-						worldPoint.subtractLocal(centerDiff);
-						vertex1.setPoint(node.worldToLocal(worldPoint,
-								new Vector3f()));
-					}
-
-					final Vertex vertex2 = edge.getVertex2();
-					final VertexSelection vertex2Id = new VertexSelection(node,
-							vertex2.getIndex());
-					if (!updatedVertices.contains(vertex2Id)) {
-						updatedVertices.add(vertex2Id);
-						final Vector3f worldPoint = node.localToWorld(
-								vertex2.getPoint(), new Vector3f());
-						worldPoint.subtractLocal(centerDiff);
-						vertex2.setPoint(node.worldToLocal(worldPoint,
-								new Vector3f()));
-					}
-
-					changedNodes.add(node);
-				}
+				updateScene(point);
 			} finally {
-				if (finished) {
-					scene.getSceneChangeHandler().commit();
-				} else {
-					scene.getSceneChangeHandler().savepoint();
+				scene.getSceneChangeHandler().savepoint();
+			}
+		}
+
+		@Override
+		public void handleDragEnd(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
+			scene.getSceneChangeHandler().begin(true);
+
+			try {
+				updateScene(point);
+			} finally {
+				scene.getSceneChangeHandler().commit();
+			}
+		}
+
+		private void updateScene(final Vector3f point) {
+			final Vector3f centerDiff = getCenter();
+			centerDiff.subtractLocal(point);
+
+			final Set<INode> changedNodes = new HashSet<INode>();
+			final Set<VertexSelection> updatedVertices = new HashSet<VertexSelection>();
+
+			for (final EdgeSelection edgeSelection : scene.getSceneSelection()
+					.getSelectedEdges()) {
+				final IMeshNode node = edgeSelection.getNode();
+				final Mesh<?> mesh = node.getEditableGeometry();
+				final AbstractEdge edge = mesh.getEdge(edgeSelection
+						.getEdgeIndex());
+
+				final Vertex vertex1 = edge.getVertex1();
+				final VertexSelection vertex1Id = new VertexSelection(node,
+						vertex1.getIndex());
+				if (!updatedVertices.contains(vertex1Id)) {
+					updatedVertices.add(vertex1Id);
+					final Vector3f worldPoint = node.localToWorld(
+							vertex1.getPoint(), new Vector3f());
+					worldPoint.subtractLocal(centerDiff);
+					vertex1.setPoint(node.worldToLocal(worldPoint,
+							new Vector3f()));
 				}
+
+				final Vertex vertex2 = edge.getVertex2();
+				final VertexSelection vertex2Id = new VertexSelection(node,
+						vertex2.getIndex());
+				if (!updatedVertices.contains(vertex2Id)) {
+					updatedVertices.add(vertex2Id);
+					final Vector3f worldPoint = node.localToWorld(
+							vertex2.getPoint(), new Vector3f());
+					worldPoint.subtractLocal(centerDiff);
+					vertex2.setPoint(node.worldToLocal(worldPoint,
+							new Vector3f()));
+				}
+
+				changedNodes.add(node);
 			}
 		}
 	}
