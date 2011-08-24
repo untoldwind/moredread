@@ -69,6 +69,16 @@
             id="net.untoldwind.moredread.ui.selectionMode.category"
             name="Selection mode">
       </category>
+      <category
+            description="Camera controls"
+            id="net.untoldwind.moredread.ui.category.Camera"
+            name="Camera">
+      </category>
+      <commandParameterType
+            converter="net.untoldwind.moredread.ui.handlers.SelectionModeParameterValueConverter"
+            id="net.untoldwind.moredread.ui.selectionMode"
+            type="net.untoldwind.moredread.model.enums.SelectionMode">
+      </commandParameterType>
       <command
             categoryId="net.untoldwind.moredread.ui.selectionMode.category"
             defaultHandler="net.untoldwind.moredread.ui.handlers.SelectionModeHandler"
@@ -82,6 +92,13 @@
                typeId="net.untoldwind.moredread.ui.selectionMode"
                values="net.untoldwind.moredread.ui.handlers.SelectionModeParameterValues">
          </commandParameter>
+      </command>
+      <command
+            categoryId="net.untoldwind.moredread.ui.category.Camera"
+            defaultHandler="net.untoldwind.moredread.ui.handlers.CameraMoveHandler"
+            description="Camera move"
+            id="net.untoldwind.moredread.ui.cameraMove"
+            name="Camera move">
       </command>
    </extension>
    <extension
@@ -138,6 +155,12 @@
                value="VERTEX">
          </parameter>
       </key>
+      <key
+            commandId="net.untoldwind.moredread.ui.cameraMove"
+            contextId="net.untoldwind.moredread.ui.context.3dview"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="U">
+      </key>
    </extension>
    <extension
          id="product"
@@ -162,18 +185,6 @@
                value="MoreDread">
          </property>
       </product>
-   </extension>
-   <extension
-         point="org.eclipse.ui.commands">
-      <category
-            description="Camera controls"
-            id="net.untoldwind.moredread.ui.category.Camera"
-            name="Camera">
-      </category>
-      <command
-            id="moredread-ui.command1"
-            name="name">
-      </command>
    </extension>
    <extension
          point="org.eclipse.equinox.preferences.preferences">
