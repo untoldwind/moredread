@@ -1,0 +1,52 @@
+<bundles>
+	<dependencySet>
+		<bundle>net.untoldwind.moredread.engine:jme:jar:plugin</bundle>
+		<bundle>net.untoldwind.moredread.engine:lwjgl:jar:plugin</bundle>
+		<bundle>net.untoldwind.moredread.engine:lwjgl-macosx:jar:plugin</bundle>
+		<bundle>net.untoldwind.moredread.engine:utils:jar:plugin</bundle>
+		<bundle>net.untoldwind.moredread.model:base:jar:plugin</bundle>
+		<bundle>net.untoldwind.moredread.model:io:jar:plugin</bundle>
+		<bundle>net.untoldwind.moredread.ui:base:jar:plugin</bundle>
+		<bundle>net.untoldwind.moredread.ui:input:jar:plugin</bundle>
+		<bundle>net.untoldwind.moredread.ui:tools:jar:plugin</bundle>
+
+		<bundle>com.ibm:icu</bundle>
+		<bundle auto-start="true" start-level="-1">org.eclipse:osgi</bundle>
+		<bundle>org.eclipse.osgi:services</bundle>
+		<bundle>org.eclipse:help</bundle>
+		<bundle>org.eclipse:rcp</bundle>
+		<bundle>org.eclipse:ui</bundle>
+		<bundle>org.eclipse.ui:forms</bundle>
+		<bundle>org.eclipse.ui:views</bundle>
+		<bundle>org.eclipse.ui.views.properties:tabbed</bundle>
+		<bundle>org.eclipse:jface</bundle>
+		<bundle>org.eclipse.jface:databinding</bundle>
+		<bundle>org.eclipse:swt</bundle>
+		<bundle auto-start="true">org.eclipse.core:runtime</bundle>
+		<bundle>org.eclipse.core.runtime.compatibility:auth</bundle>
+		<bundle>org.eclipse.core:commands</bundle>
+		<bundle>org.eclipse.core:contenttype</bundle>
+		<bundle>org.eclipse.core:databinding</bundle>
+		<bundle>org.eclipse.core.databinding:beans</bundle>
+		<bundle>org.eclipse.core.databinding:observable</bundle>
+		<bundle>org.eclipse.core.databinding:property</bundle>
+		<bundle>org.eclipse.core:expressions</bundle>
+		<bundle>org.eclipse.core:jobs</bundle>
+		<bundle>org.eclipse.equinox:app</bundle>
+		<bundle auto-start="true" start-level="2">org.eclipse.equinox:common</bundle>
+		<bundle>org.eclipse.equinox:launcher</bundle>
+		<bundle>org.eclipse.equinox:preferences</bundle>
+		<bundle>org.eclipse.equinox:registry</bundle>
+		<bundle auto-start="true" start-level="1">org.eclipse.equinox:simpleconfigurator</bundle>
+		<bundle auto-start="true" start-level="1">org.eclipse.equinox:ds</bundle>
+		<bundle>org.eclipse.equinox:util</bundle>
+		<bundle>org.eclipse.ui:workbench</bundle>
+		<bundle>org.eclipse.ui:cocoa</bundle>
+		<bundle>org.eclipse.swt.cocoa.macosx:x86_64</bundle>
+		<bundle auto-start="true">org.eclipse.update:configurator</bundle>
+	</dependencySet>
+	<manual>
+		<bundle version="1.1.100.v20110502" path="true">org.eclipse.equinox.launcher.cocoa.macosx.x86_64</bundle>
+	</manual>
+</bundles>
+				

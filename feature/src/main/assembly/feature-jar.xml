@@ -1,0 +1,13 @@
+<assembly>
+	<id>feature</id>
+	<formats>
+		<format>jar</format>
+	</formats>
+	<includeBaseDirectory>false</includeBaseDirectory>
+	<files>
+		<file>
+			<source>feature.xml</source>
+			<outputDirectory>/</outputDirectory>
+		</file>
+	</files>
+</assembly>

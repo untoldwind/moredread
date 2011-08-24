@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="MoreDread" uid="MoreDread" id="net.untoldwind.moredread.ui.product" application="net.untoldwind.moredread.ui.application" version="1.0.0.qualifier" useFeatures="true" includeLaunchers="true">
+<product name="MoreDread" uid="MoreDread" id="net.untoldwind.moredread.ui.base.product" application="net.untoldwind.moredread.ui.base.application" version="1.0.0" useFeatures="true" includeLaunchers="true">
 
    <aboutInfo>
       <image path="product_lg.gif"/>
@@ -34,8 +34,8 @@
       <plugin id="net.untoldwind.moredread.jme"/>
       <plugin id="net.untoldwind.moredread.lwjgl"/>
       <plugin id="net.untoldwind.moredread.lwjgl.macosx" fragment="true"/>
-      <plugin id="net.untoldwind.moredread.model"/>
-      <plugin id="net.untoldwind.moredread.ui"/>
+      <plugin id="net.untoldwind.moredread.model" fragment=""/>
+      <plugin id="net.untoldwind.moredread.ui" fragment=""/>
       <plugin id="net.untoldwind.moredread.ui.tools"/>
       <plugin id="net.untoldwind.moredread.utils"/>
       <plugin id="org.eclipse.core.commands"/>
@@ -63,8 +63,8 @@
    </plugins>
 
    <features>
-      <feature id="net.untoldwind.moredread" version="0.9.0"/>
-      <feature id="org.eclipse.rcp" version="3.5.1.R35x_v20090811-9SA0FxVFqE70OL1ARMrfcO6e7BA6"/>
+      <feature id="net.untoldwind.moredread.feature" version="0.9.0"/>
+      <feature id="org.eclipse.rcp" version="3.7.0.v20110216-9DB5Fm1FpBGy_AaVz-mFamgY"/>
    </features>
 
 

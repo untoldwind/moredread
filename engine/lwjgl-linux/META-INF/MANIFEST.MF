@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Eclipse-PlatformFilter: (& (osgi.os=linux) (osgi.arch=x86))
 Bundle-ManifestVersion: 2
 Bundle-Name: Moredread Lwjgl Linux (32-bit)
-Bundle-SymbolicName: net.untoldwind.moredread.lwjgl.linux
-Bundle-Version: 2.1.0
+Bundle-SymbolicName: net.untoldwind.moredread.engine.lwjgl-linux
+Bundle-Version: 2.7.1
 Bundle-Vendor: untoldwind.net
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Fragment-Host: net.untoldwind.moredread.lwjgl;bundle-version="2.1.0"
+Fragment-Host: net.untoldwind.moredread.engine.lwjgl;bundle-version="2.1.0"
 Bundle-ClassPath: jinput.jar,
  lwjgl_util.jar,
  lwjgl.jar,

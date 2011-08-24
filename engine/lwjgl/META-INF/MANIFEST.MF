@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Moredread Lwjgl
-Bundle-SymbolicName: net.untoldwind.moredread.lwjgl
-Bundle-Version: 2.1.0
+Bundle-SymbolicName: net.untoldwind.moredread.engine.lwjgl
+Bundle-Version: 2.7.1
 Bundle-Vendor: untoldwind.net
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Eclipse-ExtensibleAPI: true

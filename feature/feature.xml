@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="net.untoldwind.moredread"
+      id="net.untoldwind.moredread.feature"
       label="MoreDread"
       version="0.9.0"
       provider-name="untoldwind.net"
-      plugin="net.untoldwind.moredread.ui">
+      plugin="net.untoldwind.moredread.ui.base">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -19,21 +19,21 @@
    </license>
 
    <plugin
-         id="net.untoldwind.moredread.jme"
+         id="net.untoldwind.moredread.engine.jme"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="net.untoldwind.moredread.lwjgl"
+         id="net.untoldwind.moredread.engine.lwjgl"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="net.untoldwind.moredread.lwjgl.linux"
+         id="net.untoldwind.moredread.engine.lwjgl-linux"
          os="linux"
          arch="x86"
          download-size="0"
@@ -43,7 +43,7 @@
          unpack="false"/>
 
    <plugin
-         id="net.untoldwind.moredread.lwjgl.linux64"
+         id="net.untoldwind.moredread.engine.lwjgl-linux64"
          os="linux"
          arch="x86_64"
          download-size="0"
@@ -53,7 +53,7 @@
          unpack="false"/>
 
    <plugin
-         id="net.untoldwind.moredread.lwjgl.macosx"
+         id="net.untoldwind.moredread.engine.lwjgl-macosx"
          os="macosx"
          download-size="0"
          install-size="0"
@@ -62,7 +62,7 @@
          unpack="false"/>
 
    <plugin
-         id="net.untoldwind.moredread.lwjgl.win32"
+         id="net.untoldwind.moredread.engine.lwjgl-win32"
          os="win32"
          download-size="0"
          install-size="0"
@@ -71,14 +71,14 @@
          unpack="false"/>
 
    <plugin
-         id="net.untoldwind.moredread.model"
+         id="net.untoldwind.moredread.model.base"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="net.untoldwind.moredread.ui"
+         id="net.untoldwind.moredread.ui.base"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -92,7 +92,7 @@
          unpack="false"/>
 
    <plugin
-         id="net.untoldwind.moredread.utils"
+         id="net.untoldwind.moredread.engine.utils"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -100,6 +100,34 @@
 
    <plugin
          id="net.untoldwind.moredread.ui.input"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="net.untoldwind.moredread.model.io"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.views"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.views.properties.tabbed"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.ui.forms"
          download-size="0"
          install-size="0"
          version="0.0.0"
