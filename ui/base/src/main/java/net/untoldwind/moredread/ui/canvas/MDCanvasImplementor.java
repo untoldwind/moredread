@@ -33,8 +33,6 @@ import com.jme.scene.state.BlendState;
 import com.jme.scene.state.BlendState.BlendEquation;
 import com.jme.scene.state.ZBufferState;
 import com.jme.system.canvas.SimpleCanvasImpl;
-import com.jme.util.GameTaskQueue;
-import com.jme.util.GameTaskQueueManager;
 
 public class MDCanvasImplementor extends SimpleCanvasImpl implements
 		IDisplaySystem {
@@ -57,6 +55,8 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 	private final ISceneHolder sceneHolder;
 
 	boolean updateNecessary = true;
+
+	TaskQueue taskQueue = new TaskQueue();
 
 	public MDCanvasImplementor(final int width, final int height,
 			final ISceneHolder sceneHolder) {
@@ -184,8 +184,7 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 				return null;
 			}
 		};
-		GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE)
-				.enqueue(exe);
+		taskQueue.enqueue(exe);
 	}
 
 	@Override
@@ -236,6 +235,14 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 
 		controlsNode.updateGeometricState(0, true);
 		controlsNode.updateRenderState();
+	}
+
+	public void handleMove(final int x, final int y,
+			final EnumSet<Modifier> modifiers) {
+		if (activeControlHandle != null) {
+			activeControlHandle.handleMove(new Vector2f(x, height - y),
+					modifiers);
+		}
 	}
 
 	public void handleClick(final int x, final int y,
@@ -294,6 +301,10 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 			return true;
 		}
 		return false;
+	}
+
+	public TaskQueue getTaskQueue() {
+		return taskQueue;
 	}
 
 	private List<IControlHandle> getControlHandles() {

@@ -77,6 +77,12 @@ public class VertexSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
+		public void handleMove(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
+			// Do nothing
+		}
+
+		@Override
 		public void handleClick(final Vector3f point,
 				final EnumSet<Modifier> modifiers) {
 			// Click anywhere inside face is ok
@@ -137,6 +143,12 @@ public class VertexSelectionToolHandler implements IToolHandler {
 				center.divideLocal(count);
 			}
 			return center;
+		}
+
+		@Override
+		public void handleMove(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
+			// Do nothing
 		}
 
 		@Override

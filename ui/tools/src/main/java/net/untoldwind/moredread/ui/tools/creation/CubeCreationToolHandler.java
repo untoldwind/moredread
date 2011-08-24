@@ -33,6 +33,13 @@ public class CubeCreationToolHandler implements IToolHandler {
 		}
 
 		@Override
+		public void handleMove(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
 		public void handleClick(final Vector3f point,
 				final EnumSet<Modifier> modifiers) {
 			// TODO Auto-generated method stub

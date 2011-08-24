@@ -321,9 +321,21 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 	class DragViewListener implements MouseMoveListener, MouseListener {
 		boolean drag = false;
 		int dragStartX, dragStartY;
+		IDragHandler rotateHandler = new RotateXYHandler();
 
 		public void mouseMove(final MouseEvent e) {
-			if ((e.stateMask & SWT.BUTTON1) != 0
+			if ((e.stateMask & SWT.BUTTON3) != 0) {
+				final int xDiff = (e.x - dragStartX);
+				final int yDiff = (e.y - dragStartY);
+
+				if (xDiff * xDiff + yDiff * yDiff > 3) {
+					rotateHandler
+							.handleDrag(e.x - dragStartX, e.y - dragStartY);
+
+					dragStartX = e.x;
+					dragStartY = e.y;
+				}
+			} else if ((e.stateMask & SWT.BUTTON1) != 0
 					&& (e.x - dragStartX) * (e.x - dragStartX)
 							+ (e.y - dragStartY) * (e.y - dragStartY) >= 4) {
 				if (!drag) {
@@ -335,6 +347,8 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 						Modifier.fromStateMask(e.stateMask));
 			} else {
 				if (implementor.findControl(e.x, e.y)) {
+					implementor.handleMove(e.x, e.y,
+							Modifier.fromStateMask(e.stateMask));
 					canvas.queueRender();
 				}
 			}

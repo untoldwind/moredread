@@ -58,6 +58,12 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
+		public void handleMove(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
+			// Do nothing
+		}
+
+		@Override
 		public void handleClick(final Vector3f point,
 				final EnumSet<Modifier> modifiers) {
 			if (modifiers.contains(Modifier.LEFT_MOUSE_BUTTON)) {
@@ -117,6 +123,12 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 			}
 
 			return center;
+		}
+
+		@Override
+		public void handleMove(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
+			// Do nothing
 		}
 
 		@Override

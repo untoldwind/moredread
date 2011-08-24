@@ -81,6 +81,18 @@ public class LineControlHandle implements IControlHandle {
 	}
 
 	@Override
+	public void handleMove(final Vector2f position,
+			final EnumSet<Modifier> modifiers) {
+		final Vector2f diff = position.subtract(screenStart);
+		final float amount = diff.dot(screenDirection)
+				/ screenDirection.lengthSquared();
+
+		final Vector3f v = worldDirection.mult(amount).addLocal(moveStart);
+
+		toolAdapter.handleMove(v, modifiers);
+	}
+
+	@Override
 	public void handleClick(final Vector2f position,
 			final EnumSet<Modifier> modifiers) {
 		final Vector2f diff = position.subtract(screenStart);
