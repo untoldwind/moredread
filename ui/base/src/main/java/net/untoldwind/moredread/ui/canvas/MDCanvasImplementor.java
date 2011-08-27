@@ -222,9 +222,7 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 
 		final IToolController toolController = UIToolsPlugin.getDefault()
 				.getToolController();
-		toolController.setSelectionMode(sceneHolder.getSelectionMode());
-		toolController.setSceneSelection(sceneHolder.getScene()
-				.getSceneSelection());
+
 		for (final IToolDescriptor tool : toolController.getEnabledTools()) {
 			final List<? extends IModelControl> toolControls = tool
 					.getModelControls(sceneHolder.getScene(), this);
