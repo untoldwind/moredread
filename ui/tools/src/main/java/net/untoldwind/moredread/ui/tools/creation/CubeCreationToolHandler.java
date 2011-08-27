@@ -1,11 +1,13 @@
 package net.untoldwind.moredread.ui.tools.creation;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.Modifier;
+import net.untoldwind.moredread.ui.controls.impl.MoveCrossModelControl;
 import net.untoldwind.moredread.ui.tools.IDisplaySystem;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 import net.untoldwind.moredread.ui.tools.spi.IToolHandler;
@@ -21,8 +23,10 @@ public class CubeCreationToolHandler implements IToolHandler {
 	@Override
 	public List<? extends IModelControl> getModelControls(final Scene scene,
 			final IDisplaySystem displaySystem) {
-		// TODO Auto-generated method stub
-		return null;
+		final List<IModelControl> controls = new ArrayList<IModelControl>();
+
+		controls.add(new MoveCrossModelControl(new CubeCreateAdapter()));
+		return controls;
 	}
 
 	public static class CubeCreateAdapter implements IToolAdapter {

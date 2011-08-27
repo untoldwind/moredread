@@ -102,7 +102,7 @@ public class ToolSelectionView extends ViewPart implements
 			toolDescriptor.activate(MoreDreadUI.getDefault().getSceneHolder()
 					.getScene());
 		} catch (final Throwable e) {
-			e.printStackTrace();
+			MoreDreadUI.getDefault().log(e);
 		}
 	}
 
@@ -112,7 +112,7 @@ public class ToolSelectionView extends ViewPart implements
 		final SceneSelection sceneSelection = MoreDreadUI.getDefault()
 				.getSceneHolder().getScene().getSceneSelection();
 		final Set<IToolDescriptor> activeTools = UIToolsPlugin.getDefault()
-				.getActiveTools(selectionMode, sceneSelection);
+				.getEnabledTools(selectionMode, sceneSelection);
 
 		for (final ToolItem toolItem : toolBar.getItems()) {
 			toolItem.setEnabled(activeTools.contains(toolItem.getData()));

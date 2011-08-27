@@ -1,5 +1,8 @@
 package net.untoldwind.moredread.jme;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -25,9 +28,12 @@ public class MoreDreadJME extends Plugin {
 		super.start(context);
 		plugin = this;
 
+		Logger.getLogger("com.jme").setLevel(Level.OFF);
+
 		displaySystem = DisplaySystem.getDisplaySystem("LWJGL");
 		KeyInput.setProvider(MDKeyInput.class.getCanonicalName());
 		MouseInput.setProvider(MDMouseInput.class.getCanonicalName());
+
 	}
 
 	/**

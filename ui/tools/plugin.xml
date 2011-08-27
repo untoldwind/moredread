@@ -25,10 +25,10 @@
             id="net.untoldwind.moredread.ui.tool.objectSelection"
             label="Select Object"
             type="TOGGLE">
-         <activation
+         <enablement
                selectionCount="0-*"
                selectionMode="OBJECT">
-         </activation>
+         </enablement>
       </tool>
       <tool
             categoryId="net.untoldwind.moredread.ui.tool.category.default"
@@ -37,10 +37,10 @@
             id="net.untoldwind.moredread.ui.tool.faceSelection"
             label="Select Face"
             type="TOGGLE">
-         <activation
+         <enablement
                selectionCount="0-*"
                selectionMode="FACE">
-         </activation>
+         </enablement>
       </tool>
       <tool
             categoryId="net.untoldwind.moredread.ui.tool.category.default"
@@ -49,10 +49,10 @@
             id="net.untoldwind.moredread.ui.tool.edgeSelection"
             label="Select Edge"
             type="TOGGLE">
-         <activation
+         <enablement
                selectionCount="0-*"
                selectionMode="EDGE">
-         </activation>
+         </enablement>
       </tool>
       <tool
             categoryId="net.untoldwind.moredread.ui.tool.category.default"
@@ -61,10 +61,10 @@
             id="net.untoldwind.moredread.ui.tool.vertexSelection"
             label="Select Vertex"
             type="TOGGLE">
-         <activation
+         <enablement
                selectionCount="0-*"
                selectionMode="VERTEX">
-         </activation>
+         </enablement>
       </tool>
       <tool
             categoryId="net.untoldwind.moredread.ui.tool.category.utilities"
@@ -73,14 +73,14 @@
             id="net.untoldwind.moredread.ui.tool.triangulate"
             label="Triangulate faces"
             type="PUSH">
-         <activation
+         <enablement
                selectionCount="1-*"
                selectionMode="OBJECT">
-         </activation>
-         <activation
+         </enablement>
+         <enablement
                selectionCount="1-*"
                selectionMode="FACE">
-         </activation>
+         </enablement>
       </tool>
       <tool
             categoryId="net.untoldwind.moredread.ui.tool.category.utilities"
@@ -89,14 +89,14 @@
             id="net.untoldwind.moredread.ui.tool.mergecoplanar"
             label="Merge coplanar faces"
             type="PUSH">
-         <activation
+         <enablement
                selectionCount="1-*"
                selectionMode="OBJECT">
-         </activation>
-         <activation
+         </enablement>
+         <enablement
                selectionCount="1-*"
                selectionMode="FACE">
-         </activation>
+         </enablement>
       </tool>
       <tool
             categoryId="net.untoldwind.moredread.ui.tool.category.creation"
@@ -104,11 +104,11 @@
             icon="icons/MergeCoplanar.png"
             id="net.untoldwind.moredread.ui.tool.create.cube"
             label="Create cube"
-            type="PUSH">
-         <activation
+            type="TOGGLE">
+         <enablement
                selectionCount="0-*"
                selectionMode="OBJECT">
-         </activation>
+         </enablement>
      </tool>
    </extension>
 

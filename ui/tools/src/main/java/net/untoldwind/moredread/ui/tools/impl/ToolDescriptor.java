@@ -23,7 +23,7 @@ public class ToolDescriptor implements IToolDescriptor {
 	private final String icon;
 	private final IToolHandler toolHandler;
 	private final String categoryId;
-	private final List<ToolActivation> activations;
+	private final List<ToolEnablement> enablements;
 
 	public ToolDescriptor(final IConfigurationElement configElement)
 			throws CoreException {
@@ -37,10 +37,10 @@ public class ToolDescriptor implements IToolDescriptor {
 				.createExecutableExtension("class");
 		categoryId = configElement.getAttribute("categoryId");
 
-		activations = new ArrayList<ToolActivation>();
+		enablements = new ArrayList<ToolEnablement>();
 		for (final IConfigurationElement activationElement : configElement
 				.getChildren()) {
-			activations.add(new ToolActivation(activationElement));
+			enablements.add(new ToolEnablement(activationElement));
 		}
 	}
 
@@ -79,8 +79,8 @@ public class ToolDescriptor implements IToolDescriptor {
 		return null;
 	}
 
-	public List<ToolActivation> getActivations() {
-		return activations;
+	public List<ToolEnablement> getEnablements() {
+		return enablements;
 	}
 
 	public String getCategoryId() {

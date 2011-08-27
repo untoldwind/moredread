@@ -294,7 +294,7 @@ public class MoreDreadUI extends AbstractUIPlugin {
 	}
 
 	public Set<IToolDescriptor> getActiveTools() {
-		return UIToolsPlugin.getDefault().getActiveTools(
+		return UIToolsPlugin.getDefault().getEnabledTools(
 				sceneHolder.getSelectionMode(),
 				sceneHolder.getScene().getSceneSelection());
 	}

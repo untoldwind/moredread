@@ -11,9 +11,9 @@ import java.util.Set;
 import net.untoldwind.moredread.annotations.Singleton;
 import net.untoldwind.moredread.model.enums.SelectionMode;
 import net.untoldwind.moredread.model.scene.SceneSelection;
-import net.untoldwind.moredread.ui.tools.impl.ToolActivation;
 import net.untoldwind.moredread.ui.tools.impl.ToolCategoryDescriptor;
 import net.untoldwind.moredread.ui.tools.impl.ToolDescriptor;
+import net.untoldwind.moredread.ui.tools.impl.ToolEnablement;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -34,7 +34,7 @@ public class UIToolsPlugin extends AbstractUIPlugin {
 
 	private Map<String, ToolCategoryDescriptor> toolCategoryRegistry;
 	private Map<String, ToolDescriptor> toolRegistry;
-	private Map<ToolActivation, List<IToolDescriptor>> toolsByActivation;
+	private Map<ToolEnablement, List<IToolDescriptor>> toolsByEnablement;
 
 	/**
 	 * The constructor
@@ -52,7 +52,7 @@ public class UIToolsPlugin extends AbstractUIPlugin {
 
 		final Map<String, ToolDescriptor> newToolRegistry = new HashMap<String, ToolDescriptor>();
 		final Map<String, ToolCategoryDescriptor> newToolCategoryRegistry = new HashMap<String, ToolCategoryDescriptor>();
-		final Map<ToolActivation, List<IToolDescriptor>> newToolsByActivation = new HashMap<ToolActivation, List<IToolDescriptor>>();
+		final Map<ToolEnablement, List<IToolDescriptor>> newToolsByEnablement = new HashMap<ToolEnablement, List<IToolDescriptor>>();
 
 		final IExtensionRegistry registry = Platform.getExtensionRegistry();
 		final IExtensionPoint toolExtensionPoint = registry
@@ -64,13 +64,13 @@ public class UIToolsPlugin extends AbstractUIPlugin {
 				final ToolDescriptor tool = new ToolDescriptor(element);
 
 				newToolRegistry.put(tool.getId(), tool);
-				for (final ToolActivation activation : tool.getActivations()) {
-					List<IToolDescriptor> tools = newToolsByActivation
-							.get(activation);
+				for (final ToolEnablement enablement : tool.getEnablements()) {
+					List<IToolDescriptor> tools = newToolsByEnablement
+							.get(enablement);
 
 					if (tools == null) {
 						tools = new ArrayList<IToolDescriptor>();
-						newToolsByActivation.put(activation, tools);
+						newToolsByEnablement.put(enablement, tools);
 					}
 					tools.add(tool);
 				}
@@ -92,7 +92,7 @@ public class UIToolsPlugin extends AbstractUIPlugin {
 
 		toolRegistry = newToolRegistry;
 		toolCategoryRegistry = newToolCategoryRegistry;
-		toolsByActivation = newToolsByActivation;
+		toolsByEnablement = newToolsByEnablement;
 	}
 
 	/**
@@ -125,17 +125,17 @@ public class UIToolsPlugin extends AbstractUIPlugin {
 		return toolRegistry.get(toolId);
 	}
 
-	public Set<IToolDescriptor> getActiveTools(
+	public Set<IToolDescriptor> getEnabledTools(
 			final SelectionMode selectionMode,
 			final SceneSelection sceneSelection) {
-		final Set<IToolDescriptor> activeTools = new HashSet<IToolDescriptor>();
+		final Set<IToolDescriptor> enabledTools = new HashSet<IToolDescriptor>();
 
-		for (final Map.Entry<ToolActivation, List<IToolDescriptor>> entry : toolsByActivation
+		for (final Map.Entry<ToolEnablement, List<IToolDescriptor>> entry : toolsByEnablement
 				.entrySet()) {
 			if (entry.getKey().matches(selectionMode, sceneSelection)) {
-				activeTools.addAll(entry.getValue());
+				enabledTools.addAll(entry.getValue());
 			}
 		}
-		return activeTools;
+		return enabledTools;
 	}
 }
