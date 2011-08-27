@@ -40,8 +40,8 @@ public class SelectionModeView extends ViewPart implements
 		objectSelection.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				MoreDreadUI.getDefault().getSceneHolder().setSelectionMode(
-						SelectionMode.OBJECT);
+				MoreDreadUI.getDefault().getSceneHolder()
+						.setSelectionMode(SelectionMode.OBJECT);
 			}
 		});
 		faceSelection = new ToolItem(toolBar, SWT.RADIO | SWT.NONE);
@@ -50,8 +50,8 @@ public class SelectionModeView extends ViewPart implements
 		faceSelection.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				MoreDreadUI.getDefault().getSceneHolder().setSelectionMode(
-						SelectionMode.FACE);
+				MoreDreadUI.getDefault().getSceneHolder()
+						.setSelectionMode(SelectionMode.FACE);
 			}
 		});
 		edgeSelection = new ToolItem(toolBar, SWT.RADIO | SWT.NONE);
@@ -60,8 +60,8 @@ public class SelectionModeView extends ViewPart implements
 		edgeSelection.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				MoreDreadUI.getDefault().getSceneHolder().setSelectionMode(
-						SelectionMode.EDGE);
+				MoreDreadUI.getDefault().getSceneHolder()
+						.setSelectionMode(SelectionMode.EDGE);
 			}
 		});
 		vertexSelection = new ToolItem(toolBar, SWT.RADIO | SWT.NONE);
@@ -70,8 +70,8 @@ public class SelectionModeView extends ViewPart implements
 		vertexSelection.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				MoreDreadUI.getDefault().getSceneHolder().setSelectionMode(
-						SelectionMode.VERTEX);
+				MoreDreadUI.getDefault().getSceneHolder()
+						.setSelectionMode(SelectionMode.VERTEX);
 			}
 		});
 		MoreDreadUI.getDefault().getSceneHolder()

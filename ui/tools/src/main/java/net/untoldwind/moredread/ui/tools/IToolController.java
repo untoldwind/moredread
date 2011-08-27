@@ -17,4 +17,8 @@ public interface IToolController {
 	Set<IToolDescriptor> getEnabledTools();
 
 	void setSceneHolder(ISceneHolder sceneHolder);
+
+	void addToolActivationListener(IToolActivationListener listener);
+
+	void removeToolActivationListener(IToolActivationListener listener);
 }

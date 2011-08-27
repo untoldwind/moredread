@@ -109,11 +109,13 @@ public class ToolSelectionView extends ViewPart implements
 	}
 
 	protected void updateTools() {
+		final IToolDescriptor activeTool = toolController.getActiveTool();
 		final Set<IToolDescriptor> enabledTools = toolController
 				.getEnabledTools();
 
 		for (final ToolItem toolItem : toolBar.getItems()) {
 			toolItem.setEnabled(enabledTools.contains(toolItem.getData()));
+			toolItem.setSelection(activeTool == toolItem.getData());
 		}
 	}
 

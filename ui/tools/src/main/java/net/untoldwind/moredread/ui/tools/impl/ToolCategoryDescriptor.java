@@ -12,12 +12,14 @@ public class ToolCategoryDescriptor implements IToolCategoryDescriptor {
 	private final String id;
 	private final String label;
 	private final boolean visible;
+	private final boolean fallback;
 	private final List<IToolDescriptor> tools;
 
 	public ToolCategoryDescriptor(final IConfigurationElement element) {
 		this.id = element.getAttribute("id");
 		this.label = element.getAttribute("label");
 		this.visible = Boolean.parseBoolean(element.getAttribute("visible"));
+		this.fallback = Boolean.parseBoolean(element.getAttribute("fallback"));
 		this.tools = new ArrayList<IToolDescriptor>();
 	}
 
@@ -32,6 +34,11 @@ public class ToolCategoryDescriptor implements IToolCategoryDescriptor {
 	}
 
 	@Override
+	public boolean isFallback() {
+		return fallback;
+	}
+
+	@Override
 	public boolean isVisible() {
 		return visible;
 	}
@@ -41,7 +48,8 @@ public class ToolCategoryDescriptor implements IToolCategoryDescriptor {
 		return tools;
 	}
 
-	public void addTool(final IToolDescriptor toolDescriptor) {
+	public void addTool(final ToolDescriptor toolDescriptor) {
 		tools.add(toolDescriptor);
+		toolDescriptor.setCategory(this);
 	}
 }

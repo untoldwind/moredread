@@ -29,6 +29,8 @@ import net.untoldwind.moredread.ui.input.event.RotateAroundXCameraUpdate;
 import net.untoldwind.moredread.ui.input.event.RotateAroundYCameraUpdate;
 import net.untoldwind.moredread.ui.preferences.IPreferencesConstants;
 import net.untoldwind.moredread.ui.properties.NodePropertySheetContributor;
+import net.untoldwind.moredread.ui.tools.IToolActivationListener;
+import net.untoldwind.moredread.ui.tools.UIToolsPlugin;
 
 import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -69,7 +71,7 @@ import com.jme.system.DisplaySystem;
 
 public class Model3DView extends ViewPart implements ISaveablePart,
 		ISceneSelectionModeListener, ISceneSelectionChangeListener,
-		ISceneChangeListener {
+		ISceneChangeListener, IToolActivationListener {
 
 	public static final String ID = "net.untoldwind.moredread.ui.model3dview";
 
@@ -178,6 +180,8 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 				.getSceneSelection().addSceneSelectionChangeListener(this);
 		MoreDreadUI.getDefault().getSceneHolder().getScene()
 				.addSceneChangeListener(this);
+		UIToolsPlugin.getDefault().getToolController()
+				.addToolActivationListener(this);
 
 		createGlobalActionHandlers();
 
@@ -188,6 +192,7 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 		final IContextService contextService = (IContextService) getSite()
 				.getService(IContextService.class);
 		contextActivation = contextService.activateContext(CONTEXT_ID);
+
 	}
 
 	@Override
@@ -195,6 +200,15 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 		final IContextService contextService = (IContextService) getSite()
 				.getService(IContextService.class);
 		contextService.deactivateContext(contextActivation);
+
+		MoreDreadUI.getDefault().getSceneHolder()
+				.removeSceneSelectionModeListener(this);
+		MoreDreadUI.getDefault().getSceneHolder().getScene()
+				.getSceneSelection().removeSceneSelectionChangeListener(this);
+		MoreDreadUI.getDefault().getSceneHolder().getScene()
+				.removeSceneChangeListener(this);
+		UIToolsPlugin.getDefault().getToolController()
+				.removeToolActivationListener(this);
 
 		super.dispose();
 	}
@@ -233,6 +247,12 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 	@Override
 	public void sceneChanged(final SceneChangeEvent event) {
 		implementor.updateDisplayNodes();
+		canvas.queueRender();
+	}
+
+	@Override
+	public void activeToolChanged() {
+		implementor.updateToolControls();
 		canvas.queueRender();
 	}
 

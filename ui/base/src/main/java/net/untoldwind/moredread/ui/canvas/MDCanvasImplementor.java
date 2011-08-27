@@ -17,7 +17,6 @@ import net.untoldwind.moredread.ui.controls.Modifier;
 import net.untoldwind.moredread.ui.preferences.IPreferencesConstants;
 import net.untoldwind.moredread.ui.tools.IDisplaySystem;
 import net.untoldwind.moredread.ui.tools.IToolController;
-import net.untoldwind.moredread.ui.tools.IToolDescriptor;
 import net.untoldwind.moredread.ui.tools.UIToolsPlugin;
 
 import com.jme.input.FirstPersonHandler;
@@ -222,15 +221,13 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 
 		final IToolController toolController = UIToolsPlugin.getDefault()
 				.getToolController();
+		final List<? extends IModelControl> toolControls = toolController
+				.getActiveTool().getModelControls(sceneHolder.getScene(), this);
 
-		for (final IToolDescriptor tool : toolController.getEnabledTools()) {
-			final List<? extends IModelControl> toolControls = tool
-					.getModelControls(sceneHolder.getScene(), this);
-
-			if (toolControls != null) {
-				modelControls.addAll(toolControls);
-			}
+		if (toolControls != null) {
+			modelControls.addAll(toolControls);
 		}
+
 		for (final IModelControl modelControl : modelControls) {
 			if (modelControl.getSpatial() != null) {
 				controlsNode.attachChild(modelControl.getSpatial());

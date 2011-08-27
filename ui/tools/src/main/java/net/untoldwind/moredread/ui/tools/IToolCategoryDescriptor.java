@@ -7,6 +7,8 @@ public interface IToolCategoryDescriptor {
 
 	String getLabel();
 
+	boolean isFallback();
+
 	boolean isVisible();
 
 	List<IToolDescriptor> getTools();

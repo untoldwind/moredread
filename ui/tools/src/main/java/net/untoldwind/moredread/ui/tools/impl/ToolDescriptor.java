@@ -6,6 +6,7 @@ import java.util.List;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.tools.IDisplaySystem;
+import net.untoldwind.moredread.ui.tools.IToolCategoryDescriptor;
 import net.untoldwind.moredread.ui.tools.IToolDescriptor;
 import net.untoldwind.moredread.ui.tools.ToolType;
 import net.untoldwind.moredread.ui.tools.spi.IToolHandler;
@@ -23,12 +24,12 @@ public class ToolDescriptor implements IToolDescriptor {
 	private final String icon;
 	private final IToolHandler toolHandler;
 	private final String categoryId;
-	private final boolean fallback;
+	private IToolCategoryDescriptor category;
 	private final List<ToolEnablement> enablements;
+	private ToolController toolController;
 
 	public ToolDescriptor(final IConfigurationElement configElement)
 			throws CoreException {
-
 		pluginId = configElement.getContributor().getName();
 		id = configElement.getAttribute("id");
 		label = configElement.getAttribute("label");
@@ -37,7 +38,6 @@ public class ToolDescriptor implements IToolDescriptor {
 		toolHandler = (IToolHandler) configElement
 				.createExecutableExtension("class");
 		categoryId = configElement.getAttribute("categoryId");
-		fallback = Boolean.parseBoolean(configElement.getAttribute("fallback"));
 
 		enablements = new ArrayList<ToolEnablement>();
 		for (final IConfigurationElement activationElement : configElement
@@ -60,6 +60,11 @@ public class ToolDescriptor implements IToolDescriptor {
 	@Override
 	public String getLabel() {
 		return label;
+	}
+
+	@Override
+	public IToolCategoryDescriptor getCategory() {
+		return category;
 	}
 
 	/**
@@ -89,9 +94,8 @@ public class ToolDescriptor implements IToolDescriptor {
 		return categoryId;
 	}
 
-	@Override
-	public boolean isFallback() {
-		return fallback;
+	void setCategory(final IToolCategoryDescriptor category) {
+		this.category = category;
 	}
 
 	/**
@@ -100,6 +104,8 @@ public class ToolDescriptor implements IToolDescriptor {
 	@Override
 	public void activate(final Scene scene) {
 		toolHandler.activate(scene);
+
+		toolController.setActiveTool(this);
 	}
 
 	/**
@@ -148,6 +154,10 @@ public class ToolDescriptor implements IToolDescriptor {
 			return false;
 		}
 		return true;
+	}
+
+	void setToolController(final ToolController toolController) {
+		this.toolController = toolController;
 	}
 
 }
