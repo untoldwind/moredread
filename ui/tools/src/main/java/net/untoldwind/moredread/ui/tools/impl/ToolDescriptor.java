@@ -23,7 +23,8 @@ public class ToolDescriptor implements IToolDescriptor {
 	private final String icon;
 	private final IToolHandler toolHandler;
 	private final String categoryId;
-	private final List<ToolActivation> activations;
+	private final boolean fallback;
+	private final List<ToolEnablement> enablements;
 
 	public ToolDescriptor(final IConfigurationElement configElement)
 			throws CoreException {
@@ -36,11 +37,12 @@ public class ToolDescriptor implements IToolDescriptor {
 		toolHandler = (IToolHandler) configElement
 				.createExecutableExtension("class");
 		categoryId = configElement.getAttribute("categoryId");
+		fallback = Boolean.parseBoolean(configElement.getAttribute("fallback"));
 
-		activations = new ArrayList<ToolActivation>();
+		enablements = new ArrayList<ToolEnablement>();
 		for (final IConfigurationElement activationElement : configElement
 				.getChildren()) {
-			activations.add(new ToolActivation(activationElement));
+			enablements.add(new ToolEnablement(activationElement));
 		}
 	}
 
@@ -79,12 +81,17 @@ public class ToolDescriptor implements IToolDescriptor {
 		return null;
 	}
 
-	public List<ToolActivation> getActivations() {
-		return activations;
+	public List<ToolEnablement> getEnablements() {
+		return enablements;
 	}
 
 	public String getCategoryId() {
 		return categoryId;
+	}
+
+	@Override
+	public boolean isFallback() {
+		return fallback;
 	}
 
 	/**

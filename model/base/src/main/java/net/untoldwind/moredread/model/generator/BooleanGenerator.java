@@ -23,11 +23,10 @@ public class BooleanGenerator implements IMeshGenerator {
 		int validInputCount = 0;
 
 		for (final IGeneratorInput generatorInput : generatorInputs) {
-			final IGeometry<IMesh> geometry = generatorInput
-					.getRenderGeometry();
+			final IGeometry<?> geometry = generatorInput.getRenderGeometry();
 			if (geometry.getGeometryType() == GeometryType.MESH) {
-				inputs[validInputCount++] = geometry.transform(generatorInput
-						.getLocalTransformation());
+				inputs[validInputCount++] = ((IMesh) geometry)
+						.transform(generatorInput.getLocalTransformation());
 			}
 		}
 

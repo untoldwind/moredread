@@ -11,7 +11,7 @@ import net.untoldwind.moredread.model.mesh.FaceId;
 import net.untoldwind.moredread.model.scene.event.ISceneSelectionChangeListener;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
 
-public class SceneSelection {
+public class SceneSelection implements ISceneSelection {
 	private final Scene scene;
 	private Set<INode> selectedNodes;
 	private final Set<IComposite> selectedParentNodes;
@@ -32,18 +32,22 @@ public class SceneSelection {
 		selectionListeners = new ArrayList<ISceneSelectionChangeListener>();
 	}
 
+	@Override
 	public Set<INode> getSelectedNodes() {
 		return Collections.unmodifiableSet(selectedNodes);
 	}
 
+	@Override
 	public Set<FaceSelection> getSelectedFaces() {
 		return Collections.unmodifiableSet(selectedFaces);
 	}
 
+	@Override
 	public Set<EdgeSelection> getSelectedEdges() {
 		return Collections.unmodifiableSet(selectedEdges);
 	}
 
+	@Override
 	public Set<VertexSelection> getSelectedVertices() {
 		return Collections.unmodifiableSet(selectedVertices);
 	}

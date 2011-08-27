@@ -77,7 +77,7 @@
    <element name="tool">
       <complexType>
          <sequence minOccurs="1" maxOccurs="4">
-            <element ref="activation"/>
+            <element ref="enablement"/>
          </sequence>
          <attribute name="id" type="string" use="required">
             <annotation>
@@ -138,10 +138,17 @@
                </restriction>
             </simpleType>
          </attribute>
+         <attribute name="fallback" type="boolean" use="default" value="false">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 
-   <element name="activation">
+   <element name="enablement">
       <complexType>
          <attribute name="selectionMode" use="required">
             <annotation>

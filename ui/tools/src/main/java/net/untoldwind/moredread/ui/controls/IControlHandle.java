@@ -22,6 +22,8 @@ public interface IControlHandle {
 
 	void setActive(boolean active);
 
+	void handleMove(Vector2f position, EnumSet<Modifier> modifiers);
+
 	void handleClick(Vector2f position, EnumSet<Modifier> modifiers);
 
 	void handleDragStart(Vector2f dragStart, final EnumSet<Modifier> modifiers);

@@ -1,15 +1,15 @@
 package net.untoldwind.moredread.ui.tools.impl;
 
 import net.untoldwind.moredread.model.enums.SelectionMode;
-import net.untoldwind.moredread.model.scene.SceneSelection;
+import net.untoldwind.moredread.model.scene.ISceneSelection;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 
-public class ToolActivation {
+public class ToolEnablement {
 	private final SelectionMode selectionMode;
 	private final SelectionCount selectionCount;
 
-	public ToolActivation(final IConfigurationElement element) {
+	public ToolEnablement(final IConfigurationElement element) {
 		selectionMode = SelectionMode.valueOf(element
 				.getAttribute("selectionMode"));
 		selectionCount = SelectionCount.forCode(element
@@ -17,7 +17,7 @@ public class ToolActivation {
 	}
 
 	public boolean matches(final SelectionMode selectionMode,
-			final SceneSelection sceneSelection) {
+			final ISceneSelection sceneSelection) {
 		if (this.selectionMode != selectionMode) {
 			return false;
 		}
@@ -81,7 +81,7 @@ public class ToolActivation {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		final ToolActivation other = (ToolActivation) obj;
+		final ToolEnablement other = (ToolEnablement) obj;
 		if (selectionCount == null) {
 			if (other.selectionCount != null) {
 				return false;

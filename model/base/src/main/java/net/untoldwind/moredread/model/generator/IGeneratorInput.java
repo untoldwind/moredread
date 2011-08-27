@@ -4,5 +4,5 @@ import net.untoldwind.moredread.model.mesh.IGeometry;
 import net.untoldwind.moredread.model.scene.ISpatialNode;
 
 public interface IGeneratorInput extends ISpatialNode {
-	<T> IGeometry<T> getRenderGeometry();
+	IGeometry<?> getRenderGeometry();
 }

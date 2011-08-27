@@ -16,7 +16,9 @@ import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.Modifier;
 import net.untoldwind.moredread.ui.preferences.IPreferencesConstants;
 import net.untoldwind.moredread.ui.tools.IDisplaySystem;
+import net.untoldwind.moredread.ui.tools.IToolController;
 import net.untoldwind.moredread.ui.tools.IToolDescriptor;
+import net.untoldwind.moredread.ui.tools.UIToolsPlugin;
 
 import com.jme.input.FirstPersonHandler;
 import com.jme.input.InputHandler;
@@ -33,8 +35,6 @@ import com.jme.scene.state.BlendState;
 import com.jme.scene.state.BlendState.BlendEquation;
 import com.jme.scene.state.ZBufferState;
 import com.jme.system.canvas.SimpleCanvasImpl;
-import com.jme.util.GameTaskQueue;
-import com.jme.util.GameTaskQueueManager;
 
 public class MDCanvasImplementor extends SimpleCanvasImpl implements
 		IDisplaySystem {
@@ -57,6 +57,8 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 	private final ISceneHolder sceneHolder;
 
 	boolean updateNecessary = true;
+
+	TaskQueue taskQueue = new TaskQueue();
 
 	public MDCanvasImplementor(final int width, final int height,
 			final ISceneHolder sceneHolder) {
@@ -184,8 +186,7 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 				return null;
 			}
 		};
-		GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE)
-				.enqueue(exe);
+		taskQueue.enqueue(exe);
 	}
 
 	@Override
@@ -219,8 +220,9 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 		controlsNode.detachAllChildren();
 		modelControls.clear();
 
-		for (final IToolDescriptor tool : MoreDreadUI.getDefault()
-				.getActiveTools()) {
+		final IToolController toolController = UIToolsPlugin.getDefault()
+				.getToolController();
+		for (final IToolDescriptor tool : toolController.getEnabledTools()) {
 			final List<? extends IModelControl> toolControls = tool
 					.getModelControls(sceneHolder.getScene(), this);
 
@@ -236,6 +238,14 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 
 		controlsNode.updateGeometricState(0, true);
 		controlsNode.updateRenderState();
+	}
+
+	public void handleMove(final int x, final int y,
+			final EnumSet<Modifier> modifiers) {
+		if (activeControlHandle != null) {
+			activeControlHandle.handleMove(new Vector2f(x, height - y),
+					modifiers);
+		}
 	}
 
 	public void handleClick(final int x, final int y,
@@ -294,6 +304,10 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 			return true;
 		}
 		return false;
+	}
+
+	public TaskQueue getTaskQueue() {
+		return taskQueue;
 	}
 
 	private List<IControlHandle> getControlHandles() {

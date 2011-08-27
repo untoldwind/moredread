@@ -21,6 +21,8 @@ public interface IToolAdapter {
 	 */
 	Vector3f getCenter();
 
+	void handleMove(final Vector3f point, final EnumSet<Modifier> modifiers);
+
 	/**
 	 * Handle/react to a click event.
 	 * 

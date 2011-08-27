@@ -23,8 +23,6 @@ import com.jme.system.DisplaySystem;
 import com.jme.system.canvas.JMECanvas;
 import com.jme.system.canvas.JMECanvasImplementor;
 import com.jme.system.lwjgl.LWJGLDisplaySystem;
-import com.jme.util.GameTaskQueue;
-import com.jme.util.GameTaskQueueManager;
 
 public class MDCanvas extends GLCanvas implements JMECanvas, IUIInputReceiver {
 
@@ -32,7 +30,7 @@ public class MDCanvas extends GLCanvas implements JMECanvas, IUIInputReceiver {
 			.getName());
 
 	private final AtomicInteger renderQueueCount = new AtomicInteger(0);
-	private JMECanvasImplementor impl;
+	private MDCanvasImplementor impl;
 
 	private boolean updateInput = false;
 
@@ -99,10 +97,6 @@ public class MDCanvas extends GLCanvas implements JMECanvas, IUIInputReceiver {
 
 	private void doRender() {
 		if (!isDisposed()) {
-			GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE)
-					.setExecuteAll(true);
-			GameTaskQueueManager.getManager().getQueue(GameTaskQueue.RENDER)
-					.setExecuteAll(true);
 
 			try {
 				setCurrent();
@@ -116,15 +110,11 @@ public class MDCanvas extends GLCanvas implements JMECanvas, IUIInputReceiver {
 						InputSystem.update();
 					}
 
-					GameTaskQueueManager.getManager()
-							.getQueue(GameTaskQueue.UPDATE).execute();
+					impl.getTaskQueue().executeAll();
 
 					impl.doUpdate();
 
 					if (!drawWhenDirty || dirty) {
-						GameTaskQueueManager.getManager()
-								.getQueue(GameTaskQueue.RENDER).execute();
-
 						impl.doRender();
 
 						swapBuffers();
@@ -188,8 +178,7 @@ public class MDCanvas extends GLCanvas implements JMECanvas, IUIInputReceiver {
 				return null;
 			}
 		};
-		GameTaskQueueManager.getManager().getQueue(GameTaskQueue.UPDATE)
-				.enqueue(exe);
+		impl.getTaskQueue().enqueue(exe);
 
 		queueRender();
 	}
@@ -214,6 +203,6 @@ public class MDCanvas extends GLCanvas implements JMECanvas, IUIInputReceiver {
 	}
 
 	public void setImplementor(final JMECanvasImplementor impl) {
-		this.impl = impl;
+		this.impl = (MDCanvasImplementor) impl;
 	}
 }

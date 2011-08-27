@@ -51,6 +51,14 @@ public class PointControlHandle implements IControlHandle {
 	}
 
 	@Override
+	public void handleMove(final Vector2f position,
+			final EnumSet<Modifier> modifiers) {
+		// TODO: Project this?
+		toolAdapter.handleMove(new Vector3f(position.x, position.y, 0),
+				modifiers);
+	}
+
+	@Override
 	public void handleClick(final Vector2f position,
 			final EnumSet<Modifier> modifiers) {
 		toolAdapter.handleClick(worldPosition, modifiers);

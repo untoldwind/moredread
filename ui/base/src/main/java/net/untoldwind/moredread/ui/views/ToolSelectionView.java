@@ -10,6 +10,7 @@ import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionModeEvent;
 import net.untoldwind.moredread.ui.MoreDreadUI;
 import net.untoldwind.moredread.ui.tools.IToolCategoryDescriptor;
+import net.untoldwind.moredread.ui.tools.IToolController;
 import net.untoldwind.moredread.ui.tools.IToolDescriptor;
 import net.untoldwind.moredread.ui.tools.UIToolsPlugin;
 
@@ -29,6 +30,7 @@ public class ToolSelectionView extends ViewPart implements
 	public static final String ID = "net.untoldwind.moredread.ui.toolSelectionView";
 
 	private ToolBar toolBar;
+	private IToolController toolController;
 
 	/**
 	 * {@inheritDoc}
@@ -36,10 +38,12 @@ public class ToolSelectionView extends ViewPart implements
 	@Override
 	public void createPartControl(final Composite parent) {
 		final String categoryId = getViewSite().getSecondaryId();
-		final IToolCategoryDescriptor toolCategoryDescriptor = UIToolsPlugin
-				.getDefault().getToolCategory(categoryId);
 
 		toolBar = new ToolBar(parent, SWT.NONE);
+		toolController = UIToolsPlugin.getDefault().getToolController();
+
+		final IToolCategoryDescriptor toolCategoryDescriptor = toolController
+				.getToolCategory(categoryId);
 
 		if (toolCategoryDescriptor != null) {
 			setPartName(toolCategoryDescriptor.getLabel());
@@ -102,7 +106,7 @@ public class ToolSelectionView extends ViewPart implements
 			toolDescriptor.activate(MoreDreadUI.getDefault().getSceneHolder()
 					.getScene());
 		} catch (final Throwable e) {
-			e.printStackTrace();
+			MoreDreadUI.getDefault().log(e);
 		}
 	}
 
@@ -111,11 +115,14 @@ public class ToolSelectionView extends ViewPart implements
 				.getSceneHolder().getSelectionMode();
 		final SceneSelection sceneSelection = MoreDreadUI.getDefault()
 				.getSceneHolder().getScene().getSceneSelection();
-		final Set<IToolDescriptor> activeTools = UIToolsPlugin.getDefault()
-				.getActiveTools(selectionMode, sceneSelection);
+
+		toolController.setSelectionMode(selectionMode);
+		toolController.setSceneSelection(sceneSelection);
+		final Set<IToolDescriptor> enabledTools = toolController
+				.getEnabledTools();
 
 		for (final ToolItem toolItem : toolBar.getItems()) {
-			toolItem.setEnabled(activeTools.contains(toolItem.getData()));
+			toolItem.setEnabled(enabledTools.contains(toolItem.getData()));
 		}
 	}
 

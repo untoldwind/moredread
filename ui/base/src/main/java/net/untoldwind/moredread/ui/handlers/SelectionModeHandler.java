@@ -12,20 +12,15 @@ public class SelectionModeHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
-		final String parameter = event.getParameter(PARAMETER_ID);
-
-		if (parameter == null) {
-			return null;
-		}
-
-		final SelectionMode selectionMode = SelectionMode.valueOf(parameter);
+		final SelectionMode selectionMode = (SelectionMode) event
+				.getObjectParameterForExecution(PARAMETER_ID);
 
 		if (selectionMode == null) {
 			return null;
 		}
 
-		MoreDreadUI.getDefault().getSceneHolder().setSelectionMode(
-				selectionMode);
+		MoreDreadUI.getDefault().getSceneHolder()
+				.setSelectionMode(selectionMode);
 
 		return null;
 	}
