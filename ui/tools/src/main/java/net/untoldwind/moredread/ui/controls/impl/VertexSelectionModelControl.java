@@ -85,6 +85,11 @@ public class VertexSelectionModelControl extends Point implements IModelControl 
 		updateGeometry();
 	}
 
+	@Override
+	public IToolAdapter getToolAdapter() {
+		return toolAdapter;
+	}
+
 	void updateGeometry() {
 		final IMesh mesh = node.getGeometry();
 		final IPoint vertex = mesh.getVertex(vertexIndex);
@@ -105,8 +110,7 @@ public class VertexSelectionModelControl extends Point implements IModelControl 
 		final Vector3f v = node.localToWorld(vertex.getPoint(), new Vector3f());
 
 		if (pointControlHandle == null) {
-			pointControlHandle = new PointControlHandle(this, toolAdapter,
-					camera, v);
+			pointControlHandle = new PointControlHandle(this, camera, v);
 		} else {
 			pointControlHandle.update(camera, v);
 		}

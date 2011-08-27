@@ -85,6 +85,11 @@ public class EdgeSelectionModelControl extends Line implements IModelControl {
 		updateGeometry();
 	}
 
+	@Override
+	public IToolAdapter getToolAdapter() {
+		return toolAdapter;
+	}
+
 	void updateGeometry() {
 		final IMesh mesh = node.getGeometry();
 		final IEdge edge = mesh.getEdge(edgeIndex);
@@ -114,8 +119,7 @@ public class EdgeSelectionModelControl extends Line implements IModelControl {
 				new Vector3f());
 
 		if (lineControlHandle == null) {
-			lineControlHandle = new LineControlHandle(this, toolAdapter,
-					camera, v1, v2);
+			lineControlHandle = new LineControlHandle(this, camera, v1, v2);
 		} else {
 			lineControlHandle.update(camera, v1, v2);
 		}

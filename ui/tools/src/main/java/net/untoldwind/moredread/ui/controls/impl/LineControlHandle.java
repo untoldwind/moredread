@@ -5,7 +5,6 @@ import java.util.EnumSet;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.Modifier;
-import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
@@ -20,22 +19,18 @@ public class LineControlHandle implements IControlHandle {
 	private Vector2f screenDirection;
 	private Vector2f dragScreenDirection;
 
-	private final IToolAdapter toolAdapter;
-
 	private transient Vector3f moveStart;
 
 	public LineControlHandle(final IModelControl modelControl,
-			final IToolAdapter toolAdapter, final Camera camera,
-			final Vector3f worldPoint1, final Vector3f worldPoint2) {
-		this(modelControl, toolAdapter, camera, worldPoint1, worldPoint2, null);
+			final Camera camera, final Vector3f worldPoint1,
+			final Vector3f worldPoint2) {
+		this(modelControl, camera, worldPoint1, worldPoint2, null);
 	}
 
 	public LineControlHandle(final IModelControl modelControl,
-			final IToolAdapter toolAdapter, final Camera camera,
-			final Vector3f worldPoint1, final Vector3f worldPoint2,
-			final Float fixedSalience) {
+			final Camera camera, final Vector3f worldPoint1,
+			final Vector3f worldPoint2, final Float fixedSalience) {
 		this.modelControl = modelControl;
-		this.toolAdapter = toolAdapter;
 		this.fixedSalience = fixedSalience;
 
 		update(camera, worldPoint1, worldPoint2);
@@ -81,7 +76,7 @@ public class LineControlHandle implements IControlHandle {
 	}
 
 	@Override
-	public void handleMove(final Vector2f position,
+	public boolean handleMove(final Vector2f position,
 			final EnumSet<Modifier> modifiers) {
 		final Vector2f diff = position.subtract(screenStart);
 		final float amount = diff.dot(screenDirection)
@@ -89,7 +84,8 @@ public class LineControlHandle implements IControlHandle {
 
 		final Vector3f v = worldDirection.mult(amount).addLocal(moveStart);
 
-		toolAdapter.handleMove(v, modifiers);
+		return modelControl.getToolAdapter().handleMove(modelControl, v,
+				modifiers);
 	}
 
 	@Override
@@ -101,14 +97,14 @@ public class LineControlHandle implements IControlHandle {
 
 		final Vector3f v = worldDirection.mult(amount).addLocal(moveStart);
 
-		toolAdapter.handleClick(v, modifiers);
+		modelControl.getToolAdapter().handleClick(v, modifiers);
 	}
 
 	@Override
 	public void handleDragStart(final Vector2f dragStart,
 			final EnumSet<Modifier> modifiers) {
 		dragScreenDirection = screenDirection.clone();
-		moveStart = toolAdapter.getCenter().clone();
+		moveStart = modelControl.getToolAdapter().getCenter().clone();
 	}
 
 	@Override
@@ -120,7 +116,7 @@ public class LineControlHandle implements IControlHandle {
 
 		final Vector3f v = worldDirection.mult(amount).addLocal(moveStart);
 
-		toolAdapter.handleDragMove(v, modifiers);
+		modelControl.getToolAdapter().handleDragMove(v, modifiers);
 	}
 
 	@Override
@@ -132,7 +128,7 @@ public class LineControlHandle implements IControlHandle {
 
 		final Vector3f v = worldDirection.mult(amount).addLocal(moveStart);
 
-		toolAdapter.handleDragEnd(v, modifiers);
+		modelControl.getToolAdapter().handleDragEnd(v, modifiers);
 
 		moveStart = null;
 	}

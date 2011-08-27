@@ -2,6 +2,7 @@ package net.untoldwind.moredread.ui.tools.spi;
 
 import java.util.EnumSet;
 
+import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.Modifier;
 
 import com.jme.math.Vector3f;
@@ -21,7 +22,8 @@ public interface IToolAdapter {
 	 */
 	Vector3f getCenter();
 
-	void handleMove(final Vector3f point, final EnumSet<Modifier> modifiers);
+	boolean handleMove(IModelControl modelControl, final Vector3f point,
+			final EnumSet<Modifier> modifiers);
 
 	/**
 	 * Handle/react to a click event.

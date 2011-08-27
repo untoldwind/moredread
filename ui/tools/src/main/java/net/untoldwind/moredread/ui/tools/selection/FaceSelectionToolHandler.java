@@ -78,9 +78,9 @@ public class FaceSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public void handleMove(final Vector3f point,
-				final EnumSet<Modifier> modifiers) {
-			// Do nothing
+		public boolean handleMove(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			return false;
 		}
 
 		@Override
@@ -146,9 +146,9 @@ public class FaceSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public void handleMove(final Vector3f point,
-				final EnumSet<Modifier> modifiers) {
-			// Do nothing
+		public boolean handleMove(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			return false;
 		}
 
 		@Override

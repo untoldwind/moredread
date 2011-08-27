@@ -243,12 +243,13 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 		controlsNode.updateRenderState();
 	}
 
-	public void handleMove(final int x, final int y,
+	public boolean handleMove(final int x, final int y,
 			final EnumSet<Modifier> modifiers) {
 		if (activeControlHandle != null) {
-			activeControlHandle.handleMove(new Vector2f(x, height - y),
+			return activeControlHandle.handleMove(new Vector2f(x, height - y),
 					modifiers);
 		}
+		return false;
 	}
 
 	public void handleClick(final int x, final int y,

@@ -88,6 +88,11 @@ public class FaceSelectionModelControl extends TriMesh implements IModelControl 
 		updateGeometry();
 	}
 
+	@Override
+	public IToolAdapter getToolAdapter() {
+		return toolAdapter;
+	}
+
 	void updateGeometry() {
 		final IMesh mesh = node.getGeometry();
 		final ITriangulator triangulator = TriangulatorFactory.createDefault();
@@ -134,8 +139,8 @@ public class FaceSelectionModelControl extends TriMesh implements IModelControl 
 		}
 
 		if (polygonControlHandle == null) {
-			polygonControlHandle = new PolygonControlHandle(this, toolAdapter,
-					camera, points);
+			polygonControlHandle = new PolygonControlHandle(this, camera,
+					points);
 		} else {
 			polygonControlHandle.update(camera, points);
 		}

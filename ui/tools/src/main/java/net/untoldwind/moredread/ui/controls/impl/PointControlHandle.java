@@ -5,7 +5,6 @@ import java.util.EnumSet;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.Modifier;
-import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
@@ -13,16 +12,13 @@ import com.jme.renderer.Camera;
 
 public class PointControlHandle implements IControlHandle {
 	private final IModelControl modelControl;
-	private final IToolAdapter toolAdapter;
 	private Vector3f worldPosition;
 	private Vector2f screenPosition;
 	private float salience;
 
 	public PointControlHandle(final IModelControl modelControl,
-			final IToolAdapter toolAdapter, final Camera camera,
-			final Vector3f worldPosition) {
+			final Camera camera, final Vector3f worldPosition) {
 		this.modelControl = modelControl;
-		this.toolAdapter = toolAdapter;
 
 		update(camera, worldPosition);
 	}
@@ -51,25 +47,25 @@ public class PointControlHandle implements IControlHandle {
 	}
 
 	@Override
-	public void handleMove(final Vector2f position,
+	public boolean handleMove(final Vector2f position,
 			final EnumSet<Modifier> modifiers) {
 		// TODO: Project this?
-		toolAdapter.handleMove(new Vector3f(position.x, position.y, 0),
-				modifiers);
+		return modelControl.getToolAdapter().handleMove(modelControl,
+				new Vector3f(position.x, position.y, 0), modifiers);
 	}
 
 	@Override
 	public void handleClick(final Vector2f position,
 			final EnumSet<Modifier> modifiers) {
-		toolAdapter.handleClick(worldPosition, modifiers);
+		modelControl.getToolAdapter().handleClick(worldPosition, modifiers);
 	}
 
 	@Override
 	public void handleDragStart(final Vector2f dragStart,
 			final EnumSet<Modifier> modifiers) {
 		// TODO: Project this?
-		toolAdapter.handleDragStart(new Vector3f(dragStart.x, dragStart.y, 0),
-				modifiers);
+		modelControl.getToolAdapter().handleDragStart(
+				new Vector3f(dragStart.x, dragStart.y, 0), modifiers);
 
 	}
 
@@ -77,8 +73,8 @@ public class PointControlHandle implements IControlHandle {
 	public void handleDragMove(final Vector2f dragStart,
 			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
 		// TODO: Project this?
-		toolAdapter.handleDragMove(new Vector3f(dragEnd.x, dragEnd.y, 0),
-				modifiers);
+		modelControl.getToolAdapter().handleDragMove(
+				new Vector3f(dragEnd.x, dragEnd.y, 0), modifiers);
 
 	}
 
@@ -86,8 +82,8 @@ public class PointControlHandle implements IControlHandle {
 	public void handleDragEnd(final Vector2f dragStart, final Vector2f dragEnd,
 			final EnumSet<Modifier> modifiers) {
 		// TODO: Project this?
-		toolAdapter.handleDragEnd(new Vector3f(dragEnd.x, dragEnd.y, 0),
-				modifiers);
+		modelControl.getToolAdapter().handleDragEnd(
+				new Vector3f(dragEnd.x, dragEnd.y, 0), modifiers);
 	}
 
 }

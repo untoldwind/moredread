@@ -2,6 +2,8 @@ package net.untoldwind.moredread.ui.controls;
 
 import java.util.List;
 
+import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
+
 import com.jme.scene.Spatial;
 
 /**
@@ -28,4 +30,6 @@ public interface IModelControl {
 	void setActive(boolean active);
 
 	void updatePositions();
+
+	IToolAdapter getToolAdapter();
 }
