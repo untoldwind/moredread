@@ -42,8 +42,8 @@ public class GhostNodeRenderer implements INodeRendererAdapter {
 	public List<Spatial> renderNode(final IMeshNode node) {
 		final List<Spatial> geometries = new ArrayList<Spatial>();
 
-		final Geometry solidGeometry = solidMeshRenderer.renderMesh(node
-				.getRenderGeometry(), null);
+		final Geometry solidGeometry = solidMeshRenderer.renderMesh(
+				node.getRenderGeometry(), null);
 		if (solidGeometry != null) {
 			geometries.add(solidGeometry);
 			solidGeometry.setModelBound(new BoundingBox());

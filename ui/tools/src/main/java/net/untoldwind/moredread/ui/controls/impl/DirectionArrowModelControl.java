@@ -5,6 +5,7 @@ import java.util.List;
 import net.untoldwind.moredread.model.enums.Direction;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
+import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 
 import com.jme.math.Vector3f;
@@ -70,8 +71,8 @@ public class DirectionArrowModelControl extends Node implements IModelControl {
 	}
 
 	@Override
-	public void cameraUpdated(final Camera camera) {
-		updateHandle(camera);
+	public void viewportChanged(final IViewport viewport) {
+		updateHandle(viewport.getCamera());
 	}
 
 	@Override
@@ -89,8 +90,8 @@ public class DirectionArrowModelControl extends Node implements IModelControl {
 
 	@Override
 	public void collectControlHandles(final List<IControlHandle> handles,
-			final Camera camera) {
-		updateHandle(camera);
+			final IViewport viewport) {
+		updateHandle(viewport.getCamera());
 
 		handles.add(lineControlHandle);
 	}
@@ -113,8 +114,8 @@ public class DirectionArrowModelControl extends Node implements IModelControl {
 							.project(getWorldScale())),
 					IControlHandle.MAX_SALIENCE);
 		} else {
-			lineControlHandle.update(camera, worldCenter, worldCenter
-					.add(direction.project(getWorldScale())));
+			lineControlHandle.update(camera, worldCenter,
+					worldCenter.add(direction.project(getWorldScale())));
 		}
 	}
 }

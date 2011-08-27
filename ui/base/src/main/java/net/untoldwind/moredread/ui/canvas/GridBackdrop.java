@@ -6,10 +6,10 @@ import java.util.List;
 
 import net.untoldwind.moredread.model.enums.StandardPlane;
 import net.untoldwind.moredread.model.scene.BoundingBox;
+import net.untoldwind.moredread.ui.controls.IViewport;
 
 import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
-import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Line;
 import com.jme.scene.Node;
@@ -21,35 +21,37 @@ public class GridBackdrop extends Node {
 	private transient BoundingBox lastBoundingBox;
 	private transient Vector3f lastDirection;
 
-	public GridBackdrop(final BoundingBox boundingBox, final Camera camera) {
+	public GridBackdrop(final IViewport viewport) {
 		super("GridBackdrop");
 
-		updateGrid(boundingBox, camera);
+		updateGrid(viewport);
 	}
 
-	public void updateGrid(final BoundingBox boundingBox, final Camera camera) {
-		final Vector3f direction = new Vector3f(camera.getDirection());
-		final Vector3f center = boundingBox.getCenter();
+	public void updateGrid(final IViewport viewport) {
+		final Vector3f direction = new Vector3f(viewport.getCamera()
+				.getDirection());
+		final Vector3f center = viewport.getBoundingBox().getCenter();
 
 		direction.x = FastMath.sign(direction.x);
 		direction.y = FastMath.sign(direction.y);
 		direction.z = FastMath.sign(direction.z);
 
-		if (lastBoundingBox != null && lastBoundingBox.equals(boundingBox)
+		if (lastBoundingBox != null
+				&& lastBoundingBox.equals(viewport.getBoundingBox())
 				&& lastDirection != null && lastDirection.equals(direction)) {
 			return;
 		}
 
 		float maxExtend = 1.0f;
 
-		if (boundingBox.getXExtent() > maxExtend) {
-			maxExtend = boundingBox.getXExtent();
+		if (viewport.getBoundingBox().getXExtent() > maxExtend) {
+			maxExtend = viewport.getBoundingBox().getXExtent();
 		}
-		if (boundingBox.getYExtent() > maxExtend) {
-			maxExtend = boundingBox.getYExtent();
+		if (viewport.getBoundingBox().getYExtent() > maxExtend) {
+			maxExtend = viewport.getBoundingBox().getYExtent();
 		}
-		if (boundingBox.getZExtent() > maxExtend) {
-			maxExtend = boundingBox.getZExtent();
+		if (viewport.getBoundingBox().getZExtent() > maxExtend) {
+			maxExtend = viewport.getBoundingBox().getZExtent();
 		}
 		final float size = FastMath.pow(10.0f,
 				(int) (FastMath.log(maxExtend, 10.0f) - 0.3f));
@@ -105,7 +107,7 @@ public class GridBackdrop extends Node {
 			attachChild(frontXZ);
 		}
 
-		lastBoundingBox = new BoundingBox(boundingBox);
+		lastBoundingBox = new BoundingBox(viewport.getBoundingBox());
 		lastDirection = new Vector3f(direction);
 	}
 

@@ -2,7 +2,6 @@ package net.untoldwind.moredread.ui.controls;
 
 import java.util.List;
 
-import com.jme.renderer.Camera;
 import com.jme.scene.Spatial;
 
 /**
@@ -19,12 +18,12 @@ public interface IModelControl {
 	 */
 	Spatial getSpatial();
 
-	void collectControlHandles(List<IControlHandle> handles, Camera camera);
+	void collectControlHandles(List<IControlHandle> handles, IViewport viewport);
 
 	/**
-	 * Inform the control that the camera of the 3D view has been updated.
+	 * Inform the control that the viewport of the 3D view has been updated.
 	 */
-	void cameraUpdated(Camera camera);
+	void viewportChanged(IViewport viewport);
 
 	void setActive(boolean active);
 
