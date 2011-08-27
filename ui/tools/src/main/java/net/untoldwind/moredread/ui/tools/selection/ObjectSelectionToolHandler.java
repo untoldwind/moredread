@@ -75,8 +75,20 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public void handleDrag(final Vector3f point,
-				final EnumSet<Modifier> modifiers, final boolean finished) {
+		public void handleDragStart(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
+			// Do nothing
+		}
+
+		@Override
+		public void handleDragMove(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
+			// Do nothing
+		}
+
+		@Override
+		public void handleDragEnd(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
 			// Do nothing
 		}
 	}
@@ -114,39 +126,59 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public void handleDrag(final Vector3f point,
-				final EnumSet<Modifier> modifiers, final boolean finished) {
+		public void handleDragStart(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
+			// Do nothing
+		}
+
+		@Override
+		public void handleDragMove(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
 			final Vector3f midCenter = getCenter();
 
 			scene.getSceneChangeHandler().begin(true);
 
 			try {
-				final List<INode> changedNodes = new ArrayList<INode>();
-
-				for (final INode node : scene.getSceneSelection()
-						.getSelectedNodes()) {
-					if (node instanceof AbstractSpatialNode) {
-						final AbstractSpatialNode spatialNode = (AbstractSpatialNode) node;
-						final Vector3f centerDiff = spatialNode
-								.getWorldTranslation().subtract(midCenter);
-
-						Vector3f localCenter;
-						if (node.getParent() != null) {
-							localCenter = spatialNode.getParent().worldToLocal(
-									point.add(centerDiff), new Vector3f());
-						} else {
-							localCenter = point.add(centerDiff);
-						}
-
-						spatialNode.setLocalTranslation(localCenter);
-						changedNodes.add(spatialNode);
-					}
-				}
+				updateScene(point, midCenter);
 			} finally {
-				if (finished) {
-					scene.getSceneChangeHandler().commit();
-				} else {
-					scene.getSceneChangeHandler().savepoint();
+				scene.getSceneChangeHandler().savepoint();
+			}
+		}
+
+		@Override
+		public void handleDragEnd(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
+			final Vector3f midCenter = getCenter();
+
+			scene.getSceneChangeHandler().begin(true);
+
+			try {
+				updateScene(point, midCenter);
+			} finally {
+				scene.getSceneChangeHandler().commit();
+			}
+		}
+
+		private void updateScene(final Vector3f point, final Vector3f midCenter) {
+			final List<INode> changedNodes = new ArrayList<INode>();
+
+			for (final INode node : scene.getSceneSelection()
+					.getSelectedNodes()) {
+				if (node instanceof AbstractSpatialNode) {
+					final AbstractSpatialNode spatialNode = (AbstractSpatialNode) node;
+					final Vector3f centerDiff = spatialNode
+							.getWorldTranslation().subtract(midCenter);
+
+					Vector3f localCenter;
+					if (node.getParent() != null) {
+						localCenter = spatialNode.getParent().worldToLocal(
+								point.add(centerDiff), new Vector3f());
+					} else {
+						localCenter = point.add(centerDiff);
+					}
+
+					spatialNode.setLocalTranslation(localCenter);
+					changedNodes.add(spatialNode);
 				}
 			}
 		}

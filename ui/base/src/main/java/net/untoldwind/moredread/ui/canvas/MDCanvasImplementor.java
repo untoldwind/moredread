@@ -30,8 +30,8 @@ import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.state.BlendState;
-import com.jme.scene.state.ZBufferState;
 import com.jme.scene.state.BlendState.BlendEquation;
+import com.jme.scene.state.ZBufferState;
 import com.jme.system.canvas.SimpleCanvasImpl;
 import com.jme.util.GameTaskQueue;
 import com.jme.util.GameTaskQueueManager;
@@ -194,8 +194,9 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 		final Ray ray = new Ray();
 
 		renderer.getCamera().getWorldCoordinates(screenCoord, 0, ray.origin);
-		renderer.getCamera().getWorldCoordinates(screenCoord, 0.3f,
-				ray.direction).subtractLocal(ray.origin).normalizeLocal();
+		renderer.getCamera()
+				.getWorldCoordinates(screenCoord, 0.3f, ray.direction)
+				.subtractLocal(ray.origin).normalizeLocal();
 
 		results.setCheckDistance(true);
 		sceneHolder.findPick(ray, results);
@@ -246,13 +247,27 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 
 	}
 
-	public void handleDrag(final int startX, final int startY, final int endX,
-			final int endY, final EnumSet<Modifier> modifiers,
-			final boolean finnished) {
+	public void handleDragStart(final int startX, final int startY,
+			final EnumSet<Modifier> modifiers) {
 		if (activeControlHandle != null) {
-			activeControlHandle.handleDrag(
-					new Vector2f(startX, height - startY), new Vector2f(endX,
-							height - endY), modifiers, finnished);
+			activeControlHandle.handleDragStart(new Vector2f(startX, height
+					- startY), modifiers);
+		}
+	}
+
+	public void handleDragMove(final int startX, final int startY,
+			final int endX, final int endY, final EnumSet<Modifier> modifiers) {
+		if (activeControlHandle != null) {
+			activeControlHandle.handleDragMove(new Vector2f(startX, height
+					- startY), new Vector2f(endX, height - endY), modifiers);
+		}
+	}
+
+	public void handleDragEnd(final int startX, final int startY,
+			final int endX, final int endY, final EnumSet<Modifier> modifiers) {
+		if (activeControlHandle != null) {
+			activeControlHandle.handleDragEnd(new Vector2f(startX, height
+					- startY), new Vector2f(endX, height - endY), modifiers);
 		}
 	}
 
@@ -285,8 +300,8 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 		if (controlHandles == null) {
 			final List<IControlHandle> newControlHandles = new ArrayList<IControlHandle>();
 			for (final IModelControl modelControl : modelControls) {
-				modelControl.collectControlHandles(newControlHandles, renderer
-						.getCamera());
+				modelControl.collectControlHandles(newControlHandles,
+						renderer.getCamera());
 			}
 
 			controlHandles = newControlHandles;

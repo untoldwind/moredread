@@ -93,10 +93,23 @@ public class FaceSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public void handleDrag(final Vector3f point,
-				final EnumSet<Modifier> modifiers, final boolean finished) {
+		public void handleDragStart(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
 			// Do nothing
 		}
+
+		@Override
+		public void handleDragMove(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
+			// Do nothing
+		}
+
+		@Override
+		public void handleDragEnd(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
+			// Do nothing
+		}
+
 	}
 
 	private static class TransformToolAdapter implements IToolAdapter {
@@ -134,44 +147,61 @@ public class FaceSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public void handleDrag(final Vector3f point,
-				final EnumSet<Modifier> modifiers, final boolean finished) {
+		public void handleDragStart(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
+		}
+
+		@Override
+		public void handleDragMove(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
 			scene.getSceneChangeHandler().begin(true);
 
 			try {
-				final Vector3f centerDiff = getCenter();
-				centerDiff.subtractLocal(point);
-
-				final Set<INode> changedNodes = new HashSet<INode>();
-				final Set<VertexSelection> updatedVertices = new HashSet<VertexSelection>();
-
-				for (final FaceSelection faceSelection : scene
-						.getSceneSelection().getSelectedFaces()) {
-					final IMeshNode node = faceSelection.getNode();
-					final Mesh<?, ?> mesh = node.getEditableGeometry();
-					final Face<?, ?> face = mesh.getFace(faceSelection
-							.getFaceIndex());
-
-					for (final Vertex vertex : face.getVertices()) {
-						final VertexSelection vertexId = new VertexSelection(
-								node, vertex.getIndex());
-						if (!updatedVertices.contains(vertexId)) {
-							updatedVertices.add(vertexId);
-							final Vector3f worldPoint = node.localToWorld(
-									vertex.getPoint(), new Vector3f());
-							worldPoint.subtractLocal(centerDiff);
-							vertex.setPoint(node.worldToLocal(worldPoint,
-									new Vector3f()));
-						}
-					}
-					changedNodes.add(node);
-				}
+				updateScene(point);
 			} finally {
-				if (finished) {
-					scene.getSceneChangeHandler().commit();
-				} else {
-					scene.getSceneChangeHandler().savepoint();
+				scene.getSceneChangeHandler().savepoint();
+			}
+		}
+
+		@Override
+		public void handleDragEnd(final Vector3f point,
+				final EnumSet<Modifier> modifiers) {
+			scene.getSceneChangeHandler().begin(true);
+
+			try {
+				updateScene(point);
+			} finally {
+				scene.getSceneChangeHandler().commit();
+			}
+		}
+
+		private void updateScene(final Vector3f point) {
+			final Vector3f centerDiff = getCenter();
+			centerDiff.subtractLocal(point);
+
+			final Set<INode> changedNodes = new HashSet<INode>();
+			final Set<VertexSelection> updatedVertices = new HashSet<VertexSelection>();
+
+			for (final FaceSelection faceSelection : scene.getSceneSelection()
+					.getSelectedFaces()) {
+				final IMeshNode node = faceSelection.getNode();
+				final Mesh<?, ?> mesh = node.getEditableGeometry();
+				final Face<?, ?> face = mesh.getFace(faceSelection
+						.getFaceIndex());
+
+				for (final Vertex vertex : face.getVertices()) {
+					final VertexSelection vertexId = new VertexSelection(node,
+							vertex.getIndex());
+					if (!updatedVertices.contains(vertexId)) {
+						updatedVertices.add(vertexId);
+						final Vector3f worldPoint = node.localToWorld(
+								vertex.getPoint(), new Vector3f());
+						worldPoint.subtractLocal(centerDiff);
+						vertex.setPoint(node.worldToLocal(worldPoint,
+								new Vector3f()));
+					}
 				}
+				changedNodes.add(node);
 			}
 		}
 	}

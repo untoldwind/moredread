@@ -326,9 +326,13 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 			if ((e.stateMask & SWT.BUTTON1) != 0
 					&& (e.x - dragStartX) * (e.x - dragStartX)
 							+ (e.y - dragStartY) * (e.y - dragStartY) >= 4) {
+				if (!drag) {
+					implementor.handleDragStart(dragStartX, dragStartY,
+							Modifier.fromStateMask(e.stateMask));
+				}
 				drag = true;
-				implementor.handleDrag(dragStartX, dragStartY, e.x, e.y,
-						Modifier.fromStateMask(e.stateMask), false);
+				implementor.handleDragMove(dragStartX, dragStartY, e.x, e.y,
+						Modifier.fromStateMask(e.stateMask));
 			} else {
 				if (implementor.findControl(e.x, e.y)) {
 					canvas.queueRender();
@@ -341,8 +345,8 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 				implementor.handleClick(e.x, e.y,
 						Modifier.fromStateMask(e.stateMask));
 			} else if (drag) {
-				implementor.handleDrag(dragStartX, dragStartY, e.x, e.y,
-						Modifier.fromStateMask(e.stateMask), true);
+				implementor.handleDragEnd(dragStartX, dragStartY, e.x, e.y,
+						Modifier.fromStateMask(e.stateMask));
 			}
 		}
 
