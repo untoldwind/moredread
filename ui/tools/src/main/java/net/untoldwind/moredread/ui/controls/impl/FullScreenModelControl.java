@@ -21,7 +21,7 @@ public class FullScreenModelControl implements IModelControl {
 			final IViewport viewport) {
 		// Full screen should be last to pick (high salience)
 		handles.add(new FullScreenControlHandle(IControlHandle.SELECT_SALIENCE,
-				toolAdapter));
+				this));
 	}
 
 	@Override
@@ -43,6 +43,11 @@ public class FullScreenModelControl implements IModelControl {
 	@Override
 	public void updatePositions() {
 		// Do nothing
+	}
+
+	@Override
+	public IToolAdapter getToolAdapter() {
+		return toolAdapter;
 	}
 
 }

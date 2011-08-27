@@ -3,20 +3,20 @@ package net.untoldwind.moredread.ui.controls.impl;
 import java.util.EnumSet;
 
 import net.untoldwind.moredread.ui.controls.IControlHandle;
+import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.Modifier;
-import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 
 public class FullScreenControlHandle implements IControlHandle {
 	private final float salience;
-	private final IToolAdapter toolAdapter;
+	private final IModelControl modelControl;
 
 	public FullScreenControlHandle(final float salience,
-			final IToolAdapter toolAdapter) {
+			final IModelControl modelControl) {
 		this.salience = salience;
-		this.toolAdapter = toolAdapter;
+		this.modelControl = modelControl;
 	}
 
 	@Override
@@ -25,38 +25,38 @@ public class FullScreenControlHandle implements IControlHandle {
 	}
 
 	@Override
-	public void handleMove(final Vector2f position,
+	public boolean handleMove(final Vector2f position,
 			final EnumSet<Modifier> modifiers) {
-		toolAdapter.handleMove(new Vector3f(position.x, position.y, 0),
-				modifiers);
+		return modelControl.getToolAdapter().handleMove(modelControl,
+				new Vector3f(position.x, position.y, 0), modifiers);
 	}
 
 	@Override
-	public void handleClick(final Vector2f position,
+	public boolean handleClick(final Vector2f position,
 			final EnumSet<Modifier> modifiers) {
-		toolAdapter.handleClick(new Vector3f(position.x, position.y, 0),
-				modifiers);
+		return modelControl.getToolAdapter().handleClick(modelControl,
+				new Vector3f(position.x, position.y, 0), modifiers);
 	}
 
 	@Override
-	public void handleDragStart(final Vector2f dragStart,
+	public boolean handleDragStart(final Vector2f dragStart,
 			final EnumSet<Modifier> modifiers) {
-		toolAdapter.handleDragStart(new Vector3f(dragStart.x, dragStart.y, 0),
-				modifiers);
+		return modelControl.getToolAdapter().handleDragStart(modelControl,
+				new Vector3f(dragStart.x, dragStart.y, 0), modifiers);
 	}
 
 	@Override
-	public void handleDragMove(final Vector2f dragStart,
+	public boolean handleDragMove(final Vector2f dragStart,
 			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
-		toolAdapter.handleDragMove(new Vector3f(dragEnd.x, dragEnd.y, 0),
-				modifiers);
+		return modelControl.getToolAdapter().handleDragMove(modelControl,
+				new Vector3f(dragEnd.x, dragEnd.y, 0), modifiers);
 	}
 
 	@Override
-	public void handleDragEnd(final Vector2f dragStart, final Vector2f dragEnd,
-			final EnumSet<Modifier> modifiers) {
-		toolAdapter.handleDragEnd(new Vector3f(dragEnd.x, dragEnd.y, 0),
-				modifiers);
+	public boolean handleDragEnd(final Vector2f dragStart,
+			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
+		return modelControl.getToolAdapter().handleDragEnd(modelControl,
+				new Vector3f(dragEnd.x, dragEnd.y, 0), modifiers);
 	}
 
 	@Override

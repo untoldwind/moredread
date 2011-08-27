@@ -26,48 +26,52 @@ public class CubeCreationToolHandler implements IToolHandler {
 		final List<IModelControl> controls = new ArrayList<IModelControl>();
 
 		controls.add(new PlaneRestrictedModelControl(new CubeCreateAdapter()));
+
 		return controls;
 	}
 
 	public static class CubeCreateAdapter implements IToolAdapter {
+		Vector3f position = new Vector3f();
 
 		@Override
 		public Vector3f getCenter() {
-			return new Vector3f();
+			return position;
 		}
 
 		@Override
-		public void handleMove(final Vector3f point,
-				final EnumSet<Modifier> modifiers) {
-			// TODO Auto-generated method stub
+		public boolean handleMove(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			System.out.println(point);
 
+			this.position.set(point);
+
+			modelControl.updatePositions();
+
+			return true;
 		}
 
 		@Override
-		public void handleClick(final Vector3f point,
-				final EnumSet<Modifier> modifiers) {
-			// TODO Auto-generated method stub
-
+		public boolean handleClick(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			return false;
 		}
 
 		@Override
-		public void handleDragStart(final Vector3f point,
-				final EnumSet<Modifier> modifiers) {
-			// Do nothing
+		public boolean handleDragStart(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			return false;
 		}
 
 		@Override
-		public void handleDragMove(final Vector3f point,
-				final EnumSet<Modifier> modifiers) {
-			// TODO Auto-generated method stub
-
+		public boolean handleDragMove(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			return false;
 		}
 
 		@Override
-		public void handleDragEnd(final Vector3f point,
-				final EnumSet<Modifier> modifiers) {
-			// TODO Auto-generated method stub
-
+		public boolean handleDragEnd(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			return false;
 		}
 
 	}

@@ -80,6 +80,11 @@ public class MoveCrossModelControl extends CompositeModelControl implements
 	}
 
 	@Override
+	public IToolAdapter getToolAdapter() {
+		return toolAdapter;
+	}
+
+	@Override
 	public String toString() {
 		return "MoveCrossModelControl [xControl=" + xControl + ", yControl="
 				+ yControl + ", zControl=" + zControl + "]";

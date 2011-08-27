@@ -2,6 +2,7 @@ package net.untoldwind.moredread.ui.tools.spi;
 
 import java.util.EnumSet;
 
+import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.Modifier;
 
 import com.jme.math.Vector3f;
@@ -21,7 +22,8 @@ public interface IToolAdapter {
 	 */
 	Vector3f getCenter();
 
-	void handleMove(final Vector3f point, final EnumSet<Modifier> modifiers);
+	boolean handleMove(IModelControl modelControl, final Vector3f point,
+			final EnumSet<Modifier> modifiers);
 
 	/**
 	 * Handle/react to a click event.
@@ -32,9 +34,11 @@ public interface IToolAdapter {
 	 * @param modifiers
 	 *            Modifier (mouse-button, keyboard ...)
 	 */
-	void handleClick(final Vector3f point, final EnumSet<Modifier> modifiers);
+	boolean handleClick(IModelControl modelControl, final Vector3f point,
+			final EnumSet<Modifier> modifiers);
 
-	void handleDragStart(Vector3f point, final EnumSet<Modifier> modifiers);
+	boolean handleDragStart(IModelControl modelControl, Vector3f point,
+			final EnumSet<Modifier> modifiers);
 
 	/**
 	 * Handle/react to a drap event
@@ -45,7 +49,9 @@ public interface IToolAdapter {
 	 * @param modifiers
 	 *            Modifier (mouse-button, keyboard ...)
 	 */
-	void handleDragMove(final Vector3f point, final EnumSet<Modifier> modifiers);
+	boolean handleDragMove(IModelControl modelControl, final Vector3f point,
+			final EnumSet<Modifier> modifiers);
 
-	void handleDragEnd(Vector3f point, final EnumSet<Modifier> modifiers);
+	boolean handleDragEnd(IModelControl modelControl, Vector3f point,
+			final EnumSet<Modifier> modifiers);
 }

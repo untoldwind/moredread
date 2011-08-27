@@ -366,9 +366,9 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 				implementor.handleDragMove(dragStartX, dragStartY, e.x, e.y,
 						Modifier.fromStateMask(e.stateMask));
 			} else {
-				if (implementor.findControl(e.x, e.y)) {
-					implementor.handleMove(e.x, e.y,
-							Modifier.fromStateMask(e.stateMask));
+				if (implementor.findControl(e.x, e.y)
+						|| implementor.handleMove(e.x, e.y,
+								Modifier.fromStateMask(e.stateMask))) {
 					canvas.queueRender();
 				}
 			}

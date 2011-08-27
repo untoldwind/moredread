@@ -101,6 +101,11 @@ public class DirectionArrowModelControl extends Node implements IModelControl {
 	}
 
 	@Override
+	public IToolAdapter getToolAdapter() {
+		return toolAdapter;
+	}
+
+	@Override
 	public String toString() {
 		return "DirectionArrowModelControl [direction=" + direction + "]";
 	}
@@ -109,8 +114,8 @@ public class DirectionArrowModelControl extends Node implements IModelControl {
 		final Vector3f worldCenter = getWorldTranslation();
 
 		if (lineControlHandle == null) {
-			lineControlHandle = new LineControlHandle(this, toolAdapter,
-					camera, worldCenter, worldCenter.add(direction
+			lineControlHandle = new LineControlHandle(this, camera,
+					worldCenter, worldCenter.add(direction
 							.project(getWorldScale())),
 					IControlHandle.MAX_SALIENCE);
 		} else {

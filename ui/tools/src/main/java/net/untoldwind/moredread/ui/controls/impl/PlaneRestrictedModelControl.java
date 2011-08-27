@@ -2,15 +2,21 @@ package net.untoldwind.moredread.ui.controls.impl;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.EnumSet;
 import java.util.List;
 
 import net.untoldwind.moredread.model.scene.BoundingBox;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
+import net.untoldwind.moredread.ui.controls.Modifier;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 
+import com.jme.math.Vector2f;
+import com.jme.math.Vector3f;
+import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
+import com.jme.scene.Line;
 import com.jme.scene.Node;
 import com.jme.scene.QuadMesh;
 import com.jme.scene.Spatial;
@@ -22,12 +28,15 @@ public class PlaneRestrictedModelControl extends Node implements IModelControl {
 	private static final long serialVersionUID = 1L;
 
 	IToolAdapter toolAdapter;
+	PlaneControlHandle planeControlHandle;
+
+	IViewport viewport;
 
 	public PlaneRestrictedModelControl(final IToolAdapter toolAdapter) {
 		super("PlaneRestrictedModelControl");
 
 		this.toolAdapter = toolAdapter;
-
+		this.planeControlHandle = new PlaneControlHandle();
 	}
 
 	@Override
@@ -38,16 +47,20 @@ public class PlaneRestrictedModelControl extends Node implements IModelControl {
 	@Override
 	public void collectControlHandles(final List<IControlHandle> handles,
 			final IViewport viewport) {
-		updateBackdrop(viewport);
-		// TODO Auto-generated method stub
+		this.viewport = viewport;
+		updateBackdrop();
 
+		planeControlHandle.setCamera(viewport.getCamera());
+
+		handles.add(planeControlHandle);
 	}
 
 	@Override
 	public void viewportChanged(final IViewport viewport) {
-		updateBackdrop(viewport);
-		// TODO Auto-generated method stub
+		this.viewport = viewport;
+		updateBackdrop();
 
+		planeControlHandle.setCamera(viewport.getCamera());
 	}
 
 	@Override
@@ -58,11 +71,15 @@ public class PlaneRestrictedModelControl extends Node implements IModelControl {
 
 	@Override
 	public void updatePositions() {
-		// TODO Auto-generated method stub
-
+		updateBackdrop();
 	}
 
-	private void updateBackdrop(final IViewport viewport) {
+	@Override
+	public IToolAdapter getToolAdapter() {
+		return toolAdapter;
+	}
+
+	private void updateBackdrop() {
 		detachAllChildren();
 
 		final BoundingBox boundingBox = viewport.getBoundingBox();
@@ -111,5 +128,105 @@ public class PlaneRestrictedModelControl extends Node implements IModelControl {
 				.setDestinationFunction(BlendState.DestinationFunction.SourceAlpha);
 		quadMesh.setRenderState(blendState);
 		attachChild(quadMesh);
+
+		final Vector3f position = toolAdapter.getCenter();
+		FloatBuffer lineBuffer = BufferUtils.createVector3Buffer(2);
+		lineBuffer.put(boundingBox.getCenter().x - maxExtend);
+		lineBuffer.put(position.y);
+		lineBuffer.put(0.0f);
+		lineBuffer.put(boundingBox.getCenter().x + maxExtend);
+		lineBuffer.put(position.y);
+		lineBuffer.put(0.0f);
+		Line lines = new Line("", lineBuffer, null, null, null);
+
+		lines.setAntialiased(false);
+		lines.setLineWidth(1.0f);
+		lines.setDefaultColor(ColorRGBA.red.clone());
+		attachChild(lines);
+
+		lineBuffer = BufferUtils.createVector3Buffer(2);
+		lineBuffer.put(position.x);
+		lineBuffer.put(boundingBox.getCenter().y - maxExtend);
+		lineBuffer.put(0.0f);
+		lineBuffer.put(position.x);
+		lineBuffer.put(boundingBox.getCenter().y + maxExtend);
+		lineBuffer.put(0.0f);
+		lines = new Line("", lineBuffer, null, null, null);
+
+		lines.setAntialiased(false);
+		lines.setLineWidth(1.0f);
+		lines.setDefaultColor(ColorRGBA.green.clone());
+		attachChild(lines);
+	}
+
+	public class PlaneControlHandle implements IControlHandle {
+		private final float salience;
+		private Camera camera;
+
+		public PlaneControlHandle() {
+			this.salience = MAX_SALIENCE;
+		}
+
+		@Override
+		public float matches(final Vector2f screenCoord) {
+			return salience;
+		}
+
+		@Override
+		public void setActive(final boolean active) {
+			// Do nothing
+		}
+
+		@Override
+		public boolean handleClick(final Vector2f position,
+				final EnumSet<Modifier> modifiers) {
+			return toolAdapter.handleClick(PlaneRestrictedModelControl.this,
+					project(position), modifiers);
+		}
+
+		@Override
+		public boolean handleMove(final Vector2f position,
+				final EnumSet<Modifier> modifiers) {
+			return toolAdapter.handleMove(PlaneRestrictedModelControl.this,
+					project(position), modifiers);
+		}
+
+		@Override
+		public boolean handleDragStart(final Vector2f dragStart,
+				final EnumSet<Modifier> modifiers) {
+			return toolAdapter.handleDragStart(
+					PlaneRestrictedModelControl.this, project(dragStart),
+					modifiers);
+		}
+
+		@Override
+		public boolean handleDragMove(final Vector2f dragStart,
+				final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
+			return toolAdapter.handleDragMove(PlaneRestrictedModelControl.this,
+					project(dragEnd), modifiers);
+		}
+
+		@Override
+		public boolean handleDragEnd(final Vector2f dragStart,
+				final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
+			return toolAdapter.handleDragEnd(PlaneRestrictedModelControl.this,
+					project(dragEnd), modifiers);
+		}
+
+		void setCamera(final Camera camera) {
+			this.camera = camera;
+		}
+
+		private Vector3f project(final Vector2f position) {
+			final Vector3f origin = camera.getWorldCoordinates(position, 0);
+			final Vector3f direction = camera
+					.getWorldCoordinates(position, 0.3f).subtractLocal(origin)
+					.normalizeLocal();
+
+			final float dist = -origin.z / direction.z;
+
+			direction.multLocal(dist);
+			return origin.addLocal(direction);
+		}
 	}
 }
