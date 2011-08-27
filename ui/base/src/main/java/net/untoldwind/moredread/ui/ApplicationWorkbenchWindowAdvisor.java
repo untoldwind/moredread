@@ -1,6 +1,7 @@
 package net.untoldwind.moredread.ui;
 
 import net.untoldwind.moredread.ui.tools.IToolCategoryDescriptor;
+import net.untoldwind.moredread.ui.tools.IToolController;
 import net.untoldwind.moredread.ui.tools.UIToolsPlugin;
 import net.untoldwind.moredread.ui.views.ToolSelectionView;
 
@@ -36,12 +37,18 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	@Override
 	public void postWindowOpen() {
 		try {
-			for (final IToolCategoryDescriptor toolCategory : UIToolsPlugin
-					.getDefault().getToolCategories()) {
+			final IToolController toolController = UIToolsPlugin.getDefault()
+					.getToolController();
+
+			for (final IToolCategoryDescriptor toolCategory : toolController
+					.getToolCategories()) {
 				if (toolCategory.isVisible()) {
-					getWindowConfigurer().getWindow().getActivePage().showView(
-							ToolSelectionView.ID, toolCategory.getId(),
-							IWorkbenchPage.VIEW_VISIBLE);
+					getWindowConfigurer()
+							.getWindow()
+							.getActivePage()
+							.showView(ToolSelectionView.ID,
+									toolCategory.getId(),
+									IWorkbenchPage.VIEW_VISIBLE);
 				}
 			}
 		} catch (final Exception e) {

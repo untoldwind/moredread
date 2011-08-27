@@ -18,6 +18,8 @@ public interface IToolDescriptor {
 
 	void activate(Scene scene);
 
+	boolean isFallback();
+
 	List<? extends IModelControl> getModelControls(Scene scene,
 			IDisplaySystem displaySystem);
 }

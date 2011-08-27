@@ -3,7 +3,6 @@ package net.untoldwind.moredread.ui;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Set;
 
 import net.untoldwind.moredread.annotations.Singleton;
 import net.untoldwind.moredread.jme.MoreDreadJME;
@@ -23,8 +22,6 @@ import net.untoldwind.moredread.model.scene.MeshNode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.scene.SceneHolder;
 import net.untoldwind.moredread.ui.canvas.MDCanvasConstructor;
-import net.untoldwind.moredread.ui.tools.IToolDescriptor;
-import net.untoldwind.moredread.ui.tools.UIToolsPlugin;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -291,11 +288,5 @@ public class MoreDreadUI extends AbstractUIPlugin {
 
 	public ISceneHolder getSceneHolder() {
 		return sceneHolder;
-	}
-
-	public Set<IToolDescriptor> getActiveTools() {
-		return UIToolsPlugin.getDefault().getEnabledTools(
-				sceneHolder.getSelectionMode(),
-				sceneHolder.getScene().getSceneSelection());
 	}
 }

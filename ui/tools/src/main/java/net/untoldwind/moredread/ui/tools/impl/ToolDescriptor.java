@@ -23,6 +23,7 @@ public class ToolDescriptor implements IToolDescriptor {
 	private final String icon;
 	private final IToolHandler toolHandler;
 	private final String categoryId;
+	private final boolean fallback;
 	private final List<ToolEnablement> enablements;
 
 	public ToolDescriptor(final IConfigurationElement configElement)
@@ -36,6 +37,7 @@ public class ToolDescriptor implements IToolDescriptor {
 		toolHandler = (IToolHandler) configElement
 				.createExecutableExtension("class");
 		categoryId = configElement.getAttribute("categoryId");
+		fallback = Boolean.parseBoolean(configElement.getAttribute("fallback"));
 
 		enablements = new ArrayList<ToolEnablement>();
 		for (final IConfigurationElement activationElement : configElement
@@ -85,6 +87,11 @@ public class ToolDescriptor implements IToolDescriptor {
 
 	public String getCategoryId() {
 		return categoryId;
+	}
+
+	@Override
+	public boolean isFallback() {
+		return fallback;
 	}
 
 	/**

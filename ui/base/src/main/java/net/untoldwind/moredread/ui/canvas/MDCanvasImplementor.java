@@ -16,7 +16,9 @@ import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.Modifier;
 import net.untoldwind.moredread.ui.preferences.IPreferencesConstants;
 import net.untoldwind.moredread.ui.tools.IDisplaySystem;
+import net.untoldwind.moredread.ui.tools.IToolController;
 import net.untoldwind.moredread.ui.tools.IToolDescriptor;
+import net.untoldwind.moredread.ui.tools.UIToolsPlugin;
 
 import com.jme.input.FirstPersonHandler;
 import com.jme.input.InputHandler;
@@ -218,8 +220,9 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 		controlsNode.detachAllChildren();
 		modelControls.clear();
 
-		for (final IToolDescriptor tool : MoreDreadUI.getDefault()
-				.getActiveTools()) {
+		final IToolController toolController = UIToolsPlugin.getDefault()
+				.getToolController();
+		for (final IToolDescriptor tool : toolController.getEnabledTools()) {
 			final List<? extends IModelControl> toolControls = tool
 					.getModelControls(sceneHolder.getScene(), this);
 

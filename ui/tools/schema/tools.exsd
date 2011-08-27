@@ -138,6 +138,13 @@
                </restriction>
             </simpleType>
          </attribute>
+         <attribute name="fallback" type="boolean" use="default" value="false">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
       </complexType>
    </element>
 

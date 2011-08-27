@@ -4,7 +4,7 @@ import net.untoldwind.moredread.model.mesh.IGeometry;
 
 import com.jme.renderer.ColorRGBA;
 
-public interface IGeometryNode<RO_GEOMETRY extends IGeometry, RW_GEOMETRY extends IGeometry>
+public interface IGeometryNode<RO_GEOMETRY extends IGeometry<?>, RW_GEOMETRY extends IGeometry<?>>
 		extends ISpatialNode {
 	RO_GEOMETRY getRenderGeometry();
 

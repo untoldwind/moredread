@@ -1,7 +1,7 @@
 package net.untoldwind.moredread.ui.tools.impl;
 
 import net.untoldwind.moredread.model.enums.SelectionMode;
-import net.untoldwind.moredread.model.scene.SceneSelection;
+import net.untoldwind.moredread.model.scene.ISceneSelection;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 
@@ -17,7 +17,7 @@ public class ToolEnablement {
 	}
 
 	public boolean matches(final SelectionMode selectionMode,
-			final SceneSelection sceneSelection) {
+			final ISceneSelection sceneSelection) {
 		if (this.selectionMode != selectionMode) {
 			return false;
 		}
