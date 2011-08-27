@@ -3,8 +3,7 @@ package net.untoldwind.moredread.ui.tools;
 import java.util.Collection;
 import java.util.Set;
 
-import net.untoldwind.moredread.model.enums.SelectionMode;
-import net.untoldwind.moredread.model.scene.ISceneSelection;
+import net.untoldwind.moredread.model.scene.ISceneHolder;
 
 public interface IToolController {
 	public Collection<? extends IToolCategoryDescriptor> getToolCategories();
@@ -17,7 +16,5 @@ public interface IToolController {
 
 	Set<IToolDescriptor> getEnabledTools();
 
-	void setSelectionMode(SelectionMode selectionMode);
-
-	void setSceneSelection(ISceneSelection sceneSelection);
+	void setSceneHolder(ISceneHolder sceneHolder);
 }

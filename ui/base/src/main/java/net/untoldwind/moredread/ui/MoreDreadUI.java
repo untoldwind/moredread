@@ -22,6 +22,7 @@ import net.untoldwind.moredread.model.scene.MeshNode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.scene.SceneHolder;
 import net.untoldwind.moredread.ui.canvas.MDCanvasConstructor;
+import net.untoldwind.moredread.ui.tools.UIToolsPlugin;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -284,6 +285,9 @@ public class MoreDreadUI extends AbstractUIPlugin {
 		});
 
 		sceneHolder = new SceneHolder(scene);
+
+		UIToolsPlugin.getDefault().getToolController()
+				.setSceneHolder(sceneHolder);
 	}
 
 	public ISceneHolder getSceneHolder() {

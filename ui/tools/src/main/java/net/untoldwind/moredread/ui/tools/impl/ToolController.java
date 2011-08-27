@@ -1,18 +1,12 @@
 package net.untoldwind.moredread.ui.tools.impl;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.untoldwind.moredread.model.enums.SelectionMode;
-import net.untoldwind.moredread.model.scene.INode;
-import net.untoldwind.moredread.model.scene.ISceneSelection;
-import net.untoldwind.moredread.model.scene.SceneSelection.EdgeSelection;
-import net.untoldwind.moredread.model.scene.SceneSelection.FaceSelection;
-import net.untoldwind.moredread.model.scene.SceneSelection.VertexSelection;
+import net.untoldwind.moredread.model.scene.ISceneHolder;
 import net.untoldwind.moredread.ui.tools.IToolCategoryDescriptor;
 import net.untoldwind.moredread.ui.tools.IToolController;
 import net.untoldwind.moredread.ui.tools.IToolDescriptor;
@@ -25,8 +19,7 @@ public class ToolController implements IToolController {
 	IToolDescriptor activeTool;
 	Set<IToolDescriptor> enabledTools;
 
-	SelectionMode currentSelectionMode;
-	ISceneSelection currentSceneSelection;
+	ISceneHolder sceneHolder;
 
 	public ToolController(
 			final Map<String, ToolCategoryDescriptor> toolCategoryRegistry,
@@ -35,30 +28,6 @@ public class ToolController implements IToolController {
 		this.toolCategoryRegistry = toolCategoryRegistry;
 		this.toolRegistry = toolRegistry;
 		this.toolsByEnablement = toolsByEnablement;
-		this.currentSelectionMode = SelectionMode.OBJECT;
-		this.currentSceneSelection = new ISceneSelection() {
-			@Override
-			public Set<INode> getSelectedNodes() {
-				return Collections.emptySet();
-			}
-
-			@Override
-			public Set<FaceSelection> getSelectedFaces() {
-				return Collections.emptySet();
-			}
-
-			@Override
-			public Set<EdgeSelection> getSelectedEdges() {
-				return Collections.emptySet();
-			}
-
-			@Override
-			public Set<VertexSelection> getSelectedVertices() {
-				return Collections.emptySet();
-			}
-		};
-
-		updateEnabledTools();
 	}
 
 	@Override
@@ -83,36 +52,21 @@ public class ToolController implements IToolController {
 
 	@Override
 	public Set<IToolDescriptor> getEnabledTools() {
+		final Set<IToolDescriptor> enabledTools = new HashSet<IToolDescriptor>();
+
+		for (final Map.Entry<ToolEnablement, List<IToolDescriptor>> entry : toolsByEnablement
+				.entrySet()) {
+			if (entry.getKey().matches(sceneHolder.getSelectionMode(),
+					sceneHolder.getScene().getSceneSelection())) {
+				enabledTools.addAll(entry.getValue());
+			}
+		}
+
 		return enabledTools;
 	}
 
 	@Override
-	public void setSelectionMode(final SelectionMode selectionMode) {
-		if (selectionMode != currentSelectionMode) {
-			currentSelectionMode = selectionMode;
-
-			updateEnabledTools();
-		}
+	public void setSceneHolder(final ISceneHolder sceneHolder) {
+		this.sceneHolder = sceneHolder;
 	}
-
-	@Override
-	public void setSceneSelection(final ISceneSelection sceneSelection) {
-		currentSceneSelection = sceneSelection;
-
-		updateEnabledTools();
-	}
-
-	private void updateEnabledTools() {
-		final Set<IToolDescriptor> newEnabledTools = new HashSet<IToolDescriptor>();
-
-		for (final Map.Entry<ToolEnablement, List<IToolDescriptor>> entry : toolsByEnablement
-				.entrySet()) {
-			if (entry.getKey().matches(currentSelectionMode,
-					currentSceneSelection)) {
-				newEnabledTools.addAll(entry.getValue());
-			}
-		}
-		this.enabledTools = newEnabledTools;
-	}
-
 }

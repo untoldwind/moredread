@@ -2,8 +2,6 @@ package net.untoldwind.moredread.ui.views;
 
 import java.util.Set;
 
-import net.untoldwind.moredread.model.enums.SelectionMode;
-import net.untoldwind.moredread.model.scene.SceneSelection;
 import net.untoldwind.moredread.model.scene.event.ISceneSelectionChangeListener;
 import net.untoldwind.moredread.model.scene.event.ISceneSelectionModeListener;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
@@ -111,13 +109,6 @@ public class ToolSelectionView extends ViewPart implements
 	}
 
 	protected void updateTools() {
-		final SelectionMode selectionMode = MoreDreadUI.getDefault()
-				.getSceneHolder().getSelectionMode();
-		final SceneSelection sceneSelection = MoreDreadUI.getDefault()
-				.getSceneHolder().getScene().getSceneSelection();
-
-		toolController.setSelectionMode(selectionMode);
-		toolController.setSceneSelection(sceneSelection);
 		final Set<IToolDescriptor> enabledTools = toolController
 				.getEnabledTools();
 
