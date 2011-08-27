@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.untoldwind.moredread.ui.controls.IModelControl;
+import net.untoldwind.moredread.ui.controls.IViewport;
 
-import com.jme.renderer.Camera;
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 
@@ -25,9 +25,9 @@ public abstract class CompositeModelControl extends Node implements
 	}
 
 	@Override
-	public void cameraUpdated(final Camera camera) {
+	public void viewportChanged(final IViewport viewport) {
 		for (final IModelControl control : subControls) {
-			control.cameraUpdated(camera);
+			control.viewportChanged(viewport);
 		}
 	}
 

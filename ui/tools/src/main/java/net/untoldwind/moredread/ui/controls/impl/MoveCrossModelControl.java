@@ -5,11 +5,11 @@ import java.util.List;
 import net.untoldwind.moredread.model.enums.Direction;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
+import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 
 import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
-import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.shape.Box;
 
@@ -48,11 +48,13 @@ public class MoveCrossModelControl extends CompositeModelControl implements
 	}
 
 	@Override
-	public void cameraUpdated(final Camera camera) {
+	public void viewportChanged(final IViewport viewport) {
 		final Vector3f worldCenter = getWorldTranslation();
-		final Vector3f center = camera.getScreenCoordinates(worldCenter);
-		worldCenter.addLocal(camera.getUp());
-		final Vector3f up = camera.getScreenCoordinates(worldCenter);
+		final Vector3f center = viewport.getCamera().getScreenCoordinates(
+				worldCenter);
+		worldCenter.addLocal(viewport.getCamera().getUp());
+		final Vector3f up = viewport.getCamera().getScreenCoordinates(
+				worldCenter);
 
 		final float dist = (center.x - up.x) * (center.x - up.x)
 				+ (center.y - up.y) * (center.y - up.y);
@@ -61,15 +63,15 @@ public class MoveCrossModelControl extends CompositeModelControl implements
 
 		updateWorldVectors(true);
 
-		super.cameraUpdated(camera);
+		super.viewportChanged(viewport);
 	}
 
 	@Override
 	public void collectControlHandles(final List<IControlHandle> handles,
-			final Camera camera) {
-		xControl.collectControlHandles(handles, camera);
-		yControl.collectControlHandles(handles, camera);
-		zControl.collectControlHandles(handles, camera);
+			final IViewport viewport) {
+		xControl.collectControlHandles(handles, viewport);
+		yControl.collectControlHandles(handles, viewport);
+		zControl.collectControlHandles(handles, viewport);
 	}
 
 	@Override

@@ -70,8 +70,8 @@ public class SubSelectionNodeRenderer implements INodeRendererAdapter {
 		}
 
 		if (colorProvider != null) {
-			final Geometry solidGeometry = solidMeshRenderer.renderMesh(node
-					.getRenderGeometry(), colorProvider);
+			final Geometry solidGeometry = solidMeshRenderer.renderMesh(
+					node.getRenderGeometry(), colorProvider);
 			if (solidGeometry != null) {
 				geometries.add(solidGeometry);
 				solidGeometry.setModelBound(new BoundingBox());

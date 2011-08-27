@@ -16,9 +16,9 @@ public interface IToolDescriptor {
 
 	ImageDescriptor getIcon();
 
-	void activate(Scene scene);
+	IToolCategoryDescriptor getCategory();
 
-	boolean isFallback();
+	void activate(Scene scene);
 
 	List<? extends IModelControl> getModelControls(Scene scene,
 			IDisplaySystem displaySystem);

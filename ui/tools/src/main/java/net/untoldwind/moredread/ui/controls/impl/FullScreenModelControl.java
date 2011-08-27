@@ -4,9 +4,9 @@ import java.util.List;
 
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
+import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 
-import com.jme.renderer.Camera;
 import com.jme.scene.Spatial;
 
 public class FullScreenModelControl implements IModelControl {
@@ -18,7 +18,7 @@ public class FullScreenModelControl implements IModelControl {
 
 	@Override
 	public void collectControlHandles(final List<IControlHandle> handles,
-			final Camera camera) {
+			final IViewport viewport) {
 		// Full screen should be last to pick (high salience)
 		handles.add(new FullScreenControlHandle(IControlHandle.SELECT_SALIENCE,
 				toolAdapter));
@@ -36,7 +36,7 @@ public class FullScreenModelControl implements IModelControl {
 	}
 
 	@Override
-	public void cameraUpdated(final Camera camera) {
+	public void viewportChanged(final IViewport viewport) {
 		// Do nothing
 	}
 

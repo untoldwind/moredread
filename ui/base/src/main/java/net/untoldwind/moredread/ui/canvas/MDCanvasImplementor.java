@@ -7,17 +7,18 @@ import java.util.concurrent.Callable;
 
 import net.untoldwind.moredread.model.renderer.SolidNodeRenderer;
 import net.untoldwind.moredread.model.renderer.SolidNodeRendererParam;
+import net.untoldwind.moredread.model.scene.BoundingBox;
 import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.ISceneHolder;
 import net.untoldwind.moredread.model.scene.SpatialNodeReference;
 import net.untoldwind.moredread.ui.MoreDreadUI;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
+import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.controls.Modifier;
 import net.untoldwind.moredread.ui.preferences.IPreferencesConstants;
 import net.untoldwind.moredread.ui.tools.IDisplaySystem;
 import net.untoldwind.moredread.ui.tools.IToolController;
-import net.untoldwind.moredread.ui.tools.IToolDescriptor;
 import net.untoldwind.moredread.ui.tools.UIToolsPlugin;
 
 import com.jme.input.FirstPersonHandler;
@@ -37,7 +38,7 @@ import com.jme.scene.state.ZBufferState;
 import com.jme.system.canvas.SimpleCanvasImpl;
 
 public class MDCanvasImplementor extends SimpleCanvasImpl implements
-		IDisplaySystem {
+		IDisplaySystem, IViewport {
 
 	private Quaternion rotQuat;
 	private Vector3f axis;
@@ -101,8 +102,7 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 
 		updateToolControls();
 
-		gridBackdrop = new GridBackdrop(sceneHolder.getScene()
-				.getWorldBoundingBox(), renderer.getCamera());
+		gridBackdrop = new GridBackdrop(this);
 		backdropNode.attachChild(gridBackdrop);
 
 		backdropNode.updateGeometricState(0, true);
@@ -126,7 +126,7 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 		input.update(0.05f);
 
 		for (final IModelControl modelControl : modelControls) {
-			modelControl.cameraUpdated(renderer.getCamera());
+			modelControl.viewportChanged(this);
 		}
 
 		controlsNode.updateGeometricState(tpf, true);
@@ -134,8 +134,7 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 
 		rotQuat.fromAngleNormalAxis(1 * FastMath.DEG_TO_RAD, axis);
 
-		gridBackdrop.updateGrid(sceneHolder.getScene().getWorldBoundingBox(),
-				renderer.getCamera());
+		gridBackdrop.updateGrid(this);
 		backdropNode.updateGeometricState(0, true);
 		backdropNode.updateRenderState();
 	}
@@ -215,6 +214,11 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 		return null;
 	}
 
+	@Override
+	public BoundingBox getBoundingBox() {
+		return sceneHolder.getScene().getWorldBoundingBox();
+	}
+
 	public void updateToolControls() {
 		controlHandles = null;
 		controlsNode.detachAllChildren();
@@ -222,15 +226,13 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 
 		final IToolController toolController = UIToolsPlugin.getDefault()
 				.getToolController();
+		final List<? extends IModelControl> toolControls = toolController
+				.getActiveTool().getModelControls(sceneHolder.getScene(), this);
 
-		for (final IToolDescriptor tool : toolController.getEnabledTools()) {
-			final List<? extends IModelControl> toolControls = tool
-					.getModelControls(sceneHolder.getScene(), this);
-
-			if (toolControls != null) {
-				modelControls.addAll(toolControls);
-			}
+		if (toolControls != null) {
+			modelControls.addAll(toolControls);
 		}
+
 		for (final IModelControl modelControl : modelControls) {
 			if (modelControl.getSpatial() != null) {
 				controlsNode.attachChild(modelControl.getSpatial());
@@ -315,8 +317,7 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements
 		if (controlHandles == null) {
 			final List<IControlHandle> newControlHandles = new ArrayList<IControlHandle>();
 			for (final IModelControl modelControl : modelControls) {
-				modelControl.collectControlHandles(newControlHandles,
-						renderer.getCamera());
+				modelControl.collectControlHandles(newControlHandles, this);
 			}
 
 			controlHandles = newControlHandles;

@@ -7,7 +7,7 @@ import java.util.List;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.Modifier;
-import net.untoldwind.moredread.ui.controls.impl.MoveCrossModelControl;
+import net.untoldwind.moredread.ui.controls.impl.PlaneRestrictedModelControl;
 import net.untoldwind.moredread.ui.tools.IDisplaySystem;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 import net.untoldwind.moredread.ui.tools.spi.IToolHandler;
@@ -25,7 +25,7 @@ public class CubeCreationToolHandler implements IToolHandler {
 			final IDisplaySystem displaySystem) {
 		final List<IModelControl> controls = new ArrayList<IModelControl>();
 
-		controls.add(new MoveCrossModelControl(new CubeCreateAdapter()));
+		controls.add(new PlaneRestrictedModelControl(new CubeCreateAdapter()));
 		return controls;
 	}
 
