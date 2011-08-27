@@ -51,30 +51,27 @@ public class CubeCreationToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public void handleClick(final Vector3f point,
-				final EnumSet<Modifier> modifiers) {
-			// TODO Auto-generated method stub
-
+		public boolean handleClick(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			return false;
 		}
 
 		@Override
-		public void handleDragStart(final Vector3f point,
-				final EnumSet<Modifier> modifiers) {
-			// Do nothing
+		public boolean handleDragStart(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			return false;
 		}
 
 		@Override
-		public void handleDragMove(final Vector3f point,
-				final EnumSet<Modifier> modifiers) {
-			// TODO Auto-generated method stub
-
+		public boolean handleDragMove(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			return false;
 		}
 
 		@Override
-		public void handleDragEnd(final Vector3f point,
-				final EnumSet<Modifier> modifiers) {
-			// TODO Auto-generated method stub
-
+		public boolean handleDragEnd(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			return false;
 		}
 
 	}

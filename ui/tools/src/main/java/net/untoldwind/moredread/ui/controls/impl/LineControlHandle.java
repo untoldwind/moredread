@@ -89,7 +89,7 @@ public class LineControlHandle implements IControlHandle {
 	}
 
 	@Override
-	public void handleClick(final Vector2f position,
+	public boolean handleClick(final Vector2f position,
 			final EnumSet<Modifier> modifiers) {
 		final Vector2f diff = position.subtract(screenStart);
 		final float amount = diff.dot(screenDirection)
@@ -97,18 +97,28 @@ public class LineControlHandle implements IControlHandle {
 
 		final Vector3f v = worldDirection.mult(amount).addLocal(moveStart);
 
-		modelControl.getToolAdapter().handleClick(v, modifiers);
+		return modelControl.getToolAdapter().handleClick(modelControl, v,
+				modifiers);
 	}
 
 	@Override
-	public void handleDragStart(final Vector2f dragStart,
+	public boolean handleDragStart(final Vector2f dragStart,
 			final EnumSet<Modifier> modifiers) {
 		dragScreenDirection = screenDirection.clone();
 		moveStart = modelControl.getToolAdapter().getCenter().clone();
+
+		final Vector2f diff = dragStart.subtract(dragStart);
+		final float amount = diff.dot(dragScreenDirection)
+				/ dragScreenDirection.lengthSquared();
+
+		final Vector3f v = worldDirection.mult(amount).addLocal(moveStart);
+
+		return modelControl.getToolAdapter().handleDragStart(modelControl, v,
+				modifiers);
 	}
 
 	@Override
-	public void handleDragMove(final Vector2f dragStart,
+	public boolean handleDragMove(final Vector2f dragStart,
 			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
 		final Vector2f diff = dragEnd.subtract(dragStart);
 		final float amount = diff.dot(dragScreenDirection)
@@ -116,21 +126,23 @@ public class LineControlHandle implements IControlHandle {
 
 		final Vector3f v = worldDirection.mult(amount).addLocal(moveStart);
 
-		modelControl.getToolAdapter().handleDragMove(v, modifiers);
+		return modelControl.getToolAdapter().handleDragMove(modelControl, v,
+				modifiers);
 	}
 
 	@Override
-	public void handleDragEnd(final Vector2f dragStart, final Vector2f dragEnd,
-			final EnumSet<Modifier> modifiers) {
+	public boolean handleDragEnd(final Vector2f dragStart,
+			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
 		final Vector2f diff = dragEnd.subtract(dragStart);
 		final float amount = diff.dot(dragScreenDirection)
 				/ dragScreenDirection.lengthSquared();
 
 		final Vector3f v = worldDirection.mult(amount).addLocal(moveStart);
 
-		modelControl.getToolAdapter().handleDragEnd(v, modifiers);
-
 		moveStart = null;
+
+		return modelControl.getToolAdapter().handleDragEnd(modelControl, v,
+				modifiers);
 	}
 
 }

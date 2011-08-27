@@ -32,30 +32,30 @@ public class FullScreenControlHandle implements IControlHandle {
 	}
 
 	@Override
-	public void handleClick(final Vector2f position,
+	public boolean handleClick(final Vector2f position,
 			final EnumSet<Modifier> modifiers) {
-		modelControl.getToolAdapter().handleClick(
+		return modelControl.getToolAdapter().handleClick(modelControl,
 				new Vector3f(position.x, position.y, 0), modifiers);
 	}
 
 	@Override
-	public void handleDragStart(final Vector2f dragStart,
+	public boolean handleDragStart(final Vector2f dragStart,
 			final EnumSet<Modifier> modifiers) {
-		modelControl.getToolAdapter().handleDragStart(
+		return modelControl.getToolAdapter().handleDragStart(modelControl,
 				new Vector3f(dragStart.x, dragStart.y, 0), modifiers);
 	}
 
 	@Override
-	public void handleDragMove(final Vector2f dragStart,
+	public boolean handleDragMove(final Vector2f dragStart,
 			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
-		modelControl.getToolAdapter().handleDragMove(
+		return modelControl.getToolAdapter().handleDragMove(modelControl,
 				new Vector3f(dragEnd.x, dragEnd.y, 0), modifiers);
 	}
 
 	@Override
-	public void handleDragEnd(final Vector2f dragStart, final Vector2f dragEnd,
-			final EnumSet<Modifier> modifiers) {
-		modelControl.getToolAdapter().handleDragEnd(
+	public boolean handleDragEnd(final Vector2f dragStart,
+			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
+		return modelControl.getToolAdapter().handleDragEnd(modelControl,
 				new Vector3f(dragEnd.x, dragEnd.y, 0), modifiers);
 	}
 

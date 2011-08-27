@@ -178,9 +178,10 @@ public class PlaneRestrictedModelControl extends Node implements IModelControl {
 		}
 
 		@Override
-		public void handleClick(final Vector2f position,
+		public boolean handleClick(final Vector2f position,
 				final EnumSet<Modifier> modifiers) {
-			toolAdapter.handleClick(project(position), modifiers);
+			return toolAdapter.handleClick(PlaneRestrictedModelControl.this,
+					project(position), modifiers);
 		}
 
 		@Override
@@ -188,33 +189,28 @@ public class PlaneRestrictedModelControl extends Node implements IModelControl {
 				final EnumSet<Modifier> modifiers) {
 			return toolAdapter.handleMove(PlaneRestrictedModelControl.this,
 					project(position), modifiers);
-
-			// PlaneRestrictedModelControl.this.position = project(position);
-
-			// updateBackdrop();
-
-			// return true;
 		}
 
 		@Override
-		public void handleDragStart(final Vector2f dragStart,
+		public boolean handleDragStart(final Vector2f dragStart,
 				final EnumSet<Modifier> modifiers) {
-			// TODO Auto-generated method stub
-
+			return toolAdapter.handleDragStart(
+					PlaneRestrictedModelControl.this, project(dragStart),
+					modifiers);
 		}
 
 		@Override
-		public void handleDragMove(final Vector2f dragStart,
+		public boolean handleDragMove(final Vector2f dragStart,
 				final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
-			// TODO Auto-generated method stub
-
+			return toolAdapter.handleDragMove(PlaneRestrictedModelControl.this,
+					project(dragEnd), modifiers);
 		}
 
 		@Override
-		public void handleDragEnd(final Vector2f dragStart,
+		public boolean handleDragEnd(final Vector2f dragStart,
 				final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
-			// TODO Auto-generated method stub
-
+			return toolAdapter.handleDragEnd(PlaneRestrictedModelControl.this,
+					project(dragEnd), modifiers);
 		}
 
 		void setCamera(final Camera camera) {

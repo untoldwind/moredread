@@ -64,8 +64,8 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public void handleClick(final Vector3f point,
-				final EnumSet<Modifier> modifiers) {
+		public boolean handleClick(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
 			if (modifiers.contains(Modifier.LEFT_MOUSE_BUTTON)) {
 				final INode node = displaySystem.pickNode(new Vector2f(point.x,
 						point.y));
@@ -77,25 +77,27 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 						scene.getSceneSelection().setSelectedNode(node);
 					}
 				}
+				return true;
 			}
+			return false;
 		}
 
 		@Override
-		public void handleDragStart(final Vector3f point,
-				final EnumSet<Modifier> modifiers) {
-			// Do nothing
+		public boolean handleDragStart(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			return false;
 		}
 
 		@Override
-		public void handleDragMove(final Vector3f point,
-				final EnumSet<Modifier> modifiers) {
-			// Do nothing
+		public boolean handleDragMove(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			return false;
 		}
 
 		@Override
-		public void handleDragEnd(final Vector3f point,
-				final EnumSet<Modifier> modifiers) {
-			// Do nothing
+		public boolean handleDragEnd(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			return false;
 		}
 	}
 
@@ -132,20 +134,20 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public void handleClick(final Vector3f point,
-				final EnumSet<Modifier> modifiers) {
-			// Do nothing
+		public boolean handleClick(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			return false;
 		}
 
 		@Override
-		public void handleDragStart(final Vector3f point,
-				final EnumSet<Modifier> modifiers) {
-			// Do nothing
+		public boolean handleDragStart(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			return false;
 		}
 
 		@Override
-		public void handleDragMove(final Vector3f point,
-				final EnumSet<Modifier> modifiers) {
+		public boolean handleDragMove(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
 			final Vector3f midCenter = getCenter();
 
 			scene.getSceneChangeHandler().begin(true);
@@ -155,11 +157,12 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 			} finally {
 				scene.getSceneChangeHandler().savepoint();
 			}
+			return true;
 		}
 
 		@Override
-		public void handleDragEnd(final Vector3f point,
-				final EnumSet<Modifier> modifiers) {
+		public boolean handleDragEnd(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
 			final Vector3f midCenter = getCenter();
 
 			scene.getSceneChangeHandler().begin(true);
@@ -169,6 +172,7 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 			} finally {
 				scene.getSceneChangeHandler().commit();
 			}
+			return true;
 		}
 
 		private void updateScene(final Vector3f point, final Vector3f midCenter) {
