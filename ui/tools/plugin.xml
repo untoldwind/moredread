@@ -13,13 +13,13 @@
             id="net.untoldwind.moredread.ui.tool.category.utilities"
             label="Utilities"
             fallback="false"
-            visible="false">
+            visible="true">
       </category>
       <category
             id="net.untoldwind.moredread.ui.tool.category.creation"
             label="Creation"
             fallback="false"
-            visible="false">
+            visible="true">
       </category>
       <tool
             categoryId="net.untoldwind.moredread.ui.tool.category.default"

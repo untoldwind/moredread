@@ -156,6 +156,27 @@ public class ToolDescriptor implements IToolDescriptor {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("ToolDescriptor [pluginId=");
+		builder.append(pluginId);
+		builder.append(", id=");
+		builder.append(id);
+		builder.append(", label=");
+		builder.append(label);
+		builder.append(", toolType=");
+		builder.append(toolType);
+		builder.append(", icon=");
+		builder.append(icon);
+		builder.append(", categoryId=");
+		builder.append(categoryId);
+		builder.append(", enablements=");
+		builder.append(enablements);
+		builder.append("]");
+		return builder.toString();
+	}
+
 	void setToolController(final ToolController toolController) {
 		this.toolController = toolController;
 	}

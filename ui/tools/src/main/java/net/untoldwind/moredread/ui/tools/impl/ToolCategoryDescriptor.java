@@ -52,4 +52,21 @@ public class ToolCategoryDescriptor implements IToolCategoryDescriptor {
 		tools.add(toolDescriptor);
 		toolDescriptor.setCategory(this);
 	}
+
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("ToolCategoryDescriptor [id=");
+		builder.append(id);
+		builder.append(", label=");
+		builder.append(label);
+		builder.append(", visible=");
+		builder.append(visible);
+		builder.append(", fallback=");
+		builder.append(fallback);
+		builder.append(", tools=");
+		builder.append(tools);
+		builder.append("]");
+		return builder.toString();
+	}
 }
