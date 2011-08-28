@@ -6,17 +6,15 @@ import net.untoldwind.moredread.model.mesh.QuadMesh;
 
 import com.jme.math.Vector3f;
 
-public class CubeMeshGenerator implements IMeshGenerator {
-	private final Vector3f center;
-	private final float size;
+public class CubeMeshGenerator extends AbstractCenterSizeGenerator implements
+		IMeshGenerator {
 
 	public CubeMeshGenerator() {
-		this(new Vector3f(0, 0, 0), 1f);
+		super(new Vector3f(0, 0, 0), 1f);
 	}
 
 	public CubeMeshGenerator(final Vector3f center, final float size) {
-		this.center = center;
-		this.size = size;
+		super(center, size);
 	}
 
 	public String getName() {

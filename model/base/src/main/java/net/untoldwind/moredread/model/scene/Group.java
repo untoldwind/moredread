@@ -18,13 +18,13 @@ public class Group extends AbstractSpatialComposite<AbstractSpatialNode> {
 	}
 
 	@Override
-	void addChild(final AbstractSpatialNode node) {
+	public void addChild(final INode node) {
 		super.addChild(node);
 		structuralChange = true;
 	}
 
 	@Override
-	void removeChild(final AbstractSpatialNode node) {
+	public void removeChild(final INode node) {
 		super.removeChild(node);
 		structuralChange = true;
 	}
@@ -58,8 +58,8 @@ public class Group extends AbstractSpatialComposite<AbstractSpatialNode> {
 				final BoundingBox childBoundingBox = child
 						.getLocalBoundingBox();
 				if (childBoundingBox != null) {
-					childBoundingBox.transform(child.getLocalRotation(), child
-							.getLocalTranslation(), child.getLocalScale());
+					childBoundingBox.transform(child.getLocalRotation(),
+							child.getLocalTranslation(), child.getLocalScale());
 					if (localBoundingBox == null) {
 						localBoundingBox = new BoundingBox(childBoundingBox);
 					} else {

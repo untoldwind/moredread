@@ -16,14 +16,16 @@ public abstract class AbstractSpatialComposite<ChildT extends INode> extends
 	}
 
 	@SuppressWarnings("unchecked")
-	void addChild(final AbstractSpatialNode node) {
+	@Override
+	public void addChild(final INode node) {
 		scene.getSceneChangeHandler().registerCommand(
 				new SceneAddNodeChangeCommand(this, node));
 
 		children.add((ChildT) node);
 	}
 
-	void removeChild(final AbstractSpatialNode node) {
+	@Override
+	public void removeChild(final INode node) {
 		children.remove(node);
 	}
 

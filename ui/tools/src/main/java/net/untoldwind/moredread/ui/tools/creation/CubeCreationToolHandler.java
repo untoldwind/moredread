@@ -41,8 +41,6 @@ public class CubeCreationToolHandler implements IToolHandler {
 		@Override
 		public boolean handleMove(final IModelControl modelControl,
 				final Vector3f point, final EnumSet<Modifier> modifiers) {
-			System.out.println(point);
-
 			this.position.set(point);
 
 			modelControl.updatePositions();

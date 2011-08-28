@@ -7,17 +7,14 @@ import net.untoldwind.moredread.model.mesh.PolyMesh;
 import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
 
-public class DodecahedronMeshGenerator implements IMeshGenerator {
-	private final Vector3f center;
-	private final float size;
-
+public class DodecahedronMeshGenerator extends AbstractCenterSizeGenerator
+		implements IMeshGenerator {
 	public DodecahedronMeshGenerator() {
-		this(new Vector3f(0, 0, 0), 1f);
+		super(new Vector3f(0, 0, 0), 1f);
 	}
 
 	public DodecahedronMeshGenerator(final Vector3f center, final float size) {
-		this.center = center;
-		this.size = size;
+		super(center, size);
 	}
 
 	public String getName() {

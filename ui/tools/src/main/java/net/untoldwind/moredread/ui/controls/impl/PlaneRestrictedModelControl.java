@@ -148,94 +148,46 @@ public class PlaneRestrictedModelControl extends Node implements IModelControl {
 
 		FloatBuffer lineBuffer;
 		Line lines;
-		switch (plane) {
-		case XY:
-			lineBuffer = BufferUtils.createVector3Buffer(2);
-			lineBuffer.put(boundingBox.getCenter().x - maxExtend);
-			lineBuffer.put(position.y);
-			lineBuffer.put(position.z);
-			lineBuffer.put(boundingBox.getCenter().x + maxExtend);
-			lineBuffer.put(position.y);
-			lineBuffer.put(position.z);
-			lines = new Line("", lineBuffer, null, null, null);
+		lineBuffer = BufferUtils.createVector3Buffer(2);
+		lineBuffer.put(boundingBox.getCenter().x - maxExtend);
+		lineBuffer.put(position.y);
+		lineBuffer.put(position.z);
+		lineBuffer.put(boundingBox.getCenter().x + maxExtend);
+		lineBuffer.put(position.y);
+		lineBuffer.put(position.z);
+		lines = new Line("", lineBuffer, null, null, null);
 
-			lines.setAntialiased(false);
-			lines.setLineWidth(1.0f);
-			lines.setDefaultColor(ColorRGBA.red.clone());
-			attachChild(lines);
+		lines.setAntialiased(false);
+		lines.setLineWidth(1.0f);
+		lines.setDefaultColor(ColorRGBA.red.clone());
+		attachChild(lines);
 
-			lineBuffer = BufferUtils.createVector3Buffer(2);
-			lineBuffer.put(position.x);
-			lineBuffer.put(boundingBox.getCenter().y - maxExtend);
-			lineBuffer.put(position.z);
-			lineBuffer.put(position.x);
-			lineBuffer.put(boundingBox.getCenter().y + maxExtend);
-			lineBuffer.put(position.z);
-			lines = new Line("", lineBuffer, null, null, null);
+		lineBuffer = BufferUtils.createVector3Buffer(2);
+		lineBuffer.put(position.x);
+		lineBuffer.put(boundingBox.getCenter().y - maxExtend);
+		lineBuffer.put(position.z);
+		lineBuffer.put(position.x);
+		lineBuffer.put(boundingBox.getCenter().y + maxExtend);
+		lineBuffer.put(position.z);
+		lines = new Line("", lineBuffer, null, null, null);
 
-			lines.setAntialiased(false);
-			lines.setLineWidth(1.0f);
-			lines.setDefaultColor(ColorRGBA.green.clone());
-			attachChild(lines);
-			break;
-		case XZ:
-			lineBuffer = BufferUtils.createVector3Buffer(2);
-			lineBuffer.put(boundingBox.getCenter().x - maxExtend);
-			lineBuffer.put(position.y);
-			lineBuffer.put(position.z);
-			lineBuffer.put(boundingBox.getCenter().x + maxExtend);
-			lineBuffer.put(position.y);
-			lineBuffer.put(position.z);
-			lines = new Line("", lineBuffer, null, null, null);
+		lines.setAntialiased(false);
+		lines.setLineWidth(1.0f);
+		lines.setDefaultColor(ColorRGBA.green.clone());
+		attachChild(lines);
 
-			lines.setAntialiased(false);
-			lines.setLineWidth(1.0f);
-			lines.setDefaultColor(ColorRGBA.red.clone());
-			attachChild(lines);
+		lineBuffer = BufferUtils.createVector3Buffer(2);
+		lineBuffer.put(position.x);
+		lineBuffer.put(position.y);
+		lineBuffer.put(boundingBox.getCenter().z - maxExtend);
+		lineBuffer.put(position.x);
+		lineBuffer.put(position.y);
+		lineBuffer.put(boundingBox.getCenter().z + maxExtend);
+		lines = new Line("", lineBuffer, null, null, null);
 
-			lineBuffer = BufferUtils.createVector3Buffer(2);
-			lineBuffer.put(position.x);
-			lineBuffer.put(position.y);
-			lineBuffer.put(boundingBox.getCenter().z - maxExtend);
-			lineBuffer.put(position.x);
-			lineBuffer.put(position.y);
-			lineBuffer.put(boundingBox.getCenter().z + maxExtend);
-			lines = new Line("", lineBuffer, null, null, null);
-
-			lines.setAntialiased(false);
-			lines.setLineWidth(1.0f);
-			lines.setDefaultColor(ColorRGBA.blue.clone());
-			attachChild(lines);
-			break;
-		case YZ:
-			lineBuffer = BufferUtils.createVector3Buffer(2);
-			lineBuffer.put(position.x);
-			lineBuffer.put(position.y);
-			lineBuffer.put(boundingBox.getCenter().z - maxExtend);
-			lineBuffer.put(position.x);
-			lineBuffer.put(position.y);
-			lineBuffer.put(boundingBox.getCenter().z + maxExtend);
-			lines = new Line("", lineBuffer, null, null, null);
-
-			lines.setAntialiased(false);
-			lines.setLineWidth(1.0f);
-			lines.setDefaultColor(ColorRGBA.blue.clone());
-			attachChild(lines);
-
-			lineBuffer = BufferUtils.createVector3Buffer(2);
-			lineBuffer.put(position.x);
-			lineBuffer.put(boundingBox.getCenter().y - maxExtend);
-			lineBuffer.put(position.z);
-			lineBuffer.put(position.x);
-			lineBuffer.put(boundingBox.getCenter().y + maxExtend);
-			lineBuffer.put(position.z);
-			lines = new Line("", lineBuffer, null, null, null);
-
-			lines.setAntialiased(false);
-			lines.setLineWidth(1.0f);
-			lines.setDefaultColor(ColorRGBA.green.clone());
-			attachChild(lines);
-			break;
-		}
+		lines.setAntialiased(false);
+		lines.setLineWidth(1.0f);
+		lines.setDefaultColor(ColorRGBA.blue.clone());
+		attachChild(lines);
 	}
 }
