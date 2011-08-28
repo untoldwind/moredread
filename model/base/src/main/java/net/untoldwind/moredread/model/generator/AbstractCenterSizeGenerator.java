@@ -17,6 +17,22 @@ public class AbstractCenterSizeGenerator implements IStateHolder {
 		this.size = size;
 	}
 
+	public Vector3f getCenter() {
+		return center;
+	}
+
+	public void setCenter(final Vector3f center) {
+		this.center = center;
+	}
+
+	public float getSize() {
+		return size;
+	}
+
+	public void setSize(final float size) {
+		this.size = size;
+	}
+
 	@Override
 	public void writeState(final IStateWriter writer) throws IOException {
 		writer.writeVector3f("center", center);

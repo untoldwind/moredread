@@ -104,7 +104,7 @@
       <tool
             categoryId="net.untoldwind.moredread.ui.tool.category.creation"
             class="net.untoldwind.moredread.ui.tools.creation.CubeCreationToolHandler"
-            icon="icons/MergeCoplanar.png"
+            icon="icons/CreateCube.png"
             id="net.untoldwind.moredread.ui.tool.create.cube"
             label="Create cube"
             type="TOGGLE">

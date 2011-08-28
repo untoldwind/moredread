@@ -51,6 +51,8 @@ public class SceneAddNodeChangeCommand extends AbstractOperation implements
 		scene.getSceneChangeHandler().begin(false);
 
 		try {
+			System.out.println(parentNode);
+			System.out.println(childNode);
 			parentNode.removeChild(childNode);
 		} finally {
 			scene.getSceneChangeHandler().commit();

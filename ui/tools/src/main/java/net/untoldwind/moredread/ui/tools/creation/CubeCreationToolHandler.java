@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import net.untoldwind.moredread.model.generator.CubeMeshGenerator;
+import net.untoldwind.moredread.model.scene.GeneratorNode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.Modifier;
@@ -12,6 +14,7 @@ import net.untoldwind.moredread.ui.tools.IDisplaySystem;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 import net.untoldwind.moredread.ui.tools.spi.IToolHandler;
 
+import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
 
 public class CubeCreationToolHandler implements IToolHandler {
@@ -25,17 +28,53 @@ public class CubeCreationToolHandler implements IToolHandler {
 			final IDisplaySystem displaySystem) {
 		final List<IModelControl> controls = new ArrayList<IModelControl>();
 
-		controls.add(new PlaneRestrictedModelControl(new CubeCreateAdapter()));
+		controls.add(new PlaneRestrictedModelControl(new CubeCreateAdapter(
+				scene)));
 
 		return controls;
 	}
 
 	public static class CubeCreateAdapter implements IToolAdapter {
+		Scene scene;
 		Vector3f position = new Vector3f();
+		CubeMeshGenerator generator;
+		GeneratorNode node;
+
+		public CubeCreateAdapter(final Scene scene) {
+			this.scene = scene;
+		}
 
 		@Override
 		public Vector3f getCenter() {
 			return position;
+		}
+
+		@Override
+		public boolean handleClick(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			if (node == null) {
+				scene.getSceneChangeHandler().begin(true);
+
+				try {
+					generator = new CubeMeshGenerator(point, 0.0f);
+					node = new GeneratorNode(scene, generator);
+				} finally {
+					scene.getSceneChangeHandler().commit();
+				}
+			} else {
+				scene.getSceneChangeHandler().begin(false);
+
+				try {
+					generator
+							.setSize(maxDistance(generator.getCenter(), point));
+					node.regenerate();
+				} finally {
+					scene.getSceneChangeHandler().commit();
+				}
+				node = null;
+				generator = null;
+			}
+			return true;
 		}
 
 		@Override
@@ -45,13 +84,18 @@ public class CubeCreationToolHandler implements IToolHandler {
 
 			modelControl.updatePositions();
 
-			return true;
-		}
+			if (node != null) {
+				scene.getSceneChangeHandler().begin(false);
 
-		@Override
-		public boolean handleClick(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
-			return false;
+				try {
+					generator
+							.setSize(maxDistance(generator.getCenter(), point));
+					node.regenerate();
+				} finally {
+					scene.getSceneChangeHandler().commit();
+				}
+			}
+			return true;
 		}
 
 		@Override
@@ -72,5 +116,18 @@ public class CubeCreationToolHandler implements IToolHandler {
 			return false;
 		}
 
+		private float maxDistance(final Vector3f p1, final Vector3f p2) {
+			final float sizeX = FastMath.abs(p1.x - p2.x);
+			final float sizeY = FastMath.abs(p1.y - p2.y);
+			final float sizeZ = FastMath.abs(p1.z - p2.z);
+
+			if (sizeZ > sizeX && sizeZ > sizeY) {
+				return sizeZ;
+			} else if (sizeY > sizeZ && sizeY > sizeX) {
+				return sizeY;
+			} else {
+				return sizeX;
+			}
+		}
 	}
 }

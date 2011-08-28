@@ -24,6 +24,7 @@ public class Scene extends Group {
 		sceneMetadata = new SceneMetadata();
 		geometryListeners = new ArrayList<ISceneChangeListener>();
 		nodesById = new HashMap<Long, INode>();
+		nodesById.put(nodeId, this);
 	}
 
 	public SceneSelection getSceneSelection() {
