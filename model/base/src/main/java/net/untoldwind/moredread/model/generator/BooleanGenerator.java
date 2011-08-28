@@ -1,5 +1,6 @@
 package net.untoldwind.moredread.model.generator;
 
+import java.io.IOException;
 import java.util.List;
 
 import net.untoldwind.moredread.model.enums.GeometryType;
@@ -8,6 +9,7 @@ import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.op.BooleanOperationFactory;
 import net.untoldwind.moredread.model.op.IBooleanOperation;
 import net.untoldwind.moredread.model.op.IBooleanOperation.BoolOperation;
+import net.untoldwind.moredread.model.state.IStateWriter;
 
 public class BooleanGenerator implements IMeshGenerator {
 	private final BoolOperation boolOperation;
@@ -50,4 +52,7 @@ public class BooleanGenerator implements IMeshGenerator {
 		return "Boolean " + boolOperation;
 	}
 
+	@Override
+	public void writeState(final IStateWriter writer) throws IOException {
+	}
 }

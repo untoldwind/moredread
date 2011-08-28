@@ -2,19 +2,15 @@ package net.untoldwind.moredread.ui.controls.impl;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.EnumSet;
 import java.util.List;
 
 import net.untoldwind.moredread.model.scene.BoundingBox;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
-import net.untoldwind.moredread.ui.controls.Modifier;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 
-import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
-import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Line;
 import com.jme.scene.Node;
@@ -28,15 +24,17 @@ public class PlaneRestrictedModelControl extends Node implements IModelControl {
 	private static final long serialVersionUID = 1L;
 
 	IToolAdapter toolAdapter;
-	PlaneControlHandle planeControlHandle;
+	PlaneProjectControlHandle controlHandle;
 
 	IViewport viewport;
+	Plane plane;
 
 	public PlaneRestrictedModelControl(final IToolAdapter toolAdapter) {
 		super("PlaneRestrictedModelControl");
 
 		this.toolAdapter = toolAdapter;
-		this.planeControlHandle = new PlaneControlHandle();
+		this.controlHandle = new PlaneProjectControlHandle(this,
+				IControlHandle.MAX_SALIENCE);
 	}
 
 	@Override
@@ -48,29 +46,32 @@ public class PlaneRestrictedModelControl extends Node implements IModelControl {
 	public void collectControlHandles(final List<IControlHandle> handles,
 			final IViewport viewport) {
 		this.viewport = viewport;
+		this.plane = Plane.choose(viewport.getCamera().getDirection());
 		updateBackdrop();
 
-		planeControlHandle.setCamera(viewport.getCamera());
+		controlHandle.setProjection(plane, viewport.getCamera());
 
-		handles.add(planeControlHandle);
+		handles.add(controlHandle);
 	}
 
 	@Override
 	public void viewportChanged(final IViewport viewport) {
 		this.viewport = viewport;
+		this.plane = Plane.choose(viewport.getCamera().getDirection());
+
 		updateBackdrop();
 
-		planeControlHandle.setCamera(viewport.getCamera());
+		controlHandle.setProjection(plane, viewport.getCamera());
 	}
 
 	@Override
 	public void setActive(final boolean active) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void updatePositions() {
+		controlHandle.setPosition(toolAdapter.getCenter());
+
 		updateBackdrop();
 	}
 
@@ -98,22 +99,38 @@ public class PlaneRestrictedModelControl extends Node implements IModelControl {
 		final FloatBuffer vertexBuffer = BufferUtils.createVector3Buffer(4);
 		final IntBuffer indexBuffer = BufferUtils.createIntBuffer(4);
 
-		vertexBuffer.put(boundingBox.getCenter().x - maxExtend);
-		vertexBuffer.put(boundingBox.getCenter().y - maxExtend);
-		vertexBuffer.put(0.0f);
-		indexBuffer.put(0);
-		vertexBuffer.put(boundingBox.getCenter().x + maxExtend);
-		vertexBuffer.put(boundingBox.getCenter().y - maxExtend);
-		vertexBuffer.put(0.0f);
-		indexBuffer.put(1);
-		vertexBuffer.put(boundingBox.getCenter().x + maxExtend);
-		vertexBuffer.put(boundingBox.getCenter().y + maxExtend);
-		vertexBuffer.put(0.0f);
-		indexBuffer.put(2);
-		vertexBuffer.put(boundingBox.getCenter().x - maxExtend);
-		vertexBuffer.put(boundingBox.getCenter().y + maxExtend);
-		vertexBuffer.put(0.0f);
-		indexBuffer.put(3);
+		final Vector3f position = toolAdapter.getCenter();
+		final Vector3f v1 = plane.project(boundingBox.getCenter(), position,
+				-maxExtend, -maxExtend);
+		final Vector3f v2 = plane.project(boundingBox.getCenter(), position,
+				maxExtend, -maxExtend);
+		final Vector3f v3 = plane.project(boundingBox.getCenter(), position,
+				maxExtend, maxExtend);
+		final Vector3f v4 = plane.project(boundingBox.getCenter(), position,
+				-maxExtend, maxExtend);
+		vertexBuffer.put(v1.x);
+		vertexBuffer.put(v1.y);
+		vertexBuffer.put(v1.z);
+		vertexBuffer.put(v2.x);
+		vertexBuffer.put(v2.y);
+		vertexBuffer.put(v2.z);
+		vertexBuffer.put(v3.x);
+		vertexBuffer.put(v3.y);
+		vertexBuffer.put(v3.z);
+		vertexBuffer.put(v4.x);
+		vertexBuffer.put(v4.y);
+		vertexBuffer.put(v4.z);
+		if (viewport.getCamera().getDirection().dot(plane.getNormal()) < 0.0) {
+			indexBuffer.put(0);
+			indexBuffer.put(1);
+			indexBuffer.put(2);
+			indexBuffer.put(3);
+		} else {
+			indexBuffer.put(3);
+			indexBuffer.put(2);
+			indexBuffer.put(1);
+			indexBuffer.put(0);
+		}
 
 		final QuadMesh quadMesh = new QuadMesh(null, vertexBuffer, null, null,
 				null, indexBuffer);
@@ -129,15 +146,16 @@ public class PlaneRestrictedModelControl extends Node implements IModelControl {
 		quadMesh.setRenderState(blendState);
 		attachChild(quadMesh);
 
-		final Vector3f position = toolAdapter.getCenter();
-		FloatBuffer lineBuffer = BufferUtils.createVector3Buffer(2);
+		FloatBuffer lineBuffer;
+		Line lines;
+		lineBuffer = BufferUtils.createVector3Buffer(2);
 		lineBuffer.put(boundingBox.getCenter().x - maxExtend);
 		lineBuffer.put(position.y);
-		lineBuffer.put(0.0f);
+		lineBuffer.put(position.z);
 		lineBuffer.put(boundingBox.getCenter().x + maxExtend);
 		lineBuffer.put(position.y);
-		lineBuffer.put(0.0f);
-		Line lines = new Line("", lineBuffer, null, null, null);
+		lineBuffer.put(position.z);
+		lines = new Line("", lineBuffer, null, null, null);
 
 		lines.setAntialiased(false);
 		lines.setLineWidth(1.0f);
@@ -147,86 +165,29 @@ public class PlaneRestrictedModelControl extends Node implements IModelControl {
 		lineBuffer = BufferUtils.createVector3Buffer(2);
 		lineBuffer.put(position.x);
 		lineBuffer.put(boundingBox.getCenter().y - maxExtend);
-		lineBuffer.put(0.0f);
+		lineBuffer.put(position.z);
 		lineBuffer.put(position.x);
 		lineBuffer.put(boundingBox.getCenter().y + maxExtend);
-		lineBuffer.put(0.0f);
+		lineBuffer.put(position.z);
 		lines = new Line("", lineBuffer, null, null, null);
 
 		lines.setAntialiased(false);
 		lines.setLineWidth(1.0f);
 		lines.setDefaultColor(ColorRGBA.green.clone());
 		attachChild(lines);
-	}
 
-	public class PlaneControlHandle implements IControlHandle {
-		private final float salience;
-		private Camera camera;
+		lineBuffer = BufferUtils.createVector3Buffer(2);
+		lineBuffer.put(position.x);
+		lineBuffer.put(position.y);
+		lineBuffer.put(boundingBox.getCenter().z - maxExtend);
+		lineBuffer.put(position.x);
+		lineBuffer.put(position.y);
+		lineBuffer.put(boundingBox.getCenter().z + maxExtend);
+		lines = new Line("", lineBuffer, null, null, null);
 
-		public PlaneControlHandle() {
-			this.salience = MAX_SALIENCE;
-		}
-
-		@Override
-		public float matches(final Vector2f screenCoord) {
-			return salience;
-		}
-
-		@Override
-		public void setActive(final boolean active) {
-			// Do nothing
-		}
-
-		@Override
-		public boolean handleClick(final Vector2f position,
-				final EnumSet<Modifier> modifiers) {
-			return toolAdapter.handleClick(PlaneRestrictedModelControl.this,
-					project(position), modifiers);
-		}
-
-		@Override
-		public boolean handleMove(final Vector2f position,
-				final EnumSet<Modifier> modifiers) {
-			return toolAdapter.handleMove(PlaneRestrictedModelControl.this,
-					project(position), modifiers);
-		}
-
-		@Override
-		public boolean handleDragStart(final Vector2f dragStart,
-				final EnumSet<Modifier> modifiers) {
-			return toolAdapter.handleDragStart(
-					PlaneRestrictedModelControl.this, project(dragStart),
-					modifiers);
-		}
-
-		@Override
-		public boolean handleDragMove(final Vector2f dragStart,
-				final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
-			return toolAdapter.handleDragMove(PlaneRestrictedModelControl.this,
-					project(dragEnd), modifiers);
-		}
-
-		@Override
-		public boolean handleDragEnd(final Vector2f dragStart,
-				final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
-			return toolAdapter.handleDragEnd(PlaneRestrictedModelControl.this,
-					project(dragEnd), modifiers);
-		}
-
-		void setCamera(final Camera camera) {
-			this.camera = camera;
-		}
-
-		private Vector3f project(final Vector2f position) {
-			final Vector3f origin = camera.getWorldCoordinates(position, 0);
-			final Vector3f direction = camera
-					.getWorldCoordinates(position, 0.3f).subtractLocal(origin)
-					.normalizeLocal();
-
-			final float dist = -origin.z / direction.z;
-
-			direction.multLocal(dist);
-			return origin.addLocal(direction);
-		}
+		lines.setAntialiased(false);
+		lines.setLineWidth(1.0f);
+		lines.setDefaultColor(ColorRGBA.blue.clone());
+		attachChild(lines);
 	}
 }

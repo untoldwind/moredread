@@ -8,11 +8,14 @@ import net.untoldwind.moredread.model.mesh.TriangleMesh;
 import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
 
-public class GeosphereMeshGenerator implements IMeshGenerator {
+public class GeosphereMeshGenerator extends AbstractCenterSizeGenerator
+		implements IMeshGenerator {
 	private final float size = 1f;
 	private final int numLevels;
 
 	public GeosphereMeshGenerator(final int numLevels) {
+		super(new Vector3f(), 1.0f);
+
 		this.numLevels = numLevels;
 	}
 
