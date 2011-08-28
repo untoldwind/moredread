@@ -113,6 +113,42 @@
                selectionMode="OBJECT">
          </enablement>
      </tool>
+      <tool
+            categoryId="net.untoldwind.moredread.ui.tool.category.creation"
+            class="net.untoldwind.moredread.ui.tools.creation.OctahedronCreationToolHandler"
+            icon="icons/CreateOctahedron.png"
+            id="net.untoldwind.moredread.ui.tool.create.octahedron"
+            label="Create octahedron"
+            type="TOGGLE">
+         <enablement
+               selectionCount="0-*"
+               selectionMode="OBJECT">
+         </enablement>
+     </tool>
+      <tool
+            categoryId="net.untoldwind.moredread.ui.tool.category.creation"
+            class="net.untoldwind.moredread.ui.tools.creation.DodecahedronCreateToolHandler"
+            icon="icons/CreateDodecahedron.png"
+            id="net.untoldwind.moredread.ui.tool.create.dodecahedron"
+            label="Create dodecahedron"
+            type="TOGGLE">
+         <enablement
+               selectionCount="0-*"
+               selectionMode="OBJECT">
+         </enablement>
+     </tool>
+      <tool
+            categoryId="net.untoldwind.moredread.ui.tool.category.creation"
+            class="net.untoldwind.moredread.ui.tools.creation.IcosahedronCreateToolHandler"
+            icon="icons/CreateIcosahedron.png"
+            id="net.untoldwind.moredread.ui.tool.create.icocahedron"
+            label="Create icosahedron"
+            type="TOGGLE">
+         <enablement
+               selectionCount="0-*"
+               selectionMode="OBJECT">
+         </enablement>
+     </tool>
    </extension>
 
 </plugin>

@@ -6,8 +6,7 @@ import net.untoldwind.moredread.model.mesh.QuadMesh;
 
 import com.jme.math.Vector3f;
 
-public class CubeMeshGenerator extends AbstractCenterSizeGenerator implements
-		IMeshGenerator {
+public class CubeMeshGenerator extends AbstractCenterSizeGenerator {
 
 	public CubeMeshGenerator() {
 		super(new Vector3f(0, 0, 0), 1f);

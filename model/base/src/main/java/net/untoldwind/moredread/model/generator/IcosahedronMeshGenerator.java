@@ -7,10 +7,13 @@ import net.untoldwind.moredread.model.mesh.TriangleMesh;
 import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
 
-public class IcosahedronMeshGenerator extends AbstractCenterSizeGenerator
-		implements IMeshGenerator {
+public class IcosahedronMeshGenerator extends AbstractCenterSizeGenerator {
 	public IcosahedronMeshGenerator() {
 		super(new Vector3f(), 1.0f);
+	}
+
+	public IcosahedronMeshGenerator(final Vector3f center, final float size) {
+		super(center, size);
 	}
 
 	@Override

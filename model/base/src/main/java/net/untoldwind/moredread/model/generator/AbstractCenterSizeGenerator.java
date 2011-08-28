@@ -7,7 +7,8 @@ import net.untoldwind.moredread.model.state.IStateWriter;
 
 import com.jme.math.Vector3f;
 
-public class AbstractCenterSizeGenerator implements IStateHolder {
+public abstract class AbstractCenterSizeGenerator implements IMeshGenerator,
+		IStateHolder {
 	protected Vector3f center = new Vector3f();
 	protected float size = 1f;
 

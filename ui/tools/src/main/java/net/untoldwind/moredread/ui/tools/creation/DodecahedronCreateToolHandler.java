@@ -1,30 +1,31 @@
 package net.untoldwind.moredread.ui.tools.creation;
 
 import net.untoldwind.moredread.model.generator.AbstractCenterSizeGenerator;
-import net.untoldwind.moredread.model.generator.CubeMeshGenerator;
+import net.untoldwind.moredread.model.generator.DodecahedronMeshGenerator;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 
 import com.jme.math.Vector3f;
 
-public class CubeCreationToolHandler extends
+public class DodecahedronCreateToolHandler extends
 		AbstractCenterSizeCreationToolHandler {
-
 	@Override
 	protected IToolAdapter createToolAdapter(final Scene scene) {
-		return new CubeCreateAdapter(scene);
+		return new DodecahedronToolAdapter(scene);
 	}
 
-	public static class CubeCreateAdapter extends
+	public static class DodecahedronToolAdapter extends
 			AbstractCenterSizeCreationToolAdapter {
-		public CubeCreateAdapter(final Scene scene) {
+		public DodecahedronToolAdapter(final Scene scene) {
 			super(scene);
 		}
 
 		@Override
 		protected AbstractCenterSizeGenerator createGenerator(
 				final Vector3f point) {
-			return new CubeMeshGenerator(point, 0.0f);
+			return new DodecahedronMeshGenerator(point, 0.0f);
 		}
+
 	}
+
 }

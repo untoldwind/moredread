@@ -7,8 +7,7 @@ import net.untoldwind.moredread.model.mesh.PolyMesh;
 import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
 
-public class DodecahedronMeshGenerator extends AbstractCenterSizeGenerator
-		implements IMeshGenerator {
+public class DodecahedronMeshGenerator extends AbstractCenterSizeGenerator {
 	public DodecahedronMeshGenerator() {
 		super(new Vector3f(0, 0, 0), 1f);
 	}

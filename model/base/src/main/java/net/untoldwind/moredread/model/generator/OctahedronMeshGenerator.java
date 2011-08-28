@@ -6,11 +6,14 @@ import net.untoldwind.moredread.model.mesh.TriangleMesh;
 
 import com.jme.math.Vector3f;
 
-public class OctahedronMeshGenerator extends AbstractCenterSizeGenerator
-		implements IMeshGenerator {
+public class OctahedronMeshGenerator extends AbstractCenterSizeGenerator {
 
 	public OctahedronMeshGenerator() {
 		super(new Vector3f(), 1.0f);
+	}
+
+	public OctahedronMeshGenerator(final Vector3f center, final float size) {
+		super(center, size);
 	}
 
 	@Override
