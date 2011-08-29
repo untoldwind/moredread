@@ -13,13 +13,15 @@ import net.untoldwind.moredread.model.scene.MeshNode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.scene.SceneSelection;
 import net.untoldwind.moredread.ui.controls.IModelControl;
-import net.untoldwind.moredread.ui.tools.IDisplaySystem;
+import net.untoldwind.moredread.ui.controls.IViewport;
+import net.untoldwind.moredread.ui.tools.IToolController;
 import net.untoldwind.moredread.ui.tools.spi.IToolHandler;
 
 public class MergeCoplanarToolHandler implements IToolHandler {
 
 	@Override
-	public void activate(final Scene scene) {
+	public void activated(final IToolController toolController,
+			final Scene scene) {
 		final SceneSelection sceneSelection = scene.getSceneSelection();
 
 		final List<MeshNode> meshNodes = new ArrayList<MeshNode>();
@@ -47,8 +49,12 @@ public class MergeCoplanarToolHandler implements IToolHandler {
 	}
 
 	@Override
+	public void aborted() {
+	}
+
+	@Override
 	public List<? extends IModelControl> getModelControls(final Scene scene,
-			final IDisplaySystem displaySystem) {
+			final IViewport viewport) {
 		return Collections.emptyList();
 	}
 

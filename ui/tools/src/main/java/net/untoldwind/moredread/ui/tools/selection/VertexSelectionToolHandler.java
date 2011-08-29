@@ -16,10 +16,11 @@ import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.scene.SceneSelection.VertexSelection;
 import net.untoldwind.moredread.ui.controls.IModelControl;
+import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.controls.Modifier;
 import net.untoldwind.moredread.ui.controls.impl.MoveCrossModelControl;
 import net.untoldwind.moredread.ui.controls.impl.VertexSelectionModelControl;
-import net.untoldwind.moredread.ui.tools.IDisplaySystem;
+import net.untoldwind.moredread.ui.tools.IToolController;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 import net.untoldwind.moredread.ui.tools.spi.IToolHandler;
 
@@ -28,12 +29,17 @@ import com.jme.math.Vector3f;
 @Singleton
 public class VertexSelectionToolHandler implements IToolHandler {
 	@Override
-	public void activate(final Scene scene) {
+	public void activated(final IToolController toolController,
+			final Scene scene) {
+	}
+
+	@Override
+	public void aborted() {
 	}
 
 	@Override
 	public List<? extends IModelControl> getModelControls(final Scene scene,
-			final IDisplaySystem displaySystem) {
+			final IViewport viewport) {
 		final List<IModelControl> controls = new ArrayList<IModelControl>();
 
 		for (final INode node : scene.getSceneSelection().getSelectedNodes()) {

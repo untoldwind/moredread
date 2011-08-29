@@ -8,9 +8,10 @@ import net.untoldwind.moredread.model.generator.AbstractCenterSizeGenerator;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.ui.controls.IModelControl;
+import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.controls.Modifier;
 import net.untoldwind.moredread.ui.controls.impl.PlaneRestrictedModelControl;
-import net.untoldwind.moredread.ui.tools.IDisplaySystem;
+import net.untoldwind.moredread.ui.tools.IToolController;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 import net.untoldwind.moredread.ui.tools.spi.IToolHandler;
 
@@ -19,14 +20,21 @@ import com.jme.math.Vector3f;
 
 public abstract class AbstractCenterSizeCreationToolHandler implements
 		IToolHandler {
+	protected IToolController toolController;
 
 	@Override
-	public void activate(final Scene scene) {
+	public void activated(final IToolController toolController,
+			final Scene scene) {
+		this.toolController = toolController;
+	}
+
+	@Override
+	public void aborted() {
 	}
 
 	@Override
 	public List<? extends IModelControl> getModelControls(final Scene scene,
-			final IDisplaySystem displaySystem) {
+			final IViewport viewport) {
 		final List<IModelControl> controls = new ArrayList<IModelControl>();
 
 		controls.add(new PlaneRestrictedModelControl(createToolAdapter(scene)));
@@ -36,8 +44,8 @@ public abstract class AbstractCenterSizeCreationToolHandler implements
 
 	protected abstract IToolAdapter createToolAdapter(Scene scene);
 
-	public static abstract class AbstractCenterSizeCreationToolAdapter
-			implements IToolAdapter {
+	public abstract class AbstractCenterSizeCreationToolAdapter implements
+			IToolAdapter {
 		Scene scene;
 		Vector3f position = new Vector3f();
 		AbstractCenterSizeGenerator generator;
@@ -79,6 +87,8 @@ public abstract class AbstractCenterSizeCreationToolHandler implements
 				}
 				node = null;
 				generator = null;
+
+				toolController.setActiveTool(null);
 			}
 			return true;
 		}

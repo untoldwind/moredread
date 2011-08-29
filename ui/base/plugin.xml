@@ -74,6 +74,10 @@
             id="net.untoldwind.moredread.ui.category.Camera"
             name="Camera">
       </category>
+      <category
+            id="net.untoldwind.moredread.ui.category.Tools"
+            name="Tools">
+      </category>
       <commandParameterType
             converter="net.untoldwind.moredread.ui.handlers.SelectionModeParameterValueConverter"
             id="net.untoldwind.moredread.ui.selectionMode"
@@ -99,6 +103,13 @@
             description="Camera move"
             id="net.untoldwind.moredread.ui.cameraMove"
             name="Camera move">
+      </command>
+      <command
+            categoryId="net.untoldwind.moredread.ui.category.Tools"
+            defaultHandler="net.untoldwind.moredread.ui.handlers.AbortToolHandler"
+            description="Abort tool"
+            id="net.untoldwind.moredread.ui.toolAbort"
+            name="Abort tool">
       </command>
    </extension>
    <extension
@@ -160,6 +171,12 @@
             contextId="net.untoldwind.moredread.ui.context.3dview"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="U">
+      </key>
+      <key
+            commandId="net.untoldwind.moredread.ui.toolAbort"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="ESC">
       </key>
    </extension>
    <extension

@@ -14,7 +14,7 @@ public class DodecahedronCreateToolHandler extends
 		return new DodecahedronToolAdapter(scene);
 	}
 
-	public static class DodecahedronToolAdapter extends
+	public class DodecahedronToolAdapter extends
 			AbstractCenterSizeCreationToolAdapter {
 		public DodecahedronToolAdapter(final Scene scene) {
 			super(scene);

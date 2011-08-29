@@ -7,6 +7,7 @@ import net.untoldwind.moredread.model.scene.event.ISceneSelectionModeListener;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionModeEvent;
 import net.untoldwind.moredread.ui.MoreDreadUI;
+import net.untoldwind.moredread.ui.tools.IToolActivationListener;
 import net.untoldwind.moredread.ui.tools.IToolCategoryDescriptor;
 import net.untoldwind.moredread.ui.tools.IToolController;
 import net.untoldwind.moredread.ui.tools.IToolDescriptor;
@@ -24,7 +25,7 @@ import org.eclipse.ui.part.ViewPart;
 
 public class ToolSelectionView extends ViewPart implements
 		ISceneSelectionChangeListener, ISceneSelectionModeListener,
-		ISizeProvider {
+		IToolActivationListener, ISizeProvider {
 	public static final String ID = "net.untoldwind.moredread.ui.toolSelectionView";
 
 	private ToolBar toolBar;
@@ -78,8 +79,22 @@ public class ToolSelectionView extends ViewPart implements
 				.addSceneSelectionModeListener(this);
 		MoreDreadUI.getDefault().getSceneHolder().getScene()
 				.getSceneSelection().addSceneSelectionChangeListener(this);
+		UIToolsPlugin.getDefault().getToolController()
+				.addToolActivationListener(this);
 
 		updateTools();
+	}
+
+	@Override
+	public void dispose() {
+		MoreDreadUI.getDefault().getSceneHolder()
+				.removeSceneSelectionModeListener(this);
+		MoreDreadUI.getDefault().getSceneHolder().getScene()
+				.getSceneSelection().removeSceneSelectionChangeListener(this);
+		UIToolsPlugin.getDefault().getToolController()
+				.removeToolActivationListener(this);
+
+		super.dispose();
 	}
 
 	/**
@@ -96,6 +111,11 @@ public class ToolSelectionView extends ViewPart implements
 
 	@Override
 	public void sceneSelectionModeChanged(final SceneSelectionModeEvent event) {
+		updateTools();
+	}
+
+	@Override
+	public void activeToolChanged() {
 		updateTools();
 	}
 

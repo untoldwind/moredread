@@ -14,7 +14,7 @@ public class IcosahedronCreateToolHandler extends
 		return new IcosahedronToolAdapter(scene);
 	}
 
-	public static class IcosahedronToolAdapter extends
+	public class IcosahedronToolAdapter extends
 			AbstractCenterSizeCreationToolAdapter {
 		public IcosahedronToolAdapter(final Scene scene) {
 			super(scene);

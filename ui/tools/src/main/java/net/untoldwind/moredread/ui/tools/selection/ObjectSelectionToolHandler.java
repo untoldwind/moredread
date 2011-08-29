@@ -9,10 +9,11 @@ import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.ui.controls.IModelControl;
+import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.controls.Modifier;
 import net.untoldwind.moredread.ui.controls.impl.FullScreenModelControl;
 import net.untoldwind.moredread.ui.controls.impl.MoveCrossModelControl;
-import net.untoldwind.moredread.ui.tools.IDisplaySystem;
+import net.untoldwind.moredread.ui.tools.IToolController;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 import net.untoldwind.moredread.ui.tools.spi.IToolHandler;
 
@@ -22,12 +23,17 @@ import com.jme.math.Vector3f;
 @Singleton
 public class ObjectSelectionToolHandler implements IToolHandler {
 	@Override
-	public void activate(final Scene scene) {
+	public void activated(final IToolController toolController,
+			final Scene scene) {
+	}
+
+	@Override
+	public void aborted() {
 	}
 
 	@Override
 	public List<? extends IModelControl> getModelControls(final Scene scene,
-			final IDisplaySystem displaySystem) {
+			final IViewport viewport) {
 		final List<IModelControl> controls = new ArrayList<IModelControl>();
 		for (final INode node : scene.getSceneSelection().getSelectedNodes()) {
 			if (node instanceof AbstractSpatialNode) {
@@ -37,19 +43,18 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 			}
 		}
 		controls.add(new FullScreenModelControl(new SelectToolAdapter(scene,
-				displaySystem)));
+				viewport)));
 
 		return controls;
 	}
 
 	private static class SelectToolAdapter implements IToolAdapter {
 		private final Scene scene;
-		private final IDisplaySystem displaySystem;
+		private final IViewport viewport;
 
-		private SelectToolAdapter(final Scene scene,
-				final IDisplaySystem displaySystem) {
+		private SelectToolAdapter(final Scene scene, final IViewport viewport) {
 			this.scene = scene;
-			this.displaySystem = displaySystem;
+			this.viewport = viewport;
 		}
 
 		@Override
@@ -67,7 +72,7 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 		public boolean handleClick(final IModelControl modelControl,
 				final Vector3f point, final EnumSet<Modifier> modifiers) {
 			if (modifiers.contains(Modifier.LEFT_MOUSE_BUTTON)) {
-				final INode node = displaySystem.pickNode(new Vector2f(point.x,
+				final INode node = viewport.pickNode(new Vector2f(point.x,
 						point.y));
 
 				if (node != null) {

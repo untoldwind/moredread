@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.ui.controls.IModelControl;
-import net.untoldwind.moredread.ui.tools.IDisplaySystem;
+import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.tools.IToolCategoryDescriptor;
 import net.untoldwind.moredread.ui.tools.IToolDescriptor;
 import net.untoldwind.moredread.ui.tools.ToolType;
@@ -103,9 +103,16 @@ public class ToolDescriptor implements IToolDescriptor {
 	 */
 	@Override
 	public void activate(final Scene scene) {
-		toolHandler.activate(scene);
+		toolHandler.activated(toolController, scene);
 
 		toolController.setActiveTool(this);
+	}
+
+	@Override
+	public void abort() {
+		toolHandler.aborted();
+
+		toolController.setActiveTool(null);
 	}
 
 	/**
@@ -113,8 +120,8 @@ public class ToolDescriptor implements IToolDescriptor {
 	 */
 	@Override
 	public List<? extends IModelControl> getModelControls(final Scene scene,
-			final IDisplaySystem displaySystem) {
-		return toolHandler.getModelControls(scene, displaySystem);
+			final IViewport viewport) {
+		return toolHandler.getModelControls(scene, viewport);
 	}
 
 	@Override

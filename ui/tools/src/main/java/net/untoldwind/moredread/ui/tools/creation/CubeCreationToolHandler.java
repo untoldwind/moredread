@@ -15,7 +15,7 @@ public class CubeCreationToolHandler extends
 		return new CubeCreateAdapter(scene);
 	}
 
-	public static class CubeCreateAdapter extends
+	public class CubeCreateAdapter extends
 			AbstractCenterSizeCreationToolAdapter {
 		public CubeCreateAdapter(final Scene scene) {
 			super(scene);
