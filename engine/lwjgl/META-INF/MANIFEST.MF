@@ -9,7 +9,6 @@ Eclipse-ExtensibleAPI: true
 Export-Package: net.java.games.input,
  net.java.games.util,
  net.java.games.util.plugins,
- net.java.games.util.plugins.test,
  org.lwjgl,
  org.lwjgl.input,
  org.lwjgl.openal,
