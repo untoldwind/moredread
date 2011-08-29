@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.ui.controls.IModelControl;
+import net.untoldwind.moredread.ui.controls.IViewport;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
@@ -20,6 +21,8 @@ public interface IToolDescriptor {
 
 	void activate(Scene scene);
 
+	void abort();
+
 	List<? extends IModelControl> getModelControls(Scene scene,
-			IDisplaySystem displaySystem);
+			IViewport viewport);
 }

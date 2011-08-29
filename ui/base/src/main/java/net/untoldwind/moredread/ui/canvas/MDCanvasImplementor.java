@@ -17,7 +17,6 @@ import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.controls.Modifier;
 import net.untoldwind.moredread.ui.preferences.IPreferencesConstants;
-import net.untoldwind.moredread.ui.tools.IDisplaySystem;
 import net.untoldwind.moredread.ui.tools.IToolController;
 import net.untoldwind.moredread.ui.tools.UIToolsPlugin;
 
@@ -37,8 +36,7 @@ import com.jme.scene.state.BlendState.BlendEquation;
 import com.jme.scene.state.ZBufferState;
 import com.jme.system.canvas.SimpleCanvasImpl;
 
-public class MDCanvasImplementor extends SimpleCanvasImpl implements
-		IDisplaySystem, IViewport {
+public class MDCanvasImplementor extends SimpleCanvasImpl implements IViewport {
 
 	private Quaternion rotQuat;
 	private Vector3f axis;

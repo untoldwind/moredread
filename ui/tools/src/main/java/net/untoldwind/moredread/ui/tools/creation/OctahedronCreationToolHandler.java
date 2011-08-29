@@ -15,7 +15,7 @@ public class OctahedronCreationToolHandler extends
 		return new OctahedronToolAdapter(scene);
 	}
 
-	public static class OctahedronToolAdapter extends
+	public class OctahedronToolAdapter extends
 			AbstractCenterSizeCreationToolAdapter {
 		public OctahedronToolAdapter(final Scene scene) {
 			super(scene);

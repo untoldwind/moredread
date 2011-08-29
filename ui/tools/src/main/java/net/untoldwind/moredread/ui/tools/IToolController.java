@@ -21,4 +21,6 @@ public interface IToolController {
 	void addToolActivationListener(IToolActivationListener listener);
 
 	void removeToolActivationListener(IToolActivationListener listener);
+
+	void setActiveTool(IToolDescriptor tool);
 }

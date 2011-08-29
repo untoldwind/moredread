@@ -97,8 +97,14 @@ public class ToolController implements IToolController,
 		activationListeners.remove(listener);
 	}
 
-	void setActiveTool(final IToolDescriptor toolDescriptor) {
-		if (toolDescriptor.getToolType() == ToolType.TOGGLE) {
+	@Override
+	public void setActiveTool(IToolDescriptor toolDescriptor) {
+		if (toolDescriptor == null) {
+			toolDescriptor = getDefaultTool();
+		}
+
+		if (activeTool != toolDescriptor
+				&& toolDescriptor.getToolType() == ToolType.TOGGLE) {
 			this.activeTool = toolDescriptor;
 
 			for (final IToolActivationListener listener : activationListeners) {
@@ -109,7 +115,7 @@ public class ToolController implements IToolController,
 
 	@Override
 	public void sceneSelectionModeChanged(final SceneSelectionModeEvent event) {
-		setActiveTool(getDefaultTool());
+		getActiveTool().abort();
 	}
 
 	private IToolDescriptor getDefaultTool() {

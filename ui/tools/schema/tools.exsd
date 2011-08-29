@@ -64,7 +64,7 @@
                </documentation>
             </annotation>
          </attribute>
-         <attribute name="visible" type="boolean" use="default" value="true">
+         <attribute name="visible" type="boolean" use="required">
             <annotation>
                <documentation>
                   

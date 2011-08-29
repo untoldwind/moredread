@@ -11,9 +11,9 @@ import net.untoldwind.moredread.ui.input.event.IUIInputReceiver;
 import net.untoldwind.moredread.ui.input.event.MoveDepthCameraUpdate;
 import net.untoldwind.moredread.ui.input.event.MoveHorizontalCameraUpdate;
 import net.untoldwind.moredread.ui.input.event.MoveVerticalCameraUpdate;
-import net.untoldwind.moredread.ui.input.event.RotateAroundXCameraUpdate;
-import net.untoldwind.moredread.ui.input.event.RotateAroundYCameraUpdate;
-import net.untoldwind.moredread.ui.input.event.RotateAroundZCameraUpdate;
+import net.untoldwind.moredread.ui.input.event.RotateXCameraUpdate;
+import net.untoldwind.moredread.ui.input.event.RotateYCameraUpdate;
+import net.untoldwind.moredread.ui.input.event.RotateZCameraUpdate;
 import net.untoldwind.moredread.ui.input.impl.CameraUpdateComponentAdapter;
 import net.untoldwind.moredread.ui.input.impl.ControllerPollTask;
 import net.untoldwind.moredread.ui.input.impl.IComponentAdapter;
@@ -84,26 +84,33 @@ public class UIInputPlugin extends Plugin {
 							new CameraUpdateComponentAdapter(
 									MoveHorizontalCameraUpdate.class, 0.02f,
 									-2f));
-					adapters
-							.put(Component.Identifier.Axis.Y,
-									new CameraUpdateComponentAdapter(
-											MoveVerticalCameraUpdate.class,
-											0.02f, -2f));
+					adapters.put(Component.Identifier.Axis.Y,
+							new CameraUpdateComponentAdapter(
+									MoveVerticalCameraUpdate.class, 0.02f, -2f));
 					adapters.put(Component.Identifier.Axis.Z,
 							new CameraUpdateComponentAdapter(
 									MoveDepthCameraUpdate.class, 0.02f, 2f));
+					// adapters.put(Component.Identifier.Axis.RX,
+					// new CameraUpdateComponentAdapter(
+					// RotateAroundYCameraUpdate.class, 0.02f,
+					// -0.4f));
+					// adapters.put(Component.Identifier.Axis.RY,
+					// new CameraUpdateComponentAdapter(
+					// RotateAroundXCameraUpdate.class, 0.02f,
+					// -0.4f));
+					// adapters.put(Component.Identifier.Axis.RZ,
+					// new CameraUpdateComponentAdapter(
+					// RotateAroundZCameraUpdate.class, 0.02f,
+					// 0.4f));
 					adapters.put(Component.Identifier.Axis.RX,
 							new CameraUpdateComponentAdapter(
-									RotateAroundYCameraUpdate.class, 0.02f,
-									-0.4f));
+									RotateYCameraUpdate.class, 0.02f, -0.4f));
 					adapters.put(Component.Identifier.Axis.RY,
 							new CameraUpdateComponentAdapter(
-									RotateAroundXCameraUpdate.class, 0.02f,
-									-0.4f));
+									RotateXCameraUpdate.class, 0.02f, -0.4f));
 					adapters.put(Component.Identifier.Axis.RZ,
 							new CameraUpdateComponentAdapter(
-									RotateAroundZCameraUpdate.class, 0.02f,
-									0.4f));
+									RotateZCameraUpdate.class, 0.02f, 0.4f));
 
 					if (pollTimer == null) {
 						pollTimer = new Timer();

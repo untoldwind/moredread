@@ -4,7 +4,8 @@ import java.util.List;
 
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.ui.controls.IModelControl;
-import net.untoldwind.moredread.ui.tools.IDisplaySystem;
+import net.untoldwind.moredread.ui.controls.IViewport;
+import net.untoldwind.moredread.ui.tools.IToolController;
 
 /**
  * Interface of all tool handlers.
@@ -18,10 +19,19 @@ public interface IToolHandler {
 	 * 'toggle' type tools may do some initialization here. 'push' type tools
 	 * should perform all there work here.
 	 * 
+	 * @param toolController
+	 *            The tool controller
 	 * @param scene
 	 *            The current scene
 	 */
-	void activate(Scene scene);
+	void activated(IToolController toolController, Scene scene);
+
+	/**
+	 * Invoked if the tool is aborted by the user.
+	 * 
+	 * This should never be called on 'push' type tools.
+	 */
+	void aborted();
 
 	/**
 	 * Get all model controls that should be displayed while the tool is active.
@@ -36,5 +46,5 @@ public interface IToolHandler {
 	 * @return List of model controls to display while the tool is active.
 	 */
 	List<? extends IModelControl> getModelControls(Scene scene,
-			IDisplaySystem displaySystem);
+			IViewport viewport);
 }
