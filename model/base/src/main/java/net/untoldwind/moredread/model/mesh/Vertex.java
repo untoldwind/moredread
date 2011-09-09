@@ -1,7 +1,9 @@
 package net.untoldwind.moredread.model.mesh;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import net.untoldwind.moredread.model.enums.GeometryType;
@@ -67,6 +69,20 @@ public class Vertex implements IStateHolder, IVertex {
 
 	public Set<Face<?, ?>> getFaces() {
 		return faces;
+	}
+
+	@Override
+	public List<? extends IVertex> getNeighbours() {
+		final List<IVertex> neighbours = new ArrayList<IVertex>();
+
+		for (final IEdge edge : edges) {
+			if (edge.getVertex1() != this) {
+				neighbours.add(edge.getVertex2());
+			} else {
+				neighbours.add(edge.getVertex1());
+			}
+		}
+		return neighbours;
 	}
 
 	@Override

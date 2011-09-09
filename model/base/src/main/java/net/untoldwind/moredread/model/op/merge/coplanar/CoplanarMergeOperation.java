@@ -192,10 +192,27 @@ public class CoplanarMergeOperation implements IUnaryOperation {
 			return;
 		}
 
+		for (final List<IVertex> sourceStrip : sourceStrips) {
+			for (int i = sourceStrip.size() - 1; i >= 0; i--) {
+				final Vector3f diff1 = sourceStrip
+						.get((i + 1) % sourceStrip.size()).getPoint()
+						.subtract(sourceStrip.get(i).getPoint());
+				final Vector3f diff2 = sourceStrip
+						.get((i + sourceStrip.size() - 1) % sourceStrip.size())
+						.getPoint().subtract(sourceStrip.get(i).getPoint());
+				diff2.crossLocal(diff1);
+				if (FastMath.abs(diff2.x) < FastMath.ZERO_TOLERANCE
+						&& FastMath.abs(diff2.y) < FastMath.ZERO_TOLERANCE
+						&& FastMath.abs(diff2.z) < FastMath.ZERO_TOLERANCE) {
+					sourceStrip.remove(i);
+				}
+			}
+		}
+
 		final Vector3f n = source.getFace(faces.iterator().next())
 				.getMeanNormal();
-		final Vector3f vx = sourceStrips.get(0).get(1).getPoint().subtract(
-				sourceStrips.get(0).get(0).getPoint());
+		final Vector3f vx = sourceStrips.get(0).get(1).getPoint()
+				.subtract(sourceStrips.get(0).get(0).getPoint());
 		vx.normalizeLocal();
 		final Vector3f vy = vx.cross(n).normalizeLocal();
 
@@ -250,8 +267,8 @@ public class CoplanarMergeOperation implements IUnaryOperation {
 	private void sortStrips(final Vector3f vx, final Vector3f vy,
 			final List<List<IVertex>> sourceStrips) {
 		for (int i = 1; i < sourceStrips.size(); i++) {
-			if (isInside(vx, vy, sourceStrips.get(0).get(0), sourceStrips
-					.get(i))) {
+			if (isInside(vx, vy, sourceStrips.get(0).get(0),
+					sourceStrips.get(i))) {
 				Collections.swap(sourceStrips, 0, i);
 			}
 		}

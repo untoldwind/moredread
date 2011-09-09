@@ -7,6 +7,7 @@ import java.util.List;
 import net.untoldwind.moredread.annotations.Singleton;
 import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 import net.untoldwind.moredread.model.scene.INode;
+import net.untoldwind.moredread.model.scene.ISpatialNode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
@@ -119,9 +120,10 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 			int count = 0;
 			for (final INode node : scene.getSceneSelection()
 					.getSelectedNodes()) {
-				if (node instanceof AbstractSpatialNode) {
-					final AbstractSpatialNode spatialNode = (AbstractSpatialNode) node;
-					center.addLocal(spatialNode.getWorldTranslation());
+				if (node instanceof ISpatialNode) {
+					final ISpatialNode spatialNode = (AbstractSpatialNode) node;
+					center.addLocal(spatialNode.getWorldBoundingBox()
+							.getCenter());
 					count++;
 				}
 			}
