@@ -10,10 +10,13 @@ import net.untoldwind.moredread.model.scene.change.ISceneChangeCommand;
 import net.untoldwind.moredread.model.scene.event.SceneChangeEvent;
 
 import org.eclipse.core.commands.operations.IOperationHistory;
+import org.eclipse.core.commands.operations.IUndoContext;
 import org.eclipse.core.commands.operations.OperationHistoryFactory;
+import org.eclipse.core.commands.operations.UndoContext;
 
 public class SceneChangeHandler {
 	private final Scene scene;
+	private final IUndoContext undoContext = new UndoContext();
 
 	transient Thread lockOwner;
 	transient boolean allowUndo;
@@ -111,7 +114,7 @@ public class SceneChangeHandler {
 	}
 
 	void queueCommand(final ISceneChangeCommand command) {
-		command.addContext(IOperationHistory.GLOBAL_UNDO_CONTEXT);
+		command.addContext(undoContext);
 		getOperationHistory().add(command);
 	}
 

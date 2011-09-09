@@ -32,7 +32,6 @@ import net.untoldwind.moredread.ui.properties.NodePropertySheetContributor;
 import net.untoldwind.moredread.ui.tools.IToolActivationListener;
 import net.untoldwind.moredread.ui.tools.UIToolsPlugin;
 
-import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.swt.SWT;
@@ -53,13 +52,9 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISaveablePart;
-import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
-import org.eclipse.ui.operations.RedoActionHandler;
-import org.eclipse.ui.operations.UndoActionHandler;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
@@ -182,8 +177,6 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 				.addSceneChangeListener(this);
 		UIToolsPlugin.getDefault().getToolController()
 				.addToolActivationListener(this);
-
-		createGlobalActionHandlers();
 
 		getSite().setSelectionProvider(
 				new SceneSelectionProvider(MoreDreadUI.getDefault()
@@ -323,19 +316,6 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 				.setBackground(new ColorRGBA(backgroundRGB.red / 255.0f,
 						backgroundRGB.green / 255.0f,
 						backgroundRGB.blue / 255.0f, 1.0f));
-	}
-
-	private void createGlobalActionHandlers() {
-		// set up action handlers that operate on the current context
-		final UndoActionHandler undoAction = new UndoActionHandler(
-				this.getSite(), IOperationHistory.GLOBAL_UNDO_CONTEXT);
-		final RedoActionHandler redoAction = new RedoActionHandler(
-				this.getSite(), IOperationHistory.GLOBAL_UNDO_CONTEXT);
-		final IActionBars actionBars = getViewSite().getActionBars();
-		actionBars.setGlobalActionHandler(ActionFactory.UNDO.getId(),
-				undoAction);
-		actionBars.setGlobalActionHandler(ActionFactory.REDO.getId(),
-				redoAction);
 	}
 
 	class DragViewListener implements MouseMoveListener, MouseListener {

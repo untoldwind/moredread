@@ -1,6 +1,10 @@
 package net.untoldwind.moredread.ui;
 
+import net.untoldwind.moredread.ui.actions.GlobalRedoAction;
+import net.untoldwind.moredread.ui.actions.GlobalUndoAction;
+
 import org.eclipse.jface.action.GroupMarker;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.ICoolBarManager;
 import org.eclipse.jface.action.IMenuManager;
@@ -13,8 +17,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.actions.ContributionItemFactory;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
+import org.eclipse.ui.actions.ContributionItemFactory;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 
@@ -35,8 +39,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	private IWorkbenchAction newAction;
 	private IWorkbenchAction saveAction;
 	private IWorkbenchAction saveAsAction;
-	private IWorkbenchAction undoAction;
-	private IWorkbenchAction redoAction;
+	private IAction undoAction;
+	private IAction redoAction;
 
 	private IWorkbenchAction preferencesActions;
 
@@ -74,10 +78,10 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		saveAsAction = ActionFactory.SAVE_AS.create(window);
 		register(saveAsAction);
 
-		undoAction = ActionFactory.UNDO.create(window);
+		undoAction = new GlobalUndoAction(window);
 		register(undoAction);
 
-		redoAction = ActionFactory.REDO.create(window);
+		redoAction = new GlobalRedoAction(window);
 		register(redoAction);
 
 		newWindowAction = ActionFactory.OPEN_NEW_WINDOW.create(window);
