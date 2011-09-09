@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.untoldwind.moredread.model.enums.GeometryType;
+import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 import net.untoldwind.moredread.model.transform.ITransformation;
 
@@ -110,8 +111,14 @@ public class Polygon implements IPolygon {
 	}
 
 	@Override
+	public void readState(final IStateReader reader) throws IOException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
 	public void writeState(final IStateWriter writer) throws IOException {
-		writer.writeCollection("vertices", vertices);
+		// TODO Auto-generated method stub
 	}
 
 	@Override

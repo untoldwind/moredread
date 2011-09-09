@@ -1,5 +1,6 @@
 package net.untoldwind.moredread.model.mesh.test;
 
+import static net.untoldwind.moredread.model.test.AssertHelper.assertVectorEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -9,6 +10,8 @@ import java.util.List;
 import net.untoldwind.moredread.model.mesh.PolyFace;
 import net.untoldwind.moredread.model.mesh.PolyMesh;
 import net.untoldwind.moredread.model.mesh.Vertex;
+import net.untoldwind.moredread.model.state.BinaryStateReader;
+import net.untoldwind.moredread.model.state.BinaryStateWriter;
 import net.untoldwind.moredread.model.state.XMLStateWriter;
 
 import org.dom4j.Document;
@@ -18,6 +21,7 @@ import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 import org.junit.Test;
 
+import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
 
 public class PolyMeshTest {
@@ -156,6 +160,35 @@ public class PolyMeshTest {
 		}
 
 		assertDocument(expected, writer.getDocument());
+	}
+
+	@Test
+	public void writeBinaryStateTest() throws Exception {
+		final PolyMesh cube = createCube();
+		final byte[] ser = BinaryStateWriter.toByteArray(cube);
+
+		final PolyMesh otherCube = (PolyMesh) BinaryStateReader
+				.fromByteArray(ser);
+
+		assertEquals(cube.getVertices().size(), otherCube.getVertices().size());
+		for (int i = 0; i < cube.getVertices().size(); i++) {
+			assertVectorEquals(cube.getVertex(i).getPoint(), otherCube
+					.getVertex(i).getPoint(), FastMath.ZERO_TOLERANCE);
+		}
+		assertEquals(cube.getFaces().size(), otherCube.getFaces().size());
+		for (int i = 0; i < cube.getFaces().size(); i++) {
+			final PolyFace face = cube.getFace(i);
+			final PolyFace otherFace = otherCube.getFace(i);
+
+			assertEquals(face.getStripCounts(), otherFace.getStripCounts());
+			assertEquals(face.getVertices().size(), otherFace.getVertices()
+					.size());
+			for (int j = 0; j < face.getVertices().size(); j++) {
+				assertVectorEquals(face.getVertex(j).getPoint(), otherFace
+						.getVertex(j).getPoint(), FastMath.ZERO_TOLERANCE);
+			}
+		}
+
 	}
 
 	private void assertDocument(final Document expected, final Document actual) {

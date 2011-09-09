@@ -3,6 +3,7 @@ package net.untoldwind.moredread.model.generator;
 import java.io.IOException;
 
 import net.untoldwind.moredread.model.state.IStateHolder;
+import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 
 import com.jme.math.Vector3f;
@@ -32,6 +33,12 @@ public abstract class AbstractCenterSizeGenerator implements IMeshGenerator,
 
 	public void setSize(final float size) {
 		this.size = size;
+	}
+
+	@Override
+	public void readState(final IStateReader reader) throws IOException {
+		center = reader.readVector3f();
+		size = reader.readFloat();
 	}
 
 	@Override

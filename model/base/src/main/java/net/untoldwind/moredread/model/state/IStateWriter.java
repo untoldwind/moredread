@@ -1,7 +1,7 @@
 package net.untoldwind.moredread.model.state;
 
 import java.io.IOException;
-import java.util.Collection;
+import java.util.List;
 
 import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
@@ -24,8 +24,15 @@ public interface IStateWriter {
 
 	void writeObject(String tag, IStateHolder obj) throws IOException;
 
-	void writeArray(String tag, IStateHolder[] arr) throws IOException;
+	<T extends IStateHolder> void writeTypedArray(String tag, T[] arr)
+			throws IOException;
 
-	void writeCollection(String tag,
-			Collection<? extends IStateHolder> collection) throws IOException;
+	// void writeArray(String tag, IStateHolder[] arr) throws IOException;
+
+	<T extends IStateHolder> void writeTypedList(String tag, Class<T> type,
+			List<T> collection) throws IOException;
+
+	<T extends IStateHolder> void writeUntypedList(String tag,
+			List<T> collection) throws IOException;
+
 }

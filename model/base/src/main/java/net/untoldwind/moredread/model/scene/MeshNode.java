@@ -9,6 +9,7 @@ import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.Mesh;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
 import net.untoldwind.moredread.model.scene.change.MeshNodeGeometryChangedCommand;
+import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 
 import com.jme.scene.Spatial;
@@ -129,6 +130,12 @@ public class MeshNode extends ObjectNode implements IMeshNode, IGeneratorInput {
 	@Override
 	public <T> T accept(final ISceneVisitor<T> visitor) {
 		return visitor.visitMeshNode(this);
+	}
+
+	@Override
+	public void readState(final IStateReader reader) throws IOException {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override

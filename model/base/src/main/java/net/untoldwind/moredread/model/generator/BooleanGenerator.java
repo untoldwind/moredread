@@ -9,6 +9,7 @@ import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.op.BooleanOperationFactory;
 import net.untoldwind.moredread.model.op.IBooleanOperation;
 import net.untoldwind.moredread.model.op.IBooleanOperation.BoolOperation;
+import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 
 public class BooleanGenerator implements IMeshGenerator {
@@ -50,6 +51,12 @@ public class BooleanGenerator implements IMeshGenerator {
 	@Override
 	public String getName() {
 		return "Boolean " + boolOperation;
+	}
+
+	@Override
+	public void readState(final IStateReader reader) throws IOException {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import java.util.List;
 import net.untoldwind.moredread.model.enums.GeometryType;
 import net.untoldwind.moredread.model.mesh.IPoint;
 import net.untoldwind.moredread.model.mesh.Point;
+import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 import net.untoldwind.moredread.model.transform.ITransformation;
 
@@ -68,6 +69,10 @@ public class BoolVertex implements IPoint {
 	@Override
 	public GeometryType getGeometryType() {
 		return GeometryType.POINT;
+	}
+
+	@Override
+	public void readState(final IStateReader reader) throws IOException {
 	}
 
 	@Override

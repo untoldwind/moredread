@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Collection;
+import java.util.List;
 
 import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
@@ -67,13 +67,24 @@ public class BinaryStateWriter implements IStateWriter {
 	@Override
 	public void writeObject(final String tag, final IStateHolder obj)
 			throws IOException {
+		output.writeUTF(obj.getClass().getName());
 		obj.writeState(this);
 	}
 
 	@Override
-	public void writeCollection(final String tag,
-			final Collection<? extends IStateHolder> collection)
-			throws IOException {
+	public <T extends IStateHolder> void writeTypedArray(final String tag,
+			final T[] arr) throws IOException {
+		output.writeUTF(arr.getClass().getComponentType().getName());
+		output.writeInt(arr.length);
+		for (final T element : arr) {
+			element.writeState(this);
+		}
+	}
+
+	@Override
+	public <T extends IStateHolder> void writeTypedList(final String tag,
+			final Class<T> type, final List<T> collection) throws IOException {
+		output.writeUTF(type.getName());
 		output.writeInt(collection.size());
 		for (final IStateHolder stateHolder : collection) {
 			stateHolder.writeState(this);
@@ -81,19 +92,29 @@ public class BinaryStateWriter implements IStateWriter {
 	}
 
 	@Override
-	public void writeArray(final String tag, final IStateHolder[] arr)
-			throws IOException {
-		output.writeInt(arr.length);
-		for (final IStateHolder stateHolder : arr) {
-			stateHolder.writeState(this);
+	public <T extends IStateHolder> void writeUntypedList(final String tag,
+			final List<T> collection) throws IOException {
+		output.writeInt(collection.size());
+		for (final IStateHolder stateHolder : collection) {
+			writeObject("element", stateHolder);
 		}
 	}
+
+	// @Override
+	// public void writeArray(final String tag, final IStateHolder[] arr)
+	// throws IOException {
+	// output.writeInt(arr.length);
+	// for (final IStateHolder stateHolder : arr) {
+	// stateHolder.writeState(this);
+	// }
+	// }
 
 	public static byte[] toByteArray(final IStateHolder stateHolder) {
 		try {
 			final ByteArrayOutputStream out = new ByteArrayOutputStream();
+			final BinaryStateWriter writer = new BinaryStateWriter(out);
 
-			stateHolder.writeState(new BinaryStateWriter(out));
+			writer.writeObject("object", stateHolder);
 
 			return out.toByteArray();
 		} catch (final IOException e) {

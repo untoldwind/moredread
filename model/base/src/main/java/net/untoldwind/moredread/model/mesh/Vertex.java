@@ -8,6 +8,7 @@ import java.util.Set;
 
 import net.untoldwind.moredread.model.enums.GeometryType;
 import net.untoldwind.moredread.model.state.IStateHolder;
+import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 import net.untoldwind.moredread.model.transform.ITransformation;
 
@@ -124,6 +125,12 @@ public class Vertex implements IStateHolder, IVertex {
 		buffer.append(")");
 
 		return buffer.toString();
+	}
+
+	@Override
+	public void readState(final IStateReader reader) throws IOException {
+		smooth = reader.readBoolean();
+		point = reader.readVector3f();
 	}
 
 	public void writeState(final IStateWriter writer) throws IOException {

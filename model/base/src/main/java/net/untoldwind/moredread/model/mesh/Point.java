@@ -3,13 +3,14 @@ package net.untoldwind.moredread.model.mesh;
 import java.io.IOException;
 
 import net.untoldwind.moredread.model.enums.GeometryType;
+import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 import net.untoldwind.moredread.model.transform.ITransformation;
 
 import com.jme.math.Vector3f;
 
 public class Point implements IPoint {
-	private final Vector3f point;
+	private Vector3f point;
 
 	public Point(final Vector3f point) {
 		this.point = point;
@@ -32,6 +33,11 @@ public class Point implements IPoint {
 	@Override
 	public IPoint transform(final ITransformation transformation) {
 		return new Point(transformation.transformPoint(point));
+	}
+
+	@Override
+	public void readState(final IStateReader reader) throws IOException {
+		point = reader.readVector3f();
 	}
 
 	@Override

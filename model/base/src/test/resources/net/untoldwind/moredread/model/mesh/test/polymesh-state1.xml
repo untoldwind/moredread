@@ -1,55 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <mesh>
-  <type>2</type>
-  <vertices size="8">
-    <smooth>false</smooth>
-    <point x="-1.0" y="-1.0" z="-1.0"/>
-    <smooth>false</smooth>
-    <point x="1.0" y="-1.0" z="-1.0"/>
-    <smooth>false</smooth>
-    <point x="1.0" y="1.0" z="1.0"/>
-    <smooth>false</smooth>
-    <point x="-1.0" y="1.0" z="1.0"/>
-    <smooth>false</smooth>
-    <point x="-1.0" y="-1.0" z="-1.0"/>
-    <smooth>false</smooth>
-    <point x="1.0" y="-1.0" z="-1.0"/>
-    <smooth>false</smooth>
-    <point x="1.0" y="1.0" z="1.0"/>
-    <smooth>false</smooth>
-    <point x="-1.0" y="1.0" z="1.0"/>
-  </vertices>
-  <faces size="6">
-    <vertexNumber>4</vertexNumber>
-    <vertexIndex>0</vertexIndex>
-    <vertexIndex>1</vertexIndex>
-    <vertexIndex>2</vertexIndex>
-    <vertexIndex>3</vertexIndex>
-    <vertexNumber>4</vertexNumber>
-    <vertexIndex>4</vertexIndex>
-    <vertexIndex>5</vertexIndex>
-    <vertexIndex>6</vertexIndex>
-    <vertexIndex>7</vertexIndex>
-    <vertexNumber>4</vertexNumber>
-    <vertexIndex>0</vertexIndex>
-    <vertexIndex>3</vertexIndex>
-    <vertexIndex>7</vertexIndex>
-    <vertexIndex>4</vertexIndex>
-    <vertexNumber>4</vertexNumber>
-    <vertexIndex>1</vertexIndex>
-    <vertexIndex>2</vertexIndex>
-    <vertexIndex>6</vertexIndex>
-    <vertexIndex>5</vertexIndex>
-    <vertexNumber>4</vertexNumber>
-    <vertexIndex>0</vertexIndex>
-    <vertexIndex>1</vertexIndex>
-    <vertexIndex>5</vertexIndex>
-    <vertexIndex>4</vertexIndex>
-    <vertexNumber>4</vertexNumber>
-    <vertexIndex>2</vertexIndex>
-    <vertexIndex>3</vertexIndex>
-    <vertexIndex>7</vertexIndex>
-    <vertexIndex>6</vertexIndex>
-  </faces>
+  <numVertices>8</numVertices>
+  <vertex x="-1.0" y="-1.0" z="-1.0"/>
+  <vertex x="1.0" y="-1.0" z="-1.0"/>
+  <vertex x="1.0" y="1.0" z="1.0"/>
+  <vertex x="-1.0" y="1.0" z="1.0"/>
+  <vertex x="-1.0" y="-1.0" z="-1.0"/>
+  <vertex x="1.0" y="-1.0" z="-1.0"/>
+  <vertex x="1.0" y="1.0" z="1.0"/>
+  <vertex x="-1.0" y="1.0" z="1.0"/>
+  <numFaces>6</numFaces>
+  <numStips>1</numStips>
+  <stripCount>4</stripCount>
+  <index>0</index>
+  <index>1</index>
+  <index>2</index>
+  <index>3</index>
+  <numStips>1</numStips>
+  <stripCount>4</stripCount>
+  <index>4</index>
+  <index>5</index>
+  <index>6</index>
+  <index>7</index>
+  <numStips>1</numStips>
+  <stripCount>4</stripCount>
+  <index>0</index>
+  <index>3</index>
+  <index>7</index>
+  <index>4</index>
+  <numStips>1</numStips>
+  <stripCount>4</stripCount>
+  <index>1</index>
+  <index>2</index>
+  <index>6</index>
+  <index>5</index>
+  <numStips>1</numStips>
+  <stripCount>4</stripCount>
+  <index>0</index>
+  <index>1</index>
+  <index>5</index>
+  <index>4</index>
+  <numStips>1</numStips>
+  <stripCount>4</stripCount>
+  <index>2</index>
+  <index>3</index>
+  <index>7</index>
+  <index>6</index>
 </mesh>
