@@ -82,8 +82,7 @@ public class MeshNodeGeometryChangedCommand extends AbstractOperation implements
 		scene.getSceneChangeHandler().begin(false);
 
 		try {
-			node.setMesh(BinaryStateReader.fromByteArray(newState,
-					new Mesh.MeshInstanceCreator()));
+			node.setMesh((Mesh<?, ?>) BinaryStateReader.fromByteArray(newState));
 		} finally {
 			scene.getSceneChangeHandler().commit();
 		}
@@ -103,8 +102,7 @@ public class MeshNodeGeometryChangedCommand extends AbstractOperation implements
 		scene.getSceneChangeHandler().begin(false);
 
 		try {
-			node.setMesh(BinaryStateReader.fromByteArray(oldState,
-					new Mesh.MeshInstanceCreator()));
+			node.setMesh((Mesh<?, ?>) BinaryStateReader.fromByteArray(oldState));
 		} finally {
 			scene.getSceneChangeHandler().commit();
 		}

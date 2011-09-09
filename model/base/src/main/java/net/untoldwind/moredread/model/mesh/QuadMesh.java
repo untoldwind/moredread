@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import net.untoldwind.moredread.model.enums.MeshType;
 import net.untoldwind.moredread.model.state.IStateReader;
+import net.untoldwind.moredread.model.state.IStateWriter;
 import net.untoldwind.moredread.model.transform.ITransformation;
 
 public class QuadMesh extends Mesh<QuadFaceId, QuadFace> {
@@ -71,20 +72,36 @@ public class QuadMesh extends Mesh<QuadFaceId, QuadFace> {
 		return newMesh;
 	}
 
-	public class FaceInstanceCreator implements
-			IStateReader.InstanceCreator<QuadFace> {
+	@Override
+	public void readState(final IStateReader reader) throws IOException {
+		final int numVertices = reader.readInt();
 
-		@Override
-		public QuadFace createInstance(final IStateReader reader)
-				throws IOException {
+		for (int i = 0; i < numVertices; i++) {
+			addVertex(reader.readVector3f());
+		}
+		final int numFaces = reader.readInt();
+
+		for (int i = 0; i < numFaces; i++) {
 			final int vertexIndex1 = reader.readInt();
 			final int vertexIndex2 = reader.readInt();
 			final int vertexIndex3 = reader.readInt();
 			final int vertexIndex4 = reader.readInt();
-
-			return addFace(vertexIndex1, vertexIndex2, vertexIndex3,
-					vertexIndex4);
+			addFace(vertexIndex1, vertexIndex2, vertexIndex3, vertexIndex4);
 		}
 	}
 
+	@Override
+	public void writeState(final IStateWriter writer) throws IOException {
+		writer.writeInt("numVertices", vertices.size());
+		for (final IVertex vertex : vertices) {
+			writer.writeVector3f("vertex", vertex.getPoint());
+		}
+		writer.writeInt("numFaces", faces.size());
+		for (final QuadFace face : faces.values()) {
+			final Vertex[] vertices = face.getVertexArray();
+			for (int i = 0; i < 4; i++) {
+				writer.writeInt("index", vertices[i].getIndex());
+			}
+		}
+	}
 }

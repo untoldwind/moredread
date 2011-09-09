@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import com.jme.math.Quaternion;
@@ -47,54 +46,75 @@ public class BinaryStateReader implements IStateReader {
 
 	@Override
 	public Vector3f readVector3f() throws IOException {
-		return new Vector3f(input.readFloat(), input.readFloat(), input
-				.readFloat());
+		return new Vector3f(input.readFloat(), input.readFloat(),
+				input.readFloat());
 	}
 
 	@Override
 	public Quaternion readQuaternion() throws IOException {
-		return new Quaternion(input.readFloat(), input.readFloat(), input
-				.readFloat(), input.readFloat());
+		return new Quaternion(input.readFloat(), input.readFloat(),
+				input.readFloat(), input.readFloat());
 	}
 
 	@Override
-	public <T extends IStateHolder> T readObject(
-			final InstanceCreator<T> instanceCreator) throws IOException {
-		return instanceCreator.createInstance(this);
+	public <T extends IStateHolder> T readObject() throws IOException {
+		final String className = input.readUTF();
+		try {
+			@SuppressWarnings("unchecked")
+			final T instance = (T) Class.forName(className).newInstance();
+			instance.readState(this);
+
+			return instance;
+		} catch (final Exception e) {
+			throw new IOException(e);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends IStateHolder> T[] readArray(final Class<T> clazz,
-			final InstanceCreator<T> instanceCreator) throws IOException {
-		final int len = input.readInt();
-		final T[] result = (T[]) Array.newInstance(clazz, len);
-
-		for (int i = 0; i < len; i++) {
-			result[i] = instanceCreator.createInstance(this);
-		}
-
-		return result;
-	}
-
-	@Override
-	public <T extends IStateHolder> Collection<T> readCollection(
-			final InstanceCreator<T> instanceCreator) throws IOException {
-		final List<T> result = new ArrayList<T>();
-		final int size = input.readInt();
-
-		for (int i = 0; i < size; i++) {
-			result.add(instanceCreator.createInstance(this));
-		}
-
-		return result;
-	}
-
-	public static <T extends IStateHolder> T fromByteArray(final byte[] data,
-			final InstanceCreator<T> instanceCreator) {
+	public <T extends IStateHolder> T[] readTypedArray() throws IOException {
 		try {
-			return instanceCreator.createInstance(new BinaryStateReader(
-					new ByteArrayInputStream(data)));
+			final String className = input.readUTF();
+			final int len = input.readInt();
+			final T[] result = (T[]) Array.newInstance(
+					Class.forName(className), len);
+
+			for (int i = 0; i < len; i++) {
+				final T instance = (T) Class.forName(className).newInstance();
+				instance.readState(this);
+				result[i] = instance;
+			}
+
+			return result;
+		} catch (final Exception e) {
+			throw new IOException(e);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends IStateHolder> List<T> readTypedList() throws IOException {
+		try {
+			final List<T> result = new ArrayList<T>();
+			final String className = input.readUTF();
+			final int size = input.readInt();
+
+			for (int i = 0; i < size; i++) {
+				final T instance = (T) Class.forName(className).newInstance();
+				instance.readState(this);
+				result.add(instance);
+			}
+
+			return result;
+		} catch (final Exception e) {
+			throw new IOException(e);
+		}
+	}
+
+	public static <T extends IStateHolder> T fromByteArray(final byte[] data) {
+		try {
+			return new BinaryStateReader(new ByteArrayInputStream(data))
+					.readObject();
 		} catch (final IOException e) {
 			throw new RuntimeException("Very unexpected IOException", e);
 		}

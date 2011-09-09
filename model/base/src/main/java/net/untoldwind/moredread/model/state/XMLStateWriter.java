@@ -1,7 +1,7 @@
 package net.untoldwind.moredread.model.state;
 
 import java.io.IOException;
-import java.util.Collection;
+import java.util.List;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
@@ -77,11 +77,27 @@ public class XMLStateWriter implements IStateWriter {
 		quaternionElement.addAttribute("w", String.valueOf(quaterion.w));
 	}
 
+	@Override
 	public void writeObject(final String tag, final IStateHolder obj)
 			throws IOException {
 		final Element objectElement = element.addElement(tag);
 
+		objectElement.addAttribute("class", obj.getClass().getName());
 		obj.writeState(new XMLStateWriter(document, objectElement));
+	}
+
+	@Override
+	public <T extends IStateHolder> void writeTypedArray(final String tag,
+			final T[] arr) throws IOException {
+		final Element arrayElement = element.addElement(tag);
+
+		arrayElement.addAttribute("class", arr.getClass().getComponentType()
+				.getName());
+		arrayElement.addAttribute("size", String.valueOf(arr.length));
+		final XMLStateWriter writer = new XMLStateWriter(document, arrayElement);
+		for (final T element : arr) {
+			element.writeState(writer);
+		}
 	}
 
 	public void writeArray(final String tag, final IStateHolder[] arr)
@@ -95,15 +111,29 @@ public class XMLStateWriter implements IStateWriter {
 		}
 	}
 
-	public void writeCollection(final String tag,
-			final Collection<? extends IStateHolder> collection)
-			throws IOException {
+	@Override
+	public <T extends IStateHolder> void writeTypedList(final String tag,
+			final Class<T> type, final List<T> collection) throws IOException {
 		final Element arrayElement = element.addElement(tag);
 
+		arrayElement.addAttribute("class", type.getClass().getName());
 		arrayElement.addAttribute("size", String.valueOf(collection.size()));
 		final XMLStateWriter writer = new XMLStateWriter(document, arrayElement);
 		for (final IStateHolder element : collection) {
 			element.writeState(writer);
 		}
 	}
+
+	@Override
+	public <T extends IStateHolder> void writeUntypedList(final String tag,
+			final List<T> collection) throws IOException {
+		final Element arrayElement = element.addElement(tag);
+
+		arrayElement.addAttribute("size", String.valueOf(collection.size()));
+		final XMLStateWriter writer = new XMLStateWriter(document, arrayElement);
+		for (final IStateHolder element : collection) {
+			writer.writeObject("element", element);
+		}
+	}
+
 }

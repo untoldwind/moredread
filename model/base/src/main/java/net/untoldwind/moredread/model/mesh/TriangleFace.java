@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 import net.untoldwind.moredread.model.transform.ITransformation;
 
@@ -104,6 +105,12 @@ public class TriangleFace extends Face<TriangleFaceId, TriangleMesh> {
 
 		return new Polygon(new_vertices, null, getPolygonStripCounts(),
 				getPolygonContourCounts(), true);
+	}
+
+	@Override
+	public void readState(final IStateReader reader) throws IOException {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override

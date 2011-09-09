@@ -9,6 +9,7 @@ import net.untoldwind.moredread.model.enums.MeshType;
 import net.untoldwind.moredread.model.op.ITriangulator;
 import net.untoldwind.moredread.model.op.TriangulatorFactory;
 import net.untoldwind.moredread.model.state.IStateReader;
+import net.untoldwind.moredread.model.state.IStateWriter;
 import net.untoldwind.moredread.model.transform.ITransformation;
 
 public class PolyMesh extends Mesh<PolyFaceId, PolyFace> {
@@ -128,6 +129,53 @@ public class PolyMesh extends Mesh<PolyFaceId, PolyFace> {
 	}
 
 	@Override
+	public void readState(final IStateReader reader) throws IOException {
+		final int numVertices = reader.readInt();
+
+		for (int i = 0; i < numVertices; i++) {
+			addVertex(reader.readVector3f());
+		}
+		final int numFaces = reader.readInt();
+
+		for (int i = 0; i < numFaces; i++) {
+			final int numStrips = reader.readInt();
+			final int vertexStripIndices[][] = new int[numStrips][];
+
+			for (int j = 0; j < numStrips; j++) {
+				final int stripCount = reader.readInt();
+				final int[] stripIndices = new int[stripCount];
+
+				for (int k = 0; k < stripCount; k++) {
+					stripIndices[k] = reader.readInt();
+				}
+
+				vertexStripIndices[j] = stripIndices;
+			}
+
+			addFace(vertexStripIndices);
+		}
+	}
+
+	@Override
+	public void writeState(final IStateWriter writer) throws IOException {
+		writer.writeInt("numVertices", vertices.size());
+		for (final IVertex vertex : vertices) {
+			writer.writeVector3f("vertex", vertex.getPoint());
+		}
+		writer.writeInt("numFaces", faces.size());
+		for (final PolyFace face : faces.values()) {
+			writer.writeInt("numStips", face.getStripCounts().size());
+			final Iterator<Vertex> it = face.getVertices().iterator();
+			for (final Integer stripCount : face.getStripCounts()) {
+				writer.writeInt("stripCount", stripCount);
+				for (int i = 0; i < stripCount; i++) {
+					writer.writeInt("index", it.next().getIndex());
+				}
+			}
+		}
+	}
+
+	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append("PolyMesh [vertices=");
@@ -136,22 +184,5 @@ public class PolyMesh extends Mesh<PolyFaceId, PolyFace> {
 		builder.append(faces);
 		builder.append("]");
 		return builder.toString();
-	}
-
-	public class FaceInstanceCreator implements
-			IStateReader.InstanceCreator<PolyFace> {
-
-		@Override
-		public PolyFace createInstance(final IStateReader reader)
-				throws IOException {
-			final int vertexNumber = reader.readInt();
-			final int[] vertexIndices = new int[vertexNumber];
-
-			for (int i = 0; i < vertexNumber; i++) {
-				vertexIndices[i] = reader.readInt();
-			}
-
-			return addFace(vertexIndices);
-		}
 	}
 }

@@ -1,5 +1,6 @@
 package net.untoldwind.moredread.model.mesh.test;
 
+import static net.untoldwind.moredread.model.test.AssertHelper.assertVectorEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -9,6 +10,8 @@ import java.util.List;
 import net.untoldwind.moredread.model.mesh.PolyFace;
 import net.untoldwind.moredread.model.mesh.PolyMesh;
 import net.untoldwind.moredread.model.mesh.Vertex;
+import net.untoldwind.moredread.model.state.BinaryStateReader;
+import net.untoldwind.moredread.model.state.BinaryStateWriter;
 import net.untoldwind.moredread.model.state.XMLStateWriter;
 
 import org.dom4j.Document;
@@ -18,6 +21,7 @@ import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 import org.junit.Test;
 
+import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
 
 public class PolyMeshTest {
@@ -62,27 +66,21 @@ public class PolyMeshTest {
 
 		final PolyFace bottom = cube.addFace(0, 1, 2, 3);
 		assertNotNull("bottom", bottom);
-		assertEquals("bottom.index", 0, bottom.getIndex());
 		assertEquals("bottom.verticies", 4, bottom.getVertices().size());
 		final PolyFace top = cube.addFace(4, 5, 6, 7);
 		assertNotNull("top", top);
-		assertEquals("top.index", 1, top.getIndex());
 		assertEquals("top.verticies", 4, top.getVertices().size());
 		final PolyFace left = cube.addFace(0, 3, 7, 4);
 		assertNotNull("left", left);
-		assertEquals("left.index", 2, left.getIndex());
 		assertEquals("left.verticies", 4, left.getVertices().size());
 		final PolyFace right = cube.addFace(1, 2, 6, 5);
 		assertNotNull("right", right);
-		assertEquals("right.index", 3, right.getIndex());
 		assertEquals("right.verticies", 4, right.getVertices().size());
 		final PolyFace back = cube.addFace(0, 1, 5, 4);
 		assertNotNull("back", back);
-		assertEquals("back.index", 4, back.getIndex());
 		assertEquals("back.verticies", 4, back.getVertices().size());
 		final PolyFace front = cube.addFace(2, 3, 7, 6);
 		assertNotNull("front", front);
-		assertEquals("front.index", 5, front.getIndex());
 		assertEquals("front.verticies", 4, front.getVertices().size());
 
 		assertEquals("vertex 0", vertex1, cube.getVertex(0));
@@ -156,6 +154,34 @@ public class PolyMeshTest {
 		}
 
 		assertDocument(expected, writer.getDocument());
+	}
+
+	@Test
+	public void writeBinaryStateTest() throws Exception {
+		final PolyMesh cube = createCube();
+		final byte[] ser = BinaryStateWriter.toByteArray(cube);
+
+		final PolyMesh otherCube = (PolyMesh) BinaryStateReader
+				.fromByteArray(ser);
+
+		assertEquals(cube.getVertices().size(), otherCube.getVertices().size());
+		for (int i = 0; i < cube.getVertices().size(); i++) {
+			assertVectorEquals(cube.getVertex(i).getPoint(), otherCube
+					.getVertex(i).getPoint(), FastMath.ZERO_TOLERANCE);
+		}
+		assertEquals(cube.getFaces().size(), otherCube.getFaces().size());
+		for (final PolyFace face : cube.getFaces()) {
+			final PolyFace otherFace = otherCube.getFace(face.getIndex());
+
+			assertEquals(face.getStripCounts(), otherFace.getStripCounts());
+			assertEquals(face.getVertices().size(), otherFace.getVertices()
+					.size());
+			for (int j = 0; j < face.getVertices().size(); j++) {
+				assertVectorEquals(face.getVertex(j).getPoint(), otherFace
+						.getVertex(j).getPoint(), FastMath.ZERO_TOLERANCE);
+			}
+		}
+
 	}
 
 	private void assertDocument(final Document expected, final Document actual) {

@@ -1,7 +1,7 @@
 package net.untoldwind.moredread.model.state;
 
 import java.io.IOException;
-import java.util.Collection;
+import java.util.List;
 
 import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
@@ -22,16 +22,9 @@ public interface IStateReader {
 
 	Quaternion readQuaternion() throws IOException;
 
-	<T extends IStateHolder> T readObject(InstanceCreator<T> instanceCreator)
-			throws IOException;
+	<T extends IStateHolder> T readObject() throws IOException;
 
-	<T extends IStateHolder> T[] readArray(Class<T> clazz,
-			InstanceCreator<T> instanceCreator) throws IOException;
+	<T extends IStateHolder> T[] readTypedArray() throws IOException;
 
-	<T extends IStateHolder> Collection<T> readCollection(
-			InstanceCreator<T> instanceCreator) throws IOException;
-
-	public static interface InstanceCreator<T extends IStateHolder> {
-		T createInstance(IStateReader reader) throws IOException;
-	}
+	<T extends IStateHolder> List<T> readTypedList() throws IOException;
 }
