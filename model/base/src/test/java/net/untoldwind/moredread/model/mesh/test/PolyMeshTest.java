@@ -198,9 +198,8 @@ public class PolyMeshTest {
 					.getVertex(i).getPoint(), FastMath.ZERO_TOLERANCE);
 		}
 		assertEquals(cube.getFaces().size(), otherCube.getFaces().size());
-		for (int i = 0; i < cube.getFaces().size(); i++) {
-			final PolyFace face = cube.getFace(i);
-			final PolyFace otherFace = otherCube.getFace(i);
+		for (final PolyFace face : cube.getFaces()) {
+			final PolyFace otherFace = otherCube.getFace(face.getIndex());
 
 			assertEquals(face.getStripCounts(), otherFace.getStripCounts());
 			assertEquals(face.getVertices().size(), otherFace.getVertices()
