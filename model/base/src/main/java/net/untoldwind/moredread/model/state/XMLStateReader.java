@@ -141,6 +141,22 @@ public class XMLStateReader implements IStateReader {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends IStateHolder> List<T> readUntypedList()
+			throws IOException {
+		final Element arrayElement = childIterator.next();
+		final int size = Integer.parseInt(arrayElement.attributeValue("size"));
+		final XMLStateReader reader = new XMLStateReader(document, arrayElement);
+
+		final List<T> result = new ArrayList<T>();
+		for (int i = 0; i < size; i++) {
+			result.add((T) reader.readObject());
+		}
+
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
 	public static <T extends IStateHolder> T fromXML(final String xml) {
 		try {
 			final SAXReader reader = new SAXReader();

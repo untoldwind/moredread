@@ -111,6 +111,19 @@ public class BinaryStateReader implements IStateReader {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends IStateHolder> List<T> readUntypedList()
+			throws IOException {
+		final int size = input.readInt();
+		final List<T> result = new ArrayList<T>();
+		for (int i = 0; i < size; i++) {
+			result.add((T) readObject());
+		}
+
+		return result;
+	}
+
 	public static <T extends IStateHolder> T fromByteArray(final byte[] data) {
 		try {
 			return new BinaryStateReader(new ByteArrayInputStream(data))

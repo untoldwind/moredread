@@ -27,4 +27,6 @@ public interface IStateReader {
 	<T extends IStateHolder> T[] readTypedArray() throws IOException;
 
 	<T extends IStateHolder> List<T> readTypedList() throws IOException;
+
+	<T extends IStateHolder> List<T> readUntypedList() throws IOException;
 }
