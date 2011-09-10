@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mesh class="net.untoldwind.moredread.model.mesh.TriangleMesh">
+	<numVertices>37</numVertices>
+	<vertex x="-1.0" y="-1.0" z="-1.0" />
+	<vertex x="1.0" y="-1.0" z="-1.0" />
+	<vertex x="1.0" y="1.0" z="-1.0" />
+	<vertex x="-1.0" y="1.0" z="-1.0" />
+	<vertex x="-1.0" y="-1.0" z="1.0" />
+	<vertex x="1.0" y="-1.0" z="1.0" />
+	<vertex x="1.0" y="1.0" z="1.0" />
+	<vertex x="-1.0" y="1.0" z="1.0" />
+	<vertex x="-0.40106556" y="-0.8" z="-0.4059197" />
+	<vertex x="1.5989344" y="-0.8" z="-0.4059197" />
+	<vertex x="1.5989344" y="1.2" z="-0.4059197" />
+	<vertex x="-0.40106556" y="1.2" z="-0.4059197" />
+	<vertex x="-0.40106556" y="-0.8" z="1.5940802" />
+	<vertex x="1.5989344" y="-0.8" z="1.5940802" />
+	<vertex x="1.5989344" y="1.2" z="1.5940802" />
+	<vertex x="-0.40106556" y="1.2" z="1.5940802" />
+	<vertex x="-0.40106556" y="-0.8" z="1.0" />
+	<vertex x="-0.40106556" y="-0.40106556" z="1.0" />
+	<vertex x="1.0" y="-0.20106557" z="-0.4059197" />
+	<vertex x="1.0" y="1.0" z="-0.4059197" />
+	<vertex x="1.0" y="-0.8" z="0.9951458" />
+	<vertex x="1.0" y="-0.8" z="-0.4059197" />
+	<vertex x="-0.40106556" y="1.0" z="-0.20591967" />
+	<vertex x="-0.40106556" y="1.0" z="0.40106556" />
+	<vertex x="1.0" y="-0.8" z="1.0" />
+	<vertex x="-0.40106556" y="0.096338004" z="1.0" />
+	<vertex x="-0.40106556" y="1.0" z="1.0" />
+	<vertex x="1.0" y="-0.4059197" z="-0.4059197" />
+	<vertex x="-0.40106556" y="1.0" z="-0.4059197" />
+	<vertex x="-0.40106556" y="1.0" z="-0.2653277" />
+	<vertex x="-0.048187964" y="1.0" z="-0.4059197" />
+	<vertex x="0.4059197" y="1.0" z="-0.4059197" />
+	<vertex x="-0.40106556" y="1.0" z="0.5789731" />
+	<vertex x="-0.40106556" y="-0.20591976" z="1.0" />
+	<vertex x="-0.20106553" y="1.0" z="-0.4059197" />
+	<vertex x="-0.40106556" y="1.0" z="-0.23029666" />
+	<vertex x="-0.1329479" y="1.0" z="-0.4059197" />
+	<numFaces>48</numFaces>
+	<index>3</index>
+	<index>2</index>
+	<index>1</index>
+	<index>1</index>
+	<index>0</index>
+	<index>3</index>
+	<index>4</index>
+	<index>7</index>
+	<index>3</index>
+	<index>3</index>
+	<index>0</index>
+	<index>4</index>
+	<index>0</index>
+	<index>1</index>
+	<index>5</index>
+	<index>5</index>
+	<index>4</index>
+	<index>0</index>
+	<index>4</index>
+	<index>5</index>
+	<index>16</index>
+	<index>4</index>
+	<index>16</index>
+	<index>17</index>
+	<index>7</index>
+	<index>4</index>
+	<index>17</index>
+	<index>1</index>
+	<index>2</index>
+	<index>18</index>
+	<index>2</index>
+	<index>19</index>
+	<index>18</index>
+	<index>5</index>
+	<index>1</index>
+	<index>21</index>
+	<index>5</index>
+	<index>21</index>
+	<index>20</index>
+	<index>8</index>
+	<index>20</index>
+	<index>21</index>
+	<index>8</index>
+	<index>16</index>
+	<index>20</index>
+	<index>3</index>
+	<index>7</index>
+	<index>23</index>
+	<index>3</index>
+	<index>23</index>
+	<index>22</index>
+	<index>5</index>
+	<index>24</index>
+	<index>16</index>
+	<index>24</index>
+	<index>5</index>
+	<index>20</index>
+	<index>20</index>
+	<index>16</index>
+	<index>24</index>
+	<index>27</index>
+	<index>1</index>
+	<index>18</index>
+	<index>21</index>
+	<index>1</index>
+	<index>27</index>
+	<index>8</index>
+	<index>21</index>
+	<index>27</index>
+	<index>8</index>
+	<index>27</index>
+	<index>18</index>
+	<index>2</index>
+	<index>3</index>
+	<index>28</index>
+	<index>28</index>
+	<index>8</index>
+	<index>18</index>
+	<index>19</index>
+	<index>2</index>
+	<index>31</index>
+	<index>7</index>
+	<index>32</index>
+	<index>23</index>
+	<index>7</index>
+	<index>26</index>
+	<index>32</index>
+	<index>7</index>
+	<index>17</index>
+	<index>33</index>
+	<index>22</index>
+	<index>33</index>
+	<index>17</index>
+	<index>2</index>
+	<index>28</index>
+	<index>34</index>
+	<index>28</index>
+	<index>18</index>
+	<index>34</index>
+	<index>3</index>
+	<index>22</index>
+	<index>35</index>
+	<index>22</index>
+	<index>17</index>
+	<index>35</index>
+	<index>18</index>
+	<index>19</index>
+	<index>31</index>
+	<index>36</index>
+	<index>2</index>
+	<index>34</index>
+	<index>34</index>
+	<index>18</index>
+	<index>36</index>
+	<index>33</index>
+	<index>26</index>
+	<index>7</index>
+	<index>23</index>
+	<index>26</index>
+	<index>22</index>
+	<index>32</index>
+	<index>26</index>
+	<index>23</index>
+	<index>22</index>
+	<index>26</index>
+	<index>33</index>
+	<index>35</index>
+	<index>28</index>
+	<index>3</index>
+	<index>8</index>
+	<index>28</index>
+	<index>16</index>
+	<index>16</index>
+	<index>28</index>
+	<index>17</index>
+	<index>17</index>
+	<index>28</index>
+	<index>35</index>
+	<index>36</index>
+	<index>31</index>
+	<index>2</index>
+	<index>18</index>
+	<index>31</index>
+	<index>36</index>
+</mesh>
