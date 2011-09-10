@@ -1,13 +1,8 @@
 package net.untoldwind.moredread.ui.dialogs;
 
-import java.io.StringWriter;
-
 import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.state.XMLStateWriter;
-import net.untoldwind.moredread.ui.MoreDreadUI;
 
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.XMLWriter;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -29,21 +24,8 @@ public class DumpNodeDialog extends MessageDialog {
 
 		setShellStyle(SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE
 				| getDefaultOrientation());
-		try {
-			final XMLStateWriter writer = new XMLStateWriter("dump");
 
-			writer.writeObject("node", node);
-
-			final StringWriter out = new StringWriter();
-			final XMLWriter xmlWriter = new XMLWriter(out,
-					OutputFormat.createPrettyPrint());
-			xmlWriter.write(writer.getDocument());
-			xmlWriter.flush();
-
-			nodeDump = out.toString();
-		} catch (final Exception e) {
-			MoreDreadUI.getDefault().log(e);
-		}
+		nodeDump = XMLStateWriter.toXML(node);
 	}
 
 	@Override

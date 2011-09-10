@@ -1,11 +1,14 @@
 package net.untoldwind.moredread.model.state;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.List;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
 
 import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
@@ -63,7 +66,7 @@ public class XMLStateWriter implements IStateWriter {
 
 		vectorElement.addAttribute("x", String.valueOf(value.x));
 		vectorElement.addAttribute("y", String.valueOf(value.y));
-		vectorElement.addAttribute("z", String.valueOf(value.y));
+		vectorElement.addAttribute("z", String.valueOf(value.z));
 	}
 
 	@Override
@@ -136,4 +139,28 @@ public class XMLStateWriter implements IStateWriter {
 		}
 	}
 
+	public static String toXML(final IStateHolder stateHolder) {
+		try {
+			final Document document = DocumentFactory.getInstance()
+					.createDocument();
+			final Element objectElement = document.addElement("state");
+			objectElement.addAttribute("class", stateHolder.getClass()
+					.getName());
+
+			final XMLStateWriter stateWriter = new XMLStateWriter(document,
+					objectElement);
+
+			stateHolder.writeState(stateWriter);
+
+			final StringWriter out = new StringWriter();
+			final XMLWriter xmlWriter = new XMLWriter(out,
+					OutputFormat.createPrettyPrint());
+			xmlWriter.write(document);
+			xmlWriter.flush();
+
+			return out.toString();
+		} catch (final IOException e) {
+			throw new RuntimeException("Very unexpected IOException", e);
+		}
+	}
 }

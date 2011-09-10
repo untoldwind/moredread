@@ -12,6 +12,7 @@ import net.untoldwind.moredread.model.mesh.PolyMesh;
 import net.untoldwind.moredread.model.mesh.Vertex;
 import net.untoldwind.moredread.model.state.BinaryStateReader;
 import net.untoldwind.moredread.model.state.BinaryStateWriter;
+import net.untoldwind.moredread.model.state.XMLStateReader;
 import net.untoldwind.moredread.model.state.XMLStateWriter;
 
 import org.dom4j.Document;
@@ -140,7 +141,7 @@ public class PolyMeshTest {
 	}
 
 	@Test
-	public void writeStateTest() throws Exception {
+	public void testWriteState() throws Exception {
 		final PolyMesh cube = createCube();
 		final XMLStateWriter writer = new XMLStateWriter("mesh");
 
@@ -163,12 +164,40 @@ public class PolyMeshTest {
 	}
 
 	@Test
-	public void writeBinaryStateTest() throws Exception {
+	public void testReadWriteBinaryState() throws Exception {
 		final PolyMesh cube = createCube();
 		final byte[] ser = BinaryStateWriter.toByteArray(cube);
 
 		final PolyMesh otherCube = (PolyMesh) BinaryStateReader
 				.fromByteArray(ser);
+
+		assertEquals(cube.getVertices().size(), otherCube.getVertices().size());
+		for (int i = 0; i < cube.getVertices().size(); i++) {
+			assertVectorEquals(cube.getVertex(i).getPoint(), otherCube
+					.getVertex(i).getPoint(), FastMath.ZERO_TOLERANCE);
+		}
+		assertEquals(cube.getFaces().size(), otherCube.getFaces().size());
+		for (int i = 0; i < cube.getFaces().size(); i++) {
+			final PolyFace face = cube.getFace(i);
+			final PolyFace otherFace = otherCube.getFace(i);
+
+			assertEquals(face.getStripCounts(), otherFace.getStripCounts());
+			assertEquals(face.getVertices().size(), otherFace.getVertices()
+					.size());
+			for (int j = 0; j < face.getVertices().size(); j++) {
+				assertVectorEquals(face.getVertex(j).getPoint(), otherFace
+						.getVertex(j).getPoint(), FastMath.ZERO_TOLERANCE);
+			}
+		}
+
+	}
+
+	@Test
+	public void testReadWriteXMLState() throws Exception {
+		final PolyMesh cube = createCube();
+		final String xml = XMLStateWriter.toXML(cube);
+
+		final PolyMesh otherCube = (PolyMesh) XMLStateReader.fromXML(xml);
 
 		assertEquals(cube.getVertices().size(), otherCube.getVertices().size());
 		for (int i = 0; i < cube.getVertices().size(); i++) {
