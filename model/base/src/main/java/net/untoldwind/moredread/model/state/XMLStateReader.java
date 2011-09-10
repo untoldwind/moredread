@@ -94,6 +94,25 @@ public class XMLStateReader implements IStateReader {
 
 	@SuppressWarnings("unchecked")
 	@Override
+	public <T extends IStateHolder> T readObject(
+			final IInstanceCreator<T> creator) throws IOException {
+		final Element objectElement = childIterator.next();
+		final String className = objectElement.attributeValue("class");
+		try {
+			final XMLStateReader reader = new XMLStateReader(document,
+					objectElement);
+			final T instance = creator.createInstance((Class<T>) Class
+					.forName(className));
+			instance.readState(reader);
+
+			return instance;
+		} catch (final Exception e) {
+			throw new IOException(e);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
 	public <T extends IStateHolder> T[] readTypedArray() throws IOException {
 		final Element arrayElement = childIterator.next();
 		final String className = arrayElement.attributeValue("class");
@@ -138,6 +157,37 @@ public class XMLStateReader implements IStateReader {
 		} catch (final Exception e) {
 			throw new IOException(e);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends IStateHolder> List<T> readUntypedList()
+			throws IOException {
+		final Element arrayElement = childIterator.next();
+		final int size = Integer.parseInt(arrayElement.attributeValue("size"));
+		final XMLStateReader reader = new XMLStateReader(document, arrayElement);
+
+		final List<T> result = new ArrayList<T>();
+		for (int i = 0; i < size; i++) {
+			result.add((T) reader.readObject());
+		}
+
+		return result;
+	}
+
+	@Override
+	public <T extends IStateHolder> List<T> readUntypedList(
+			final IInstanceCreator<T> creator) throws IOException {
+		final Element arrayElement = childIterator.next();
+		final int size = Integer.parseInt(arrayElement.attributeValue("size"));
+		final XMLStateReader reader = new XMLStateReader(document, arrayElement);
+
+		final List<T> result = new ArrayList<T>();
+		for (int i = 0; i < size; i++) {
+			result.add(reader.readObject(creator));
+		}
+
+		return result;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -1,8 +1,8 @@
 package net.untoldwind.moredread.model.scene;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 
-import net.untoldwind.moredread.model.enums.NodeType;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
 import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
@@ -13,6 +13,10 @@ public class Group extends AbstractSpatialComposite<AbstractSpatialNode> {
 	private transient BoundingBox worldBoundingBox;
 	private transient BoundingBox localBoundingBox;
 	private transient boolean structuralChange;
+
+	protected Group(final AbstractSpatialComposite<? extends INode> parent) {
+		super(parent, "Group");
+	}
 
 	public Group(final Group parent, final String name) {
 		super(parent, name);
@@ -120,13 +124,29 @@ public class Group extends AbstractSpatialComposite<AbstractSpatialNode> {
 
 	@Override
 	public void readState(final IStateReader reader) throws IOException {
-		// TODO Auto-generated method stub
+		name = reader.readString();
+		localTranslation = reader.readVector3f();
+		localScale = reader.readVector3f();
+		localRotation = reader.readQuaternion();
+		reader.readUntypedList(new IStateReader.IInstanceCreator<INode>() {
+			@Override
+			public INode createInstance(final Class<INode> clazz) {
+				try {
+					final Constructor<INode> constructor = clazz
+							.getDeclaredConstructor(AbstractSpatialComposite.class);
 
+					constructor.setAccessible(true);
+					return constructor.newInstance(this);
+				} catch (final Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+		});
 	}
 
 	@Override
 	public void writeState(final IStateWriter writer) throws IOException {
-		writer.writeInt("nodeType", NodeType.GROUP.getCode());
+		writer.writeString("name", name);
 		writer.writeVector3f("localTranslation", localTranslation);
 		writer.writeVector3f("localScale", localScale);
 		writer.writeQuaternion("localRotation", localRotation);

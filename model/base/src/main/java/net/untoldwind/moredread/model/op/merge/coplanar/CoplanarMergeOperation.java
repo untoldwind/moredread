@@ -23,6 +23,12 @@ import com.jme.math.FastMath;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 
+/**
+ * Simple coplanar merge operation.
+ * 
+ * Merges all coplanar faces of a mesh to single faces. Also remove unnecessary
+ * vertices.
+ */
 public class CoplanarMergeOperation implements IUnaryOperation {
 
 	@Override
@@ -31,6 +37,7 @@ public class CoplanarMergeOperation implements IUnaryOperation {
 		final List<FaceId> unmergableFaces = new ArrayList<FaceId>();
 		final List<Set<FaceId>> facesToMerge = new ArrayList<Set<FaceId>>();
 
+		// Find all faces that can be combined
 		for (final IFace face : mesh.getFaces()) {
 			if (visitedFaces.contains(face.getIndex())) {
 				continue;
@@ -69,6 +76,18 @@ public class CoplanarMergeOperation implements IUnaryOperation {
 		return result;
 	}
 
+	/**
+	 * Simple transfer a face of the source mesh to the target mesh.
+	 * 
+	 * @param target
+	 *            The target mesh
+	 * @param source
+	 *            The source mesh
+	 * @param faceIndex
+	 *            The index to the face to transfer
+	 * @param vertexMap
+	 *            The vertex map (source index -> target index)
+	 */
 	private void transferFace(final PolyMesh target, final IMesh source,
 			final FaceId faceIndex, final Map<Integer, Integer> vertexMap) {
 		final IFace face = source.getFace(faceIndex);
@@ -96,10 +115,23 @@ public class CoplanarMergeOperation implements IUnaryOperation {
 		target.addFace(targetStrips);
 	}
 
+	/**
+	 * Merge faces of the source mesh and add combined face to target mesh.
+	 * 
+	 * @param target
+	 *            The target mesh
+	 * @param source
+	 *            The source mesh
+	 * @param faces
+	 *            The indices of all face to merge
+	 * @param vertexMap
+	 *            The vertex map (source index -> target index)
+	 */
 	private void mergeFaces(final PolyMesh target, final IMesh source,
 			final Set<FaceId> faces, final Map<Integer, Integer> vertexMap) {
 		final Map<Integer, List<Integer>> borderEdges = new HashMap<Integer, List<Integer>>();
 
+		// Collect the border edges (i.e. the edges of the combined face
 		for (final FaceId faceIndex : faces) {
 			final IFace face = source.getFace(faceIndex);
 

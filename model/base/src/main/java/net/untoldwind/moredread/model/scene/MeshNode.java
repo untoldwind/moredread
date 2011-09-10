@@ -22,8 +22,8 @@ public class MeshNode extends ObjectNode implements IMeshNode, IGeneratorInput {
 	private transient BoundingBox worldBoundingBox;
 	private transient BoundingBox localBoundingBox;
 
-	protected MeshNode() {
-		super(null, "Mesh");
+	protected MeshNode(final AbstractSpatialComposite<? extends INode> parent) {
+		super(parent, "Mesh");
 	}
 
 	public MeshNode(final AbstractSpatialComposite<? extends INode> parent,

@@ -3,7 +3,6 @@ package net.untoldwind.moredread.model.scene;
 import java.io.IOException;
 import java.util.List;
 
-import net.untoldwind.moredread.model.enums.NodeType;
 import net.untoldwind.moredread.model.generator.IGeneratorInput;
 import net.untoldwind.moredread.model.generator.IMeshGenerator;
 import net.untoldwind.moredread.model.mesh.IMesh;
@@ -19,7 +18,7 @@ import com.jme.scene.Spatial;
 
 public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 		implements IMeshNode, IGeneratorInput {
-	private final IMeshGenerator meshGenerator;
+	private IMeshGenerator meshGenerator;
 
 	private transient com.jme.scene.Node displayNode;
 
@@ -28,6 +27,11 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 	private transient BoundingBox worldBoundingBox;
 	private transient BoundingBox localBoundingBox;
 	private ColorRGBA modelColor;
+
+	protected GeneratorNode(
+			final AbstractSpatialComposite<? extends INode> parent) {
+		super(parent, "Generator");
+	}
 
 	public GeneratorNode(
 			final AbstractSpatialComposite<? extends INode> parent,
@@ -177,18 +181,19 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 
 	@Override
 	public void readState(final IStateReader reader) throws IOException {
-		// TODO Auto-generated method stub
-
+		name = reader.readString();
+		localTranslation = reader.readVector3f();
+		localScale = reader.readVector3f();
+		localRotation = reader.readQuaternion();
+		meshGenerator = reader.readObject();
 	}
 
 	@Override
 	public void writeState(final IStateWriter writer) throws IOException {
-		writer.writeInt("nodeType", NodeType.MESH.getCode());
+		writer.writeString("name", name);
 		writer.writeVector3f("localTranslation", localTranslation);
 		writer.writeVector3f("localScale", localScale);
 		writer.writeQuaternion("localRotation", localRotation);
-		writer.writeString("meshGeneratorClass", meshGenerator.getClass()
-				.getName());
+		writer.writeObject("meshGenerator", meshGenerator);
 	}
-
 }
