@@ -1,5 +1,6 @@
 package net.untoldwind.moredread.model.op.merge.test;
 
+import static net.untoldwind.moredread.model.test.TestHelper.readString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import net.untoldwind.moredread.model.enums.MeshType;
@@ -10,6 +11,7 @@ import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
 import net.untoldwind.moredread.model.op.IUnaryOperation;
 import net.untoldwind.moredread.model.op.UnaryOperationFactory;
+import net.untoldwind.moredread.model.state.XMLStateReader;
 
 import org.junit.Test;
 
@@ -54,4 +56,17 @@ public class CoplanarMergeTest {
 		}
 	}
 
+	@Test
+	public void testBooleanResult1() throws Exception {
+		final String xml = readString(getClass().getResourceAsStream(
+				"bool-result1.xml"));
+
+		final IMesh mesh = XMLStateReader.fromXML(xml);
+		final IUnaryOperation mergeOperation = UnaryOperationFactory
+				.createOperation(UnaryOperationFactory.Implementation.COPLANAR_MERGE);
+		final IMesh result = mergeOperation.perform(mesh);
+
+		assertNotNull(result);
+		assertEquals(MeshType.POLY, result.getMeshType());
+	}
 }

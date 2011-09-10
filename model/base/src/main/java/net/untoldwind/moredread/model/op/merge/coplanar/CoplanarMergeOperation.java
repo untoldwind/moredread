@@ -189,7 +189,9 @@ public class CoplanarMergeOperation implements IUnaryOperation {
 			return;
 		}
 
-		for (final List<IVertex> sourceStrip : sourceStrips) {
+		for (int j = sourceStrips.size() - 1; j >= 0; j--) {
+			final List<IVertex> sourceStrip = sourceStrips.get(j);
+
 			for (int i = sourceStrip.size() - 1; i >= 0; i--) {
 				final Vector3f diff1 = sourceStrip
 						.get((i + 1) % sourceStrip.size()).getPoint()
@@ -204,6 +206,13 @@ public class CoplanarMergeOperation implements IUnaryOperation {
 					sourceStrip.remove(i);
 				}
 			}
+			if (sourceStrip.isEmpty()) {
+				sourceStrips.remove(j);
+			}
+		}
+
+		if (sourceStrips.isEmpty()) {
+			return;
 		}
 
 		final Vector3f n = source.getFace(faces.iterator().next())
