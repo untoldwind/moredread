@@ -24,9 +24,19 @@ public interface IStateReader {
 
 	<T extends IStateHolder> T readObject() throws IOException;
 
+	<T extends IStateHolder> T readObject(IInstanceCreator<T> creator)
+			throws IOException;
+
 	<T extends IStateHolder> T[] readTypedArray() throws IOException;
 
 	<T extends IStateHolder> List<T> readTypedList() throws IOException;
 
 	<T extends IStateHolder> List<T> readUntypedList() throws IOException;
+
+	<T extends IStateHolder> List<T> readUntypedList(IInstanceCreator<T> creator)
+			throws IOException;
+
+	public interface IInstanceCreator<T> {
+		T createInstance(Class<T> clazz);
+	}
 }

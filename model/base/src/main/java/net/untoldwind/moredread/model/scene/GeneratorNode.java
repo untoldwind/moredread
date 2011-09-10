@@ -28,6 +28,11 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 	private transient BoundingBox localBoundingBox;
 	private ColorRGBA modelColor;
 
+	protected GeneratorNode(
+			final AbstractSpatialComposite<? extends INode> parent) {
+		super(parent, "Generator");
+	}
+
 	public GeneratorNode(
 			final AbstractSpatialComposite<? extends INode> parent,
 			final IMeshGenerator meshGenerator) {

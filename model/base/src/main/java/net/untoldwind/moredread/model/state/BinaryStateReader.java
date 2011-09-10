@@ -56,12 +56,28 @@ public class BinaryStateReader implements IStateReader {
 				input.readFloat(), input.readFloat());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends IStateHolder> T readObject() throws IOException {
 		final String className = input.readUTF();
 		try {
-			@SuppressWarnings("unchecked")
 			final T instance = (T) Class.forName(className).newInstance();
+			instance.readState(this);
+
+			return instance;
+		} catch (final Exception e) {
+			throw new IOException(e);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends IStateHolder> T readObject(
+			final IInstanceCreator<T> creator) throws IOException {
+		final String className = input.readUTF();
+		try {
+			final T instance = creator.createInstance((Class<T>) Class
+					.forName(className));
 			instance.readState(this);
 
 			return instance;
@@ -119,6 +135,18 @@ public class BinaryStateReader implements IStateReader {
 		final List<T> result = new ArrayList<T>();
 		for (int i = 0; i < size; i++) {
 			result.add((T) readObject());
+		}
+
+		return result;
+	}
+
+	@Override
+	public <T extends IStateHolder> List<T> readUntypedList(
+			final IInstanceCreator<T> creator) throws IOException {
+		final int size = input.readInt();
+		final List<T> result = new ArrayList<T>();
+		for (int i = 0; i < size; i++) {
+			result.add(readObject(creator));
 		}
 
 		return result;
