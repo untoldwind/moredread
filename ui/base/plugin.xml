@@ -280,6 +280,16 @@
                label="Collapse">
          </action>
       </objectContribution>
+      <objectContribution
+            adaptable="false"
+            id="net.untoldwind.moredread.ui.node.objectContribution"
+            objectClass="net.untoldwind.moredread.model.scene.INode">
+         <action
+               class="net.untoldwind.moredread.ui.actions.DumpNodeActionDelegate"
+               id="net.untoldwind.moredread.ui.node.dump"
+               label="Dump">
+         </action>
+      </objectContribution>
    </extension>
    <extension
          point="org.eclipse.ui.contexts">
