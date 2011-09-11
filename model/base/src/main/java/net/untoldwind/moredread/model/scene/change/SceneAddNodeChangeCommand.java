@@ -106,7 +106,7 @@ public class SceneAddNodeChangeCommand extends AbstractOperation implements
 
 	@Override
 	public String getStageId() {
-		return "Group" + parentNodeId + "_" + childNodeId;
+		return "Add_" + parentNodeId + "_" + childNodeId;
 	}
 
 	@Override

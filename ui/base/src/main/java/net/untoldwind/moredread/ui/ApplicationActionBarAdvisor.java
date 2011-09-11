@@ -1,5 +1,6 @@
 package net.untoldwind.moredread.ui;
 
+import net.untoldwind.moredread.ui.actions.GlobalDeleteAction;
 import net.untoldwind.moredread.ui.actions.GlobalRedoAction;
 import net.untoldwind.moredread.ui.actions.GlobalUndoAction;
 
@@ -41,6 +42,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	private IWorkbenchAction saveAsAction;
 	private IAction undoAction;
 	private IAction redoAction;
+	private IAction deleteAction;
 
 	private IWorkbenchAction preferencesActions;
 
@@ -84,6 +86,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		redoAction = new GlobalRedoAction(window);
 		register(redoAction);
 
+		deleteAction = new GlobalDeleteAction(window);
+		register(deleteAction);
+
 		newWindowAction = ActionFactory.OPEN_NEW_WINDOW.create(window);
 		register(newWindowAction);
 
@@ -126,6 +131,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		// Edit
 		editMenu.add(undoAction);
 		editMenu.add(redoAction);
+		editMenu.add(new Separator());
+		editMenu.add(deleteAction);
 
 		// Window
 		showViewMenuMgr.add(showViewItem);
