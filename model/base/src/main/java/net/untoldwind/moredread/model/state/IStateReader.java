@@ -6,6 +6,7 @@ import java.util.List;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
 
 public interface IStateReader {
 	boolean readBoolean() throws IOException;
@@ -21,6 +22,8 @@ public interface IStateReader {
 	Vector3f readVector3f() throws IOException;
 
 	Quaternion readQuaternion() throws IOException;
+
+	ColorRGBA readColor() throws IOException;
 
 	<T extends IStateHolder> T readObject() throws IOException;
 

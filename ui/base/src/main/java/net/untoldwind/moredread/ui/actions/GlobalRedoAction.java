@@ -48,7 +48,7 @@ public class GlobalRedoAction extends GlobalOperationHistoryAction {
 
 	@Override
 	IUndoableOperation getOperation() {
-		return getHistory().getUndoOperation(getUndoContext());
+		return getHistory().getRedoOperation(getUndoContext());
 
 	}
 

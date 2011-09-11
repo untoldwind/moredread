@@ -13,6 +13,7 @@ import org.dom4j.io.XMLWriter;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
 
 public class XMLStateWriter implements IStateWriter {
 	private final Document document;
@@ -78,6 +79,17 @@ public class XMLStateWriter implements IStateWriter {
 		quaternionElement.addAttribute("y", String.valueOf(quaterion.y));
 		quaternionElement.addAttribute("z", String.valueOf(quaterion.z));
 		quaternionElement.addAttribute("w", String.valueOf(quaterion.w));
+	}
+
+	@Override
+	public void writeColor(final String tag, final ColorRGBA color)
+			throws IOException {
+		final Element colorElement = element.addElement(tag);
+
+		colorElement.addAttribute("r", String.valueOf(color.r));
+		colorElement.addAttribute("g", String.valueOf(color.g));
+		colorElement.addAttribute("b", String.valueOf(color.b));
+		colorElement.addAttribute("a", String.valueOf(color.a));
 	}
 
 	@Override

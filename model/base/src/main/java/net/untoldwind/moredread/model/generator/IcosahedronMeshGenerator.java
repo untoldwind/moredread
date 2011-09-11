@@ -68,4 +68,15 @@ public class IcosahedronMeshGenerator extends AbstractCenterSizeGenerator {
 		return mesh;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("IcosahedronMeshGenerator [center=");
+		builder.append(center);
+		builder.append(", size=");
+		builder.append(size);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }

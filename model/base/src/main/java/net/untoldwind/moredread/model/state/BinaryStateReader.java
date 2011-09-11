@@ -11,6 +11,7 @@ import java.util.List;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
 
 public class BinaryStateReader implements IStateReader {
 	private final DataInputStream input;
@@ -53,6 +54,12 @@ public class BinaryStateReader implements IStateReader {
 	@Override
 	public Quaternion readQuaternion() throws IOException {
 		return new Quaternion(input.readFloat(), input.readFloat(),
+				input.readFloat(), input.readFloat());
+	}
+
+	@Override
+	public ColorRGBA readColor() throws IOException {
+		return new ColorRGBA(input.readFloat(), input.readFloat(),
 				input.readFloat(), input.readFloat());
 	}
 
@@ -156,6 +163,16 @@ public class BinaryStateReader implements IStateReader {
 		try {
 			return new BinaryStateReader(new ByteArrayInputStream(data))
 					.readObject();
+		} catch (final IOException e) {
+			throw new RuntimeException("Very unexpected IOException", e);
+		}
+	}
+
+	public static <T extends IStateHolder> T fromByteArray(final byte[] data,
+			final IInstanceCreator<T> creator) {
+		try {
+			return new BinaryStateReader(new ByteArrayInputStream(data))
+					.readObject(creator);
 		} catch (final IOException e) {
 			throw new RuntimeException("Very unexpected IOException", e);
 		}

@@ -6,6 +6,7 @@ import java.util.List;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
 
 public interface IStateWriter {
 	void writeBoolean(String tag, boolean value) throws IOException;
@@ -21,6 +22,8 @@ public interface IStateWriter {
 	void writeVector3f(String tag, Vector3f value) throws IOException;
 
 	void writeQuaternion(String tag, Quaternion quaterion) throws IOException;
+
+	void writeColor(String tag, ColorRGBA color) throws IOException;
 
 	void writeObject(String tag, IStateHolder obj) throws IOException;
 

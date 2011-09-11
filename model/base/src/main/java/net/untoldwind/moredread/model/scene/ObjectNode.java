@@ -4,7 +4,7 @@ import com.jme.renderer.ColorRGBA;
 
 public abstract class ObjectNode extends AbstractSpatialNode {
 
-	private ColorRGBA modelColor;
+	protected ColorRGBA modelColor;
 
 	public ObjectNode(final AbstractSpatialComposite<? extends INode> parent,
 			final String name) {
