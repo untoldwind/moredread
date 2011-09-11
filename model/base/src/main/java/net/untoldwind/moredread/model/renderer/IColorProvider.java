@@ -12,4 +12,8 @@ public interface IColorProvider {
 	boolean isEdgeVisible(EdgeId edgeIndex);
 
 	ColorRGBA getEdgeColor(EdgeId edgeIndex);
+
+	boolean isVertexVisible(int vertexIndex);
+
+	ColorRGBA getVertexColor(int vertexIndex);
 }
