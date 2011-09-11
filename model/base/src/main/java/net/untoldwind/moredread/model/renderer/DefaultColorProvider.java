@@ -33,4 +33,14 @@ public class DefaultColorProvider implements IColorProvider {
 		return true;
 	}
 
+	@Override
+	public ColorRGBA getVertexColor(final int vertexIndex) {
+		return defaultColor;
+	}
+
+	@Override
+	public boolean isVertexVisible(final int vertexIndex) {
+		return true;
+	}
+
 }

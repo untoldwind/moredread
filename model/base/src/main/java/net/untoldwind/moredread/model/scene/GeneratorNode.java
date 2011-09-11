@@ -187,7 +187,6 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 		localScale = reader.readVector3f();
 		localRotation = reader.readQuaternion();
 		meshGenerator = reader.readObject();
-		System.out.println(">>> " + meshGenerator);
 		generatedMesh = null;
 	}
 

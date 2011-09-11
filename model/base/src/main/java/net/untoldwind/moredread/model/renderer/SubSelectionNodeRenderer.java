@@ -1,6 +1,5 @@
 package net.untoldwind.moredread.model.renderer;
 
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,26 +7,20 @@ import java.util.List;
 import net.untoldwind.moredread.model.enums.SelectionMode;
 import net.untoldwind.moredread.model.mesh.EdgeId;
 import net.untoldwind.moredread.model.mesh.FaceId;
-import net.untoldwind.moredread.model.mesh.IMesh;
-import net.untoldwind.moredread.model.mesh.IVertex;
 import net.untoldwind.moredread.model.scene.IMeshNode;
 import net.untoldwind.moredread.model.scene.SceneSelection;
 
 import com.jme.bounding.BoundingBox;
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.Geometry;
-import com.jme.scene.Point;
 import com.jme.scene.Spatial;
-import com.jme.scene.state.MaterialState;
-import com.jme.scene.state.MaterialState.MaterialFace;
-import com.jme.util.geom.BufferUtils;
 
 public class SubSelectionNodeRenderer implements INodeRendererAdapter {
 	private final Renderer renderer;
 	private final SelectionMode selectionMode;
 	private final WireframeMeshRenderer wireframeMeshRenderer;
+	private final VertexMeshRenderer vertexMeshRenderer;
 	private final IMeshRendererAdapter solidMeshRenderer;
 
 	public SubSelectionNodeRenderer(final Renderer renderer,
@@ -37,6 +30,7 @@ public class SubSelectionNodeRenderer implements INodeRendererAdapter {
 		this.selectionMode = selectionMode;
 
 		this.wireframeMeshRenderer = new WireframeMeshRenderer(false, 3f, false);
+		this.vertexMeshRenderer = new VertexMeshRenderer();
 		this.solidMeshRenderer = new SolidMeshRenderer();
 	}
 
@@ -67,6 +61,9 @@ public class SubSelectionNodeRenderer implements INodeRendererAdapter {
 		case EDGE:
 			colorProvider = getEdgeSelectionColors(node);
 			break;
+		case VERTEX:
+			colorProvider = getVertexSelectionColors(node);
+			break;
 		}
 
 		if (colorProvider != null) {
@@ -91,10 +88,14 @@ public class SubSelectionNodeRenderer implements INodeRendererAdapter {
 			wireframeGeometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
 		}
 
-		switch (selectionMode) {
-		case VERTEX:
-			renderVertexSelections(node, geometries);
-			break;
+		final Geometry vertexGeometry = vertexMeshRenderer.renderMesh(
+				node.getRenderGeometry(), colorProvider);
+		if (vertexGeometry != null) {
+			geometries.add(vertexGeometry);
+			vertexGeometry.setDefaultColor(ColorRGBA.black.clone());
+			vertexGeometry.setModelBound(new BoundingBox());
+			vertexGeometry.updateModelBound();
+			vertexGeometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
 		}
 
 		return geometries;
@@ -120,12 +121,22 @@ public class SubSelectionNodeRenderer implements INodeRendererAdapter {
 			}
 
 			@Override
+			public ColorRGBA getVertexColor(final int vertexIndex) {
+				return ColorRGBA.black.clone();
+			}
+
+			@Override
 			public boolean isFaceVisible(final FaceId faceIndex) {
 				return sceneSelection.isFaceSelected(node, faceIndex);
 			}
 
 			@Override
 			public boolean isEdgeVisible(final EdgeId edgeIndex) {
+				return true;
+			}
+
+			@Override
+			public boolean isVertexVisible(final int vertexIndex) {
 				return true;
 			}
 		};
@@ -151,6 +162,11 @@ public class SubSelectionNodeRenderer implements INodeRendererAdapter {
 			}
 
 			@Override
+			public ColorRGBA getVertexColor(final int vertexIndex) {
+				return ColorRGBA.black.clone();
+			}
+
+			@Override
 			public boolean isFaceVisible(final FaceId faceIndex) {
 				return false;
 			}
@@ -159,46 +175,54 @@ public class SubSelectionNodeRenderer implements INodeRendererAdapter {
 			public boolean isEdgeVisible(final EdgeId edgeIndex) {
 				return true;
 			}
+
+			@Override
+			public boolean isVertexVisible(final int vertexIndex) {
+				return true;
+			}
+
 		};
 	}
 
-	private void renderVertexSelections(final IMeshNode node,
-			final List<Spatial> geometries) {
-		final IMesh mesh = node.getRenderGeometry();
+	private IColorProvider getVertexSelectionColors(final IMeshNode node) {
+		final ColorRGBA modelColor = node.getModelColor(0.5f);
+		final ColorRGBA selectedColor = new ColorRGBA(1.0f - modelColor.r,
+				1.0f - modelColor.g, 1.0f - modelColor.b, 0.5f);
+
 		final SceneSelection sceneSelection = node.getScene()
 				.getSceneSelection();
-		final List<Vector3f> points = new ArrayList<Vector3f>();
-
-		for (final IVertex vertex : mesh.getVertices()) {
-			if (sceneSelection.isVertexSelected(node, vertex.getIndex())) {
-				points.add(vertex.getPoint());
+		return new IColorProvider() {
+			@Override
+			public ColorRGBA getFaceColor(final FaceId faceIndex) {
+				return modelColor;
 			}
-		}
 
-		final FloatBuffer vertexBuffer = BufferUtils.createVector3Buffer(points
-				.size());
-		for (final Vector3f point : points) {
-			vertexBuffer.put(point.x);
-			vertexBuffer.put(point.y);
-			vertexBuffer.put(point.z);
-		}
+			@Override
+			public ColorRGBA getEdgeColor(final EdgeId edgeIndex) {
+				return ColorRGBA.black.clone();
+			}
 
-		final Point selectedVertexGeometry = new Point(null, vertexBuffer,
-				null, null, null);
+			@Override
+			public ColorRGBA getVertexColor(final int vertexIndex) {
+				return sceneSelection.isVertexSelected(node, vertexIndex) ? selectedColor
+						: ColorRGBA.black.clone();
+			}
 
-		selectedVertexGeometry.setPointSize(6f);
-		selectedVertexGeometry.setAntialiased(false);
+			@Override
+			public boolean isFaceVisible(final FaceId faceIndex) {
+				return false;
+			}
 
-		final MaterialState materialState = renderer.createMaterialState();
-		materialState.setMaterialFace(MaterialFace.FrontAndBack);
-		materialState.setAmbient(new ColorRGBA(0.9f, 0.9f, 0.9f, 0.9f));
-		materialState.setDiffuse(new ColorRGBA(0.9f, 0.9f, 0.9f, 0.9f));
-		materialState.setEnabled(true);
+			@Override
+			public boolean isEdgeVisible(final EdgeId edgeIndex) {
+				return true;
+			}
 
-		selectedVertexGeometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
-		selectedVertexGeometry.setRenderState(materialState);
+			@Override
+			public boolean isVertexVisible(final int vertexIndex) {
+				return true;
+			}
 
-		geometries.add(selectedVertexGeometry);
+		};
 	}
-
 }
