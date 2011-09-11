@@ -14,6 +14,7 @@ import org.dom4j.io.SAXReader;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
 
 public class XMLStateReader implements IStateReader {
 	private final Document document;
@@ -73,6 +74,17 @@ public class XMLStateReader implements IStateReader {
 				.attributeValue("y")), Float.parseFloat(quaternionElement
 				.attributeValue("z")), Float.parseFloat(quaternionElement
 				.attributeValue("w")));
+	}
+
+	@Override
+	public ColorRGBA readColor() throws IOException {
+		final Element colorElement = childIterator.next();
+
+		return new ColorRGBA(
+				Float.parseFloat(colorElement.attributeValue("r")),
+				Float.parseFloat(colorElement.attributeValue("g")),
+				Float.parseFloat(colorElement.attributeValue("b")),
+				Float.parseFloat(colorElement.attributeValue("a")));
 	}
 
 	@SuppressWarnings("unchecked")

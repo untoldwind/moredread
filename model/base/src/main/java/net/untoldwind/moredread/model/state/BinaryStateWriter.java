@@ -9,6 +9,7 @@ import java.util.List;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
+import com.jme.renderer.ColorRGBA;
 
 public class BinaryStateWriter implements IStateWriter {
 	private final DataOutputStream output;
@@ -62,6 +63,15 @@ public class BinaryStateWriter implements IStateWriter {
 		output.writeFloat(quaterion.y);
 		output.writeFloat(quaterion.z);
 		output.writeFloat(quaterion.w);
+	}
+
+	@Override
+	public void writeColor(final String tag, final ColorRGBA color)
+			throws IOException {
+		output.writeFloat(color.r);
+		output.writeFloat(color.g);
+		output.writeFloat(color.b);
+		output.writeFloat(color.a);
 	}
 
 	@Override

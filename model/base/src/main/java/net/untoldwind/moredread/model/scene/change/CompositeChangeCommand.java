@@ -87,7 +87,7 @@ public class CompositeChangeCommand extends AbstractOperation implements
 			monitor.beginTask("Composite", commands.size());
 
 			for (final ISceneChangeCommand cmd : commands) {
-				cmd.redo(new SubProgressMonitor(monitor, 1), info);
+				cmd.undo(new SubProgressMonitor(monitor, 1), info);
 			}
 		} finally {
 			monitor.done();

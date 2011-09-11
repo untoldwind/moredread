@@ -138,6 +138,7 @@ public class MeshNode extends ObjectNode implements IMeshNode, IGeneratorInput {
 	@Override
 	public void readState(final IStateReader reader) throws IOException {
 		name = reader.readString();
+		modelColor = reader.readColor();
 		localTranslation = reader.readVector3f();
 		localScale = reader.readVector3f();
 		localRotation = reader.readQuaternion();
@@ -147,6 +148,7 @@ public class MeshNode extends ObjectNode implements IMeshNode, IGeneratorInput {
 	@Override
 	public void writeState(final IStateWriter writer) throws IOException {
 		writer.writeString("name", name);
+		writer.writeColor("modelColor", modelColor);
 		writer.writeVector3f("localTranslation", localTranslation);
 		writer.writeVector3f("localScale", localScale);
 		writer.writeQuaternion("localRotation", localRotation);
