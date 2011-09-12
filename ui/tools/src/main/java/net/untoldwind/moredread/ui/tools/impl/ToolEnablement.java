@@ -53,6 +53,10 @@ public class ToolEnablement {
 			return count >= 1;
 		case ZERO_OR_ONE:
 			return count == 0 || count == 1;
+		case ANY:
+			return true;
+		case TWO:
+			return count == 2;
 		default:
 			throw new RuntimeException("Invalid selectionCount: "
 					+ selectionCount);

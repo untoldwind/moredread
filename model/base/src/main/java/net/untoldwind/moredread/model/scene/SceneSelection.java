@@ -3,6 +3,7 @@ package net.untoldwind.moredread.model.scene;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -23,7 +24,7 @@ public class SceneSelection implements ISceneSelection {
 	public SceneSelection(final Scene scene) {
 		this.scene = scene;
 
-		selectedNodes = new HashSet<INode>();
+		selectedNodes = new LinkedHashSet<INode>();
 		selectedParentNodes = new HashSet<IComposite>();
 		selectedFaces = new HashSet<FaceSelection>();
 		selectedEdges = new HashSet<EdgeSelection>();
@@ -57,7 +58,7 @@ public class SceneSelection implements ISceneSelection {
 				selectNode.markDirty();
 			}
 
-			this.selectedNodes = selectedNodes;
+			this.selectedNodes = new LinkedHashSet<INode>(selectedNodes);
 			this.selectedParentNodes.clear();
 
 			for (final INode selectNode : this.selectedNodes) {
@@ -71,7 +72,7 @@ public class SceneSelection implements ISceneSelection {
 			}
 
 			fireSceneSelectionChangeEvent(new SceneSelectionChangeEvent(scene,
-					selectedNodes));
+					this.selectedNodes));
 		}
 	}
 

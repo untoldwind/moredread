@@ -185,6 +185,8 @@
                   </enumeration>
                   <enumeration value="1-*">
                   </enumeration>
+                  <enumeration value="2">
+                  </enumeration>
                </restriction>
             </simpleType>
          </attribute>

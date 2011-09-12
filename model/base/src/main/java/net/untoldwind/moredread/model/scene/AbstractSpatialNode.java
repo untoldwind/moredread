@@ -8,6 +8,7 @@ import net.untoldwind.moredread.model.mesh.IPolygon;
 import net.untoldwind.moredread.model.mesh.Point;
 import net.untoldwind.moredread.model.mesh.Polygon;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
+import net.untoldwind.moredread.model.scene.change.NodeParentChangeCommand;
 import net.untoldwind.moredread.model.scene.change.NodeTransformationChangeCommand;
 import net.untoldwind.moredread.model.scene.change.SceneRemoveNodeChangeCommand;
 import net.untoldwind.moredread.model.scene.properties.SpatialNodePropertySource;
@@ -23,7 +24,7 @@ import com.jme.math.Vector3f;
 public abstract class AbstractSpatialNode extends AbstractNode implements
 		ISpatialNode, IAdaptable {
 	/** The parent node (group). */
-	protected final AbstractSpatialComposite<? extends INode> parent;
+	protected AbstractSpatialComposite<? extends INode> parent;
 
 	/** Spatial's rotation relative to its parent. */
 	protected Quaternion localRotation;
@@ -48,6 +49,17 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 
 	public AbstractSpatialComposite<? extends INode> getParent() {
 		return parent;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setParent(final IComposite parent) {
+		scene.getSceneChangeHandler().registerCommand(
+				new NodeParentChangeCommand(this));
+
+		this.parent.removeChild(this);
+		this.parent = (AbstractSpatialComposite<? extends INode>) parent;
+		this.parent.addChild(this);
 	}
 
 	public boolean isSelected() {

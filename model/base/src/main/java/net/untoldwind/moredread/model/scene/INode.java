@@ -16,6 +16,8 @@ public interface INode extends IStateHolder {
 
 	IComposite getParent();
 
+	void setParent(IComposite parent);
+
 	boolean isSelected();
 
 	void markDirty();

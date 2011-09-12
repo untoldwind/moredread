@@ -276,8 +276,8 @@ public class MoreDreadUI extends AbstractUIPlugin {
 				node11.setLocalTranslation(new Vector3f(-20f, 10f, 0));
 
 				final AbstractSpatialNode node12 = new MeshNode(scene,
-						"Mesh Geosphere", new GeosphereMeshGenerator(5)
-								.generateMesh(null));
+						"Mesh Geosphere", new GeosphereMeshGenerator(5,
+								new Vector3f(), 1.0f).generateMesh(null));
 
 				node12.setLocalScale(new Vector3f(5.0f, 5.0f, 5.0f));
 				node12.setLocalTranslation(new Vector3f(-30f, 10f, 0));
