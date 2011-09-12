@@ -1,6 +1,7 @@
 package net.untoldwind.moredread.model.scene;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.util.List;
 
 import net.untoldwind.moredread.model.generator.IGeneratorInput;
@@ -187,7 +188,20 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 		localScale = reader.readVector3f();
 		localRotation = reader.readQuaternion();
 		meshGenerator = reader.readObject();
-		generatedMesh = null;
+		reader.readUntypedList(new IStateReader.IInstanceCreator<INode>() {
+			@Override
+			public INode createInstance(final Class<INode> clazz) {
+				try {
+					final Constructor<INode> constructor = clazz
+							.getDeclaredConstructor(AbstractSpatialComposite.class);
+
+					constructor.setAccessible(true);
+					return constructor.newInstance(GeneratorNode.this);
+				} catch (final Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -198,5 +212,6 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 		writer.writeVector3f("localScale", localScale);
 		writer.writeQuaternion("localRotation", localRotation);
 		writer.writeObject("meshGenerator", meshGenerator);
+		writer.writeUntypedList("children", children);
 	}
 }

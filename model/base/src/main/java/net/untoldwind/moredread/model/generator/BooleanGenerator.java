@@ -13,7 +13,11 @@ import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 
 public class BooleanGenerator implements IMeshGenerator {
-	private final BoolOperation boolOperation;
+	private BoolOperation boolOperation;
+
+	protected BooleanGenerator() {
+
+	}
 
 	public BooleanGenerator(final BoolOperation boolOperation) {
 		super();
@@ -55,11 +59,11 @@ public class BooleanGenerator implements IMeshGenerator {
 
 	@Override
 	public void readState(final IStateReader reader) throws IOException {
-		// TODO Auto-generated method stub
-
+		boolOperation = BoolOperation.valueOf(reader.readString());
 	}
 
 	@Override
 	public void writeState(final IStateWriter writer) throws IOException {
+		writer.writeString("operation", boolOperation.name());
 	}
 }

@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,7 +69,10 @@ public class BinaryStateReader implements IStateReader {
 	public <T extends IStateHolder> T readObject() throws IOException {
 		final String className = input.readUTF();
 		try {
-			final T instance = (T) Class.forName(className).newInstance();
+			final Class<T> clazz = (Class<T>) Class.forName(className);
+			final Constructor<T> constructor = clazz.getDeclaredConstructor();
+			constructor.setAccessible(true);
+			final T instance = constructor.newInstance();
 			instance.readState(this);
 
 			return instance;
@@ -103,7 +107,11 @@ public class BinaryStateReader implements IStateReader {
 					Class.forName(className), len);
 
 			for (int i = 0; i < len; i++) {
-				final T instance = (T) Class.forName(className).newInstance();
+				final Class<T> clazz = (Class<T>) Class.forName(className);
+				final Constructor<T> constructor = clazz
+						.getDeclaredConstructor();
+				constructor.setAccessible(true);
+				final T instance = constructor.newInstance();
 				instance.readState(this);
 				result[i] = instance;
 			}
@@ -123,7 +131,11 @@ public class BinaryStateReader implements IStateReader {
 			final int size = input.readInt();
 
 			for (int i = 0; i < size; i++) {
-				final T instance = (T) Class.forName(className).newInstance();
+				final Class<T> clazz = (Class<T>) Class.forName(className);
+				final Constructor<T> constructor = clazz
+						.getDeclaredConstructor();
+				constructor.setAccessible(true);
+				final T instance = constructor.newInstance();
 				instance.readState(this);
 				result.add(instance);
 			}
