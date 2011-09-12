@@ -133,7 +133,7 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 			points.add(localToWorld(point));
 		}
 
-		return new Polygon(points, null, polygon.getPolygonStripCounts(),
+		return new Polygon(points, polygon.getPolygonStripCounts(),
 				polygon.getPolygonContourCounts(), polygon.isClosed());
 	}
 

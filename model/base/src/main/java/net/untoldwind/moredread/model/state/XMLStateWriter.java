@@ -33,15 +33,29 @@ public class XMLStateWriter implements IStateWriter {
 		this.element = element;
 	}
 
+	@Override
 	public void writeBoolean(final String tag, final boolean value)
 			throws IOException {
 		element.addElement(tag).setText(String.valueOf(value));
 	}
 
+	@Override
 	public void writeInt(final String tag, final int value) throws IOException {
 		element.addElement(tag).setText(String.valueOf(value));
 	}
 
+	@Override
+	public void writeIntArray(final String tag, final int[] values)
+			throws IOException {
+		final Element arrayElement = element.addElement(tag);
+		arrayElement.addAttribute("size", String.valueOf(values.length));
+
+		for (int i = 0; i < values.length; i++) {
+			arrayElement.addElement("value").setText(String.valueOf(values[i]));
+		}
+	}
+
+	@Override
 	public void writeFloat(final String tag, final float value)
 			throws IOException {
 		element.addElement(tag).setText(String.valueOf(value));
@@ -53,6 +67,7 @@ public class XMLStateWriter implements IStateWriter {
 		element.addElement(tag).setText(value);
 	}
 
+	@Override
 	public void writeVector2f(final String tag, final Vector2f value)
 			throws IOException {
 		final Element vectorElement = element.addElement(tag);
@@ -61,6 +76,7 @@ public class XMLStateWriter implements IStateWriter {
 		vectorElement.addAttribute("y", String.valueOf(value.y));
 	}
 
+	@Override
 	public void writeVector3f(final String tag, final Vector3f value)
 			throws IOException {
 		final Element vectorElement = element.addElement(tag);

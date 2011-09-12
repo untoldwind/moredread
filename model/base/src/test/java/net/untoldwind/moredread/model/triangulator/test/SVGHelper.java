@@ -77,9 +77,10 @@ public class SVGHelper {
 				stripCountsArr[i] = stripCounts.get(i);
 			}
 
-			result.put(id, new Polygon(vertices.toArray(new IPoint[vertices
-					.size()]), normals.toArray(new Vector3f[normals.size()]),
-					stripCountsArr, new int[] { stripCountsArr.length }, true));
+			result.put(id,
+					new Polygon(vertices.toArray(new IPoint[vertices.size()]),
+							stripCountsArr,
+							new int[] { stripCountsArr.length }, true));
 		}
 
 		return result;
@@ -88,7 +89,7 @@ public class SVGHelper {
 	protected static IPoint parseCoordinate(final String coord) {
 		final String[] coordArr = coord.split(",");
 
-		return new Point(new Vector3f(Float.parseFloat(coordArr[0]), Float
-				.parseFloat(coordArr[1]), 0));
+		return new Point(new Vector3f(Float.parseFloat(coordArr[0]),
+				Float.parseFloat(coordArr[1]), 0));
 	}
 }

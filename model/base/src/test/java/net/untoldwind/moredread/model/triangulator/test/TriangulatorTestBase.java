@@ -11,8 +11,6 @@ import net.untoldwind.moredread.model.mesh.Point;
 import net.untoldwind.moredread.model.mesh.Polygon;
 import net.untoldwind.moredread.model.op.ITriangulator;
 
-import com.jme.math.Vector3f;
-
 public abstract class TriangulatorTestBase {
 	private final static boolean DEBUG = false;
 
@@ -28,16 +26,11 @@ public abstract class TriangulatorTestBase {
 	protected void testQuad(final int[] expected) {
 		final IPoint[] vertices = new IPoint[] { new Point(0, 0, 0),
 				new Point(1, 0, 0), new Point(1, 1, 0), new Point(0, 1, 0) };
-		final Vector3f[] normals = new Vector3f[] { new Vector3f(0, 0, 1),
-				new Vector3f(0, 0, 1), new Vector3f(0, 0, 1),
-				new Vector3f(0, 0, 1) };
 		final int[] stripCounts = new int[] { 4 };
 		final int[] contourCounts = new int[] { 1 };
 
-		final int[] result = getTriangulator()
-				.triangulate(
-						new Polygon(vertices, normals, stripCounts,
-								contourCounts, true));
+		final int[] result = getTriangulator().triangulate(
+				new Polygon(vertices, stripCounts, contourCounts, true));
 
 		assertTrue(
 				Arrays.toString(expected) + " == " + Arrays.toString(result),
@@ -51,8 +44,8 @@ public abstract class TriangulatorTestBase {
 		assertNotNull(polygon);
 
 		if (DEBUG) {
-			PNGHelper.drawPolygon(polygon.getVertices(), polygon
-					.getPolygonStripCounts(), polyId + "-poly.png");
+			PNGHelper.drawPolygon(polygon.getVertices(),
+					polygon.getPolygonStripCounts(), polyId + "-poly.png");
 		}
 
 		final int[] result = getTriangulator().triangulate(polygon);

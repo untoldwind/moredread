@@ -13,6 +13,8 @@ public interface IStateReader {
 
 	int readInt() throws IOException;
 
+	int[] readIntArray() throws IOException;
+
 	float readFloat() throws IOException;
 
 	String readString() throws IOException;

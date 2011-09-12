@@ -36,6 +36,15 @@ public class BinaryStateWriter implements IStateWriter {
 	}
 
 	@Override
+	public void writeIntArray(final String tag, final int[] values)
+			throws IOException {
+		output.writeInt(values.length);
+		for (int i = 0; i < values.length; i++) {
+			output.writeInt(values[i]);
+		}
+	}
+
+	@Override
 	public void writeString(final String tag, final String value)
 			throws IOException {
 		output.writeUTF(value);

@@ -37,6 +37,18 @@ public class BinaryStateReader implements IStateReader {
 	}
 
 	@Override
+	public int[] readIntArray() throws IOException {
+		final int size = input.readInt();
+		final int[] result = new int[size];
+
+		for (int i = 0; i < size; i++) {
+			result[i] = input.readInt();
+		}
+
+		return result;
+	}
+
+	@Override
 	public String readString() throws IOException {
 		return input.readUTF();
 	}
