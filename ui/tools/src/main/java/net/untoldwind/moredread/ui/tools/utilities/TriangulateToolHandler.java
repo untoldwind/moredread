@@ -42,7 +42,7 @@ public class TriangulateToolHandler implements IToolHandler {
 	}
 
 	@Override
-	public void aborted() {
+	public void aborted(final IToolController toolController, final Scene scene) {
 	}
 
 	@Override

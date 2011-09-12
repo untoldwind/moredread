@@ -79,8 +79,6 @@ public class SceneAddNodeChangeCommand extends AbstractOperation implements
 		final IComposite parentNode = (IComposite) scene.getNode(parentNodeId);
 		final INode childNode = scene.getNode(childNodeId);
 
-		nodeState = BinaryStateWriter.toByteArray(childNode);
-
 		scene.getSceneChangeHandler().begin(false);
 
 		try {
@@ -111,6 +109,14 @@ public class SceneAddNodeChangeCommand extends AbstractOperation implements
 
 	@Override
 	public void updateCurrentValues(final Scene scene) {
+		final INode node = scene.getNode(childNodeId);
+
+		if (node == null) {
+			throw new RuntimeException("Node " + parentNodeId
+					+ " not found in scene");
+		}
+
+		nodeState = BinaryStateWriter.toByteArray(node);
 	}
 
 	@Override

@@ -30,8 +30,13 @@ public interface IToolHandler {
 	 * Invoked if the tool is aborted by the user.
 	 * 
 	 * This should never be called on 'push' type tools.
+	 * 
+	 * @param toolController
+	 *            The tool controller
+	 * @param scene
+	 *            The current scene
 	 */
-	void aborted();
+	void aborted(IToolController toolController, Scene scene);
 
 	/**
 	 * Get all model controls that should be displayed while the tool is active.
