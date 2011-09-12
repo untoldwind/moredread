@@ -1,5 +1,6 @@
 package net.untoldwind.moredread.model.mesh;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.jme.math.Vector3f;
@@ -9,7 +10,9 @@ public interface IPolygon extends IGeometry<IPolygon> {
 
 	int getVertexCount();
 
-	List<? extends IPoint> getVertices();
+	List<? extends IVertex> getVertices();
+
+	Collection<? extends IEdge> getEdges();
 
 	int[] getPolygonStripCounts();
 

@@ -15,7 +15,8 @@ import net.untoldwind.moredread.model.transform.ITransformation;
 import com.jme.math.Vector3f;
 
 public class Vertex implements IStateHolder, IVertex {
-	private final Mesh<?> owner;
+	private final Mesh<?> ownerMesh;
+	private final Polygon ownerPolygon;
 	private final int index;
 	private Vector3f point;
 	private boolean smooth;
@@ -23,7 +24,17 @@ public class Vertex implements IStateHolder, IVertex {
 	private final Set<AbstractFace<?>> faces;
 
 	Vertex(final Mesh<?> owner, final int index, final Vector3f point) {
-		this.owner = owner;
+		this.ownerMesh = owner;
+		this.ownerPolygon = null;
+		this.index = index;
+		this.point = point;
+		this.edges = new HashSet<AbstractEdge>();
+		this.faces = new HashSet<AbstractFace<?>>();
+	}
+
+	Vertex(final Polygon owner, final int index, final Vector3f point) {
+		this.ownerMesh = null;
+		this.ownerPolygon = owner;
 		this.index = index;
 		this.point = point;
 		this.edges = new HashSet<AbstractEdge>();
@@ -35,8 +46,12 @@ public class Vertex implements IStateHolder, IVertex {
 		return GeometryType.POINT;
 	}
 
-	public Mesh<?> getOwner() {
-		return owner;
+	public Mesh<?> getOwnerMesh() {
+		return ownerMesh;
+	}
+
+	public Polygon getOwnerPolygon() {
+		return ownerPolygon;
 	}
 
 	public boolean isSmooth() {
@@ -61,7 +76,12 @@ public class Vertex implements IStateHolder, IVertex {
 		for (final AbstractFace<?> face : faces) {
 			face.markDirty();
 		}
-		owner.markDirty();
+		if (ownerMesh != null) {
+			ownerMesh.markDirty();
+		}
+		if (ownerPolygon != null) {
+			ownerPolygon.markDirty();
+		}
 	}
 
 	@Override

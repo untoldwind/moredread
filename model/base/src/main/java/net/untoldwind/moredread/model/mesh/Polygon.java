@@ -3,7 +3,11 @@ package net.untoldwind.moredread.model.mesh;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import net.untoldwind.moredread.model.enums.GeometryType;
 import net.untoldwind.moredread.model.state.IStateReader;
@@ -13,29 +17,83 @@ import net.untoldwind.moredread.model.transform.ITransformation;
 import com.jme.math.Vector3f;
 
 public class Polygon implements IPolygon {
-	private List<? extends IPoint> vertices;
+	private List<Vertex> vertices;
 	private int[] stripCounts;
 	private int[] contourCounts;
 	private boolean closed;
+	protected boolean dirty = false;
+	protected Map<EdgeId, AbstractEdge> edges;
 
 	protected Polygon() {
 	}
 
-	public Polygon(final IPoint[] vertices, final int[] stripCounts,
+	public Polygon(final IPoint[] points, final int[] stripCounts,
 			final int[] contourCounts, final boolean closed) {
-		this.vertices = Arrays.asList(vertices);
+		this.vertices = new ArrayList<Vertex>();
+		for (final IPoint point : points) {
+			addVertex(point.getPoint(), false);
+		}
 		this.stripCounts = stripCounts;
 		this.contourCounts = contourCounts;
 		this.closed = closed;
+		this.edges = new HashMap<EdgeId, AbstractEdge>();
+
+		int k = 0;
+		final Iterator<Vertex> it = vertices.iterator();
+		for (int i = 0; i < contourCounts.length; i++) {
+			for (int j = 0; j < contourCounts[i]; j++) {
+				final int stripCount = stripCounts[k++];
+
+				final Vertex first = it.next();
+				Vertex last = first;
+
+				for (int l = 1; l < stripCount; l++) {
+					final Vertex vertex = it.next();
+
+					addEdge(vertex, last);
+
+					last = vertex;
+				}
+				if (closed) {
+					addEdge(last, first);
+				}
+			}
+		}
 	}
 
-	public Polygon(final List<? extends IPoint> vertices,
+	public Polygon(final List<? extends IPoint> points,
 			final int[] stripCounts, final int[] contourCounts,
 			final boolean closed) {
-		this.vertices = vertices;
+		this.vertices = new ArrayList<Vertex>();
+		for (final IPoint point : points) {
+			addVertex(point.getPoint(), false);
+		}
 		this.stripCounts = stripCounts;
 		this.contourCounts = contourCounts;
 		this.closed = closed;
+		this.edges = new HashMap<EdgeId, AbstractEdge>();
+
+		int k = 0;
+		final Iterator<Vertex> it = vertices.iterator();
+		for (int i = 0; i < contourCounts.length; i++) {
+			for (int j = 0; j < contourCounts[i]; j++) {
+				final int stripCount = stripCounts[k++];
+
+				final Vertex first = it.next();
+				Vertex last = first;
+
+				for (int l = 1; l < stripCount; l++) {
+					final Vertex vertex = it.next();
+
+					addEdge(vertex, last);
+
+					last = vertex;
+				}
+				if (closed) {
+					addEdge(last, first);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -49,8 +107,34 @@ public class Polygon implements IPolygon {
 	}
 
 	@Override
-	public List<? extends IPoint> getVertices() {
+	public List<? extends IVertex> getVertices() {
 		return vertices;
+	}
+
+	@Override
+	public Collection<? extends IEdge> getEdges() {
+		return edges.values();
+	}
+
+	public Vertex addVertex(final Vector3f point, final boolean smooth) {
+		final Vertex vertex = new Vertex(this, vertices.size(), point);
+
+		vertices.add(vertex);
+
+		return vertex;
+	}
+
+	protected AbstractEdge addEdge(final Vertex vertex1, final Vertex vertex2) {
+		AbstractEdge edge = edges.get(new EdgeId(vertex1.getIndex(), vertex2
+				.getIndex()));
+
+		if (edge == null) {
+			edge = new AbstractEdge(this, vertex1, vertex2);
+
+			edges.put(edge.getIndex(), edge);
+		}
+
+		return edge;
 	}
 
 	@Override
@@ -104,11 +188,23 @@ public class Polygon implements IPolygon {
 	public IPolygon transform(final ITransformation transformation) {
 		final List<IPoint> new_vertices = new ArrayList<IPoint>(vertices.size());
 
-		for (final IPoint point : vertices) {
-			new_vertices.add(point.transform(transformation));
+		for (final IVertex vertex : vertices) {
+			new_vertices.add(vertex.transform(transformation));
 		}
 
 		return new Polygon(new_vertices, stripCounts, contourCounts, closed);
+	}
+
+	void markDirty() {
+		dirty = true;
+	}
+
+	public boolean clearDirty() {
+		if (dirty) {
+			dirty = false;
+			return true;
+		}
+		return false;
 	}
 
 	@Override
