@@ -121,9 +121,7 @@ public class PolyMesh extends Mesh<PolyFaceId, PolyFace> {
 					vertexStripIndices[i][j] = it.next().getIndex();
 				}
 			}
-			newMesh.addFace(face.getVertex(0).getIndex(), face.getVertex(1)
-					.getIndex(), face.getVertex(2).getIndex(), face
-					.getVertex(3).getIndex());
+			newMesh.addFace(vertexStripIndices);
 		}
 		return newMesh;
 	}

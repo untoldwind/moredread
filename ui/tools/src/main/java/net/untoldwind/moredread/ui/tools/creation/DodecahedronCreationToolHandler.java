@@ -7,7 +7,7 @@ import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 
 import com.jme.math.Vector3f;
 
-public class DodecahedronCreateToolHandler extends
+public class DodecahedronCreationToolHandler extends
 		AbstractCenterSizeCreationToolHandler {
 	@Override
 	protected IToolAdapter createToolAdapter(final Scene scene) {

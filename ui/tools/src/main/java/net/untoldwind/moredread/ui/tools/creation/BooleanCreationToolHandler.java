@@ -1,42 +1,39 @@
-package net.untoldwind.moredread.ui.tools.utilities;
+package net.untoldwind.moredread.ui.tools.creation;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
-import net.untoldwind.moredread.model.mesh.Mesh;
+import net.untoldwind.moredread.model.generator.BooleanGenerator;
+import net.untoldwind.moredread.model.op.IBooleanOperation;
+import net.untoldwind.moredread.model.scene.GeneratorNode;
 import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.ISceneOperation;
-import net.untoldwind.moredread.model.scene.MeshNode;
 import net.untoldwind.moredread.model.scene.Scene;
-import net.untoldwind.moredread.model.scene.SceneSelection;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.tools.IToolController;
 import net.untoldwind.moredread.ui.tools.spi.IToolHandler;
 
-public class TriangulateToolHandler implements IToolHandler {
+public class BooleanCreationToolHandler implements IToolHandler {
+
 	@Override
 	public void activated(final IToolController toolController,
 			final Scene scene) {
-		final SceneSelection sceneSelection = scene.getSceneSelection();
+		final Set<INode> nodes = scene.getSceneSelection().getSelectedNodes();
 
-		final List<MeshNode> meshNodes = new ArrayList<MeshNode>();
-
-		for (final INode node : sceneSelection.getSelectedNodes()) {
-			if (node instanceof MeshNode) {
-				meshNodes.add((MeshNode) node);
-			}
+		if (nodes.size() != 2) {
+			return;
 		}
 
 		scene.undoableChange(new ISceneOperation() {
 			@Override
 			public void perform(final Scene scene) {
-				for (final MeshNode meshNode : meshNodes) {
-
-					final Mesh<?, ?> mesh = meshNode.getEditableGeometry();
-
-					meshNode.setMesh(mesh.toTriangleMesh());
+				final GeneratorNode booleanNode = new GeneratorNode(scene,
+						new BooleanGenerator(
+								IBooleanOperation.BoolOperation.DIFFERENCE));
+				for (final INode node : nodes) {
+					node.setParent(booleanNode);
 				}
 			}
 		});

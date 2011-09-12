@@ -1,7 +1,7 @@
 package net.untoldwind.moredread.ui.views;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -58,7 +58,7 @@ public class ModelTreeView extends ViewPart implements
 
 						if (selection != null
 								&& selection instanceof IStructuredSelection) {
-							final Set<INode> selectedNodes = new HashSet<INode>();
+							final Set<INode> selectedNodes = new LinkedHashSet<INode>();
 
 							selectedNodes
 									.addAll(((IStructuredSelection) selection)

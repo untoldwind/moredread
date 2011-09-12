@@ -9,6 +9,7 @@ import net.untoldwind.moredread.model.op.IUnaryOperation;
 import net.untoldwind.moredread.model.op.UnaryOperationFactory;
 import net.untoldwind.moredread.model.op.UnaryOperationFactory.Implementation;
 import net.untoldwind.moredread.model.scene.INode;
+import net.untoldwind.moredread.model.scene.ISceneOperation;
 import net.untoldwind.moredread.model.scene.MeshNode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.scene.SceneSelection;
@@ -32,20 +33,19 @@ public class MergeCoplanarToolHandler implements IToolHandler {
 			}
 		}
 
-		scene.getSceneChangeHandler().begin(true);
+		scene.undoableChange(new ISceneOperation() {
+			@Override
+			public void perform(final Scene scene) {
+				final IUnaryOperation mergeOperation = UnaryOperationFactory
+						.createOperation(Implementation.COPLANAR_MERGE);
 
-		try {
-			final IUnaryOperation mergeOperation = UnaryOperationFactory
-					.createOperation(Implementation.COPLANAR_MERGE);
+				for (final MeshNode meshNode : meshNodes) {
+					final Mesh<?, ?> mesh = meshNode.getEditableGeometry();
 
-			for (final MeshNode meshNode : meshNodes) {
-				final Mesh<?, ?> mesh = meshNode.getEditableGeometry();
-
-				meshNode.setMesh(mergeOperation.perform(mesh));
+					meshNode.setMesh(mergeOperation.perform(mesh));
+				}
 			}
-		} finally {
-			scene.getSceneChangeHandler().commit();
-		}
+		});
 	}
 
 	@Override
