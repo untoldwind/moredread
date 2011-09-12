@@ -3,6 +3,7 @@ package net.untoldwind.moredread.model.state;
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -95,7 +96,10 @@ public class XMLStateReader implements IStateReader {
 		try {
 			final XMLStateReader reader = new XMLStateReader(document,
 					objectElement);
-			final T instance = (T) Class.forName(className).newInstance();
+			final Class<T> clazz = (Class<T>) Class.forName(className);
+			final Constructor<T> constructor = clazz.getDeclaredConstructor();
+			constructor.setAccessible(true);
+			final T instance = constructor.newInstance();
 			instance.readState(reader);
 
 			return instance;
@@ -113,8 +117,10 @@ public class XMLStateReader implements IStateReader {
 		try {
 			final XMLStateReader reader = new XMLStateReader(document,
 					objectElement);
-			final T instance = creator.createInstance((Class<T>) Class
-					.forName(className));
+			final Class<T> clazz = (Class<T>) Class.forName(className);
+			final Constructor<T> constructor = clazz.getDeclaredConstructor();
+			constructor.setAccessible(true);
+			final T instance = constructor.newInstance();
 			instance.readState(reader);
 
 			return instance;
@@ -137,7 +143,11 @@ public class XMLStateReader implements IStateReader {
 					Class.forName(className), len);
 
 			for (int i = 0; i < len; i++) {
-				final T instance = (T) Class.forName(className).newInstance();
+				final Class<T> clazz = (Class<T>) Class.forName(className);
+				final Constructor<T> constructor = clazz
+						.getDeclaredConstructor();
+				constructor.setAccessible(true);
+				final T instance = constructor.newInstance();
 				instance.readState(reader);
 				result[i] = instance;
 			}
@@ -160,7 +170,11 @@ public class XMLStateReader implements IStateReader {
 			final List<T> result = new ArrayList<T>();
 
 			for (int i = 0; i < len; i++) {
-				final T instance = (T) Class.forName(className).newInstance();
+				final Class<T> clazz = (Class<T>) Class.forName(className);
+				final Constructor<T> constructor = clazz
+						.getDeclaredConstructor();
+				constructor.setAccessible(true);
+				final T instance = constructor.newInstance();
 				instance.readState(reader);
 				result.add(instance);
 			}

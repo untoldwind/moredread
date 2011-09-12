@@ -1,7 +1,8 @@
 package net.untoldwind.moredread.model.scene.change;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import net.untoldwind.moredread.model.scene.INode;
@@ -17,7 +18,7 @@ import org.eclipse.core.runtime.SubProgressMonitor;
 
 public class CompositeChangeCommand extends AbstractOperation implements
 		ISceneChangeCommand {
-	private final List<ISceneChangeCommand> commands = new ArrayList<ISceneChangeCommand>();
+	private final LinkedList<ISceneChangeCommand> commands = new LinkedList<ISceneChangeCommand>();
 
 	public CompositeChangeCommand(final Collection<ISceneChangeCommand> commands) {
 		super("Multiple changes");
@@ -86,8 +87,9 @@ public class CompositeChangeCommand extends AbstractOperation implements
 		try {
 			monitor.beginTask("Composite", commands.size());
 
-			for (final ISceneChangeCommand cmd : commands) {
-				cmd.undo(new SubProgressMonitor(monitor, 1), info);
+			for (final Iterator<ISceneChangeCommand> it = commands
+					.descendingIterator(); it.hasNext();) {
+				it.next().undo(new SubProgressMonitor(monitor, 1), info);
 			}
 		} finally {
 			monitor.done();

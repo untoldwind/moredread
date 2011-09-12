@@ -136,7 +136,7 @@ public class Group extends AbstractSpatialComposite<AbstractSpatialNode> {
 							.getDeclaredConstructor(AbstractSpatialComposite.class);
 
 					constructor.setAccessible(true);
-					return constructor.newInstance(this);
+					return constructor.newInstance(Group.this);
 				} catch (final Exception e) {
 					throw new RuntimeException(e);
 				}
