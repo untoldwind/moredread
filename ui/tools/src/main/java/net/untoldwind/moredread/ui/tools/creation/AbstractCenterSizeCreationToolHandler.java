@@ -29,7 +29,8 @@ public abstract class AbstractCenterSizeCreationToolHandler implements
 	}
 
 	@Override
-	public void aborted() {
+	public void aborted(final IToolController toolController, final Scene scene) {
+		scene.getSceneChangeHandler().rollback();
 	}
 
 	@Override
@@ -73,10 +74,10 @@ public abstract class AbstractCenterSizeCreationToolHandler implements
 					generator = createGenerator(point);
 					node = new GeneratorNode(scene, generator);
 				} finally {
-					scene.getSceneChangeHandler().commit();
+					scene.getSceneChangeHandler().savepoint();
 				}
 			} else {
-				scene.getSceneChangeHandler().begin(false);
+				scene.getSceneChangeHandler().begin(true);
 
 				try {
 					generator
@@ -101,14 +102,14 @@ public abstract class AbstractCenterSizeCreationToolHandler implements
 			modelControl.updatePositions();
 
 			if (node != null) {
-				scene.getSceneChangeHandler().begin(false);
+				scene.getSceneChangeHandler().begin(true);
 
 				try {
 					generator
 							.setSize(maxDistance(generator.getCenter(), point));
 					node.regenerate();
 				} finally {
-					scene.getSceneChangeHandler().commit();
+					scene.getSceneChangeHandler().savepoint();
 				}
 			}
 			return true;

@@ -10,7 +10,7 @@ public class AbortToolHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
-		UIToolsPlugin.getDefault().getToolController().getActiveTool().abort();
+		UIToolsPlugin.getDefault().getToolController().abortActiveTool();
 
 		return null;
 	}

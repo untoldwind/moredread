@@ -5,16 +5,20 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.untoldwind.moredread.model.ModelPlugin;
 import net.untoldwind.moredread.model.scene.change.CompositeChangeCommand;
 import net.untoldwind.moredread.model.scene.change.ISceneChangeCommand;
 import net.untoldwind.moredread.model.scene.event.SceneChangeEvent;
 
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.IOperationHistory;
 import org.eclipse.core.commands.operations.IUndoContext;
 import org.eclipse.core.commands.operations.OperationHistoryFactory;
 import org.eclipse.core.commands.operations.UndoContext;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.NullProgressMonitor;
 
-public class SceneChangeHandler {
+public class SceneChangeHandler implements IAdaptable {
 	private final Scene scene;
 	private final IUndoContext undoContext = new UndoContext();
 
@@ -91,6 +95,33 @@ public class SceneChangeHandler {
 				affectedNodes));
 	}
 
+	public synchronized void rollback() {
+		if (stage.isEmpty()) {
+			return;
+		} else if (lockOwner != null && lockOwner != Thread.currentThread()) {
+			throw new RuntimeException(
+					"Scene is manipulated by anowher thread: " + lockOwner);
+		}
+
+		lockOwner = null;
+		final List<INode> affectedNodes = new ArrayList<INode>();
+		for (final ISceneChangeCommand cmd : stage.values()) {
+			try {
+				cmd.undo(new NullProgressMonitor(), this);
+			} catch (final ExecutionException e) {
+				ModelPlugin.getDefault().log(e);
+			}
+			cmd.collectAffectedNodes(scene, affectedNodes);
+		}
+		stage = null;
+
+		for (final INode node : affectedNodes) {
+			node.markDirty();
+		}
+		scene.fireSceneGeometryChangeEvent(new SceneChangeEvent(scene,
+				affectedNodes));
+	}
+
 	public boolean isChangeAllowed() {
 		return lockOwner == Thread.currentThread();
 	}
@@ -121,4 +152,13 @@ public class SceneChangeHandler {
 	private IOperationHistory getOperationHistory() {
 		return OperationHistoryFactory.getOperationHistory();
 	}
+
+	@Override
+	public Object getAdapter(@SuppressWarnings("rawtypes") final Class adapter) {
+		if (Scene.class.equals(adapter)) {
+			return scene;
+		}
+		return null;
+	}
+
 }

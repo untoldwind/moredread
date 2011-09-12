@@ -114,8 +114,13 @@ public class ToolController implements IToolController,
 	}
 
 	@Override
+	public void abortActiveTool() {
+		getActiveTool().abort(sceneHolder.getScene());
+	}
+
+	@Override
 	public void sceneSelectionModeChanged(final SceneSelectionModeEvent event) {
-		getActiveTool().abort();
+		getActiveTool().abort(sceneHolder.getScene());
 	}
 
 	private IToolDescriptor getDefaultTool() {
