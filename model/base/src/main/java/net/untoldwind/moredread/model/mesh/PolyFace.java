@@ -138,7 +138,7 @@ public class PolyFace extends AbstractFace<PolyMesh> {
 			new_vertices.add(point.transform(transformation));
 		}
 
-		return new Polygon(new_vertices, null, getPolygonStripCounts(),
+		return new Polygon(new_vertices, getPolygonStripCounts(),
 				getPolygonContourCounts(), true);
 	}
 

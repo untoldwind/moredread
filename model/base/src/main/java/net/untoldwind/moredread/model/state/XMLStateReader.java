@@ -38,6 +38,21 @@ public class XMLStateReader implements IStateReader {
 	}
 
 	@Override
+	public int[] readIntArray() throws IOException {
+		final Element arrayElement = childIterator.next();
+		final int size = Integer.parseInt(arrayElement.attributeValue("size"));
+		@SuppressWarnings("unchecked")
+		final List<Element> children = arrayElement.elements();
+		final int[] result = new int[size];
+
+		for (int i = 0; i < size; i++) {
+			result[i] = Integer.parseInt(children.get(i).getTextTrim());
+		}
+
+		return result;
+	}
+
+	@Override
 	public float readFloat() throws IOException {
 		return Float.parseFloat(childIterator.next().getTextTrim());
 	}

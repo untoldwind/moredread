@@ -13,14 +13,16 @@ import net.untoldwind.moredread.model.transform.ITransformation;
 import com.jme.math.Vector3f;
 
 public class Polygon implements IPolygon {
-	private final List<? extends IPoint> vertices;
-	private final int[] stripCounts;
-	private final int[] contourCounts;
-	private final boolean closed;
+	private List<? extends IPoint> vertices;
+	private int[] stripCounts;
+	private int[] contourCounts;
+	private boolean closed;
 
-	public Polygon(final IPoint[] vertices, final Vector3f[] normals,
-			final int[] stripCounts, final int[] contourCounts,
-			final boolean closed) {
+	protected Polygon() {
+	}
+
+	public Polygon(final IPoint[] vertices, final int[] stripCounts,
+			final int[] contourCounts, final boolean closed) {
 		this.vertices = Arrays.asList(vertices);
 		this.stripCounts = stripCounts;
 		this.contourCounts = contourCounts;
@@ -28,8 +30,8 @@ public class Polygon implements IPolygon {
 	}
 
 	public Polygon(final List<? extends IPoint> vertices,
-			final Vector3f[] normals, final int[] stripCounts,
-			final int[] contourCounts, final boolean closed) {
+			final int[] stripCounts, final int[] contourCounts,
+			final boolean closed) {
 		this.vertices = vertices;
 		this.stripCounts = stripCounts;
 		this.contourCounts = contourCounts;
@@ -106,19 +108,31 @@ public class Polygon implements IPolygon {
 			new_vertices.add(point.transform(transformation));
 		}
 
-		return new Polygon(new_vertices, null, stripCounts, contourCounts,
-				closed);
+		return new Polygon(new_vertices, stripCounts, contourCounts, closed);
 	}
 
 	@Override
 	public void readState(final IStateReader reader) throws IOException {
-		// TODO Auto-generated method stub
+		final List<IPoint> vertices = new ArrayList<IPoint>();
+		final int numVerices = reader.readInt();
 
+		for (int i = 0; i < numVerices; i++) {
+			vertices.add(new Point(reader.readVector3f()));
+		}
+		stripCounts = reader.readIntArray();
+		contourCounts = reader.readIntArray();
+		closed = reader.readBoolean();
 	}
 
 	@Override
 	public void writeState(final IStateWriter writer) throws IOException {
-		// TODO Auto-generated method stub
+		writer.writeInt("numVerices", vertices.size());
+		for (final IPoint vertex : vertices) {
+			writer.writeVector3f("vertex", vertex.getPoint());
+		}
+		writer.writeIntArray("stripCounts", stripCounts);
+		writer.writeIntArray("contourCounts", contourCounts);
+		writer.writeBoolean("cloded", closed);
 	}
 
 	@Override
