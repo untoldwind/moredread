@@ -58,6 +58,18 @@ public class VertexSelectionToolHandler implements IToolHandler {
 										meshNode, vertex.getIndex())));
 					}
 				}
+			} else if (node instanceof IPolygonNode) {
+				final IPolygonNode polygonNode = (IPolygonNode) node;
+				final IPolygon polygon = polygonNode.getGeometry();
+
+				if (polygon != null) {
+					for (final IVertex vertex : polygon.getVertices()) {
+						controls.add(new VertexSelectionModelControl(
+								polygonNode, vertex.getIndex(),
+								new SelectToolAdapter(scene, polygonNode,
+										vertex.getIndex())));
+					}
+				}
 			}
 		}
 		if (!scene.getSceneSelection().getSelectedVertices().isEmpty()) {
@@ -70,11 +82,11 @@ public class VertexSelectionToolHandler implements IToolHandler {
 
 	private static class SelectToolAdapter implements IToolAdapter {
 		private final Scene scene;
-		private final IMeshNode node;
+		private final IGeometryNode<?, ?> node;
 		private final int vertexIndex;
 
-		private SelectToolAdapter(final Scene scene, final IMeshNode node,
-				final int vertexIndex) {
+		private SelectToolAdapter(final Scene scene,
+				final IGeometryNode<?, ?> node, final int vertexIndex) {
 			this.scene = scene;
 			this.node = node;
 			this.vertexIndex = vertexIndex;

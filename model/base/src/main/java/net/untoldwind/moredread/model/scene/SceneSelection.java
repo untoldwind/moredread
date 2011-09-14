@@ -196,7 +196,8 @@ public class SceneSelection implements ISceneSelection {
 				selectedNodes));
 	}
 
-	public void setSelectedVertex(final IMeshNode node, final int vertexIndex) {
+	public void setSelectedVertex(final IGeometryNode<?, ?> node,
+			final int vertexIndex) {
 		if (!selectedNodes.contains(node)) {
 			return;
 		}
@@ -217,7 +218,8 @@ public class SceneSelection implements ISceneSelection {
 		}
 	}
 
-	public void switchSelectedVertex(final IMeshNode node, final int vertexIndex) {
+	public void switchSelectedVertex(final IGeometryNode<?, ?> node,
+			final int vertexIndex) {
 		if (!selectedNodes.contains(node)) {
 			return;
 		}

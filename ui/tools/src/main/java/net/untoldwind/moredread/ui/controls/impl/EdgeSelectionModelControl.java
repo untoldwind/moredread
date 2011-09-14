@@ -7,6 +7,7 @@ import net.untoldwind.moredread.model.mesh.EdgeId;
 import net.untoldwind.moredread.model.mesh.IEdge;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IPolygon;
+import net.untoldwind.moredread.model.scene.IGeometryNode;
 import net.untoldwind.moredread.model.scene.IMeshNode;
 import net.untoldwind.moredread.model.scene.IPolygonNode;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
@@ -28,27 +29,15 @@ public class EdgeSelectionModelControl extends Line implements IModelControl {
 
 	private final IToolAdapter toolAdapter;
 
-	private final IMeshNode meshNode;
-	private final IPolygonNode polygonNode;
+	private final IGeometryNode<?, ?> node;
 	private final EdgeId edgeIndex;
 
 	private transient LineControlHandle lineControlHandle;
 
-	public EdgeSelectionModelControl(final IMeshNode node,
+	public EdgeSelectionModelControl(final IGeometryNode<?, ?> node,
 			final EdgeId edgeIndex, final IToolAdapter toolAdapter) {
 		this.toolAdapter = toolAdapter;
-		this.meshNode = node;
-		this.polygonNode = null;
-		this.edgeIndex = edgeIndex;
-
-		initialize();
-	}
-
-	public EdgeSelectionModelControl(final IPolygonNode node,
-			final EdgeId edgeIndex, final IToolAdapter toolAdapter) {
-		this.toolAdapter = toolAdapter;
-		this.meshNode = null;
-		this.polygonNode = node;
+		this.node = node;
 		this.edgeIndex = edgeIndex;
 
 		initialize();
@@ -109,23 +98,19 @@ public class EdgeSelectionModelControl extends Line implements IModelControl {
 	}
 
 	void updateGeometry() {
-		Vector3f v1, v2;
-		if (meshNode != null) {
-			final IMesh mesh = meshNode.getGeometry();
-			final IEdge edge = mesh.getEdge(edgeIndex);
-			v1 = meshNode.localToWorld(edge.getVertex1().getPoint(),
-					new Vector3f());
-			v2 = meshNode.localToWorld(edge.getVertex2().getPoint(),
-					new Vector3f());
-		} else {
-			final IPolygon polygon = polygonNode.getGeometry();
-			final IEdge edge = polygon.getEdge(edgeIndex);
-			v1 = polygonNode.localToWorld(edge.getVertex1().getPoint(),
-					new Vector3f());
-			v2 = polygonNode.localToWorld(edge.getVertex2().getPoint(),
-					new Vector3f());
+		final IEdge edge;
 
+		if (node instanceof IMeshNode) {
+			final IMesh mesh = ((IMeshNode) node).getGeometry();
+			edge = mesh.getEdge(edgeIndex);
+		} else {
+			final IPolygon polygon = ((IPolygonNode) node).getGeometry();
+			edge = polygon.getEdge(edgeIndex);
 		}
+		final Vector3f v1 = node.localToWorld(edge.getVertex1().getPoint(),
+				new Vector3f());
+		final Vector3f v2 = node.localToWorld(edge.getVertex2().getPoint(),
+				new Vector3f());
 		final FloatBuffer vertexBuffer = BufferUtils.createVector3Buffer(2);
 
 		vertexBuffer.put(v1.x);
@@ -140,23 +125,19 @@ public class EdgeSelectionModelControl extends Line implements IModelControl {
 	}
 
 	void updateHandle(final Camera camera) {
-		Vector3f v1, v2;
-		if (meshNode != null) {
-			final IMesh mesh = meshNode.getGeometry();
-			final IEdge edge = mesh.getEdge(edgeIndex);
-			v1 = meshNode.localToWorld(edge.getVertex1().getPoint(),
-					new Vector3f());
-			v2 = meshNode.localToWorld(edge.getVertex2().getPoint(),
-					new Vector3f());
-		} else {
-			final IPolygon polygon = polygonNode.getGeometry();
-			final IEdge edge = polygon.getEdge(edgeIndex);
-			v1 = polygonNode.localToWorld(edge.getVertex1().getPoint(),
-					new Vector3f());
-			v2 = polygonNode.localToWorld(edge.getVertex2().getPoint(),
-					new Vector3f());
+		final IEdge edge;
 
+		if (node instanceof IMeshNode) {
+			final IMesh mesh = ((IMeshNode) node).getGeometry();
+			edge = mesh.getEdge(edgeIndex);
+		} else {
+			final IPolygon polygon = ((IPolygonNode) node).getGeometry();
+			edge = polygon.getEdge(edgeIndex);
 		}
+		final Vector3f v1 = node.localToWorld(edge.getVertex1().getPoint(),
+				new Vector3f());
+		final Vector3f v2 = node.localToWorld(edge.getVertex2().getPoint(),
+				new Vector3f());
 
 		if (lineControlHandle == null) {
 			lineControlHandle = new LineControlHandle(this, camera, v1, v2);
