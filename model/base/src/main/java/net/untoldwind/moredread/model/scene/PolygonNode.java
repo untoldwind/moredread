@@ -6,6 +6,7 @@ import java.util.List;
 import net.untoldwind.moredread.model.mesh.IPolygon;
 import net.untoldwind.moredread.model.mesh.Polygon;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
+import net.untoldwind.moredread.model.scene.change.NodeGeometryChangedCommand;
 import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 
@@ -51,7 +52,18 @@ public class PolygonNode extends ObjectNode implements IPolygonNode {
 
 	@Override
 	public Polygon getEditableGeometry() {
+		scene.getSceneChangeHandler().registerCommand(
+				new NodeGeometryChangedCommand(this));
+
 		return polygon;
+	}
+
+	@Override
+	public void setGeometry(final Polygon polygon) {
+		scene.getSceneChangeHandler().registerCommand(
+				new NodeGeometryChangedCommand(this));
+
+		this.polygon = polygon;
 	}
 
 	@Override

@@ -36,7 +36,7 @@ public class TriangulateToolHandler implements IToolHandler {
 
 					final Mesh<?, ?> mesh = meshNode.getEditableGeometry();
 
-					meshNode.setMesh(mesh.toTriangleMesh());
+					meshNode.setGeometry(mesh.toTriangleMesh());
 				}
 			}
 		});

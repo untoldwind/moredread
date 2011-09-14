@@ -6,7 +6,10 @@ import java.util.List;
 import net.untoldwind.moredread.model.mesh.EdgeId;
 import net.untoldwind.moredread.model.mesh.IEdge;
 import net.untoldwind.moredread.model.mesh.IMesh;
+import net.untoldwind.moredread.model.mesh.IPolygon;
+import net.untoldwind.moredread.model.scene.IGeometryNode;
 import net.untoldwind.moredread.model.scene.IMeshNode;
+import net.untoldwind.moredread.model.scene.IPolygonNode;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
@@ -26,17 +29,21 @@ public class EdgeSelectionModelControl extends Line implements IModelControl {
 
 	private final IToolAdapter toolAdapter;
 
-	private final IMeshNode node;
+	private final IGeometryNode<?, ?> node;
 	private final EdgeId edgeIndex;
 
 	private transient LineControlHandle lineControlHandle;
 
-	public EdgeSelectionModelControl(final IMeshNode node,
+	public EdgeSelectionModelControl(final IGeometryNode<?, ?> node,
 			final EdgeId edgeIndex, final IToolAdapter toolAdapter) {
 		this.toolAdapter = toolAdapter;
 		this.node = node;
 		this.edgeIndex = edgeIndex;
 
+		initialize();
+	}
+
+	private void initialize() {
 		updateGeometry();
 
 		final BlendState blendState = DisplaySystem.getDisplaySystem()
@@ -91,13 +98,20 @@ public class EdgeSelectionModelControl extends Line implements IModelControl {
 	}
 
 	void updateGeometry() {
-		final IMesh mesh = node.getGeometry();
-		final IEdge edge = mesh.getEdge(edgeIndex);
-		final FloatBuffer vertexBuffer = BufferUtils.createVector3Buffer(2);
+		final IEdge edge;
+
+		if (node instanceof IMeshNode) {
+			final IMesh mesh = ((IMeshNode) node).getGeometry();
+			edge = mesh.getEdge(edgeIndex);
+		} else {
+			final IPolygon polygon = ((IPolygonNode) node).getGeometry();
+			edge = polygon.getEdge(edgeIndex);
+		}
 		final Vector3f v1 = node.localToWorld(edge.getVertex1().getPoint(),
 				new Vector3f());
 		final Vector3f v2 = node.localToWorld(edge.getVertex2().getPoint(),
 				new Vector3f());
+		final FloatBuffer vertexBuffer = BufferUtils.createVector3Buffer(2);
 
 		vertexBuffer.put(v1.x);
 		vertexBuffer.put(v1.y);
@@ -111,8 +125,15 @@ public class EdgeSelectionModelControl extends Line implements IModelControl {
 	}
 
 	void updateHandle(final Camera camera) {
-		final IMesh mesh = node.getGeometry();
-		final IEdge edge = mesh.getEdge(edgeIndex);
+		final IEdge edge;
+
+		if (node instanceof IMeshNode) {
+			final IMesh mesh = ((IMeshNode) node).getGeometry();
+			edge = mesh.getEdge(edgeIndex);
+		} else {
+			final IPolygon polygon = ((IPolygonNode) node).getGeometry();
+			edge = polygon.getEdge(edgeIndex);
+		}
 		final Vector3f v1 = node.localToWorld(edge.getVertex1().getPoint(),
 				new Vector3f());
 		final Vector3f v2 = node.localToWorld(edge.getVertex2().getPoint(),

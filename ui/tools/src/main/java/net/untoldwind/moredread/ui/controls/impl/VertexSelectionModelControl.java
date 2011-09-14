@@ -5,7 +5,10 @@ import java.util.List;
 
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IPoint;
+import net.untoldwind.moredread.model.mesh.IPolygon;
+import net.untoldwind.moredread.model.scene.IGeometryNode;
 import net.untoldwind.moredread.model.scene.IMeshNode;
+import net.untoldwind.moredread.model.scene.IPolygonNode;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
@@ -26,12 +29,12 @@ public class VertexSelectionModelControl extends Point implements IModelControl 
 
 	private final IToolAdapter toolAdapter;
 
-	private final IMeshNode node;
+	private final IGeometryNode<?, ?> node;
 	private final int vertexIndex;
 
 	private transient PointControlHandle pointControlHandle;
 
-	public VertexSelectionModelControl(final IMeshNode node,
+	public VertexSelectionModelControl(final IGeometryNode<?, ?> node,
 			final int vertexIndex, final IToolAdapter toolAdapter) {
 		this.toolAdapter = toolAdapter;
 		this.node = node;
@@ -91,8 +94,14 @@ public class VertexSelectionModelControl extends Point implements IModelControl 
 	}
 
 	void updateGeometry() {
-		final IMesh mesh = node.getGeometry();
-		final IPoint vertex = mesh.getVertex(vertexIndex);
+		IPoint vertex;
+		if (node instanceof IMeshNode) {
+			final IMesh mesh = ((IMeshNode) node).getGeometry();
+			vertex = mesh.getVertex(vertexIndex);
+		} else {
+			final IPolygon polygon = ((IPolygonNode) node).getGeometry();
+			vertex = polygon.getVertex(vertexIndex);
+		}
 		final FloatBuffer vertexBuffer = BufferUtils.createVector3Buffer(1);
 		final Vector3f v = node.localToWorld(vertex.getPoint(), new Vector3f());
 
@@ -105,8 +114,14 @@ public class VertexSelectionModelControl extends Point implements IModelControl 
 	}
 
 	void updateHandle(final Camera camera) {
-		final IMesh mesh = node.getGeometry();
-		final IPoint vertex = mesh.getVertex(vertexIndex);
+		IPoint vertex;
+		if (node instanceof IMeshNode) {
+			final IMesh mesh = ((IMeshNode) node).getGeometry();
+			vertex = mesh.getVertex(vertexIndex);
+		} else {
+			final IPolygon polygon = ((IPolygonNode) node).getGeometry();
+			vertex = polygon.getVertex(vertexIndex);
+		}
 		final Vector3f v = node.localToWorld(vertex.getPoint(), new Vector3f());
 
 		if (pointControlHandle == null) {

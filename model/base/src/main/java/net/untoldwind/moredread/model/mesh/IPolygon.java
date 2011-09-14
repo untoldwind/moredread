@@ -10,6 +10,8 @@ public interface IPolygon extends IGeometry<IPolygon> {
 
 	int getVertexCount();
 
+	IVertex getVertex(final int vertexIndes);
+
 	List<? extends IVertex> getVertices();
 
 	Collection<? extends IEdge> getEdges();

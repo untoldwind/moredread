@@ -11,10 +11,14 @@ import net.untoldwind.moredread.model.mesh.Edge;
 import net.untoldwind.moredread.model.mesh.EdgeId;
 import net.untoldwind.moredread.model.mesh.IEdge;
 import net.untoldwind.moredread.model.mesh.IMesh;
+import net.untoldwind.moredread.model.mesh.IPolygon;
 import net.untoldwind.moredread.model.mesh.Mesh;
+import net.untoldwind.moredread.model.mesh.Polygon;
 import net.untoldwind.moredread.model.mesh.Vertex;
+import net.untoldwind.moredread.model.scene.IGeometryNode;
 import net.untoldwind.moredread.model.scene.IMeshNode;
 import net.untoldwind.moredread.model.scene.INode;
+import net.untoldwind.moredread.model.scene.IPolygonNode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.scene.SceneSelection.EdgeSelection;
 import net.untoldwind.moredread.model.scene.SceneSelection.VertexSelection;
@@ -58,6 +62,17 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 										meshNode, edge.getIndex())));
 					}
 				}
+			} else if (node instanceof IPolygonNode) {
+				final IPolygonNode polygonNode = (IPolygonNode) node;
+				final IPolygon polygon = polygonNode.getGeometry();
+
+				if (polygon != null) {
+					for (final IEdge edge : polygon.getEdges()) {
+						controls.add(new EdgeSelectionModelControl(polygonNode,
+								edge.getIndex(), new SelectToolAdapter(scene,
+										polygonNode, edge.getIndex())));
+					}
+				}
 			}
 		}
 		if (!scene.getSceneSelection().getSelectedEdges().isEmpty()) {
@@ -69,11 +84,11 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 
 	private static class SelectToolAdapter implements IToolAdapter {
 		private final Scene scene;
-		private final IMeshNode node;
+		private final IGeometryNode<?, ?> node;
 		private final EdgeId edgeIndex;
 
-		private SelectToolAdapter(final Scene scene, final IMeshNode node,
-				final EdgeId edgeIndex) {
+		private SelectToolAdapter(final Scene scene,
+				final IGeometryNode<?, ?> node, final EdgeId edgeIndex) {
 			this.scene = scene;
 			this.node = node;
 			this.edgeIndex = edgeIndex;
@@ -140,9 +155,16 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 
 			for (final EdgeSelection edgeSelection : scene.getSceneSelection()
 					.getSelectedEdges()) {
-				final IMeshNode node = edgeSelection.getNode();
-				final IMesh mesh = node.getGeometry();
-				final IEdge edge = mesh.getEdge(edgeSelection.getEdgeIndex());
+				final IGeometryNode<?, ?> node = edgeSelection.getNode();
+				IEdge edge;
+
+				if (node instanceof IMeshNode) {
+					final IMesh mesh = ((IMeshNode) node).getGeometry();
+					edge = mesh.getEdge(edgeSelection.getEdgeIndex());
+				} else {
+					final IPolygon mesh = ((IPolygonNode) node).getGeometry();
+					edge = mesh.getEdge(edgeSelection.getEdgeIndex());
+				}
 
 				center.addLocal(node.localToWorld(edge.getVertex1().getPoint(),
 						new Vector3f()));
@@ -209,9 +231,18 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 
 			for (final EdgeSelection edgeSelection : scene.getSceneSelection()
 					.getSelectedEdges()) {
-				final IMeshNode node = edgeSelection.getNode();
-				final Mesh<?, ?> mesh = node.getEditableGeometry();
-				final Edge edge = mesh.getEdge(edgeSelection.getEdgeIndex());
+				final IGeometryNode<?, ?> node = edgeSelection.getNode();
+				Edge edge;
+
+				if (node instanceof IMeshNode) {
+					final Mesh<?, ?> mesh = ((IMeshNode) node)
+							.getEditableGeometry();
+					edge = mesh.getEdge(edgeSelection.getEdgeIndex());
+				} else {
+					final Polygon polygon = ((IPolygonNode) node)
+							.getEditableGeometry();
+					edge = polygon.getEdge(edgeSelection.getEdgeIndex());
+				}
 
 				final Vertex vertex1 = edge.getVertex1();
 				final VertexSelection vertex1Id = new VertexSelection(node,

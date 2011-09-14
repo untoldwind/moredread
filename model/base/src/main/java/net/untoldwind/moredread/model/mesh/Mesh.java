@@ -48,6 +48,7 @@ public abstract class Mesh<FaceK extends FaceId, FaceT extends Face<?, ?>>
 		return vertices;
 	}
 
+	@Override
 	public Vertex getVertex(final int vertexIndes) {
 		if (vertexIndes < 0 || vertexIndes >= vertices.size()) {
 			return null;

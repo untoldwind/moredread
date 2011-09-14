@@ -12,5 +12,7 @@ public interface IGeometryNode<RO_GEOMETRY extends IGeometry<?>, RW_GEOMETRY ext
 
 	RW_GEOMETRY getEditableGeometry();
 
+	void setGeometry(RW_GEOMETRY geometry);
+
 	ColorRGBA getModelColor(final float alpha);
 }

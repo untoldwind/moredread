@@ -157,7 +157,8 @@ public class SceneSelection implements ISceneSelection {
 				selectedNodes));
 	}
 
-	public void setSelectedEdge(final IMeshNode node, final EdgeId edgeIndex) {
+	public void setSelectedEdge(final IGeometryNode<?, ?> node,
+			final EdgeId edgeIndex) {
 		if (!selectedNodes.contains(node)) {
 			return;
 		}
@@ -177,7 +178,8 @@ public class SceneSelection implements ISceneSelection {
 		}
 	}
 
-	public void switchSelectedEdge(final IMeshNode node, final EdgeId edgeIndex) {
+	public void switchSelectedEdge(final IGeometryNode<?, ?> node,
+			final EdgeId edgeIndex) {
 		if (!selectedNodes.contains(node)) {
 			return;
 		}
@@ -195,7 +197,8 @@ public class SceneSelection implements ISceneSelection {
 				selectedNodes));
 	}
 
-	public void setSelectedVertex(final IMeshNode node, final int vertexIndex) {
+	public void setSelectedVertex(final IGeometryNode<?, ?> node,
+			final int vertexIndex) {
 		if (!selectedNodes.contains(node)) {
 			return;
 		}
@@ -216,7 +219,8 @@ public class SceneSelection implements ISceneSelection {
 		}
 	}
 
-	public void switchSelectedVertex(final IMeshNode node, final int vertexIndex) {
+	public void switchSelectedVertex(final IGeometryNode<?, ?> node,
+			final int vertexIndex) {
 		if (!selectedNodes.contains(node)) {
 			return;
 		}
@@ -335,15 +339,15 @@ public class SceneSelection implements ISceneSelection {
 	}
 
 	public static class EdgeSelection {
-		private final IMeshNode node;
+		private final IGeometryNode<?, ?> node;
 		private final EdgeId edgeIndex;
 
-		EdgeSelection(final IMeshNode node, final EdgeId edgeIndex) {
+		EdgeSelection(final IGeometryNode<?, ?> node, final EdgeId edgeIndex) {
 			this.node = node;
 			this.edgeIndex = edgeIndex;
 		}
 
-		public IMeshNode getNode() {
+		public IGeometryNode<?, ?> getNode() {
 			return node;
 		}
 
@@ -384,15 +388,16 @@ public class SceneSelection implements ISceneSelection {
 	}
 
 	public static class VertexSelection {
-		private final IMeshNode node;
+		private final IGeometryNode<?, ?> node;
 		private final int vertexIndex;
 
-		public VertexSelection(final IMeshNode node, final int vertexIndex) {
+		public VertexSelection(final IGeometryNode<?, ?> node,
+				final int vertexIndex) {
 			this.node = node;
 			this.vertexIndex = vertexIndex;
 		}
 
-		public IMeshNode getNode() {
+		public IGeometryNode<?, ?> getNode() {
 			return node;
 		}
 
