@@ -7,6 +7,7 @@ import net.untoldwind.moredread.model.enums.SelectionMode;
 import net.untoldwind.moredread.model.mesh.EdgeId;
 import net.untoldwind.moredread.model.mesh.FaceId;
 import net.untoldwind.moredread.model.scene.IMeshNode;
+import net.untoldwind.moredread.model.scene.IPolygonNode;
 import net.untoldwind.moredread.model.scene.SceneSelection;
 
 import com.jme.bounding.BoundingBox;
@@ -21,6 +22,9 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 	private final IMeshRendererAdapter selectedWireframeMeshRenderer;
 	private final IMeshRendererAdapter selectedVertexMeshRenderer;
 	private final IMeshRendererAdapter solidMeshRenderer;
+	private final IPolygonRendererAdapter polygonRenderer;
+	private final IPolygonRendererAdapter selectedPolygonRenderer;
+	private final IPolygonRendererAdapter selectedVertexPolygonRenderer;
 	private final Renderer renderer;
 	private final SelectionMode selectionMode;
 
@@ -35,7 +39,9 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 				param.isShowNormalsOnSelected(), 3f, false);
 		this.selectedVertexMeshRenderer = new VertexMeshRenderer();
 		this.solidMeshRenderer = new SolidMeshRenderer();
-
+		this.polygonRenderer = new LinePolygonRendererAdapter(1f, true);
+		this.selectedPolygonRenderer = new LinePolygonRendererAdapter(3f, false);
+		this.selectedVertexPolygonRenderer = new VertexPolygonRendererAdapter();
 	}
 
 	@Override
@@ -59,6 +65,60 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 		}
 
 		return geometries;
+	}
+
+	@Override
+	public List<Spatial> renderNode(final IPolygonNode node) {
+		final List<Spatial> geometries = new ArrayList<Spatial>();
+
+		if (node.isSelected()) {
+			renderSelected(node, geometries);
+		} else {
+			renderNormal(node, geometries);
+		}
+
+		return geometries;
+	}
+
+	private void renderSelected(final IPolygonNode node,
+			final List<Spatial> geometries) {
+		final Geometry geometry = selectedPolygonRenderer.renderPolygon(
+				node.getRenderGeometry(), null);
+		if (geometry != null) {
+			geometry.setDefaultColor(ColorRGBA.black.clone());
+			geometry.setModelBound(new BoundingBox());
+			geometry.updateModelBound();
+			geometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+			geometries.add(geometry);
+		}
+
+		final Geometry vertexGeometry = selectedVertexPolygonRenderer
+				.renderPolygon(node.getRenderGeometry(), null);
+		if (vertexGeometry != null) {
+			geometries.add(vertexGeometry);
+			vertexGeometry.setDefaultColor(ColorRGBA.black.clone());
+			vertexGeometry.setModelBound(new BoundingBox());
+			vertexGeometry.updateModelBound();
+			vertexGeometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+		}
+		if (parameters.isShowBoundingBoxOnSelected()) {
+			geometries.add(new BoundingBoxNode(node.getLocalBoundingBox()));
+		}
+
+	}
+
+	private void renderNormal(final IPolygonNode node,
+			final List<Spatial> geometries) {
+		final Geometry geometry = polygonRenderer.renderPolygon(
+				node.getRenderGeometry(), null);
+		if (geometry != null) {
+			geometry.setDefaultColor(ColorRGBA.black.clone());
+			geometry.setModelBound(new BoundingBox());
+			geometry.updateModelBound();
+			geometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+			geometries.add(geometry);
+		}
+
 	}
 
 	private void renderSelected(final IMeshNode node,

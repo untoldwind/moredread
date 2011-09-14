@@ -49,6 +49,17 @@ public class QuadFace extends Face<QuadFaceId, QuadMesh> {
 		return vertices;
 	}
 
+	@Override
+	public IEdge getEdge(final EdgeId edgeIndex) {
+		for (final Edge edge : edges) {
+			if (edge.getIndex().equals(edgeIndex)) {
+				return edge;
+			}
+		}
+		return null;
+	}
+
+	@Override
 	public List<Edge> getEdges() {
 		return Arrays.asList(edges);
 	}

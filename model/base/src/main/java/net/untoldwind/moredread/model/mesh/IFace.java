@@ -1,5 +1,6 @@
 package net.untoldwind.moredread.model.mesh;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.jme.math.Plane;
@@ -11,7 +12,7 @@ public interface IFace extends IPolygon {
 
 	List<? extends IVertex> getVertices();
 
-	List<? extends IEdge> getEdges();
+	Collection<? extends IEdge> getEdges();
 
 	Plane getPlane();
 

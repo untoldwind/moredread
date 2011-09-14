@@ -4,7 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Edge implements IEdge {
-	private final Mesh<?, ?> owner;
+	private final Mesh<?, ?> ownerMesh;
+	private final Polygon ownerPolygon;
 	private final EdgeId index;
 	private final Vertex vertex1;
 	private final Vertex vertex2;
@@ -13,7 +14,8 @@ public class Edge implements IEdge {
 	private final Set<Face<?, ?>> faces;
 
 	Edge(final Mesh<?, ?> owner, final Vertex vertex1, final Vertex vertex2) {
-		this.owner = owner;
+		this.ownerMesh = owner;
+		this.ownerPolygon = null;
 		this.index = new EdgeId(vertex1.getIndex(), vertex2.getIndex());
 		this.vertex1 = vertex1;
 		this.vertex2 = vertex2;
@@ -23,8 +25,24 @@ public class Edge implements IEdge {
 		vertex2.getEdges().add(this);
 	}
 
-	public Mesh<?, ?> getOwner() {
-		return owner;
+	Edge(final Polygon owner, final Vertex vertex1, final Vertex vertex2) {
+		this.ownerMesh = null;
+		this.ownerPolygon = owner;
+		this.index = new EdgeId(vertex1.getIndex(), vertex2.getIndex());
+		this.vertex1 = vertex1;
+		this.vertex2 = vertex2;
+		this.faces = new HashSet<Face<?, ?>>();
+
+		vertex1.getEdges().add(this);
+		vertex2.getEdges().add(this);
+	}
+
+	public Mesh<?, ?> getOwnerMesh() {
+		return ownerMesh;
+	}
+
+	public Polygon getOwnerPolygon() {
+		return ownerPolygon;
 	}
 
 	public EdgeId getIndex() {

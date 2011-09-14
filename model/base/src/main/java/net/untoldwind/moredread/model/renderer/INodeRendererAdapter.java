@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.untoldwind.moredread.model.enums.SelectionMode;
 import net.untoldwind.moredread.model.scene.IMeshNode;
+import net.untoldwind.moredread.model.scene.IPolygonNode;
 
 import com.jme.renderer.Renderer;
 import com.jme.scene.Spatial;
@@ -14,4 +15,6 @@ public interface INodeRendererAdapter {
 	SelectionMode getSelectionMode();
 
 	List<Spatial> renderNode(IMeshNode node);
+
+	List<Spatial> renderNode(IPolygonNode node);
 }
