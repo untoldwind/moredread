@@ -27,7 +27,7 @@ public class PolygonNode extends ObjectNode implements IPolygonNode {
 
 	public PolygonNode(final AbstractSpatialComposite<? extends INode> parent,
 			final Polygon polygon) {
-		super(parent, "Mesh");
+		super(parent, "Polygon");
 
 		this.polygon = polygon;
 	}
@@ -70,6 +70,15 @@ public class PolygonNode extends ObjectNode implements IPolygonNode {
 					getWorldTranslation(), getWorldScale());
 		}
 		return worldBoundingBox;
+	}
+
+	@Override
+	public void markDirty() {
+		super.markDirty();
+
+		worldBoundingBox = null;
+		localBoundingBox = null;
+		renderedGeometries = null;
 	}
 
 	@Override

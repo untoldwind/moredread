@@ -1,6 +1,8 @@
 package net.untoldwind.moredread.ui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -12,13 +14,17 @@ import net.untoldwind.moredread.model.generator.DodecahedronMeshGenerator;
 import net.untoldwind.moredread.model.generator.GeosphereMeshGenerator;
 import net.untoldwind.moredread.model.generator.IcosahedronMeshGenerator;
 import net.untoldwind.moredread.model.generator.OctahedronMeshGenerator;
+import net.untoldwind.moredread.model.mesh.IPoint;
+import net.untoldwind.moredread.model.mesh.Point;
 import net.untoldwind.moredread.model.mesh.PolyMesh;
+import net.untoldwind.moredread.model.mesh.Polygon;
 import net.untoldwind.moredread.model.op.IBooleanOperation;
 import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
 import net.untoldwind.moredread.model.scene.ISceneHolder;
 import net.untoldwind.moredread.model.scene.ISceneOperation;
 import net.untoldwind.moredread.model.scene.MeshNode;
+import net.untoldwind.moredread.model.scene.PolygonNode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.scene.SceneHolder;
 import net.untoldwind.moredread.ui.canvas.MDCanvasConstructor;
@@ -281,6 +287,17 @@ public class MoreDreadUI extends AbstractUIPlugin {
 
 				node12.setLocalScale(new Vector3f(5.0f, 5.0f, 5.0f));
 				node12.setLocalTranslation(new Vector3f(-30f, 10f, 0));
+
+				final List<IPoint> points = new ArrayList<IPoint>();
+				points.add(new Point(0, 0, 10f));
+				points.add(new Point(1, 1, 10f));
+				points.add(new Point(2, 1, 10f));
+				points.add(new Point(3, -1, 10f));
+
+				final Polygon polygon = new Polygon(points, new int[] { 4 },
+						new int[] { 1 }, false);
+
+				new PolygonNode(scene, polygon);
 			}
 		});
 

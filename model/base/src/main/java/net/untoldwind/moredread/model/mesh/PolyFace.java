@@ -71,6 +71,17 @@ public class PolyFace extends AbstractFace<PolyMesh> {
 		return vertices;
 	}
 
+	@Override
+	public IEdge getEdge(final EdgeId edgeIndex) {
+		for (final AbstractEdge edge : edges) {
+			if (edge.getIndex().equals(edgeIndex)) {
+				return edge;
+			}
+		}
+		return null;
+	}
+
+	@Override
 	public List<AbstractEdge> getEdges() {
 		return edges;
 	}

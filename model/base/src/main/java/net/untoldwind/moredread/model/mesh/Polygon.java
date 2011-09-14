@@ -112,6 +112,11 @@ public class Polygon implements IPolygon {
 	}
 
 	@Override
+	public IEdge getEdge(final EdgeId edgeIndex) {
+		return edges.get(edgeIndex);
+	}
+
+	@Override
 	public Collection<? extends IEdge> getEdges() {
 		return edges.values();
 	}

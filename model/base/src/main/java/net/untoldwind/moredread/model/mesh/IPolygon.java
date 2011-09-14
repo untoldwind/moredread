@@ -14,6 +14,8 @@ public interface IPolygon extends IGeometry<IPolygon> {
 
 	Collection<? extends IEdge> getEdges();
 
+	IEdge getEdge(final EdgeId edgeIndex);
+
 	int[] getPolygonStripCounts();
 
 	int[] getPolygonContourCounts();
