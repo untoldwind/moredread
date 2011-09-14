@@ -47,6 +47,7 @@ public abstract class Mesh<T extends AbstractFace<?>> implements IMesh,
 		return vertices;
 	}
 
+	@Override
 	public Vertex getVertex(final int vertexIndes) {
 		if (vertexIndes < 0 || vertexIndes >= vertices.size()) {
 			return null;

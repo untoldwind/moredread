@@ -107,12 +107,20 @@ public class Polygon implements IPolygon {
 	}
 
 	@Override
+	public Vertex getVertex(final int vertexIndes) {
+		if (vertexIndes < 0 || vertexIndes >= vertices.size()) {
+			return null;
+		}
+		return vertices.get(vertexIndes);
+	}
+
+	@Override
 	public List<? extends IVertex> getVertices() {
 		return vertices;
 	}
 
 	@Override
-	public IEdge getEdge(final EdgeId edgeIndex) {
+	public AbstractEdge getEdge(final EdgeId edgeIndex) {
 		return edges.get(edgeIndex);
 	}
 

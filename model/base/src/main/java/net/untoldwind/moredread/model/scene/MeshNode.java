@@ -7,7 +7,7 @@ import net.untoldwind.moredread.model.generator.IGeneratorInput;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.Mesh;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
-import net.untoldwind.moredread.model.scene.change.MeshNodeGeometryChangedCommand;
+import net.untoldwind.moredread.model.scene.change.NodeGeometryChangedCommand;
 import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 
@@ -53,14 +53,15 @@ public class MeshNode extends ObjectNode implements IMeshNode, IGeneratorInput {
 	@Override
 	public Mesh<?> getEditableGeometry() {
 		scene.getSceneChangeHandler().registerCommand(
-				new MeshNodeGeometryChangedCommand(this));
+				new NodeGeometryChangedCommand(this));
 
 		return mesh;
 	}
 
-	public void setMesh(final Mesh<?> mesh) {
+	@Override
+	public void setGeometry(final Mesh<?> mesh) {
 		scene.getSceneChangeHandler().registerCommand(
-				new MeshNodeGeometryChangedCommand(this));
+				new NodeGeometryChangedCommand(this));
 
 		this.mesh = mesh;
 	}

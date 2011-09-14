@@ -75,6 +75,10 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 	}
 
 	@Override
+	public void setGeometry(final Mesh<?> geometry) {
+	}
+
+	@Override
 	public BoundingBox getWorldBoundingBox() {
 		if (worldBoundingBox == null) {
 			worldBoundingBox = new BoundingBox(getRenderGeometry()
