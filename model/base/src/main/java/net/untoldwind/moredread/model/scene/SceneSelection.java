@@ -250,11 +250,13 @@ public class SceneSelection implements ISceneSelection {
 		return selectedFaces.contains(new FaceSelection(node, faceIndex));
 	}
 
-	public boolean isEdgeSelected(final IMeshNode node, final EdgeId edgeIndex) {
+	public boolean isEdgeSelected(final IGeometryNode<?, ?> node,
+			final EdgeId edgeIndex) {
 		return selectedEdges.contains(new EdgeSelection(node, edgeIndex));
 	}
 
-	public boolean isVertexSelected(final IMeshNode node, final int vertexIndex) {
+	public boolean isVertexSelected(final IGeometryNode<?, ?> node,
+			final int vertexIndex) {
 		return selectedVertices
 				.contains(new VertexSelection(node, vertexIndex));
 	}

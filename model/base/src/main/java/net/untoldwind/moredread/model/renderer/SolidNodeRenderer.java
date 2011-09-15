@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.untoldwind.moredread.model.enums.SelectionMode;
 import net.untoldwind.moredread.model.mesh.EdgeId;
+import net.untoldwind.moredread.model.scene.IGeometryNode;
 import net.untoldwind.moredread.model.scene.IMeshNode;
 import net.untoldwind.moredread.model.scene.IPolygonNode;
 import net.untoldwind.moredread.model.scene.SceneSelection;
@@ -81,8 +82,18 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 
 	private void renderSelected(final IPolygonNode node,
 			final List<Spatial> geometries) {
+		IColorProvider colorProvider = null;
+		switch (selectionMode) {
+		case EDGE:
+			colorProvider = getEdgeSelectionColors(node);
+			break;
+		case VERTEX:
+			colorProvider = getVertexSelectionColors(node);
+			break;
+		}
+
 		final Geometry geometry = selectedPolygonRenderer.renderPolygon(
-				node.getRenderGeometry(), null);
+				node.getRenderGeometry(), colorProvider);
 		if (geometry != null) {
 			geometry.setDefaultColor(ColorRGBA.black.clone());
 			geometry.setModelBound(new BoundingBox());
@@ -92,7 +103,7 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 		}
 
 		final Geometry vertexGeometry = selectedVertexPolygonRenderer
-				.renderPolygon(node.getRenderGeometry(), null);
+				.renderPolygon(node.getRenderGeometry(), colorProvider);
 		if (vertexGeometry != null) {
 			geometries.add(vertexGeometry);
 			vertexGeometry.setDefaultColor(ColorRGBA.black.clone());
@@ -213,7 +224,7 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 		};
 	}
 
-	private IColorProvider getEdgeSelectionColors(final IMeshNode node) {
+	private IColorProvider getEdgeSelectionColors(final IGeometryNode<?, ?> node) {
 		final ColorRGBA modelColor = node.getModelColor(0.5f);
 		final ColorRGBA selectedColor = new ColorRGBA(1.0f - modelColor.r,
 				1.0f - modelColor.g, 1.0f - modelColor.b, 0.5f);
@@ -253,7 +264,8 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 		};
 	}
 
-	private IColorProvider getVertexSelectionColors(final IMeshNode node) {
+	private IColorProvider getVertexSelectionColors(
+			final IGeometryNode<?, ?> node) {
 		final ColorRGBA modelColor = node.getModelColor(0.5f);
 		final ColorRGBA selectedColor = new ColorRGBA(1.0f - modelColor.r,
 				1.0f - modelColor.g, 1.0f - modelColor.b, 0.5f);
