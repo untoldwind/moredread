@@ -45,6 +45,12 @@ public class XMLStateWriter implements IStateWriter {
 	}
 
 	@Override
+	public void writeLong(final String tag, final long value)
+			throws IOException {
+		element.addElement(tag).setText(String.valueOf(value));
+	}
+
+	@Override
 	public void writeIntArray(final String tag, final int[] values)
 			throws IOException {
 		final Element arrayElement = element.addElement(tag);
