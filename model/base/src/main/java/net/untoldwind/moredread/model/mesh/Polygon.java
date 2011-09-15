@@ -17,7 +17,7 @@ import net.untoldwind.moredread.model.transform.ITransformation;
 import com.jme.math.Vector3f;
 
 public class Polygon implements IPolygon {
-	private List<Vertex> vertices;
+	private final List<Vertex> vertices;
 	private int[] stripCounts;
 	private int[] contourCounts;
 	private boolean closed;
@@ -25,18 +25,20 @@ public class Polygon implements IPolygon {
 	protected Map<EdgeId, Edge> edges;
 
 	protected Polygon() {
+		this.vertices = new ArrayList<Vertex>();
+		this.edges = new HashMap<EdgeId, Edge>();
 	}
 
 	public Polygon(final IPoint[] points, final int[] stripCounts,
 			final int[] contourCounts, final boolean closed) {
 		this.vertices = new ArrayList<Vertex>();
+		this.edges = new HashMap<EdgeId, Edge>();
 		for (final IPoint point : points) {
 			addVertex(point.getPoint(), false);
 		}
 		this.stripCounts = stripCounts;
 		this.contourCounts = contourCounts;
 		this.closed = closed;
-		this.edges = new HashMap<EdgeId, Edge>();
 
 		int k = 0;
 		final Iterator<Vertex> it = vertices.iterator();
@@ -222,15 +224,36 @@ public class Polygon implements IPolygon {
 
 	@Override
 	public void readState(final IStateReader reader) throws IOException {
-		final List<IPoint> vertices = new ArrayList<IPoint>();
 		final int numVerices = reader.readInt();
 
 		for (int i = 0; i < numVerices; i++) {
-			vertices.add(new Point(reader.readVector3f()));
+			addVertex(reader.readVector3f(), false);
 		}
 		stripCounts = reader.readIntArray();
 		contourCounts = reader.readIntArray();
 		closed = reader.readBoolean();
+
+		int k = 0;
+		final Iterator<Vertex> it = vertices.iterator();
+		for (int i = 0; i < contourCounts.length; i++) {
+			for (int j = 0; j < contourCounts[i]; j++) {
+				final int stripCount = stripCounts[k++];
+
+				final Vertex first = it.next();
+				Vertex last = first;
+
+				for (int l = 1; l < stripCount; l++) {
+					final Vertex vertex = it.next();
+
+					addEdge(vertex, last);
+
+					last = vertex;
+				}
+				if (closed) {
+					addEdge(last, first);
+				}
+			}
+		}
 	}
 
 	@Override
