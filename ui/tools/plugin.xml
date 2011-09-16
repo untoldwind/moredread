@@ -21,6 +21,12 @@
             fallback="false"
             visible="true">
       </category>
+      <category
+            fallback="false"
+            id="net.untoldwind.moredread.ui.tool.category.polygon"
+            label="Polygon"
+            visible="true">
+      </category>
       <tool
             categoryId="net.untoldwind.moredread.ui.tool.category.default"
             class="net.untoldwind.moredread.ui.tools.selection.ObjectSelectionToolHandler"
@@ -170,6 +176,18 @@
             type="PUSH">
          <enablement
                selectionCount="2"
+               selectionMode="OBJECT">
+         </enablement>
+      </tool>
+      <tool
+            categoryId="net.untoldwind.moredread.ui.tool.category.polygon"
+            class="net.untoldwind.moredread.ui.tools.creation.CreatePolygonToolHandler"
+            icon="icons/CreatePolygon.png"
+            id="moredread-ui-tools.tool1"
+            label="Create Polygon"
+            type="TOGGLE">
+         <enablement
+               selectionCount="0-*"
                selectionMode="OBJECT">
          </enablement>
       </tool>
