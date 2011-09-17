@@ -34,6 +34,12 @@ public abstract class AbstractCenterSizeCreationToolHandler implements
 	}
 
 	@Override
+	public void completed(final IToolController toolController,
+			final Scene scene) {
+		scene.getSceneChangeHandler().commit();
+	}
+
+	@Override
 	public List<? extends IModelControl> getModelControls(final Scene scene,
 			final IViewport viewport) {
 		final List<IModelControl> controls = new ArrayList<IModelControl>();
@@ -62,6 +68,11 @@ public abstract class AbstractCenterSizeCreationToolHandler implements
 		@Override
 		public Vector3f getCenter() {
 			return position;
+		}
+
+		@Override
+		public Vector3f getFeedbackPoint() {
+			return getCenter();
 		}
 
 		@Override

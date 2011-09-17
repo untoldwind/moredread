@@ -36,6 +36,12 @@ public class BinaryStateWriter implements IStateWriter {
 	}
 
 	@Override
+	public void writeLong(final String tag, final long value)
+			throws IOException {
+		output.writeLong(value);
+	}
+
+	@Override
 	public void writeIntArray(final String tag, final int[] values)
 			throws IOException {
 		output.writeInt(values.length);

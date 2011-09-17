@@ -24,9 +24,12 @@ public class Polygon implements IPolygon {
 	protected boolean dirty = false;
 	protected Map<EdgeId, Edge> edges;
 
-	protected Polygon() {
+	public Polygon() {
 		this.vertices = new ArrayList<Vertex>();
 		this.edges = new HashMap<EdgeId, Edge>();
+		this.stripCounts = new int[] { 0 };
+		this.contourCounts = new int[] { 1 };
+		this.closed = false;
 	}
 
 	public Polygon(final IPoint[] points, final int[] stripCounts,
@@ -135,6 +138,19 @@ public class Polygon implements IPolygon {
 		final Vertex vertex = new Vertex(this, vertices.size(), point);
 
 		vertices.add(vertex);
+
+		return vertex;
+	}
+
+	public Vertex appendVertex(final Vector3f point, final boolean smooth) {
+		final Vertex vertex = new Vertex(this, vertices.size(), point);
+
+		vertices.add(vertex);
+
+		stripCounts[stripCounts.length - 1] += 1;
+		if (vertex.getIndex() > 0) {
+			addEdge(vertices.get(vertex.getIndex() - 1), vertex);
+		}
 
 		return vertex;
 	}

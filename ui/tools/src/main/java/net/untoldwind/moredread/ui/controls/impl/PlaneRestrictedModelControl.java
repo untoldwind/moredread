@@ -99,7 +99,7 @@ public class PlaneRestrictedModelControl extends Node implements IModelControl {
 		final FloatBuffer vertexBuffer = BufferUtils.createVector3Buffer(4);
 		final IntBuffer indexBuffer = BufferUtils.createIntBuffer(4);
 
-		final Vector3f position = toolAdapter.getCenter();
+		final Vector3f position = toolAdapter.getFeedbackPoint();
 		final Vector3f v1 = plane.project(boundingBox.getCenter(), position,
 				-maxExtend, -maxExtend);
 		final Vector3f v2 = plane.project(boundingBox.getCenter(), position,

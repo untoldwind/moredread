@@ -46,6 +46,11 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 	}
 
 	@Override
+	public void completed(final IToolController toolController,
+			final Scene scene) {
+	}
+
+	@Override
 	public List<? extends IModelControl> getModelControls(final Scene scene,
 			final IViewport viewport) {
 		final List<IModelControl> controls = new ArrayList<IModelControl>();
@@ -98,6 +103,11 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 		public Vector3f getCenter() {
 			// TODO
 			return new Vector3f(0, 0, 0);
+		}
+
+		@Override
+		public Vector3f getFeedbackPoint() {
+			return getCenter();
 		}
 
 		@Override
@@ -176,6 +186,11 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 				center.divideLocal(count);
 			}
 			return center;
+		}
+
+		@Override
+		public Vector3f getFeedbackPoint() {
+			return getCenter();
 		}
 
 		@Override

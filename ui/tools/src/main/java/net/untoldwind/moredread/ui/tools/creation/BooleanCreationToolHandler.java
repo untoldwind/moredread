@@ -44,6 +44,11 @@ public class BooleanCreationToolHandler implements IToolHandler {
 	}
 
 	@Override
+	public void completed(final IToolController toolController,
+			final Scene scene) {
+	}
+
+	@Override
 	public List<? extends IModelControl> getModelControls(final Scene scene,
 			final IViewport viewport) {
 		return Collections.emptyList();

@@ -27,7 +27,7 @@ public class Vertex implements IStateHolder, IVertex {
 		this.ownerMesh = owner;
 		this.ownerPolygon = null;
 		this.index = index;
-		this.point = point;
+		this.point = point.clone();
 		this.edges = new HashSet<Edge>();
 		this.faces = new HashSet<Face<?, ?>>();
 	}
@@ -36,7 +36,7 @@ public class Vertex implements IStateHolder, IVertex {
 		this.ownerMesh = null;
 		this.ownerPolygon = owner;
 		this.index = index;
-		this.point = point;
+		this.point = point.clone();
 		this.edges = new HashSet<Edge>();
 		this.faces = new HashSet<Face<?, ?>>();
 	}
@@ -72,7 +72,7 @@ public class Vertex implements IStateHolder, IVertex {
 	}
 
 	public void setPoint(final Vector3f point) {
-		this.point = point;
+		this.point.set(point);
 		for (final Face<?, ?> face : faces) {
 			face.markDirty();
 		}

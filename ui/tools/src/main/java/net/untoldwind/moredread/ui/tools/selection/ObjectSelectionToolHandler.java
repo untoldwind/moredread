@@ -29,6 +29,11 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 	}
 
 	@Override
+	public void completed(final IToolController toolController,
+			final Scene scene) {
+	}
+
+	@Override
 	public void aborted(final IToolController toolController, final Scene scene) {
 	}
 
@@ -61,6 +66,11 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 		@Override
 		public Vector3f getCenter() {
 			return new Vector3f(0, 0, 0);
+		}
+
+		@Override
+		public Vector3f getFeedbackPoint() {
+			return getCenter();
 		}
 
 		@Override
@@ -132,6 +142,11 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 			}
 
 			return center;
+		}
+
+		@Override
+		public Vector3f getFeedbackPoint() {
+			return getCenter();
 		}
 
 		@Override

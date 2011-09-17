@@ -5,12 +5,14 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.untoldwind.moredread.model.scene.IComposite;
 import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.event.ISceneChangeListener;
 import net.untoldwind.moredread.model.scene.event.ISceneSelectionChangeListener;
 import net.untoldwind.moredread.model.scene.event.SceneChangeEvent;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
 import net.untoldwind.moredread.ui.MoreDreadUI;
+import net.untoldwind.moredread.ui.dnd.NodeTransfer;
 import net.untoldwind.moredread.ui.properties.NodePropertySheetContributor;
 import net.untoldwind.moredread.ui.provider.NodeLabelProvider;
 import net.untoldwind.moredread.ui.provider.SceneContentProvider;
@@ -24,8 +26,15 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSourceAdapter;
+import org.eclipse.swt.dnd.DragSourceEvent;
+import org.eclipse.swt.dnd.DropTargetAdapter;
+import org.eclipse.swt.dnd.DropTargetEvent;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
@@ -69,6 +78,43 @@ public class ModelTreeView extends ViewPart implements
 									.setSelectedNodes(selectedNodes);
 						}
 					}
+				});
+
+		modelViewer.addDragSupport(DND.DROP_MOVE | DND.DROP_COPY
+				| DND.DROP_DEFAULT,
+				new Transfer[] { NodeTransfer.getInstance() },
+				new DragSourceAdapter() {
+					@Override
+					public void dragSetData(final DragSourceEvent event) {
+						final IStructuredSelection selection = (IStructuredSelection) modelViewer
+								.getSelection();
+						event.data = selection.getFirstElement();
+					}
+				});
+		modelViewer.addDropSupport(DND.DROP_MOVE | DND.DROP_COPY
+				| DND.DROP_DEFAULT,
+				new Transfer[] { NodeTransfer.getInstance() },
+				new DropTargetAdapter() {
+
+					@Override
+					public void dragOver(final DropTargetEvent event) {
+						event.feedback = DND.FEEDBACK_NONE;
+
+						if (event.item == null) {
+							event.feedback = DND.FEEDBACK_SELECT;
+						} else if (event.item instanceof TreeItem) {
+							final Object data = ((TreeItem) event.item)
+									.getData();
+
+							if (data instanceof IComposite) {
+								event.feedback = DND.FEEDBACK_EXPAND
+										| DND.FEEDBACK_INSERT_BEFORE;
+							} else if (data instanceof INode) {
+								event.feedback = DND.FEEDBACK_INSERT_BEFORE;
+							}
+						}
+					}
+
 				});
 
 		getSite().setSelectionProvider(modelViewer);

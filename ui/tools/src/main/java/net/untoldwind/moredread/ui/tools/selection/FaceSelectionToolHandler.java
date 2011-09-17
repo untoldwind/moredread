@@ -37,6 +37,11 @@ public class FaceSelectionToolHandler implements IToolHandler {
 	}
 
 	@Override
+	public void completed(final IToolController toolController,
+			final Scene scene) {
+	}
+
+	@Override
 	public void aborted(final IToolController toolController, final Scene scene) {
 	}
 
@@ -82,6 +87,11 @@ public class FaceSelectionToolHandler implements IToolHandler {
 		public Vector3f getCenter() {
 			// TODO
 			return new Vector3f(0, 0, 0);
+		}
+
+		@Override
+		public Vector3f getFeedbackPoint() {
+			return getCenter();
 		}
 
 		@Override
@@ -152,6 +162,11 @@ public class FaceSelectionToolHandler implements IToolHandler {
 				center.divideLocal(count);
 			}
 			return center;
+		}
+
+		@Override
+		public Vector3f getFeedbackPoint() {
+			return getCenter();
 		}
 
 		@Override

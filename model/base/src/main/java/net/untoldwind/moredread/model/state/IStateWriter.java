@@ -13,6 +13,8 @@ public interface IStateWriter {
 
 	void writeInt(String tag, int value) throws IOException;
 
+	void writeLong(String tag, long value) throws IOException;
+
 	void writeIntArray(String tag, int[] values) throws IOException;
 
 	void writeFloat(String tag, float value) throws IOException;

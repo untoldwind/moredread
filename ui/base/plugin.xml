@@ -111,6 +111,13 @@
             id="net.untoldwind.moredread.ui.toolAbort"
             name="Abort tool">
       </command>
+      <command
+            categoryId="net.untoldwind.moredread.ui.category.Tools"
+            defaultHandler="net.untoldwind.moredread.ui.handlers.CompleteToolHandler"
+            description="Complete tool"
+            id="net.untoldwind.moredread.ui.toolComplete"
+            name="Complete tool">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -177,6 +184,12 @@
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="ESC">
+      </key>
+      <key
+            commandId="net.untoldwind.moredread.ui.toolComplete"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="ENTER">
       </key>
    </extension>
    <extension

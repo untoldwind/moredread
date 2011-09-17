@@ -25,4 +25,6 @@ public interface IToolController {
 	void setActiveTool(IToolDescriptor tool);
 
 	void abortActiveTool();
+
+	void completeActiveTool();
 }
