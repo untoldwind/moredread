@@ -28,8 +28,14 @@ public class CreatePolygonToolHandler implements IToolHandler {
 
 	@Override
 	public void aborted(final IToolController toolController, final Scene scene) {
-		// TODO Auto-generated method stub
+		scene.getSceneChangeHandler().rollback();
+	}
 
+	@Override
+	public void completed(final IToolController toolController,
+			final Scene scene) {
+		scene.getSceneChangeHandler().begin(true);
+		scene.getSceneChangeHandler().commit();
 	}
 
 	@Override

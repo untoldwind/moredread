@@ -36,6 +36,11 @@ public class FaceSelectionToolHandler implements IToolHandler {
 	}
 
 	@Override
+	public void completed(final IToolController toolController,
+			final Scene scene) {
+	}
+
+	@Override
 	public void aborted(final IToolController toolController, final Scene scene) {
 	}
 

@@ -21,6 +21,8 @@ public interface IToolDescriptor {
 
 	void activate(Scene scene);
 
+	void complete(Scene scene);
+
 	void abort(Scene scene);
 
 	List<? extends IModelControl> getModelControls(Scene scene,

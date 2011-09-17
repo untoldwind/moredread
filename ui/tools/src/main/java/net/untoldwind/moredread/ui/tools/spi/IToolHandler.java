@@ -39,6 +39,18 @@ public interface IToolHandler {
 	void aborted(IToolController toolController, Scene scene);
 
 	/**
+	 * Invoked if the tool is completed by the user.
+	 * 
+	 * This should never be called on 'push' type tools.
+	 * 
+	 * @param toolController
+	 *            The tool controller
+	 * @param scene
+	 *            The current scene
+	 */
+	void completed(IToolController toolController, Scene scene);
+
+	/**
 	 * Get all model controls that should be displayed while the tool is active.
 	 * 
 	 * This only applied for 'toggle' type tool. 'push' type tools should just

@@ -46,6 +46,11 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 	}
 
 	@Override
+	public void completed(final IToolController toolController,
+			final Scene scene) {
+	}
+
+	@Override
 	public List<? extends IModelControl> getModelControls(final Scene scene,
 			final IViewport viewport) {
 		final List<IModelControl> controls = new ArrayList<IModelControl>();

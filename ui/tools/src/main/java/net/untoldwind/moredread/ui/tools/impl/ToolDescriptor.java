@@ -109,6 +109,13 @@ public class ToolDescriptor implements IToolDescriptor {
 	}
 
 	@Override
+	public void complete(final Scene scene) {
+		toolHandler.completed(toolController, scene);
+
+		toolController.setActiveTool(null);
+	}
+
+	@Override
 	public void abort(final Scene scene) {
 		toolHandler.aborted(toolController, scene);
 

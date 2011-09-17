@@ -123,6 +123,11 @@ public class ToolController implements IToolController,
 		getActiveTool().abort(sceneHolder.getScene());
 	}
 
+	@Override
+	public void completeActiveTool() {
+		getActiveTool().complete(sceneHolder.getScene());
+	}
+
 	private IToolDescriptor getDefaultTool() {
 		for (final IToolDescriptor tool : getEnabledTools()) {
 			if (tool.getCategory().isFallback()) {
