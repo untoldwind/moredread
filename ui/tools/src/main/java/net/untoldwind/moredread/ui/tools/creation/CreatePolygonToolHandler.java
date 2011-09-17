@@ -7,6 +7,8 @@ import java.util.List;
 import net.untoldwind.moredread.model.mesh.Polygon;
 import net.untoldwind.moredread.model.scene.PolygonNode;
 import net.untoldwind.moredread.model.scene.Scene;
+import net.untoldwind.moredread.model.state.BinaryStateReader;
+import net.untoldwind.moredread.model.state.BinaryStateWriter;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.controls.Modifier;
@@ -19,6 +21,8 @@ import com.jme.math.Vector3f;
 
 public class CreatePolygonToolHandler implements IToolHandler {
 	protected IToolController toolController;
+	private PolygonNode polygonNode;
+	private byte[] completeState;
 
 	@Override
 	public void activated(final IToolController toolController,
@@ -29,13 +33,27 @@ public class CreatePolygonToolHandler implements IToolHandler {
 	@Override
 	public void aborted(final IToolController toolController, final Scene scene) {
 		scene.getSceneChangeHandler().rollback();
+		polygonNode = null;
+		completeState = null;
 	}
 
 	@Override
 	public void completed(final IToolController toolController,
 			final Scene scene) {
 		scene.getSceneChangeHandler().begin(true);
-		scene.getSceneChangeHandler().commit();
+
+		try {
+			if (polygonNode != null && completeState != null) {
+				final Polygon polygon = BinaryStateReader
+						.fromByteArray(completeState);
+
+				polygonNode.setGeometry(polygon);
+			}
+		} finally {
+			scene.getSceneChangeHandler().commit();
+		}
+		polygonNode = null;
+		completeState = null;
 	}
 
 	@Override
@@ -53,7 +71,6 @@ public class CreatePolygonToolHandler implements IToolHandler {
 		Scene scene;
 		Vector3f lastPoint = new Vector3f();
 		Vector3f position = new Vector3f();
-		PolygonNode polygonNode;
 
 		public CreatePolygonToolAdapter(final Scene scene) {
 			this.scene = scene;
@@ -100,6 +117,7 @@ public class CreatePolygonToolHandler implements IToolHandler {
 					polygon.appendVertex(point, false);
 					polygon.appendVertex(point, false);
 					lastPoint.set(point);
+					completeState = BinaryStateWriter.toByteArray(polygon);
 
 					polygonNode = new PolygonNode(scene, polygon);
 				} finally {
@@ -111,6 +129,8 @@ public class CreatePolygonToolHandler implements IToolHandler {
 					final Polygon polygon = polygonNode.getEditableGeometry();
 					polygon.getVertex(polygon.getVertexCount() - 1).setPoint(
 							point);
+					completeState = BinaryStateWriter.toByteArray(polygon);
+
 					polygon.appendVertex(point, false);
 					lastPoint.set(point);
 				} finally {
