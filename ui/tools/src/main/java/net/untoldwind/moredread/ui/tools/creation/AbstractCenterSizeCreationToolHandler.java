@@ -65,6 +65,11 @@ public abstract class AbstractCenterSizeCreationToolHandler implements
 		}
 
 		@Override
+		public Vector3f getFeedbackPoint() {
+			return getCenter();
+		}
+
+		@Override
 		public boolean handleClick(final IModelControl modelControl,
 				final Vector3f point, final EnumSet<Modifier> modifiers) {
 			if (node == null) {

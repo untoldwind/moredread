@@ -99,6 +99,11 @@ public class VertexSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
+		public Vector3f getFeedbackPoint() {
+			return getCenter();
+		}
+
+		@Override
 		public boolean handleMove(final IModelControl modelControl,
 				final Vector3f point, final EnumSet<Modifier> modifiers) {
 			return false;
@@ -176,6 +181,11 @@ public class VertexSelectionToolHandler implements IToolHandler {
 				center.divideLocal(count);
 			}
 			return center;
+		}
+
+		@Override
+		public Vector3f getFeedbackPoint() {
+			return getCenter();
 		}
 
 		@Override

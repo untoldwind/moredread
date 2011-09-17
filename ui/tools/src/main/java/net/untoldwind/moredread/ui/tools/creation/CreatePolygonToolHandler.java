@@ -45,6 +45,7 @@ public class CreatePolygonToolHandler implements IToolHandler {
 
 	public class CreatePolygonToolAdapter implements IToolAdapter {
 		Scene scene;
+		Vector3f lastPoint = new Vector3f();
 		Vector3f position = new Vector3f();
 		PolygonNode polygonNode;
 
@@ -54,6 +55,11 @@ public class CreatePolygonToolHandler implements IToolHandler {
 
 		@Override
 		public Vector3f getCenter() {
+			return lastPoint;
+		}
+
+		@Override
+		public Vector3f getFeedbackPoint() {
 			return position;
 		}
 
@@ -69,7 +75,7 @@ public class CreatePolygonToolHandler implements IToolHandler {
 				try {
 					final Polygon polygon = polygonNode.getEditableGeometry();
 					polygon.getVertex(polygon.getVertexCount() - 1).setPoint(
-							position);
+							point);
 				} finally {
 					scene.getSceneChangeHandler().savepoint();
 				}
@@ -87,6 +93,7 @@ public class CreatePolygonToolHandler implements IToolHandler {
 
 					polygon.appendVertex(point, false);
 					polygon.appendVertex(point, false);
+					lastPoint.set(point);
 
 					polygonNode = new PolygonNode(scene, polygon);
 				} finally {
@@ -99,6 +106,7 @@ public class CreatePolygonToolHandler implements IToolHandler {
 					polygon.getVertex(polygon.getVertexCount() - 1).setPoint(
 							point);
 					polygon.appendVertex(point, false);
+					lastPoint.set(point);
 				} finally {
 					scene.getSceneChangeHandler().savepoint();
 				}

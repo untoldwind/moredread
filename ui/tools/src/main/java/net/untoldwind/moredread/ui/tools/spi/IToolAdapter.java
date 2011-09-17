@@ -22,6 +22,8 @@ public interface IToolAdapter {
 	 */
 	Vector3f getCenter();
 
+	Vector3f getFeedbackPoint();
+
 	boolean handleMove(IModelControl modelControl, final Vector3f point,
 			final EnumSet<Modifier> modifiers);
 
