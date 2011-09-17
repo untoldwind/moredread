@@ -7,6 +7,7 @@ import net.untoldwind.moredread.model.scene.event.ISceneSelectionModeListener;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionModeEvent;
 import net.untoldwind.moredread.ui.MoreDreadUI;
+import net.untoldwind.moredread.ui.tools.ActiveToolChangedEvent;
 import net.untoldwind.moredread.ui.tools.IToolActivationListener;
 import net.untoldwind.moredread.ui.tools.IToolCategoryDescriptor;
 import net.untoldwind.moredread.ui.tools.IToolController;
@@ -115,7 +116,7 @@ public class ToolSelectionView extends ViewPart implements
 	}
 
 	@Override
-	public void activeToolChanged() {
+	public void activeToolChanged(final ActiveToolChangedEvent event) {
 		updateTools();
 	}
 

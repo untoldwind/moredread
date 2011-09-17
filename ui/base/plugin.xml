@@ -61,6 +61,12 @@
             name="Generators"
             restorable="true">
       </view>
+      <view
+            class="net.untoldwind.moredread.ui.views.ToolControlView"
+            id="net.untoldwind.moredread.ui.toolControlView"
+            name="Tool Control"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
