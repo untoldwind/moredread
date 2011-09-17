@@ -29,6 +29,7 @@ import net.untoldwind.moredread.ui.input.event.RotateAroundXCameraUpdate;
 import net.untoldwind.moredread.ui.input.event.RotateAroundYCameraUpdate;
 import net.untoldwind.moredread.ui.preferences.IPreferencesConstants;
 import net.untoldwind.moredread.ui.properties.NodePropertySheetContributor;
+import net.untoldwind.moredread.ui.tools.ActiveToolChangedEvent;
 import net.untoldwind.moredread.ui.tools.IToolActivationListener;
 import net.untoldwind.moredread.ui.tools.UIToolsPlugin;
 
@@ -244,7 +245,7 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 	}
 
 	@Override
-	public void activeToolChanged() {
+	public void activeToolChanged(final ActiveToolChangedEvent event) {
 		implementor.updateToolControls();
 		canvas.queueRender();
 	}

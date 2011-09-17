@@ -10,6 +10,7 @@ import java.util.Set;
 import net.untoldwind.moredread.model.scene.ISceneHolder;
 import net.untoldwind.moredread.model.scene.event.ISceneSelectionModeListener;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionModeEvent;
+import net.untoldwind.moredread.ui.tools.ActiveToolChangedEvent;
 import net.untoldwind.moredread.ui.tools.IToolActivationListener;
 import net.untoldwind.moredread.ui.tools.IToolCategoryDescriptor;
 import net.untoldwind.moredread.ui.tools.IToolController;
@@ -107,8 +108,11 @@ public class ToolController implements IToolController,
 				&& toolDescriptor.getToolType() == ToolType.TOGGLE) {
 			this.activeTool = toolDescriptor;
 
+			final ActiveToolChangedEvent event = new ActiveToolChangedEvent(
+					this, toolDescriptor);
+
 			for (final IToolActivationListener listener : activationListeners) {
-				listener.activeToolChanged();
+				listener.activeToolChanged(event);
 			}
 		}
 	}

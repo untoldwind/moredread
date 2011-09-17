@@ -4,6 +4,7 @@ import net.untoldwind.moredread.ui.views.GeneratorTreeView;
 import net.untoldwind.moredread.ui.views.Model3DView;
 import net.untoldwind.moredread.ui.views.ModelTreeView;
 import net.untoldwind.moredread.ui.views.SelectionModeView;
+import net.untoldwind.moredread.ui.views.ToolControlView;
 import net.untoldwind.moredread.ui.views.ToolSelectionView;
 
 import org.eclipse.ui.IFolderLayout;
@@ -36,9 +37,14 @@ public class Perspective implements IPerspectiveFactory {
 		layout.addStandaloneView(SelectionModeView.ID, false, IPageLayout.TOP,
 				0.95f, editorArea);
 		layout.getViewLayout(SelectionModeView.ID).setCloseable(false);
+
+		layout.addStandaloneView(ToolControlView.ID, false, IPageLayout.RIGHT,
+				0.01f, SelectionModeView.ID);
+		layout.getViewLayout(ToolControlView.ID).setCloseable(false);
+
 		final IPlaceholderFolderLayout toolFolder = layout
-				.createPlaceholderFolder("tools", IPageLayout.RIGHT, 0.1f,
-						SelectionModeView.ID);
+				.createPlaceholderFolder("tools", IPageLayout.RIGHT, 0.01f,
+						ToolControlView.ID);
 		toolFolder.addPlaceholder(ToolSelectionView.ID + ":*");
 		// toolFolder.addView(ToolSelectionView.ID);
 
