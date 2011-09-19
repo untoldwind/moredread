@@ -1,6 +1,7 @@
 package net.untoldwind.moredread.ui.controls.impl;
 
 import net.untoldwind.moredread.model.enums.Direction;
+import net.untoldwind.moredread.model.enums.Plane;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;

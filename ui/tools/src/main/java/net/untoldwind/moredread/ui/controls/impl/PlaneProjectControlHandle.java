@@ -2,6 +2,7 @@ package net.untoldwind.moredread.ui.controls.impl;
 
 import java.util.EnumSet;
 
+import net.untoldwind.moredread.model.enums.Plane;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.Modifier;

@@ -2,7 +2,9 @@ package net.untoldwind.moredread.ui.tools.selection;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.untoldwind.moredread.annotations.Singleton;
 import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
@@ -231,6 +233,7 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 
 	private static class RotateToolAdapter implements IToolAdapter {
 		private final Scene scene;
+		Map<Long, Quaternion> originalState;
 
 		private RotateToolAdapter(final Scene scene) {
 			this.scene = scene;
@@ -276,7 +279,17 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 		@Override
 		public boolean handleDragStart(final IModelControl modelControl,
 				final Vector3f point, final EnumSet<Modifier> modifiers) {
-			return false;
+			originalState = new HashMap<Long, Quaternion>();
+			for (final INode node : scene.getSceneSelection()
+					.getSelectedNodes()) {
+				if (node instanceof AbstractSpatialNode) {
+					final AbstractSpatialNode spatialNode = (AbstractSpatialNode) node;
+
+					originalState.put(spatialNode.getNodeId(),
+							spatialNode.getLocalRotation());
+				}
+			}
+			return true;
 		}
 
 		@Override
@@ -296,7 +309,6 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 			final Quaternion rotation = new Quaternion();
 			rotation.fromAngleAxis(FastMath.acos(dot), axis);
 
-			scene.getSceneChangeHandler().rollback();
 			scene.getSceneChangeHandler().begin(true);
 
 			try {
@@ -325,7 +337,6 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 			final Quaternion rotation = new Quaternion();
 			rotation.fromAngleAxis(FastMath.acos(dot), axis);
 
-			scene.getSceneChangeHandler().rollback();
 			scene.getSceneChangeHandler().begin(true);
 
 			try {
@@ -333,6 +344,7 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 			} finally {
 				scene.getSceneChangeHandler().commit();
 			}
+			originalState = null;
 
 			return true;
 		}
@@ -344,8 +356,9 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 				if (node instanceof AbstractSpatialNode) {
 					final AbstractSpatialNode spatialNode = (AbstractSpatialNode) node;
 
-					spatialNode.setLocalRotation(spatialNode.getLocalRotation()
-							.mult(rotation));
+					final Quaternion localRotation = originalState.get(
+							spatialNode.getNodeId()).mult(rotation);
+					spatialNode.setLocalRotation(localRotation);
 				}
 			}
 		}

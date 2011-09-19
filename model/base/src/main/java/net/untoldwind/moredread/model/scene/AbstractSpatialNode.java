@@ -147,6 +147,7 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 		return store;
 	}
 
+	@Override
 	public Vector3f getWorldTranslation() {
 		if (parent != null) {
 			return parent.localToWorld(localTranslation, null);
