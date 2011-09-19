@@ -20,6 +20,11 @@ public enum Direction {
 		public Vector3f project(final Vector3f vector) {
 			return new Vector3f(vector.x, 0, 0);
 		}
+
+		@Override
+		public Plane getOrthoPlane() {
+			return Plane.YZ;
+		}
 	},
 	Y(new Quaternion(new float[] { 0, 0, 0 })) {
 		@Override
@@ -36,6 +41,11 @@ public enum Direction {
 		public Vector3f project(final Vector3f vector) {
 			return new Vector3f(0, vector.y, 0);
 		}
+
+		@Override
+		public Plane getOrthoPlane() {
+			return Plane.XZ;
+		}
 	},
 	Z(new Quaternion(new float[] { FastMath.HALF_PI, 0, 0 })) {
 		@Override
@@ -51,6 +61,11 @@ public enum Direction {
 		@Override
 		public Vector3f project(final Vector3f vector) {
 			return new Vector3f(0, 0, vector.z);
+		}
+
+		@Override
+		public Plane getOrthoPlane() {
+			return Plane.XY;
 		}
 	};
 
@@ -69,4 +84,6 @@ public enum Direction {
 	public abstract Vector3f getTranslation(float length);
 
 	public abstract float getValue(Vector3f vector);
+
+	public abstract Plane getOrthoPlane();
 }

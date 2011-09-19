@@ -1,8 +1,9 @@
 package net.untoldwind.moredread.ui.views;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 import net.untoldwind.moredread.model.scene.BoundingBox;
 import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.ISpatialNode;
@@ -24,6 +25,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISizeProvider;
 import org.eclipse.ui.part.ViewPart;
 
+import com.jme.math.FastMath;
+import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 
 public class SelectionInfoView extends ViewPart implements
@@ -209,36 +212,69 @@ public class SelectionInfoView extends ViewPart implements
 				.getScene();
 		BoundingBox boundingBox = null;
 		final Vector3f hotpoint = new Vector3f();
-		int count = 0;
+		final Quaternion rotation = new Quaternion();
+
+		final List<ISpatialNode> selection = new ArrayList<ISpatialNode>();
 		for (final INode node : scene.getSceneSelection().getSelectedNodes()) {
 			if (node instanceof ISpatialNode) {
-				final ISpatialNode spatialNode = (AbstractSpatialNode) node;
+				selection.add((ISpatialNode) node);
+			}
+		}
+
+		if (selection.isEmpty()) {
+			centerXText.setText("");
+			centerYText.setText("");
+			centerZText.setText("");
+
+			hotpointXText.setText("");
+			hotpointYText.setText("");
+			hotpointZText.setText("");
+
+			rotateXText.setText("");
+			rotateYText.setText("");
+			rotateZText.setText("");
+
+			return;
+		} else if (selection.size() == 1) {
+			final ISpatialNode spatialNode = selection.get(0);
+			hotpoint.set(spatialNode.getWorldTranslation());
+			boundingBox = spatialNode.getWorldBoundingBox();
+			rotation.set(spatialNode.getLocalRotation());
+		} else {
+			int count = 0;
+
+			for (final ISpatialNode spatialNode : selection) {
 				if (boundingBox == null) {
 					boundingBox = spatialNode.getWorldBoundingBox();
 				} else {
 					boundingBox.mergeLocal(spatialNode.getWorldBoundingBox());
 				}
 				hotpoint.addLocal(spatialNode.getWorldTranslation());
+
 				count++;
 			}
-		}
-		if (boundingBox == null) {
-			boundingBox = new BoundingBox();
-		}
-		if (count > 0) {
 			hotpoint.divideLocal(count);
 		}
 
-		centerXText.setText(format(boundingBox.getCenter().x));
-		centerYText.setText(format(boundingBox.getCenter().y));
-		centerZText.setText(format(boundingBox.getCenter().z));
+		centerXText.setText(formatLength(boundingBox.getCenter().x));
+		centerYText.setText(formatLength(boundingBox.getCenter().y));
+		centerZText.setText(formatLength(boundingBox.getCenter().z));
 
-		hotpointXText.setText(format(hotpoint.x));
-		hotpointYText.setText(format(hotpoint.y));
-		hotpointZText.setText(format(hotpoint.z));
+		hotpointXText.setText(formatLength(hotpoint.x));
+		hotpointYText.setText(formatLength(hotpoint.y));
+		hotpointZText.setText(formatLength(hotpoint.z));
+
+		final float[] angles = rotation.toAngles(null);
+		rotateXText.setText(formatAngle(angles[0]));
+		rotateYText.setText(formatAngle(angles[1]));
+		rotateZText.setText(formatAngle(angles[2]));
 	}
 
-	private String format(final float value) {
+	private String formatLength(final float value) {
 		return String.valueOf(value);
+	}
+
+	private String formatAngle(final float value) {
+		return String.valueOf(180.0f * value / FastMath.PI);
 	}
 }
