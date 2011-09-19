@@ -10,9 +10,8 @@ import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.shape.Box;
 
-public class MoveCrossModelControl extends CompositeModelControl implements
-		IModelControl {
-
+public class MoveRotateCrossModelControl extends CompositeModelControl
+		implements IModelControl {
 	private static final long serialVersionUID = 1L;
 
 	private final IToolAdapter toolAdapter;
@@ -20,26 +19,45 @@ public class MoveCrossModelControl extends CompositeModelControl implements
 	DirectionArrowModelControl xControl;
 	DirectionArrowModelControl yControl;
 	DirectionArrowModelControl zControl;
+	RotateCircleModelControl xRotateControl;
+	RotateCircleModelControl yRotateControl;
+	RotateCircleModelControl zRotateControl;
 
-	public MoveCrossModelControl(final IToolAdapter toolAdapter) {
+	public MoveRotateCrossModelControl(final IToolAdapter translateToolAdapter,
+			final IToolAdapter rotateToolAdapter) {
 		super("MoveCrossControl");
 
-		xControl = new DirectionArrowModelControl(Direction.X, toolAdapter);
+		xControl = new DirectionArrowModelControl(Direction.X,
+				translateToolAdapter);
 		this.attachChild(xControl);
 		subControls.add(xControl);
-		yControl = new DirectionArrowModelControl(Direction.Y, toolAdapter);
+		yControl = new DirectionArrowModelControl(Direction.Y,
+				translateToolAdapter);
 		this.attachChild(yControl);
 		subControls.add(yControl);
-		zControl = new DirectionArrowModelControl(Direction.Z, toolAdapter);
+		zControl = new DirectionArrowModelControl(Direction.Z,
+				translateToolAdapter);
 		this.attachChild(zControl);
 		subControls.add(zControl);
+		xRotateControl = new RotateCircleModelControl(Plane.YZ,
+				rotateToolAdapter);
+		this.attachChild(xRotateControl);
+		subControls.add(xRotateControl);
+		yRotateControl = new RotateCircleModelControl(Plane.XZ,
+				rotateToolAdapter);
+		this.attachChild(yRotateControl);
+		subControls.add(yRotateControl);
+		zRotateControl = new RotateCircleModelControl(Plane.XY,
+				rotateToolAdapter);
+		this.attachChild(zRotateControl);
+		subControls.add(zRotateControl);
 
 		final Box box = new Box("center", new Vector3f(0, 0, 0), 0.05f, 0.05f,
 				0.05f);
 		box.setDefaultColor(ColorRGBA.yellow.clone());
 		this.attachChild(box);
 
-		this.toolAdapter = toolAdapter;
+		this.toolAdapter = translateToolAdapter;
 
 		updatePositions();
 	}
@@ -56,7 +74,7 @@ public class MoveCrossModelControl extends CompositeModelControl implements
 		final float dist = (center.x - up.x) * (center.x - up.x)
 				+ (center.y - up.y) * (center.y - up.y);
 
-		setLocalScale(60.0f / FastMath.sqrt(dist));
+		setLocalScale(80.0f / FastMath.sqrt(dist));
 
 		updateWorldVectors(true);
 
@@ -71,12 +89,6 @@ public class MoveCrossModelControl extends CompositeModelControl implements
 	@Override
 	public IToolAdapter getToolAdapter() {
 		return toolAdapter;
-	}
-
-	@Override
-	public String toString() {
-		return "MoveCrossModelControl [xControl=" + xControl + ", yControl="
-				+ yControl + ", zControl=" + zControl + "]";
 	}
 
 }

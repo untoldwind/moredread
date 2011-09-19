@@ -3,6 +3,7 @@ package net.untoldwind.moredread.ui.controls.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
 
@@ -28,6 +29,14 @@ public abstract class CompositeModelControl extends Node implements
 	public void viewportChanged(final IViewport viewport) {
 		for (final IModelControl control : subControls) {
 			control.viewportChanged(viewport);
+		}
+	}
+
+	@Override
+	public void collectControlHandles(final List<IControlHandle> handles,
+			final IViewport viewport) {
+		for (final IModelControl control : subControls) {
+			control.collectControlHandles(handles, viewport);
 		}
 	}
 

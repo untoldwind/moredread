@@ -150,14 +150,16 @@ public class CreatePolygonToolHandler implements IToolHandler {
 
 		@Override
 		public boolean handleDragMove(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3f dragStart, final Vector3f dragEnd,
+				final EnumSet<Modifier> modifiers) {
 			// TODO Auto-generated method stub
 			return false;
 		}
 
 		@Override
 		public boolean handleDragEnd(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3f dragStart, final Vector3f dragEnd,
+				final EnumSet<Modifier> modifiers) {
 			// TODO Auto-generated method stub
 			return false;
 		}

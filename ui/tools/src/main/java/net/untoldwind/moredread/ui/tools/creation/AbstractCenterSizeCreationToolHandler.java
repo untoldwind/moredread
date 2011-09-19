@@ -134,13 +134,15 @@ public abstract class AbstractCenterSizeCreationToolHandler implements
 
 		@Override
 		public boolean handleDragMove(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3f dragStart, final Vector3f dragEnd,
+				final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
 		@Override
 		public boolean handleDragEnd(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3f dragStart, final Vector3f dragEnd,
+				final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 

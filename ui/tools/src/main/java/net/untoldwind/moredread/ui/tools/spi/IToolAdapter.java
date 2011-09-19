@@ -39,21 +39,12 @@ public interface IToolAdapter {
 	boolean handleClick(IModelControl modelControl, final Vector3f point,
 			final EnumSet<Modifier> modifiers);
 
-	boolean handleDragStart(IModelControl modelControl, Vector3f point,
+	boolean handleDragStart(IModelControl modelControl, Vector3f dragStart,
 			final EnumSet<Modifier> modifiers);
 
-	/**
-	 * Handle/react to a drap event
-	 * 
-	 * @param point
-	 *            The point clicked (note that its jobs of the model control to
-	 *            do all 3D-transformation stuff)
-	 * @param modifiers
-	 *            Modifier (mouse-button, keyboard ...)
-	 */
-	boolean handleDragMove(IModelControl modelControl, final Vector3f point,
-			final EnumSet<Modifier> modifiers);
+	boolean handleDragMove(IModelControl modelControl, Vector3f dragStart,
+			Vector3f dragEnd, final EnumSet<Modifier> modifiers);
 
-	boolean handleDragEnd(IModelControl modelControl, Vector3f point,
-			final EnumSet<Modifier> modifiers);
+	boolean handleDragEnd(IModelControl modelControl, Vector3f dragStart,
+			Vector3f dragEnd, final EnumSet<Modifier> modifiers);
 }

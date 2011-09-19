@@ -13,11 +13,13 @@ import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.controls.Modifier;
 import net.untoldwind.moredread.ui.controls.impl.FullScreenModelControl;
-import net.untoldwind.moredread.ui.controls.impl.MoveCrossModelControl;
+import net.untoldwind.moredread.ui.controls.impl.MoveRotateCrossModelControl;
 import net.untoldwind.moredread.ui.tools.IToolController;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 import net.untoldwind.moredread.ui.tools.spi.IToolHandler;
 
+import com.jme.math.FastMath;
+import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 
@@ -43,8 +45,9 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 		final List<IModelControl> controls = new ArrayList<IModelControl>();
 		for (final INode node : scene.getSceneSelection().getSelectedNodes()) {
 			if (node instanceof AbstractSpatialNode) {
-				controls.add(new MoveCrossModelControl(
-						new TransformToolAdapter(scene)));
+				controls.add(new MoveRotateCrossModelControl(
+						new TransformToolAdapter(scene), new RotateToolAdapter(
+								scene)));
 				break;
 			}
 		}
@@ -106,13 +109,15 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 
 		@Override
 		public boolean handleDragMove(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3f dragStart, final Vector3f dragEnd,
+				final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
 		@Override
 		public boolean handleDragEnd(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3f dragStart, final Vector3f dragEnd,
+				final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 	}
@@ -169,13 +174,14 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 
 		@Override
 		public boolean handleDragMove(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3f dragStart, final Vector3f dragEnd,
+				final EnumSet<Modifier> modifiers) {
 			final Vector3f midCenter = getCenter();
 
 			scene.getSceneChangeHandler().begin(true);
 
 			try {
-				updateScene(point, midCenter);
+				updateScene(dragEnd, midCenter);
 			} finally {
 				scene.getSceneChangeHandler().savepoint();
 			}
@@ -184,13 +190,14 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 
 		@Override
 		public boolean handleDragEnd(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3f dragStart, final Vector3f dragEnd,
+				final EnumSet<Modifier> modifiers) {
 			final Vector3f midCenter = getCenter();
 
 			scene.getSceneChangeHandler().begin(true);
 
 			try {
-				updateScene(point, midCenter);
+				updateScene(dragEnd, midCenter);
 			} finally {
 				scene.getSceneChangeHandler().commit();
 			}
@@ -220,5 +227,128 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 				}
 			}
 		}
+	}
+
+	private static class RotateToolAdapter implements IToolAdapter {
+		private final Scene scene;
+
+		private RotateToolAdapter(final Scene scene) {
+			this.scene = scene;
+		}
+
+		@Override
+		public Vector3f getCenter() {
+			final Vector3f center = new Vector3f();
+			int count = 0;
+			for (final INode node : scene.getSceneSelection()
+					.getSelectedNodes()) {
+				if (node instanceof ISpatialNode) {
+					final ISpatialNode spatialNode = (AbstractSpatialNode) node;
+					center.addLocal(spatialNode.getWorldBoundingBox()
+							.getCenter());
+					count++;
+				}
+			}
+			if (count > 0) {
+				center.divideLocal(count);
+			}
+
+			return center;
+		}
+
+		@Override
+		public Vector3f getFeedbackPoint() {
+			return getCenter();
+		}
+
+		@Override
+		public boolean handleMove(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			return false;
+		}
+
+		@Override
+		public boolean handleClick(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			return false;
+		}
+
+		@Override
+		public boolean handleDragStart(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			return false;
+		}
+
+		@Override
+		public boolean handleDragMove(final IModelControl modelControl,
+				final Vector3f dragStart, final Vector3f dragEnd,
+				final EnumSet<Modifier> modifiers) {
+			final Vector3f center = getCenter();
+			final Vector3f start = dragStart.subtract(center).normalizeLocal();
+			final Vector3f end = dragEnd.subtract(center).normalizeLocal();
+			final Vector3f axis = start.cross(end);
+			final float dot = start.dot(end);
+			final float axisLen = axis.length();
+
+			if (axisLen < FastMath.ZERO_TOLERANCE) {
+				return false;
+			}
+			final Quaternion rotation = new Quaternion();
+			rotation.fromAngleAxis(FastMath.acos(dot), axis);
+
+			scene.getSceneChangeHandler().rollback();
+			scene.getSceneChangeHandler().begin(true);
+
+			try {
+				updateScene(center, rotation);
+			} finally {
+				scene.getSceneChangeHandler().savepoint();
+			}
+
+			return true;
+		}
+
+		@Override
+		public boolean handleDragEnd(final IModelControl modelControl,
+				final Vector3f dragStart, final Vector3f dragEnd,
+				final EnumSet<Modifier> modifiers) {
+			final Vector3f center = getCenter();
+			final Vector3f start = dragStart.subtract(center).normalizeLocal();
+			final Vector3f end = dragEnd.subtract(center).normalizeLocal();
+			final Vector3f axis = start.cross(end);
+			final float dot = start.dot(end);
+			final float axisLen = axis.length();
+
+			if (axisLen < FastMath.ZERO_TOLERANCE) {
+				return false;
+			}
+			final Quaternion rotation = new Quaternion();
+			rotation.fromAngleAxis(FastMath.acos(dot), axis);
+
+			scene.getSceneChangeHandler().rollback();
+			scene.getSceneChangeHandler().begin(true);
+
+			try {
+				updateScene(center, rotation);
+			} finally {
+				scene.getSceneChangeHandler().commit();
+			}
+
+			return true;
+		}
+
+		private void updateScene(final Vector3f center,
+				final Quaternion rotation) {
+			for (final INode node : scene.getSceneSelection()
+					.getSelectedNodes()) {
+				if (node instanceof AbstractSpatialNode) {
+					final AbstractSpatialNode spatialNode = (AbstractSpatialNode) node;
+
+					spatialNode.setLocalRotation(spatialNode.getLocalRotation()
+							.mult(rotation));
+				}
+			}
+		}
+
 	}
 }
