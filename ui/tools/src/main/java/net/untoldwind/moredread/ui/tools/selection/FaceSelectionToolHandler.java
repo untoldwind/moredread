@@ -123,13 +123,15 @@ public class FaceSelectionToolHandler implements IToolHandler {
 
 		@Override
 		public boolean handleDragMove(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3f dragStart, final Vector3f dragEnd,
+				final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
 		@Override
 		public boolean handleDragEnd(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3f dragStart, final Vector3f dragEnd,
+				final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
@@ -188,11 +190,12 @@ public class FaceSelectionToolHandler implements IToolHandler {
 
 		@Override
 		public boolean handleDragMove(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3f dragStart, final Vector3f dragEnd,
+				final EnumSet<Modifier> modifiers) {
 			scene.getSceneChangeHandler().begin(true);
 
 			try {
-				updateScene(point);
+				updateScene(dragEnd);
 			} finally {
 				scene.getSceneChangeHandler().savepoint();
 			}
@@ -201,11 +204,12 @@ public class FaceSelectionToolHandler implements IToolHandler {
 
 		@Override
 		public boolean handleDragEnd(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3f dragStart, final Vector3f dragEnd,
+				final EnumSet<Modifier> modifiers) {
 			scene.getSceneChangeHandler().begin(true);
 
 			try {
-				updateScene(point);
+				updateScene(dragEnd);
 			} finally {
 				scene.getSceneChangeHandler().commit();
 			}

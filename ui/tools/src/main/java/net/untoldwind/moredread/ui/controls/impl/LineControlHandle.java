@@ -126,8 +126,8 @@ public class LineControlHandle implements IControlHandle {
 
 		final Vector3f v = worldDirection.mult(amount).addLocal(moveStart);
 
-		return modelControl.getToolAdapter().handleDragMove(modelControl, v,
-				modifiers);
+		return modelControl.getToolAdapter().handleDragMove(modelControl,
+				moveStart, v, modifiers);
 	}
 
 	@Override
@@ -141,8 +141,8 @@ public class LineControlHandle implements IControlHandle {
 
 		moveStart = null;
 
-		return modelControl.getToolAdapter().handleDragEnd(modelControl, v,
-				modifiers);
+		return modelControl.getToolAdapter().handleDragEnd(modelControl,
+				moveStart, v, modifiers);
 	}
 
 }

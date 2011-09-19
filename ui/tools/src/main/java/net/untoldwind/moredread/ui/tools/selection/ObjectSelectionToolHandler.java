@@ -44,7 +44,8 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 		for (final INode node : scene.getSceneSelection().getSelectedNodes()) {
 			if (node instanceof AbstractSpatialNode) {
 				controls.add(new MoveRotateCrossModelControl(
-						new TransformToolAdapter(scene)));
+						new TransformToolAdapter(scene), new RotateToolAdapter(
+								scene)));
 				break;
 			}
 		}
@@ -106,13 +107,15 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 
 		@Override
 		public boolean handleDragMove(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3f dragStart, final Vector3f dragEnd,
+				final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
 		@Override
 		public boolean handleDragEnd(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3f dragStart, final Vector3f dragEnd,
+				final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 	}
@@ -169,13 +172,14 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 
 		@Override
 		public boolean handleDragMove(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3f dragStart, final Vector3f dragEnd,
+				final EnumSet<Modifier> modifiers) {
 			final Vector3f midCenter = getCenter();
 
 			scene.getSceneChangeHandler().begin(true);
 
 			try {
-				updateScene(point, midCenter);
+				updateScene(dragEnd, midCenter);
 			} finally {
 				scene.getSceneChangeHandler().savepoint();
 			}
@@ -184,13 +188,14 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 
 		@Override
 		public boolean handleDragEnd(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3f dragStart, final Vector3f dragEnd,
+				final EnumSet<Modifier> modifiers) {
 			final Vector3f midCenter = getCenter();
 
 			scene.getSceneChangeHandler().begin(true);
 
 			try {
-				updateScene(point, midCenter);
+				updateScene(dragEnd, midCenter);
 			} finally {
 				scene.getSceneChangeHandler().commit();
 			}
@@ -219,6 +224,73 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 					changedNodes.add(spatialNode);
 				}
 			}
+		}
+	}
+
+	private static class RotateToolAdapter implements IToolAdapter {
+		private final Scene scene;
+
+		private RotateToolAdapter(final Scene scene) {
+			this.scene = scene;
+		}
+
+		@Override
+		public Vector3f getCenter() {
+			final Vector3f center = new Vector3f();
+			int count = 0;
+			for (final INode node : scene.getSceneSelection()
+					.getSelectedNodes()) {
+				if (node instanceof ISpatialNode) {
+					final ISpatialNode spatialNode = (AbstractSpatialNode) node;
+					center.addLocal(spatialNode.getWorldBoundingBox()
+							.getCenter());
+					count++;
+				}
+			}
+			if (count > 0) {
+				center.divideLocal(count);
+			}
+
+			return center;
+		}
+
+		@Override
+		public Vector3f getFeedbackPoint() {
+			return getCenter();
+		}
+
+		@Override
+		public boolean handleMove(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			return false;
+		}
+
+		@Override
+		public boolean handleClick(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			return false;
+		}
+
+		@Override
+		public boolean handleDragStart(final IModelControl modelControl,
+				final Vector3f point, final EnumSet<Modifier> modifiers) {
+			return false;
+		}
+
+		@Override
+		public boolean handleDragMove(final IModelControl modelControl,
+				final Vector3f dragStart, final Vector3f dragEnd,
+				final EnumSet<Modifier> modifiers) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public boolean handleDragEnd(final IModelControl modelControl,
+				final Vector3f dragStart, final Vector3f dragEnd,
+				final EnumSet<Modifier> modifiers) {
+			// TODO Auto-generated method stub
+			return false;
 		}
 	}
 }

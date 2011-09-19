@@ -59,14 +59,14 @@ public class PlaneProjectControlHandle implements IControlHandle {
 	public boolean handleDragMove(final Vector2f dragStart,
 			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
 		return modelControl.getToolAdapter().handleDragMove(modelControl,
-				project(dragEnd), modifiers);
+				project(dragStart), project(dragEnd), modifiers);
 	}
 
 	@Override
 	public boolean handleDragEnd(final Vector2f dragStart,
 			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
 		return modelControl.getToolAdapter().handleDragEnd(modelControl,
-				project(dragEnd), modifiers);
+				project(dragStart), project(dragEnd), modifiers);
 	}
 
 	void setProjection(final Plane plane, final Camera camera) {

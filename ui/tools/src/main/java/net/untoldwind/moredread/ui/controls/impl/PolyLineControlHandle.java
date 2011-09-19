@@ -2,7 +2,6 @@ package net.untoldwind.moredread.ui.controls.impl;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.Iterator;
 import java.util.List;
 
 import net.untoldwind.moredread.ui.controls.IControlHandle;
@@ -18,6 +17,7 @@ public class PolyLineControlHandle implements IControlHandle {
 	private final IModelControl modelControl;
 	private float salience;
 	private final Float fixedSalience;
+	private List<Vector3f> worldPoints;
 	private List<Vector2f> screenPoints;
 	private Vector2f center;
 
@@ -37,21 +37,15 @@ public class PolyLineControlHandle implements IControlHandle {
 
 	@Override
 	public float matches(final Vector2f screenCoord) {
-		System.out.println(screenCoord);
-		System.out.println(center);
-		System.out.println(screenPoints);
-		final Iterator<Vector2f> it = screenPoints.iterator();
-		Vector2f previous = it.next();
-
-		while (it.hasNext()) {
-			final Vector2f current = it.next();
+		for (int i = 1; i < screenPoints.size(); i++) {
+			final Vector2f previous = screenPoints.get(i - 1);
+			final Vector2f current = screenPoints.get(i);
 			final Vector2f direction = current.subtract(previous);
 			final Vector2f diff = screenCoord.subtract(center);
 
 			final float s = intersection(previous, direction, center, diff);
 
 			if (s >= 0.0 && s <= 1.0f) {
-				System.out.println(s);
 				final float l = screenCoord.subtract(
 						direction.mult(s).addLocal(previous)).length();
 
@@ -59,7 +53,6 @@ public class PolyLineControlHandle implements IControlHandle {
 					return fixedSalience != null ? fixedSalience : salience;
 				}
 			}
-			previous = current;
 		}
 		return -1;
 	}
@@ -72,39 +65,67 @@ public class PolyLineControlHandle implements IControlHandle {
 	@Override
 	public boolean handleMove(final Vector2f position,
 			final EnumSet<Modifier> modifiers) {
-		// TODO Auto-generated method stub
-		return false;
+		final Vector3f point = project(position);
+
+		if (point == null) {
+			return false;
+		}
+		return modelControl.getToolAdapter().handleMove(modelControl, point,
+				modifiers);
 	}
 
 	@Override
 	public boolean handleClick(final Vector2f position,
 			final EnumSet<Modifier> modifiers) {
-		// TODO Auto-generated method stub
-		return false;
+		final Vector3f point = project(position);
+
+		if (point == null) {
+			return false;
+		}
+		return modelControl.getToolAdapter().handleClick(modelControl, point,
+				modifiers);
 	}
 
 	@Override
 	public boolean handleDragStart(final Vector2f dragStart,
 			final EnumSet<Modifier> modifiers) {
-		// TODO Auto-generated method stub
-		return false;
+		final Vector3f point = project(dragStart);
+
+		if (point == null) {
+			return false;
+		}
+		return modelControl.getToolAdapter().handleDragStart(modelControl,
+				point, modifiers);
 	}
 
 	@Override
 	public boolean handleDragMove(final Vector2f dragStart,
 			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
-		// TODO Auto-generated method stub
-		return false;
+		final Vector3f point1 = project(dragStart);
+		final Vector3f point2 = project(dragEnd);
+
+		if (point1 == null || point2 == null) {
+			return false;
+		}
+		return modelControl.getToolAdapter().handleDragMove(modelControl,
+				point1, point2, modifiers);
 	}
 
 	@Override
 	public boolean handleDragEnd(final Vector2f dragStart,
 			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
-		// TODO Auto-generated method stub
-		return false;
+		final Vector3f point1 = project(dragStart);
+		final Vector3f point2 = project(dragEnd);
+
+		if (point1 == null || point2 == null) {
+			return false;
+		}
+		return modelControl.getToolAdapter().handleDragMove(modelControl,
+				point1, point2, modifiers);
 	}
 
 	public void update(final Camera camera, final List<Vector3f> points) {
+		this.worldPoints = points;
 		this.screenPoints = new ArrayList<Vector2f>(points.size());
 		int count = 0;
 
@@ -124,6 +145,23 @@ public class PolyLineControlHandle implements IControlHandle {
 			this.salience /= count;
 			this.center.divideLocal(count);
 		}
+	}
+
+	private Vector3f project(final Vector2f screenCoord) {
+		for (int i = 1; i < screenPoints.size(); i++) {
+			final Vector2f previous = screenPoints.get(i - 1);
+			final Vector2f current = screenPoints.get(i);
+			final Vector2f direction = current.subtract(previous);
+			final Vector2f diff = screenCoord.subtract(center);
+
+			final float s = intersection(previous, direction, center, diff);
+
+			if (s >= 0.0 && s <= 1.0f) {
+				return worldPoints.get(i).subtract(worldPoints.get(i - 1))
+						.multLocal(s).addLocal(worldPoints.get(i - 1));
+			}
+		}
+		return null;
 	}
 
 	private float intersection(final Vector2f v1, final Vector2f dir1,

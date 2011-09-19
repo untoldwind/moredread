@@ -75,6 +75,7 @@ public class PointControlHandle implements IControlHandle {
 			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
 		// TODO: Project this?
 		return modelControl.getToolAdapter().handleDragMove(modelControl,
+				new Vector3f(dragStart.x, dragStart.y, 0),
 				new Vector3f(dragEnd.x, dragEnd.y, 0), modifiers);
 
 	}
@@ -84,6 +85,7 @@ public class PointControlHandle implements IControlHandle {
 			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
 		// TODO: Project this?
 		return modelControl.getToolAdapter().handleDragEnd(modelControl,
+				new Vector3f(dragStart.x, dragStart.y, 0),
 				new Vector3f(dragEnd.x, dragEnd.y, 0), modifiers);
 	}
 

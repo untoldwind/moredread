@@ -23,25 +23,32 @@ public class MoveRotateCrossModelControl extends CompositeModelControl
 	RotateCircleModelControl yRotateControl;
 	RotateCircleModelControl zRotateControl;
 
-	public MoveRotateCrossModelControl(final IToolAdapter toolAdapter) {
+	public MoveRotateCrossModelControl(final IToolAdapter translateToolAdapter,
+			final IToolAdapter rotateToolAdapter) {
 		super("MoveCrossControl");
 
-		xControl = new DirectionArrowModelControl(Direction.X, toolAdapter);
+		xControl = new DirectionArrowModelControl(Direction.X,
+				translateToolAdapter);
 		this.attachChild(xControl);
 		subControls.add(xControl);
-		yControl = new DirectionArrowModelControl(Direction.Y, toolAdapter);
+		yControl = new DirectionArrowModelControl(Direction.Y,
+				translateToolAdapter);
 		this.attachChild(yControl);
 		subControls.add(yControl);
-		zControl = new DirectionArrowModelControl(Direction.Z, toolAdapter);
+		zControl = new DirectionArrowModelControl(Direction.Z,
+				translateToolAdapter);
 		this.attachChild(zControl);
 		subControls.add(zControl);
-		xRotateControl = new RotateCircleModelControl(Plane.YZ, toolAdapter);
+		xRotateControl = new RotateCircleModelControl(Plane.YZ,
+				rotateToolAdapter);
 		this.attachChild(xRotateControl);
 		subControls.add(xRotateControl);
-		yRotateControl = new RotateCircleModelControl(Plane.XZ, toolAdapter);
+		yRotateControl = new RotateCircleModelControl(Plane.XZ,
+				rotateToolAdapter);
 		this.attachChild(yRotateControl);
 		subControls.add(yRotateControl);
-		zRotateControl = new RotateCircleModelControl(Plane.XY, toolAdapter);
+		zRotateControl = new RotateCircleModelControl(Plane.XY,
+				rotateToolAdapter);
 		this.attachChild(zRotateControl);
 		subControls.add(zRotateControl);
 
@@ -50,7 +57,7 @@ public class MoveRotateCrossModelControl extends CompositeModelControl
 		box.setDefaultColor(ColorRGBA.yellow.clone());
 		this.attachChild(box);
 
-		this.toolAdapter = toolAdapter;
+		this.toolAdapter = translateToolAdapter;
 
 		updatePositions();
 	}
