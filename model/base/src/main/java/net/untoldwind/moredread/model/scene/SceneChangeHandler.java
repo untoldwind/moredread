@@ -96,14 +96,16 @@ public class SceneChangeHandler implements IAdaptable {
 	}
 
 	public synchronized void rollback() {
-		if (stage.isEmpty()) {
-			return;
-		} else if (lockOwner != null && lockOwner != Thread.currentThread()) {
+		if (lockOwner != null && lockOwner != Thread.currentThread()) {
 			throw new RuntimeException(
 					"Scene is manipulated by anowher thread: " + lockOwner);
 		}
 
 		lockOwner = null;
+		if (stage == null) {
+			return;
+		}
+
 		final List<INode> affectedNodes = new ArrayList<INode>();
 		for (final ISceneChangeCommand cmd : stage.values()) {
 			try {

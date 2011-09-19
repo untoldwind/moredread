@@ -120,7 +120,7 @@ public class PolyLineControlHandle implements IControlHandle {
 		if (point1 == null || point2 == null) {
 			return false;
 		}
-		return modelControl.getToolAdapter().handleDragMove(modelControl,
+		return modelControl.getToolAdapter().handleDragEnd(modelControl,
 				point1, point2, modifiers);
 	}
 

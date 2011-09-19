@@ -18,6 +18,8 @@ import net.untoldwind.moredread.ui.tools.IToolController;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 import net.untoldwind.moredread.ui.tools.spi.IToolHandler;
 
+import com.jme.math.FastMath;
+import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
 import com.jme.math.Vector3f;
 
@@ -281,16 +283,72 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 		public boolean handleDragMove(final IModelControl modelControl,
 				final Vector3f dragStart, final Vector3f dragEnd,
 				final EnumSet<Modifier> modifiers) {
-			// TODO Auto-generated method stub
-			return false;
+			final Vector3f center = getCenter();
+			final Vector3f start = dragStart.subtract(center).normalizeLocal();
+			final Vector3f end = dragEnd.subtract(center).normalizeLocal();
+			final Vector3f axis = start.cross(end);
+			final float dot = start.dot(end);
+			final float axisLen = axis.length();
+
+			if (axisLen < FastMath.ZERO_TOLERANCE) {
+				return false;
+			}
+			final Quaternion rotation = new Quaternion();
+			rotation.fromAngleAxis(FastMath.acos(dot), axis);
+
+			scene.getSceneChangeHandler().rollback();
+			scene.getSceneChangeHandler().begin(true);
+
+			try {
+				updateScene(center, rotation);
+			} finally {
+				scene.getSceneChangeHandler().savepoint();
+			}
+
+			return true;
 		}
 
 		@Override
 		public boolean handleDragEnd(final IModelControl modelControl,
 				final Vector3f dragStart, final Vector3f dragEnd,
 				final EnumSet<Modifier> modifiers) {
-			// TODO Auto-generated method stub
-			return false;
+			final Vector3f center = getCenter();
+			final Vector3f start = dragStart.subtract(center).normalizeLocal();
+			final Vector3f end = dragEnd.subtract(center).normalizeLocal();
+			final Vector3f axis = start.cross(end);
+			final float dot = start.dot(end);
+			final float axisLen = axis.length();
+
+			if (axisLen < FastMath.ZERO_TOLERANCE) {
+				return false;
+			}
+			final Quaternion rotation = new Quaternion();
+			rotation.fromAngleAxis(FastMath.acos(dot), axis);
+
+			scene.getSceneChangeHandler().rollback();
+			scene.getSceneChangeHandler().begin(true);
+
+			try {
+				updateScene(center, rotation);
+			} finally {
+				scene.getSceneChangeHandler().commit();
+			}
+
+			return true;
 		}
+
+		private void updateScene(final Vector3f center,
+				final Quaternion rotation) {
+			for (final INode node : scene.getSceneSelection()
+					.getSelectedNodes()) {
+				if (node instanceof AbstractSpatialNode) {
+					final AbstractSpatialNode spatialNode = (AbstractSpatialNode) node;
+
+					spatialNode.setLocalRotation(spatialNode.getLocalRotation()
+							.mult(rotation));
+				}
+			}
+		}
+
 	}
 }
