@@ -67,6 +67,12 @@
             name="Tool Control"
             restorable="true">
       </view>
+      <view
+            class="net.untoldwind.moredread.ui.views.NodeInfoView"
+            id="net.untoldwind.moredread.ui.nodeInfoView"
+            name="Node info"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
