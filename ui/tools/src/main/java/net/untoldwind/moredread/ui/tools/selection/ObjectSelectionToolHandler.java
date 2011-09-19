@@ -13,7 +13,7 @@ import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.controls.Modifier;
 import net.untoldwind.moredread.ui.controls.impl.FullScreenModelControl;
-import net.untoldwind.moredread.ui.controls.impl.MoveCrossModelControl;
+import net.untoldwind.moredread.ui.controls.impl.MoveRotateCrossModelControl;
 import net.untoldwind.moredread.ui.tools.IToolController;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 import net.untoldwind.moredread.ui.tools.spi.IToolHandler;
@@ -43,7 +43,7 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 		final List<IModelControl> controls = new ArrayList<IModelControl>();
 		for (final INode node : scene.getSceneSelection().getSelectedNodes()) {
 			if (node instanceof AbstractSpatialNode) {
-				controls.add(new MoveCrossModelControl(
+				controls.add(new MoveRotateCrossModelControl(
 						new TransformToolAdapter(scene)));
 				break;
 			}
