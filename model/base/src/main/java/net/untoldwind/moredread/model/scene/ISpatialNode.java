@@ -19,6 +19,8 @@ public interface ISpatialNode extends INode {
 
 	Vector3f getLocalScale();
 
+	Vector3f getWorldTranslation();
+
 	ITransformation getLocalTransformation();
 
 	BoundingBox getLocalBoundingBox();

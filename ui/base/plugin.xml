@@ -68,9 +68,9 @@
             restorable="true">
       </view>
       <view
-            class="net.untoldwind.moredread.ui.views.NodeInfoView"
-            id="net.untoldwind.moredread.ui.nodeInfoView"
-            name="Node info"
+            class="net.untoldwind.moredread.ui.views.SelectionInfoView"
+            id="net.untoldwind.moredread.ui.selectionInfoView"
+            name="Selection info"
             restorable="true">
       </view>
    </extension>

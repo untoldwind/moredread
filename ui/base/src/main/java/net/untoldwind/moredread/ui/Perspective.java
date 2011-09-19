@@ -3,7 +3,7 @@ package net.untoldwind.moredread.ui;
 import net.untoldwind.moredread.ui.views.GeneratorTreeView;
 import net.untoldwind.moredread.ui.views.Model3DView;
 import net.untoldwind.moredread.ui.views.ModelTreeView;
-import net.untoldwind.moredread.ui.views.NodeInfoView;
+import net.untoldwind.moredread.ui.views.SelectionInfoView;
 import net.untoldwind.moredread.ui.views.SelectionModeView;
 import net.untoldwind.moredread.ui.views.ToolControlView;
 import net.untoldwind.moredread.ui.views.ToolSelectionView;
@@ -49,7 +49,7 @@ public class Perspective implements IPerspectiveFactory {
 		toolFolder.addPlaceholder(ToolSelectionView.ID + ":*");
 		// toolFolder.addView(ToolSelectionView.ID);
 
-		layout.addStandaloneView(NodeInfoView.ID, true, IPageLayout.RIGHT,
+		layout.addStandaloneView(SelectionInfoView.ID, true, IPageLayout.RIGHT,
 				0.8f, "modelViews");
 
 		layout.addShowViewShortcut(Model3DView.ID);
