@@ -193,7 +193,7 @@ public class FaceSelectionToolHandler implements IToolHandler {
 		public boolean handleDragMove(final IModelControl modelControl,
 				final Vector3f dragStart, final Vector3f dragEnd,
 				final EnumSet<Modifier> modifiers) {
-			scene.getSceneChangeHandler().begin(true);
+			scene.getSceneChangeHandler().beginUndoable("Move faces");
 
 			try {
 				updateScene(dragEnd);
@@ -207,7 +207,7 @@ public class FaceSelectionToolHandler implements IToolHandler {
 		public boolean handleDragEnd(final IModelControl modelControl,
 				final Vector3f dragStart, final Vector3f dragEnd,
 				final EnumSet<Modifier> modifiers) {
-			scene.getSceneChangeHandler().begin(true);
+			scene.getSceneChangeHandler().beginUndoable("Move faces");
 
 			try {
 				updateScene(dragEnd);

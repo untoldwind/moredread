@@ -22,6 +22,7 @@ public class SceneChangeHandler implements IAdaptable {
 	private final Scene scene;
 	private final IUndoContext undoContext = new UndoContext();
 
+	transient String label;
 	transient Thread lockOwner;
 	transient boolean allowUndo;
 	transient Map<String, ISceneChangeCommand> stage;
@@ -30,12 +31,21 @@ public class SceneChangeHandler implements IAdaptable {
 		this.scene = scene;
 	}
 
-	public synchronized void begin(final boolean allowUndo) {
+	public void beginUndoable(final String label) {
+		begin(label, true);
+	}
+
+	public void beginNotUndoable() {
+		begin(null, false);
+	}
+
+	public synchronized void begin(final String label, final boolean allowUndo) {
 		if (lockOwner != null) {
 			throw new RuntimeException(
 					"Scene is already manipulated by thread: " + lockOwner);
 		}
 		lockOwner = Thread.currentThread();
+		this.label = label;
 		this.allowUndo = allowUndo;
 		if (stage == null) {
 			this.stage = new LinkedHashMap<String, ISceneChangeCommand>();
@@ -82,10 +92,11 @@ public class SceneChangeHandler implements IAdaptable {
 			if (stage.size() == 1) {
 				queueCommand(stage.values().iterator().next());
 			} else if (stage.size() > 1) {
-				queueCommand(new CompositeChangeCommand(stage.values()));
+				queueCommand(new CompositeChangeCommand(label, stage.values()));
 			}
 		}
 
+		label = null;
 		stage = null;
 
 		for (final INode node : affectedNodes) {
@@ -102,6 +113,7 @@ public class SceneChangeHandler implements IAdaptable {
 		}
 
 		lockOwner = null;
+		label = null;
 		if (stage == null) {
 			return;
 		}
@@ -140,6 +152,9 @@ public class SceneChangeHandler implements IAdaptable {
 
 		synchronized (stage) {
 			if (!stage.containsKey(command.getStageId())) {
+				if (label != null) {
+					command.setLabel(label);
+				}
 				command.updateOriginalValues(scene);
 				stage.put(command.getStageId(), command);
 			}

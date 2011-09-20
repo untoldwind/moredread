@@ -15,14 +15,14 @@ import net.untoldwind.moredread.model.scene.properties.SpatialNodePropertySource
 import net.untoldwind.moredread.model.transform.ITransformation;
 import net.untoldwind.moredread.model.transform.MatrixTransformation;
 
-import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 
 public abstract class AbstractSpatialNode extends AbstractNode implements
-		ISpatialNode, IAdaptable {
+		ISpatialNode {
 	/** The parent node (group). */
 	protected AbstractSpatialComposite<? extends INode> parent;
 
@@ -194,7 +194,7 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 		if (adapter == IPropertySource.class) {
 			return new SpatialNodePropertySource(this);
 		}
-		return null;
+		return Platform.getAdapterManager().getAdapter(this, adapter);
 	}
 
 }

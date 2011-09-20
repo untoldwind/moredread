@@ -20,8 +20,9 @@ public class CompositeChangeCommand extends AbstractOperation implements
 		ISceneChangeCommand {
 	private final LinkedList<ISceneChangeCommand> commands = new LinkedList<ISceneChangeCommand>();
 
-	public CompositeChangeCommand(final Collection<ISceneChangeCommand> commands) {
-		super("Multiple changes");
+	public CompositeChangeCommand(final String label,
+			final Collection<ISceneChangeCommand> commands) {
+		super(label != null ? label : "Multiple changes");
 		this.commands.addAll(commands);
 	}
 

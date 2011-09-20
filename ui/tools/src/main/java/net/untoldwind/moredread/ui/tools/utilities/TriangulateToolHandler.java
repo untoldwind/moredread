@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 import net.untoldwind.moredread.model.mesh.Mesh;
+import net.untoldwind.moredread.model.scene.AbstractSceneOperation;
 import net.untoldwind.moredread.model.scene.INode;
-import net.untoldwind.moredread.model.scene.ISceneOperation;
 import net.untoldwind.moredread.model.scene.MeshNode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.scene.SceneSelection;
@@ -29,7 +29,7 @@ public class TriangulateToolHandler implements IToolHandler {
 			}
 		}
 
-		scene.undoableChange(new ISceneOperation() {
+		scene.undoableChange(new AbstractSceneOperation("Triangulate faces") {
 			@Override
 			public void perform(final Scene scene) {
 				for (final MeshNode meshNode : meshNodes) {

@@ -5,9 +5,9 @@ import static net.untoldwind.moredread.model.test.AssertHelper.assertVectorEqual
 import java.util.Random;
 
 import net.untoldwind.moredread.model.generator.CubeMeshGenerator;
+import net.untoldwind.moredread.model.scene.AbstractSceneOperation;
 import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
-import net.untoldwind.moredread.model.scene.ISceneOperation;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.transform.ITransformation;
 
@@ -27,7 +27,7 @@ public class TransformationTest {
 	public void createScene() {
 		scene = new Scene();
 
-		scene.notUndoableChange(new ISceneOperation() {
+		scene.notUndoableChange(new AbstractSceneOperation("Test operation") {
 			@Override
 			public void perform(final Scene scene) {
 				node = new GeneratorNode(scene, new CubeMeshGenerator());
@@ -37,7 +37,7 @@ public class TransformationTest {
 
 	@Test
 	public void testTranslation() {
-		scene.notUndoableChange(new ISceneOperation() {
+		scene.notUndoableChange(new AbstractSceneOperation("Test operation") {
 			@Override
 			public void perform(final Scene scene) {
 				node.setLocalTranslation(new Vector3f(1, 2, 3));
@@ -66,7 +66,7 @@ public class TransformationTest {
 
 	@Test
 	public void testScale() {
-		scene.notUndoableChange(new ISceneOperation() {
+		scene.notUndoableChange(new AbstractSceneOperation("Test operation") {
 			@Override
 			public void perform(final Scene scene) {
 				node.setLocalScale(new Vector3f(1, 2, 3));
@@ -95,7 +95,7 @@ public class TransformationTest {
 
 	@Test
 	public void testRotation() {
-		scene.notUndoableChange(new ISceneOperation() {
+		scene.notUndoableChange(new AbstractSceneOperation("Test operation") {
 			@Override
 			public void perform(final Scene scene) {
 				node.setLocalRotation(new Quaternion().fromAngles(
@@ -141,7 +141,7 @@ public class TransformationTest {
 					random.nextFloat() * PI, random.nextFloat() * PI,
 					random.nextFloat() * PI);
 
-			scene.notUndoableChange(new ISceneOperation() {
+			scene.notUndoableChange(new AbstractSceneOperation("Test operation") {
 				@Override
 				public void perform(final Scene scene) {
 					node.setLocalTranslation(translation);

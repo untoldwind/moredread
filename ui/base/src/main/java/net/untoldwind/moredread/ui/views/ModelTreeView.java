@@ -47,6 +47,8 @@ public class ModelTreeView extends ViewPart implements
 
 	TreeViewer modelViewer;
 
+	volatile boolean changing;
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -63,6 +65,9 @@ public class ModelTreeView extends ViewPart implements
 					@SuppressWarnings("unchecked")
 					public void selectionChanged(
 							final SelectionChangedEvent event) {
+						if (changing) {
+							return;
+						}
 						final ISelection selection = event.getSelection();
 
 						if (selection != null
@@ -138,13 +143,17 @@ public class ModelTreeView extends ViewPart implements
 	public void sceneSelectionChanged(final SceneSelectionChangeEvent event) {
 		modelViewer.getControl().getDisplay().asyncExec(new Runnable() {
 			public void run() {
-				final List<INode> selectedNodes = new ArrayList<INode>();
+				try {
+					changing = true;
+					final List<INode> selectedNodes = new ArrayList<INode>();
 
-				selectedNodes.addAll(event.getSelectedNodes());
+					selectedNodes.addAll(event.getSelectedNodes());
 
-				modelViewer
-						.setSelection(new StructuredSelection(selectedNodes));
-
+					modelViewer.setSelection(new StructuredSelection(
+							selectedNodes));
+				} finally {
+					changing = false;
+				}
 			}
 		});
 	}
@@ -156,13 +165,19 @@ public class ModelTreeView extends ViewPart implements
 	public void sceneChanged(final SceneChangeEvent event) {
 		modelViewer.getControl().getDisplay().asyncExec(new Runnable() {
 			public void run() {
-				final ISelection selection = modelViewer.getSelection();
-				final Object[] expanded = modelViewer.getExpandedElements();
+				try {
+					changing = true;
+					final ISelection selection = modelViewer.getSelection();
+					final Object[] expanded = modelViewer.getExpandedElements();
 
-				modelViewer.setInput(MoreDreadUI.getDefault().getSceneHolder());
+					modelViewer.setInput(MoreDreadUI.getDefault()
+							.getSceneHolder());
 
-				modelViewer.setExpandedElements(expanded);
-				modelViewer.setSelection(selection);
+					modelViewer.setExpandedElements(expanded);
+					modelViewer.setSelection(selection);
+				} finally {
+					changing = false;
+				}
 			}
 		});
 	}

@@ -45,7 +45,7 @@ public class SceneAddNodeChangeCommand extends AbstractOperation implements
 		final Scene scene = (Scene) info.getAdapter(Scene.class);
 		final IComposite parentNode = (IComposite) scene.getNode(parentNodeId);
 
-		scene.getSceneChangeHandler().begin(false);
+		scene.getSceneChangeHandler().beginNotUndoable();
 
 		BinaryStateReader.fromByteArray(nodeState,
 				new IInstanceCreator<INode>() {
@@ -79,7 +79,7 @@ public class SceneAddNodeChangeCommand extends AbstractOperation implements
 		final IComposite parentNode = (IComposite) scene.getNode(parentNodeId);
 		final INode childNode = scene.getNode(childNodeId);
 
-		scene.getSceneChangeHandler().begin(false);
+		scene.getSceneChangeHandler().beginNotUndoable();
 
 		try {
 			parentNode.removeChild(childNode);

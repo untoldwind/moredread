@@ -19,10 +19,10 @@ import net.untoldwind.moredread.model.mesh.Point;
 import net.untoldwind.moredread.model.mesh.PolyMesh;
 import net.untoldwind.moredread.model.mesh.Polygon;
 import net.untoldwind.moredread.model.op.IBooleanOperation;
+import net.untoldwind.moredread.model.scene.AbstractSceneOperation;
 import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
 import net.untoldwind.moredread.model.scene.ISceneHolder;
-import net.untoldwind.moredread.model.scene.ISceneOperation;
 import net.untoldwind.moredread.model.scene.MeshNode;
 import net.untoldwind.moredread.model.scene.PolygonNode;
 import net.untoldwind.moredread.model.scene.Scene;
@@ -157,7 +157,7 @@ public class MoreDreadUI extends AbstractUIPlugin {
 	protected void initializeScene() {
 		final Scene scene = new Scene();
 
-		scene.notUndoableChange(new ISceneOperation() {
+		scene.notUndoableChange(new AbstractSceneOperation("Create demo scene") {
 			@Override
 			public void perform(final Scene scene) {
 				final AbstractSpatialNode node1 = new GeneratorNode(scene,

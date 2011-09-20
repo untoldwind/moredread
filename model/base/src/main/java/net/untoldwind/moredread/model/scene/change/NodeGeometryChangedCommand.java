@@ -84,7 +84,7 @@ public class NodeGeometryChangedCommand extends AbstractOperation implements
 		if (node == null) {
 			return Status.CANCEL_STATUS;
 		}
-		scene.getSceneChangeHandler().begin(false);
+		scene.getSceneChangeHandler().beginNotUndoable();
 
 		try {
 			node.setGeometry((IGeometry<?>) BinaryStateReader
@@ -107,7 +107,7 @@ public class NodeGeometryChangedCommand extends AbstractOperation implements
 		if (node == null) {
 			return Status.CANCEL_STATUS;
 		}
-		scene.getSceneChangeHandler().begin(false);
+		scene.getSceneChangeHandler().beginNotUndoable();
 
 		try {
 			node.setGeometry((IGeometry<?>) BinaryStateReader

@@ -1,7 +1,7 @@
 package net.untoldwind.moredread.model.scene.properties;
 
-import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
+import net.untoldwind.moredread.model.scene.Scene;
 
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
@@ -70,7 +70,7 @@ public class SpatialNodePropertySource implements IPropertySource {
 	public void setPropertyValue(final Object id, final Object value) {
 		final Scene scene = node.getScene();
 
-		scene.getSceneChangeHandler().begin(true);
+		scene.getSceneChangeHandler().beginUndoable("Changed Property");
 
 		try {
 			if (PROPERTY_NAME.equals(id)) {

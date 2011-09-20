@@ -2,9 +2,9 @@ package net.untoldwind.moredread.model.scene.change;
 
 import java.util.List;
 
+import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.Scene;
-import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.operations.AbstractOperation;
@@ -39,7 +39,8 @@ public class NodeTransformationChangeCommand extends AbstractOperation
 
 	@Override
 	public void updateOriginalValues(final Scene scene) {
-		final AbstractSpatialNode node = (AbstractSpatialNode) scene.getNode(nodeId);
+		final AbstractSpatialNode node = (AbstractSpatialNode) scene
+				.getNode(nodeId);
 
 		if (node == null) {
 			throw new RuntimeException("Node " + nodeId + " not found in scene");
@@ -51,7 +52,8 @@ public class NodeTransformationChangeCommand extends AbstractOperation
 
 	@Override
 	public void updateCurrentValues(final Scene scene) {
-		final AbstractSpatialNode node = (AbstractSpatialNode) scene.getNode(nodeId);
+		final AbstractSpatialNode node = (AbstractSpatialNode) scene
+				.getNode(nodeId);
 
 		if (node == null) {
 			throw new RuntimeException("Node " + nodeId + " not found in scene");
@@ -63,7 +65,8 @@ public class NodeTransformationChangeCommand extends AbstractOperation
 
 	@Override
 	public void collectAffectedNodes(final Scene scene, final List<INode> nodes) {
-		final AbstractSpatialNode node = (AbstractSpatialNode) scene.getNode(nodeId);
+		final AbstractSpatialNode node = (AbstractSpatialNode) scene
+				.getNode(nodeId);
 
 		if (node == null) {
 			throw new RuntimeException("Node " + nodeId + " not found in scene");
@@ -82,13 +85,14 @@ public class NodeTransformationChangeCommand extends AbstractOperation
 	public IStatus redo(final IProgressMonitor monitor, final IAdaptable info)
 			throws ExecutionException {
 		final Scene scene = (Scene) info.getAdapter(Scene.class);
-		final AbstractSpatialNode node = (AbstractSpatialNode) scene.getNode(nodeId);
+		final AbstractSpatialNode node = (AbstractSpatialNode) scene
+				.getNode(nodeId);
 
 		if (node == null) {
 			return Status.CANCEL_STATUS;
 		}
 
-		scene.getSceneChangeHandler().begin(false);
+		scene.getSceneChangeHandler().beginNotUndoable();
 
 		try {
 			node.setLocalRotation(newLocalRotation);
@@ -105,13 +109,14 @@ public class NodeTransformationChangeCommand extends AbstractOperation
 	public IStatus undo(final IProgressMonitor monitor, final IAdaptable info)
 			throws ExecutionException {
 		final Scene scene = (Scene) info.getAdapter(Scene.class);
-		final AbstractSpatialNode node = (AbstractSpatialNode) scene.getNode(nodeId);
+		final AbstractSpatialNode node = (AbstractSpatialNode) scene
+				.getNode(nodeId);
 
 		if (node == null) {
 			return Status.CANCEL_STATUS;
 		}
 
-		scene.getSceneChangeHandler().begin(false);
+		scene.getSceneChangeHandler().beginNotUndoable();
 
 		try {
 			node.setLocalRotation(oldLocalRotation);

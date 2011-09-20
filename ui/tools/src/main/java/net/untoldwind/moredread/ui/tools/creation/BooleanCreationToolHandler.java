@@ -6,9 +6,9 @@ import java.util.Set;
 
 import net.untoldwind.moredread.model.generator.BooleanGenerator;
 import net.untoldwind.moredread.model.op.IBooleanOperation;
+import net.untoldwind.moredread.model.scene.AbstractSceneOperation;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
 import net.untoldwind.moredread.model.scene.INode;
-import net.untoldwind.moredread.model.scene.ISceneOperation;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
@@ -26,7 +26,7 @@ public class BooleanCreationToolHandler implements IToolHandler {
 			return;
 		}
 
-		scene.undoableChange(new ISceneOperation() {
+		scene.undoableChange(new AbstractSceneOperation("Create Boolean") {
 			@Override
 			public void perform(final Scene scene) {
 				final GeneratorNode booleanNode = new GeneratorNode(scene,
