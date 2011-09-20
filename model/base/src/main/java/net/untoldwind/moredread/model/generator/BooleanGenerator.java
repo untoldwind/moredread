@@ -12,6 +12,8 @@ import net.untoldwind.moredread.model.op.IBooleanOperation.BoolOperation;
 import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 
+import org.eclipse.core.runtime.Platform;
+
 public class BooleanGenerator implements IMeshGenerator {
 	private BoolOperation boolOperation;
 
@@ -65,5 +67,10 @@ public class BooleanGenerator implements IMeshGenerator {
 	@Override
 	public void writeState(final IStateWriter writer) throws IOException {
 		writer.writeString("operation", boolOperation.name());
+	}
+
+	@Override
+	public Object getAdapter(@SuppressWarnings("rawtypes") final Class adapter) {
+		return Platform.getAdapterManager().getAdapter(this, adapter);
 	}
 }

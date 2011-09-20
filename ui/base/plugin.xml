@@ -73,6 +73,12 @@
             name="Selection info"
             restorable="true">
       </view>
+      <view
+            class="net.untoldwind.moredread.ui.views.OptionView"
+            id="net.untoldwind.moredread.ui.optionView"
+            name="Options"
+            restorable="true">
+      </view>
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -323,6 +329,23 @@
             name="In 3D view"
             parentId="org.eclipse.ui.contexts.window">
       </context>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="net.untoldwind.moredread.model.scene.GeneratorNode"
+            class="net.untoldwind.moredread.ui.options.node.GeneratorNodeOptions$Factory">
+         <adapter
+               type="net.untoldwind.moredread.ui.options.IOptionView">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="net.untoldwind.moredread.model.generator.AbstractCenterSizeGenerator"
+            class="net.untoldwind.moredread.ui.options.generator.CenterSizeGeneratorOptions$Factory">
+         <adapter
+               type="net.untoldwind.moredread.ui.options.IOptionView">
+         </adapter>
+      </factory>
    </extension>
 
 </plugin>

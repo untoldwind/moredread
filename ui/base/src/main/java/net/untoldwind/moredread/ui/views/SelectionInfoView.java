@@ -1,5 +1,8 @@
 package net.untoldwind.moredread.ui.views;
 
+import static net.untoldwind.moredread.ui.utils.FormatUtils.formatAngle;
+import static net.untoldwind.moredread.ui.utils.FormatUtils.formatLength;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -25,9 +28,10 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISizeProvider;
 import org.eclipse.ui.part.ViewPart;
 
-import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
+
+;
 
 public class SelectionInfoView extends ViewPart implements
 		ISceneChangeListener, ISceneSelectionChangeListener, ISizeProvider {
@@ -200,11 +204,7 @@ public class SelectionInfoView extends ViewPart implements
 
 	@Override
 	public void sceneSelectionChanged(final SceneSelectionChangeEvent event) {
-		if (updateQueueCount.get() < 2) {
-			updateQueueCount.incrementAndGet();
-
-			Display.getDefault().asyncExec(updateSelectionRun);
-		}
+		updateSelection();
 	}
 
 	private void updateSelection() {
@@ -268,13 +268,5 @@ public class SelectionInfoView extends ViewPart implements
 		rotateXText.setText(formatAngle(angles[0]));
 		rotateYText.setText(formatAngle(angles[1]));
 		rotateZText.setText(formatAngle(angles[2]));
-	}
-
-	private String formatLength(final float value) {
-		return String.valueOf(value);
-	}
-
-	private String formatAngle(final float value) {
-		return String.valueOf(180.0f * value / FastMath.PI);
 	}
 }
