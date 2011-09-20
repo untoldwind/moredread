@@ -343,14 +343,14 @@
             adaptableType="net.untoldwind.moredread.model.generator.AbstractCenterSizeGenerator"
             class="net.untoldwind.moredread.ui.options.generator.CenterSizeGeneratorOptions$Factory">
          <adapter
-               type="net.untoldwind.moredread.ui.options.IOptionView">
+               type="net.untoldwind.moredread.ui.options.generator.IGeneratorOptionView">
          </adapter>
       </factory>
       <factory
             adaptableType="net.untoldwind.moredread.model.generator.BooleanGenerator"
             class="net.untoldwind.moredread.ui.options.generator.BooleanGeneratorOptions$Factory">
          <adapter
-               type="net.untoldwind.moredread.ui.options.IOptionView">
+               type="net.untoldwind.moredread.ui.options.generator.IGeneratorOptionView">
          </adapter>
       </factory>
    </extension>

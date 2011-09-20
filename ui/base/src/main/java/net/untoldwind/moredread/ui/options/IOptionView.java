@@ -6,4 +6,6 @@ public interface IOptionView {
 	void createControls(Composite parent);
 
 	void dispose();
+
+	void update();
 }

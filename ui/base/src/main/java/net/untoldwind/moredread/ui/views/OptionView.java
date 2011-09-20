@@ -1,7 +1,9 @@
 package net.untoldwind.moredread.ui.views;
 
 import net.untoldwind.moredread.model.scene.INode;
+import net.untoldwind.moredread.model.scene.event.ISceneChangeListener;
 import net.untoldwind.moredread.model.scene.event.ISceneSelectionChangeListener;
+import net.untoldwind.moredread.model.scene.event.SceneChangeEvent;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
 import net.untoldwind.moredread.ui.MoreDreadUI;
 import net.untoldwind.moredread.ui.options.IOptionView;
@@ -11,7 +13,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
-public class OptionView extends ViewPart implements
+public class OptionView extends ViewPart implements ISceneChangeListener,
 		ISceneSelectionChangeListener {
 	public static final String ID = "net.untoldwind.moredread.ui.optionView";
 
@@ -27,11 +29,15 @@ public class OptionView extends ViewPart implements
 		optionsContainer.setLayout(layout);
 
 		MoreDreadUI.getDefault().getSceneHolder().getScene()
+				.addSceneChangeListener(this);
+		MoreDreadUI.getDefault().getSceneHolder().getScene()
 				.getSceneSelection().addSceneSelectionChangeListener(this);
 	}
 
 	@Override
 	public void dispose() {
+		MoreDreadUI.getDefault().getSceneHolder().getScene()
+				.removeSceneChangeListener(this);
 		MoreDreadUI.getDefault().getSceneHolder().getScene()
 				.getSceneSelection().removeSceneSelectionChangeListener(this);
 		super.dispose();
@@ -39,6 +45,13 @@ public class OptionView extends ViewPart implements
 
 	@Override
 	public void setFocus() {
+	}
+
+	@Override
+	public void sceneChanged(final SceneChangeEvent event) {
+		if (activeOptionView != null) {
+			activeOptionView.update();
+		}
 	}
 
 	@Override
