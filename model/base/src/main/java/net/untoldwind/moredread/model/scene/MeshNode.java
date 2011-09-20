@@ -19,8 +19,8 @@ public class MeshNode extends ObjectNode implements IMeshNode, IGeneratorInput {
 	private transient com.jme.scene.Node displayNode;
 
 	private transient List<Spatial> renderedGeometries;
-	private transient BoundingBox worldBoundingBox;
-	private transient BoundingBox localBoundingBox;
+	private transient volatile BoundingBox worldBoundingBox;
+	private transient volatile BoundingBox localBoundingBox;
 
 	protected MeshNode(final AbstractSpatialComposite<? extends INode> parent) {
 		super(parent, "Mesh");
@@ -69,9 +69,10 @@ public class MeshNode extends ObjectNode implements IMeshNode, IGeneratorInput {
 	@Override
 	public BoundingBox getWorldBoundingBox() {
 		if (worldBoundingBox == null) {
-			worldBoundingBox = new BoundingBox(mesh.getVertices());
-			worldBoundingBox = worldBoundingBox.transform(getWorldRotation(),
-					getWorldTranslation(), getWorldScale());
+			final BoundingBox newWorldBoundingBox = new BoundingBox(
+					mesh.getVertices());
+			worldBoundingBox = newWorldBoundingBox.transform(
+					getWorldRotation(), getWorldTranslation(), getWorldScale());
 		}
 		return worldBoundingBox;
 	}

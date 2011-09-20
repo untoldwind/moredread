@@ -26,8 +26,8 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 
 	private transient IMesh generatedMesh;
 	private transient List<Spatial> renderedGeometries;
-	private transient BoundingBox worldBoundingBox;
-	private transient BoundingBox localBoundingBox;
+	private transient volatile BoundingBox worldBoundingBox;
+	private transient volatile BoundingBox localBoundingBox;
 	private ColorRGBA modelColor;
 
 	protected GeneratorNode(
@@ -93,10 +93,10 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 	@Override
 	public BoundingBox getWorldBoundingBox() {
 		if (worldBoundingBox == null) {
-			worldBoundingBox = new BoundingBox(getRenderGeometry()
-					.getVertices());
-			worldBoundingBox = worldBoundingBox.transform(getWorldRotation(),
-					getWorldTranslation(), getWorldScale());
+			final BoundingBox newWorldBoundingBox = new BoundingBox(
+					getRenderGeometry().getVertices());
+			worldBoundingBox = newWorldBoundingBox.transform(
+					getWorldRotation(), getWorldTranslation(), getWorldScale());
 		}
 		return worldBoundingBox;
 	}

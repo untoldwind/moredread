@@ -170,7 +170,8 @@ public class SelectionInfoView extends ViewPart implements
 
 			for (final ISpatialNode spatialNode : selection) {
 				if (boundingBox == null) {
-					boundingBox = spatialNode.getWorldBoundingBox();
+					boundingBox = new BoundingBox(
+							spatialNode.getWorldBoundingBox());
 				} else {
 					boundingBox.mergeLocal(spatialNode.getWorldBoundingBox());
 				}
