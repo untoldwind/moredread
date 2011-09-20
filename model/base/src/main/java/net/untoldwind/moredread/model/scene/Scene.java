@@ -64,7 +64,7 @@ public class Scene extends Group {
 	}
 
 	public void undoableChange(final ISceneOperation operation) {
-		sceneChangeHandler.begin(true);
+		sceneChangeHandler.begin(operation.getLabel(), true);
 
 		try {
 			operation.perform(this);
@@ -74,7 +74,7 @@ public class Scene extends Group {
 	}
 
 	public void notUndoableChange(final ISceneOperation operation) {
-		sceneChangeHandler.begin(false);
+		sceneChangeHandler.begin(operation.getLabel(), false);
 
 		try {
 			operation.perform(this);

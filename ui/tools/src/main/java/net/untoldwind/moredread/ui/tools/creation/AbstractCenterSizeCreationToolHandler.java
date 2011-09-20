@@ -79,16 +79,19 @@ public abstract class AbstractCenterSizeCreationToolHandler implements
 		public boolean handleClick(final IModelControl modelControl,
 				final Vector3f point, final EnumSet<Modifier> modifiers) {
 			if (node == null) {
-				scene.getSceneChangeHandler().begin(true);
+				generator = createGenerator(point);
+
+				scene.getSceneChangeHandler().beginUndoable(
+						"Create " + generator.getName());
 
 				try {
-					generator = createGenerator(point);
 					node = new GeneratorNode(scene, generator);
 				} finally {
 					scene.getSceneChangeHandler().savepoint();
 				}
 			} else {
-				scene.getSceneChangeHandler().begin(true);
+				scene.getSceneChangeHandler().beginUndoable(
+						"Create " + generator.getName());
 
 				try {
 					generator
@@ -113,7 +116,8 @@ public abstract class AbstractCenterSizeCreationToolHandler implements
 			modelControl.updatePositions();
 
 			if (node != null) {
-				scene.getSceneChangeHandler().begin(true);
+				scene.getSceneChangeHandler().beginUndoable(
+						"Create " + generator.getName());
 
 				try {
 					generator

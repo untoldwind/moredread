@@ -28,7 +28,7 @@ public class MeshNodeTest {
 		final Mesh<?> mesh = new CubeMeshGenerator().generateMesh(null);
 		final Scene scene = new Scene();
 
-		scene.getSceneChangeHandler().begin(false);
+		scene.getSceneChangeHandler().beginNotUndoable();
 		final MeshNode node = new MeshNode(scene, mesh);
 		scene.getSceneChangeHandler().commit();
 
@@ -37,7 +37,7 @@ public class MeshNodeTest {
 		final BinaryStateReader reader = new BinaryStateReader(
 				new ByteArrayInputStream(ser));
 
-		scene.getSceneChangeHandler().begin(false);
+		scene.getSceneChangeHandler().beginNotUndoable();
 		final MeshNode otherNode = reader
 				.readObject(new IStateReader.IInstanceCreator<MeshNode>() {
 					@Override

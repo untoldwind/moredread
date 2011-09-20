@@ -180,7 +180,7 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 				final EnumSet<Modifier> modifiers) {
 			final Vector3f midCenter = getCenter();
 
-			scene.getSceneChangeHandler().begin(true);
+			scene.getSceneChangeHandler().beginUndoable("Move nodes");
 
 			try {
 				updateScene(dragEnd, midCenter);
@@ -196,7 +196,7 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 				final EnumSet<Modifier> modifiers) {
 			final Vector3f midCenter = getCenter();
 
-			scene.getSceneChangeHandler().begin(true);
+			scene.getSceneChangeHandler().beginUndoable("Move nodes");
 
 			try {
 				updateScene(dragEnd, midCenter);
@@ -309,7 +309,7 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 			final Quaternion rotation = new Quaternion();
 			rotation.fromAngleAxis(FastMath.acos(dot), axis);
 
-			scene.getSceneChangeHandler().begin(true);
+			scene.getSceneChangeHandler().beginUndoable("Rotate nodes");
 
 			try {
 				updateScene(center, rotation);
@@ -337,7 +337,7 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 			final Quaternion rotation = new Quaternion();
 			rotation.fromAngleAxis(FastMath.acos(dot), axis);
 
-			scene.getSceneChangeHandler().begin(true);
+			scene.getSceneChangeHandler().beginUndoable("Rotate nodes");
 
 			try {
 				updateScene(center, rotation);

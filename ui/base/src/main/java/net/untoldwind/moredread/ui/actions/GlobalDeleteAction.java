@@ -52,7 +52,7 @@ public class GlobalDeleteAction extends Action {
 	public void run() {
 		final Scene scene = sceneHolder.getScene();
 
-		scene.getSceneChangeHandler().begin(true);
+		scene.getSceneChangeHandler().beginUndoable("Delete nodes");
 
 		final List<INode> nodes = new ArrayList<INode>(sceneHolder.getScene()
 				.getSceneSelection().getSelectedNodes());

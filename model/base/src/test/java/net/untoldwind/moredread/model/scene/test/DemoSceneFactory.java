@@ -8,9 +8,9 @@ import net.untoldwind.moredread.model.generator.IcosahedronMeshGenerator;
 import net.untoldwind.moredread.model.generator.OctahedronMeshGenerator;
 import net.untoldwind.moredread.model.mesh.PolyMesh;
 import net.untoldwind.moredread.model.op.IBooleanOperation;
+import net.untoldwind.moredread.model.scene.AbstractSceneOperation;
 import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
-import net.untoldwind.moredread.model.scene.ISceneOperation;
 import net.untoldwind.moredread.model.scene.MeshNode;
 import net.untoldwind.moredread.model.scene.Scene;
 
@@ -20,7 +20,7 @@ public class DemoSceneFactory {
 	Scene createScene() {
 		final Scene scene = new Scene();
 
-		scene.notUndoableChange(new ISceneOperation() {
+		scene.notUndoableChange(new AbstractSceneOperation("Create demo scene") {
 			@Override
 			public void perform(final Scene scene) {
 				final AbstractSpatialNode node1 = new GeneratorNode(scene,

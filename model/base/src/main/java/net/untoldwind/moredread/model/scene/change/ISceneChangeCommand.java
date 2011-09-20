@@ -15,4 +15,6 @@ public interface ISceneChangeCommand extends IUndoableOperation {
 	void updateCurrentValues(final Scene scene);
 
 	void collectAffectedNodes(final Scene scene, final List<INode> nodes);
+
+	void setLabel(String label);
 }

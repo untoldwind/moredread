@@ -78,7 +78,7 @@ public class NodeParentChangeCommand extends AbstractOperation implements
 		final INode node = scene.getNode(nodeId);
 		final IComposite newParent = (IComposite) scene.getNode(newParentId);
 
-		scene.getSceneChangeHandler().begin(false);
+		scene.getSceneChangeHandler().beginNotUndoable();
 
 		node.setParent(newParent);
 
@@ -94,7 +94,7 @@ public class NodeParentChangeCommand extends AbstractOperation implements
 		final INode node = scene.getNode(nodeId);
 		final IComposite oldParent = (IComposite) scene.getNode(oldParentId);
 
-		scene.getSceneChangeHandler().begin(false);
+		scene.getSceneChangeHandler().beginNotUndoable();
 
 		node.setParent(oldParent);
 

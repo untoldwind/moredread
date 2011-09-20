@@ -1,12 +1,8 @@
 package net.untoldwind.moredread.ui.actions;
 
-import net.untoldwind.moredread.model.mesh.IMesh;
-import net.untoldwind.moredread.model.mesh.Mesh;
-import net.untoldwind.moredread.model.scene.AbstractSpatialComposite;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
 import net.untoldwind.moredread.model.scene.INode;
-import net.untoldwind.moredread.model.scene.MeshNode;
-import net.untoldwind.moredread.model.scene.SceneChangeHandler;
+import net.untoldwind.moredread.model.scene.op.CollapseGeneratorNodeOperation;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -24,34 +20,9 @@ public class GeneratorNodeActionDelegate implements IObjectActionDelegate {
 
 		if ("net.untoldwind.moredread.ui.generatorNode.collapse".equals(id)) {
 			if (selectedNode != null && selectedNode instanceof GeneratorNode) {
-				final GeneratorNode selectedGeneratorNode = (GeneratorNode) selectedNode;
-				final IMesh mesh = selectedGeneratorNode.getRenderGeometry();
-
-				if (mesh instanceof Mesh<?>) {
-					MeshNode collapsedNode;
-					final SceneChangeHandler sceneChangeHandler = selectedNode
-							.getScene().getSceneChangeHandler();
-
-					sceneChangeHandler.begin(true);
-					try {
-						final AbstractSpatialComposite<?> parent = ((GeneratorNode) selectedNode)
-								.getParent();
-
-						collapsedNode = new MeshNode(parent, (Mesh<?>) mesh);
-
-						collapsedNode.setName(selectedNode.getName());
-						collapsedNode.setLocalTranslation(selectedGeneratorNode
-								.getLocalTranslation());
-						collapsedNode.setLocalScale(selectedGeneratorNode
-								.getLocalScale());
-						collapsedNode.setLocalRotation(selectedGeneratorNode
-								.getLocalRotation());
-
-						selectedNode.remove();
-					} finally {
-						sceneChangeHandler.commit();
-					}
-				}
+				selectedNode.getScene().undoableChange(
+						new CollapseGeneratorNodeOperation(
+								(GeneratorNode) selectedNode));
 			}
 		}
 	}

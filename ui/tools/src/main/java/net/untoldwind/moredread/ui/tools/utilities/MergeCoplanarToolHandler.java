@@ -8,8 +8,8 @@ import net.untoldwind.moredread.model.mesh.Mesh;
 import net.untoldwind.moredread.model.op.IUnaryOperation;
 import net.untoldwind.moredread.model.op.UnaryOperationFactory;
 import net.untoldwind.moredread.model.op.UnaryOperationFactory.Implementation;
+import net.untoldwind.moredread.model.scene.AbstractSceneOperation;
 import net.untoldwind.moredread.model.scene.INode;
-import net.untoldwind.moredread.model.scene.ISceneOperation;
 import net.untoldwind.moredread.model.scene.MeshNode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.scene.SceneSelection;
@@ -33,7 +33,7 @@ public class MergeCoplanarToolHandler implements IToolHandler {
 			}
 		}
 
-		scene.undoableChange(new ISceneOperation() {
+		scene.undoableChange(new AbstractSceneOperation("Merge coplanar faces") {
 			@Override
 			public void perform(final Scene scene) {
 				final IUnaryOperation mergeOperation = UnaryOperationFactory

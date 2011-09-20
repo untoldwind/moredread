@@ -40,7 +40,7 @@ public class CreatePolygonToolHandler implements IToolHandler {
 	@Override
 	public void completed(final IToolController toolController,
 			final Scene scene) {
-		scene.getSceneChangeHandler().begin(true);
+		scene.getSceneChangeHandler().beginUndoable("Create polygon");
 
 		try {
 			if (polygonNode != null && completeState != null) {
@@ -94,7 +94,7 @@ public class CreatePolygonToolHandler implements IToolHandler {
 			modelControl.updatePositions();
 
 			if (polygonNode != null) {
-				scene.getSceneChangeHandler().begin(true);
+				scene.getSceneChangeHandler().beginUndoable("Create polygon");
 				try {
 					final Polygon polygon = polygonNode.getEditableGeometry();
 					polygon.getVertex(polygon.getVertexCount() - 1).setPoint(
@@ -110,7 +110,7 @@ public class CreatePolygonToolHandler implements IToolHandler {
 		public boolean handleClick(final IModelControl modelControl,
 				final Vector3f point, final EnumSet<Modifier> modifiers) {
 			if (polygonNode == null) {
-				scene.getSceneChangeHandler().begin(true);
+				scene.getSceneChangeHandler().beginUndoable("Create polygon");
 				try {
 					final Polygon polygon = new Polygon();
 
@@ -124,7 +124,7 @@ public class CreatePolygonToolHandler implements IToolHandler {
 					scene.getSceneChangeHandler().savepoint();
 				}
 			} else {
-				scene.getSceneChangeHandler().begin(true);
+				scene.getSceneChangeHandler().beginUndoable("Create polygon");
 				try {
 					final Polygon polygon = polygonNode.getEditableGeometry();
 					polygon.getVertex(polygon.getVertexCount() - 1).setPoint(
