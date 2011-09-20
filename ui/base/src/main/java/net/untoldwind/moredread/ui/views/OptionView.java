@@ -7,7 +7,7 @@ import net.untoldwind.moredread.ui.MoreDreadUI;
 import net.untoldwind.moredread.ui.options.IOptionView;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
@@ -21,7 +21,10 @@ public class OptionView extends ViewPart implements
 	@Override
 	public void createPartControl(final Composite parent) {
 		optionsContainer = new Composite(parent, SWT.NONE);
-		optionsContainer.setLayout(new FillLayout());
+		final GridLayout layout = new GridLayout(1, true);
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		optionsContainer.setLayout(layout);
 
 		MoreDreadUI.getDefault().getSceneHolder().getScene()
 				.getSceneSelection().addSceneSelectionChangeListener(this);

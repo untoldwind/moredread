@@ -31,6 +31,7 @@ public class CenterSizeGeneratorOptions implements IOptionView {
 	public void createControls(final Composite parent) {
 		container = new Composite(parent, SWT.NONE);
 		container.setLayout(new GridLayout(2, false));
+		container.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		final Label typeLabel = new Label(container, SWT.NONE);
 		typeLabel.setText("Type");
