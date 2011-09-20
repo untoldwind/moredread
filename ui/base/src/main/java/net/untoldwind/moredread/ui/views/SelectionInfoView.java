@@ -1,8 +1,5 @@
 package net.untoldwind.moredread.ui.views;
 
-import static net.untoldwind.moredread.ui.utils.FormatUtils.formatAngle;
-import static net.untoldwind.moredread.ui.utils.FormatUtils.formatLength;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -16,6 +13,9 @@ import net.untoldwind.moredread.model.scene.event.ISceneSelectionChangeListener;
 import net.untoldwind.moredread.model.scene.event.SceneChangeEvent;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
 import net.untoldwind.moredread.ui.MoreDreadUI;
+import net.untoldwind.moredread.ui.utils.RotationText;
+import net.untoldwind.moredread.ui.utils.StringText;
+import net.untoldwind.moredread.ui.utils.XYZText;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -24,7 +24,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISizeProvider;
 import org.eclipse.ui.part.ViewPart;
 
@@ -40,16 +39,10 @@ public class SelectionInfoView extends ViewPart implements
 	private final AtomicInteger updateQueueCount = new AtomicInteger(0);
 
 	Composite container;
-	Text nameText;
-	Text hotpointXText;
-	Text hotpointYText;
-	Text hotpointZText;
-	Text centerXText;
-	Text centerYText;
-	Text centerZText;
-	Text rotateXText;
-	Text rotateYText;
-	Text rotateZText;
+	StringText nameText;
+	XYZText hotpointText;
+	XYZText centerText;
+	RotationText rotateText;
 
 	Runnable updateSelectionRun;
 
@@ -75,88 +68,25 @@ public class SelectionInfoView extends ViewPart implements
 		nameLabel.setText("Name");
 		nameLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		nameText = new Text(parent, SWT.BORDER);
-		nameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		nameText = new StringText(parent);
 
 		final Label hotPointLabel = new Label(parent, SWT.NONE);
 		hotPointLabel.setText("Hotpoint");
 		hotPointLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		final Display display = Display.getDefault();
-
-		final Composite hotpoint = new Composite(parent, SWT.NONE);
-		GridLayout layout = new GridLayout(3, true);
-		layout.marginHeight = 1;
-		layout.marginWidth = 1;
-		layout.horizontalSpacing = 1;
-		layout.verticalSpacing = 1;
-		hotpoint.setLayout(layout);
-		hotpoint.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		hotpoint.setBackground(display.getSystemColor(SWT.COLOR_BLACK));
-
-		hotpointXText = new Text(hotpoint, SWT.FLAT);
-		hotpointXText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		hotpointXText.setBackground(display.getSystemColor(SWT.COLOR_RED));
-
-		hotpointYText = new Text(hotpoint, SWT.FLAT);
-		hotpointYText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		hotpointYText.setBackground(display.getSystemColor(SWT.COLOR_GREEN));
-
-		hotpointZText = new Text(hotpoint, SWT.FLAT);
-		hotpointZText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		hotpointZText.setBackground(display.getSystemColor(SWT.COLOR_BLUE));
+		hotpointText = new XYZText(parent);
 
 		final Label centerLabel = new Label(parent, SWT.NONE);
 		centerLabel.setText("Center");
 		centerLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		final Composite center = new Composite(parent, SWT.NONE);
-		layout = new GridLayout(3, true);
-		layout.marginHeight = 1;
-		layout.marginWidth = 1;
-		layout.horizontalSpacing = 1;
-		layout.verticalSpacing = 1;
-		center.setLayout(layout);
-		center.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		center.setBackground(display.getSystemColor(SWT.COLOR_BLACK));
-
-		centerXText = new Text(center, SWT.FLAT);
-		centerXText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		centerXText.setBackground(display.getSystemColor(SWT.COLOR_RED));
-
-		centerYText = new Text(center, SWT.FLAT);
-		centerYText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		centerYText.setBackground(display.getSystemColor(SWT.COLOR_GREEN));
-
-		centerZText = new Text(center, SWT.FLAT);
-		centerZText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		centerZText.setBackground(display.getSystemColor(SWT.COLOR_BLUE));
+		centerText = new XYZText(parent);
 
 		final Label rotateLabel = new Label(parent, SWT.NONE);
 		rotateLabel.setText("Rotate");
 		rotateLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		final Composite rotate = new Composite(parent, SWT.NONE);
-		layout = new GridLayout(3, true);
-		layout.marginHeight = 1;
-		layout.marginWidth = 1;
-		layout.horizontalSpacing = 1;
-		layout.verticalSpacing = 1;
-		rotate.setLayout(layout);
-		rotate.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		rotate.setBackground(display.getSystemColor(SWT.COLOR_BLACK));
-
-		rotateXText = new Text(rotate, SWT.FLAT);
-		rotateXText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		rotateXText.setBackground(display.getSystemColor(SWT.COLOR_RED));
-
-		rotateYText = new Text(rotate, SWT.FLAT);
-		rotateYText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		rotateYText.setBackground(display.getSystemColor(SWT.COLOR_GREEN));
-
-		rotateZText = new Text(rotate, SWT.FLAT);
-		rotateZText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		rotateZText.setBackground(display.getSystemColor(SWT.COLOR_BLUE));
+		rotateText = new RotationText(parent);
 
 		MoreDreadUI.getDefault().getSceneHolder().getScene()
 				.addSceneChangeListener(this);
@@ -185,7 +115,7 @@ public class SelectionInfoView extends ViewPart implements
 			final int preferredResult) {
 		final Point size = container.computeSize(SWT.DEFAULT, SWT.DEFAULT);
 
-		return width ? size.x + 10 : size.y;
+		return width ? size.x : size.y;
 	}
 
 	@Override
@@ -222,17 +152,10 @@ public class SelectionInfoView extends ViewPart implements
 		}
 
 		if (selection.isEmpty()) {
-			centerXText.setText("");
-			centerYText.setText("");
-			centerZText.setText("");
-
-			hotpointXText.setText("");
-			hotpointYText.setText("");
-			hotpointZText.setText("");
-
-			rotateXText.setText("");
-			rotateYText.setText("");
-			rotateZText.setText("");
+			nameText.setValue(null);
+			centerText.setValue(null);
+			hotpointText.setValue(null);
+			rotateText.setValue(null);
 
 			return;
 		} else if (selection.size() == 1) {
@@ -240,6 +163,8 @@ public class SelectionInfoView extends ViewPart implements
 			hotpoint.set(spatialNode.getWorldTranslation());
 			boundingBox = spatialNode.getWorldBoundingBox();
 			rotation.set(spatialNode.getLocalRotation());
+			nameText.setValue(spatialNode.getName());
+			nameText.setEnabled(true);
 		} else {
 			int count = 0;
 
@@ -254,19 +179,12 @@ public class SelectionInfoView extends ViewPart implements
 				count++;
 			}
 			hotpoint.divideLocal(count);
+			nameText.setValue("Multiple");
+			nameText.setEnabled(false);
 		}
 
-		centerXText.setText(formatLength(boundingBox.getCenter().x));
-		centerYText.setText(formatLength(boundingBox.getCenter().y));
-		centerZText.setText(formatLength(boundingBox.getCenter().z));
-
-		hotpointXText.setText(formatLength(hotpoint.x));
-		hotpointYText.setText(formatLength(hotpoint.y));
-		hotpointZText.setText(formatLength(hotpoint.z));
-
-		final float[] angles = rotation.toAngles(null);
-		rotateXText.setText(formatAngle(angles[0]));
-		rotateYText.setText(formatAngle(angles[1]));
-		rotateZText.setText(formatAngle(angles[2]));
+		centerText.setValue(boundingBox.getCenter());
+		hotpointText.setValue(hotpoint);
+		rotateText.setValue(rotation);
 	}
 }
