@@ -26,6 +26,10 @@ public class BooleanGenerator implements IMeshGenerator {
 		this.boolOperation = boolOperation;
 	}
 
+	public BoolOperation getBoolOperation() {
+		return boolOperation;
+	}
+
 	@Override
 	public IMesh generateMesh(final List<IGeneratorInput> generatorInputs) {
 		final IMesh inputs[] = new IMesh[2];

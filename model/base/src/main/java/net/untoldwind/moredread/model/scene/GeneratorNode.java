@@ -11,6 +11,7 @@ import net.untoldwind.moredread.model.mesh.Mesh;
 import net.untoldwind.moredread.model.renderer.GhostNodeRenderer;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
 import net.untoldwind.moredread.model.renderer.SubSelectionNodeRenderer;
+import net.untoldwind.moredread.model.scene.change.GeneratorNodeChangeCommand;
 import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 
@@ -80,6 +81,13 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 
 	public IMeshGenerator getMeshGenerator() {
 		return meshGenerator;
+	}
+
+	public void setMeshGenerator(final IMeshGenerator meshGenerator) {
+		scene.getSceneChangeHandler().registerCommand(
+				new GeneratorNodeChangeCommand(this));
+
+		this.meshGenerator = meshGenerator;
 	}
 
 	@Override

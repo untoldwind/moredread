@@ -1,27 +1,23 @@
 package net.untoldwind.moredread.ui.options.generator;
 
-import net.untoldwind.moredread.model.generator.AbstractCenterSizeGenerator;
+import net.untoldwind.moredread.model.generator.BooleanGenerator;
+import net.untoldwind.moredread.model.op.IBooleanOperation;
 import net.untoldwind.moredread.ui.options.IOptionView;
-import net.untoldwind.moredread.ui.utils.LengthText;
-import net.untoldwind.moredread.ui.utils.XYZText;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 
-public class CenterSizeGeneratorOptions implements IOptionView {
-	private final AbstractCenterSizeGenerator generator;
+public class BooleanGeneratorOptions implements IOptionView {
+	BooleanGenerator generator;
 
 	Composite container;
 
-	XYZText centerText;
-	LengthText sizeText;
-
-	CenterSizeGeneratorOptions(final AbstractCenterSizeGenerator generator) {
+	BooleanGeneratorOptions(final BooleanGenerator generator) {
 		this.generator = generator;
 	}
 
@@ -33,23 +29,15 @@ public class CenterSizeGeneratorOptions implements IOptionView {
 
 		final Label typeLabel = new Label(container, SWT.NONE);
 		typeLabel.setText("Type");
-		final Text typeText = new Text(container, SWT.FLAT);
-		typeText.setText(generator.getName());
-		typeText.setEditable(false);
-		typeText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		final Combo typeCombo = new Combo(container, SWT.READ_ONLY);
+		final String[] items = new String[IBooleanOperation.BoolOperation
+				.values().length];
+		for (int i = 0; i < items.length; i++) {
+			items[i] = IBooleanOperation.BoolOperation.values()[i].name();
+		}
+		typeCombo.setItems(items);
 
-		final Label centerLabel = new Label(container, SWT.NONE);
-		centerLabel.setText("Center");
-
-		centerText = new XYZText(container);
-
-		final Label sizeLabel = new Label(container, SWT.NONE);
-		sizeLabel.setText("Size");
-
-		sizeText = new LengthText(container);
-
-		centerText.setValue(generator.getCenter());
-		sizeText.setValue(generator.getSize());
+		typeCombo.select(generator.getBoolOperation().ordinal());
 	}
 
 	@Override
@@ -63,9 +51,9 @@ public class CenterSizeGeneratorOptions implements IOptionView {
 		public Object getAdapter(final Object adaptableObject,
 				@SuppressWarnings("rawtypes") final Class adapterType) {
 			if (adapterType == IOptionView.class) {
-				if (adaptableObject instanceof AbstractCenterSizeGenerator) {
-					return new CenterSizeGeneratorOptions(
-							(AbstractCenterSizeGenerator) adaptableObject);
+				if (adaptableObject instanceof BooleanGenerator) {
+					return new BooleanGeneratorOptions(
+							(BooleanGenerator) adaptableObject);
 				}
 
 			}
@@ -77,6 +65,5 @@ public class CenterSizeGeneratorOptions implements IOptionView {
 		public Class[] getAdapterList() {
 			return new Class[] { IOptionView.class };
 		}
-
 	}
 }

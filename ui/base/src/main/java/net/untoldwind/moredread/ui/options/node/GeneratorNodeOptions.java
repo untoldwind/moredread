@@ -1,14 +1,22 @@
 package net.untoldwind.moredread.ui.options.node;
 
 import net.untoldwind.moredread.model.scene.GeneratorNode;
+import net.untoldwind.moredread.model.scene.op.CollapseGeneratorNodeOperation;
 import net.untoldwind.moredread.ui.options.IOptionView;
 
 import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 public class GeneratorNodeOptions implements IOptionView {
 	private final GeneratorNode node;
 
+	Composite container;
 	IOptionView generatorOptions;
 
 	GeneratorNodeOptions(final GeneratorNode node) {
@@ -17,19 +25,39 @@ public class GeneratorNodeOptions implements IOptionView {
 
 	@Override
 	public void createControls(final Composite parent) {
+		container = new Composite(parent, SWT.NONE);
+		container.setLayoutData(new GridData(GridData.FILL_BOTH));
+		final GridLayout layout = new GridLayout(1, true);
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		container.setLayout(layout);
+
 		generatorOptions = (IOptionView) node.getMeshGenerator().getAdapter(
 				IOptionView.class);
 
 		if (generatorOptions != null) {
-			generatorOptions.createControls(parent);
+			generatorOptions.createControls(container);
+		} else {
+			final Composite empty = new Composite(container, SWT.NONE);
+			empty.setLayoutData(new GridData(GridData.FILL_BOTH));
 		}
+
+		final Button collapseButton = new Button(container, SWT.NONE);
+		collapseButton.setText("Collapse to mesh");
+		collapseButton.setLayoutData(new GridData(
+				GridData.HORIZONTAL_ALIGN_CENTER));
+		collapseButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final SelectionEvent e) {
+				node.getScene().undoableChange(
+						new CollapseGeneratorNodeOperation(node));
+			}
+		});
 	}
 
 	@Override
 	public void dispose() {
-		if (generatorOptions != null) {
-			generatorOptions.dispose();
-		}
+		container.dispose();
 	}
 
 	public static class Factory implements IAdapterFactory {

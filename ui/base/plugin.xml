@@ -346,6 +346,13 @@
                type="net.untoldwind.moredread.ui.options.IOptionView">
          </adapter>
       </factory>
+      <factory
+            adaptableType="net.untoldwind.moredread.model.generator.BooleanGenerator"
+            class="net.untoldwind.moredread.ui.options.generator.BooleanGeneratorOptions$Factory">
+         <adapter
+               type="net.untoldwind.moredread.ui.options.IOptionView">
+         </adapter>
+      </factory>
    </extension>
 
 </plugin>
