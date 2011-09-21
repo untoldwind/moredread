@@ -1,7 +1,7 @@
 package net.untoldwind.moredread.ui.controls.impl;
 
-import net.untoldwind.moredread.model.enums.Direction;
-import net.untoldwind.moredread.model.enums.Plane;
+import net.untoldwind.moredread.model.enums.CartesianDirection;
+import net.untoldwind.moredread.model.enums.CartesianPlane;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
@@ -28,27 +28,27 @@ public class MoveRotateCrossModelControl extends CompositeModelControl
 			final IToolAdapter rotateToolAdapter) {
 		super("MoveCrossControl");
 
-		xControl = new DirectionArrowModelControl(Direction.X,
+		xControl = new DirectionArrowModelControl(CartesianDirection.X,
 				translateToolAdapter);
 		this.attachChild(xControl);
 		subControls.add(xControl);
-		yControl = new DirectionArrowModelControl(Direction.Y,
+		yControl = new DirectionArrowModelControl(CartesianDirection.Y,
 				translateToolAdapter);
 		this.attachChild(yControl);
 		subControls.add(yControl);
-		zControl = new DirectionArrowModelControl(Direction.Z,
+		zControl = new DirectionArrowModelControl(CartesianDirection.Z,
 				translateToolAdapter);
 		this.attachChild(zControl);
 		subControls.add(zControl);
-		xRotateControl = new RotateCircleModelControl(Plane.YZ,
+		xRotateControl = new RotateCircleModelControl(CartesianPlane.YZ,
 				rotateToolAdapter);
 		this.attachChild(xRotateControl);
 		subControls.add(xRotateControl);
-		yRotateControl = new RotateCircleModelControl(Plane.XZ,
+		yRotateControl = new RotateCircleModelControl(CartesianPlane.XZ,
 				rotateToolAdapter);
 		this.attachChild(yRotateControl);
 		subControls.add(yRotateControl);
-		zRotateControl = new RotateCircleModelControl(Plane.XY,
+		zRotateControl = new RotateCircleModelControl(CartesianPlane.XY,
 				rotateToolAdapter);
 		this.attachChild(zRotateControl);
 		subControls.add(zRotateControl);

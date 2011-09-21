@@ -4,7 +4,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.List;
 
-import net.untoldwind.moredread.model.enums.Plane;
+import net.untoldwind.moredread.model.enums.CartesianPlane;
 import net.untoldwind.moredread.model.scene.BoundingBox;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
@@ -28,7 +28,7 @@ public class PlaneRestrictedModelControl extends Node implements IModelControl {
 	PlaneProjectControlHandle controlHandle;
 
 	IViewport viewport;
-	Plane plane;
+	CartesianPlane plane;
 
 	public PlaneRestrictedModelControl(final IToolAdapter toolAdapter) {
 		super("PlaneRestrictedModelControl");
@@ -47,7 +47,7 @@ public class PlaneRestrictedModelControl extends Node implements IModelControl {
 	public void collectControlHandles(final List<IControlHandle> handles,
 			final IViewport viewport) {
 		this.viewport = viewport;
-		this.plane = Plane.choose(viewport.getCamera().getDirection());
+		this.plane = CartesianPlane.choose(viewport.getCamera().getDirection());
 		updateBackdrop();
 
 		controlHandle.setProjection(plane, viewport.getCamera());
@@ -58,7 +58,7 @@ public class PlaneRestrictedModelControl extends Node implements IModelControl {
 	@Override
 	public void viewportChanged(final IViewport viewport) {
 		this.viewport = viewport;
-		this.plane = Plane.choose(viewport.getCamera().getDirection());
+		this.plane = CartesianPlane.choose(viewport.getCamera().getDirection());
 
 		updateBackdrop();
 

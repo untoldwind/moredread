@@ -1,6 +1,6 @@
 package net.untoldwind.moredread.ui.controls.impl;
 
-import net.untoldwind.moredread.model.enums.Direction;
+import net.untoldwind.moredread.model.enums.CartesianDirection;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
@@ -24,13 +24,13 @@ public class MoveCrossModelControl extends CompositeModelControl implements
 	public MoveCrossModelControl(final IToolAdapter toolAdapter) {
 		super("MoveCrossControl");
 
-		xControl = new DirectionArrowModelControl(Direction.X, toolAdapter);
+		xControl = new DirectionArrowModelControl(CartesianDirection.X, toolAdapter);
 		this.attachChild(xControl);
 		subControls.add(xControl);
-		yControl = new DirectionArrowModelControl(Direction.Y, toolAdapter);
+		yControl = new DirectionArrowModelControl(CartesianDirection.Y, toolAdapter);
 		this.attachChild(yControl);
 		subControls.add(yControl);
-		zControl = new DirectionArrowModelControl(Direction.Z, toolAdapter);
+		zControl = new DirectionArrowModelControl(CartesianDirection.Z, toolAdapter);
 		this.attachChild(zControl);
 		subControls.add(zControl);
 
