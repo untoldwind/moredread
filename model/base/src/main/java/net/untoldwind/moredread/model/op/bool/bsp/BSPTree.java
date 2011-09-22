@@ -10,9 +10,9 @@ import com.jme.math.Vector3f;
 public class BSPTree {
 	BSPNode root;
 
-	public void addMesh(final TriangleMesh mesh) {
+	public void addMesh(final TriangleMesh mesh, final boolean inverted) {
 		for (final TriangleFace face : mesh.getFaces()) {
-			addFace(face);
+			addFace(face, inverted);
 		}
 	}
 
@@ -23,11 +23,16 @@ public class BSPTree {
 		return VertexTag.OUT;
 	}
 
-	private void addFace(final TriangleFace face) {
+	private void addFace(final TriangleFace face, final boolean inverted) {
 		final Vertex[] verticies = face.getVertexArray();
 
-		addTriangle(verticies[0].getPoint(), verticies[1].getPoint(),
-				verticies[2].getPoint());
+		if (inverted) {
+			addTriangle(verticies[2].getPoint(), verticies[1].getPoint(),
+					verticies[0].getPoint());
+		} else {
+			addTriangle(verticies[0].getPoint(), verticies[1].getPoint(),
+					verticies[2].getPoint());
+		}
 	}
 
 	private void addTriangle(final Vector3f v1, final Vector3f v2,
