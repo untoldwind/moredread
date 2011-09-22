@@ -1,4 +1,4 @@
-package net.untoldwind.moredread.model.op.bool.bsp;
+package net.untoldwind.moredread.model.op.bool.bspfilter;
 
 import com.jme.math.FastMath;
 import com.jme.math.Plane;
@@ -22,7 +22,7 @@ public class MathUtils {
 	public static TriangleTag testTriangle(final Plane plane,
 			final Vector3f v1, final Vector3f v2, final Vector3f v3) {
 		return TriangleTag.fromVertexTags(testPoint(plane, v1),
-				testPoint(plane, v3), testPoint(plane, v3));
+				testPoint(plane, v2), testPoint(plane, v3));
 	}
 
 	public static VertexTag testPoint(final Plane plane, final Vector3f v) {

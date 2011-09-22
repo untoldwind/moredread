@@ -37,7 +37,20 @@ public class TriangleMesh extends Mesh<TriangleFace> {
 
 	@Override
 	public TriangleMesh toTriangleMesh() {
-		return this;
+		final TriangleMesh mesh = new TriangleMesh();
+
+		for (final Vertex vertex : vertices) {
+			mesh.addVertex(vertex.getPoint(), vertex.isSmooth());
+		}
+
+		for (final TriangleFace face : faces) {
+			final Vertex vertices[] = face.getVertexArray();
+
+			mesh.addFace(vertices[0].getIndex(), vertices[1].getIndex(),
+					vertices[2].getIndex());
+		}
+
+		return mesh;
 	}
 
 	@Override

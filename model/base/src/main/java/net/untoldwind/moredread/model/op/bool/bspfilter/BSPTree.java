@@ -1,4 +1,4 @@
-package net.untoldwind.moredread.model.op.bool.bsp;
+package net.untoldwind.moredread.model.op.bool.bspfilter;
 
 import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
@@ -10,9 +10,9 @@ import com.jme.math.Vector3f;
 public class BSPTree {
 	BSPNode root;
 
-	public void addMesh(final TriangleMesh mesh, final boolean inverted) {
+	public void addMesh(final TriangleMesh mesh) {
 		for (final TriangleFace face : mesh.getFaces()) {
-			addFace(face, inverted);
+			addFace(face);
 		}
 	}
 
@@ -23,16 +23,19 @@ public class BSPTree {
 		return VertexTag.OUT;
 	}
 
-	private void addFace(final TriangleFace face, final boolean inverted) {
+	public BooleanTag testTriangle(final Vector3f v1, final Vector3f v2,
+			final Vector3f v3) {
+		if (root != null) {
+			return root.testTriangle(v1, v2, v3);
+		}
+		return BooleanTag.OUT;
+	}
+
+	private void addFace(final TriangleFace face) {
 		final Vertex[] verticies = face.getVertexArray();
 
-		if (inverted) {
-			addTriangle(verticies[2].getPoint(), verticies[1].getPoint(),
-					verticies[0].getPoint());
-		} else {
-			addTriangle(verticies[0].getPoint(), verticies[1].getPoint(),
-					verticies[2].getPoint());
-		}
+		addTriangle(verticies[0].getPoint(), verticies[1].getPoint(),
+				verticies[2].getPoint());
 	}
 
 	private void addTriangle(final Vector3f v1, final Vector3f v2,

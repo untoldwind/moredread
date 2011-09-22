@@ -1,8 +1,8 @@
-package net.untoldwind.moredread.model.op.bool.bsp;
+package net.untoldwind.moredread.model.op.bool.bspfilter;
 
-import static net.untoldwind.moredread.model.op.bool.bsp.VertexTag.IN;
-import static net.untoldwind.moredread.model.op.bool.bsp.VertexTag.ON;
-import static net.untoldwind.moredread.model.op.bool.bsp.VertexTag.OUT;
+import static net.untoldwind.moredread.model.op.bool.bspfilter.VertexTag.IN;
+import static net.untoldwind.moredread.model.op.bool.bspfilter.VertexTag.ON;
+import static net.untoldwind.moredread.model.op.bool.bspfilter.VertexTag.OUT;
 
 import java.util.HashMap;
 import java.util.Map;

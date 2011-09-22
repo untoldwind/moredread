@@ -3,8 +3,12 @@ package net.untoldwind.moredread.model.op.bool.bsp.test;
 import static org.junit.Assert.assertEquals;
 import net.untoldwind.moredread.model.generator.CubeMeshGenerator;
 import net.untoldwind.moredread.model.mesh.IMesh;
-import net.untoldwind.moredread.model.op.bool.bsp.BSPTree;
-import net.untoldwind.moredread.model.op.bool.bsp.VertexTag;
+import net.untoldwind.moredread.model.mesh.TriangleFace;
+import net.untoldwind.moredread.model.mesh.TriangleMesh;
+import net.untoldwind.moredread.model.mesh.Vertex;
+import net.untoldwind.moredread.model.op.bool.bspfilter.BSPTree;
+import net.untoldwind.moredread.model.op.bool.bspfilter.BooleanTag;
+import net.untoldwind.moredread.model.op.bool.bspfilter.VertexTag;
 import net.untoldwind.moredread.model.state.XMLStateReader;
 
 import org.junit.Test;
@@ -18,7 +22,7 @@ public class BSPTreeTest {
 
 		final BSPTree tree = new BSPTree();
 
-		tree.addMesh(mesh.toTriangleMesh(), false);
+		tree.addMesh(mesh.toTriangleMesh());
 
 		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0, 0, 0)));
 		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0.9f, 0, 0)));
@@ -29,17 +33,17 @@ public class BSPTreeTest {
 		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0, -1.1f, 0)));
 		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0, 0, -1.1f)));
 		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0, 1, 1.1f)));
-		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(1, 0.5f, 0)));
-
+		assertEquals(VertexTag.ON, tree.testVertex(new Vector3f(1, 0.5f, 0)));
 	}
 
 	@Test
 	public void testInOutCubeInverted() throws Exception {
 		final IMesh mesh = new CubeMeshGenerator().generateMesh(null);
-
+		final TriangleMesh triMesh = mesh.toTriangleMesh();
 		final BSPTree tree = new BSPTree();
 
-		tree.addMesh(mesh.toTriangleMesh(), true);
+		triMesh.invert();
+		tree.addMesh(triMesh);
 
 		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0, 0, 0)));
 		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0.9f, 0, 0)));
@@ -50,7 +54,7 @@ public class BSPTreeTest {
 		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0, -1.1f, 0)));
 		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0, 0, -1.1f)));
 		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0, 1, 1.1f)));
-		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(1, 0.5f, 0)));
+		assertEquals(VertexTag.ON, tree.testVertex(new Vector3f(1, 0.5f, 0)));
 
 	}
 
@@ -63,29 +67,29 @@ public class BSPTreeTest {
 								"net/untoldwind/moredread/model/mesh/test/cube-with-hole-state.xml"));
 		final BSPTree tree = new BSPTree();
 
-		tree.addMesh(mesh.toTriangleMesh(), false);
+		tree.addMesh(mesh.toTriangleMesh());
 
 		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0, 0, 0)));
 		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0.5f, 0, 0)));
 		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(-0.5f, 0, 0)));
 		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0, 0.5f, 0)));
 		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0, -0.5f, 0)));
-		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0.75f, 0, 0)));
+		assertEquals(VertexTag.ON, tree.testVertex(new Vector3f(0.75f, 0, 0)));
 		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0.8f, 0, 0)));
-		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(-0.75f, 0, 0)));
+		assertEquals(VertexTag.ON, tree.testVertex(new Vector3f(-0.75f, 0, 0)));
 		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(-0.8f, 0, 0)));
-		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0, 0.75f, 0)));
+		assertEquals(VertexTag.ON, tree.testVertex(new Vector3f(0, 0.75f, 0)));
 		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0, 0.8f, 0)));
-		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0, -0.75f, 0)));
+		assertEquals(VertexTag.ON, tree.testVertex(new Vector3f(0, -0.75f, 0)));
 		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0, -0.8f, 0)));
-		assertEquals(VertexTag.IN,
+		assertEquals(VertexTag.ON,
 				tree.testVertex(new Vector3f(0.75f, 0.5f, 0)));
-		assertEquals(VertexTag.IN,
+		assertEquals(VertexTag.ON,
 				tree.testVertex(new Vector3f(0.75f, 0.75f, 0)));
 		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0.8f, 0.8f, 0)));
-		assertEquals(VertexTag.IN,
+		assertEquals(VertexTag.ON,
 				tree.testVertex(new Vector3f(-0.75f, -0.5f, 0)));
-		assertEquals(VertexTag.IN,
+		assertEquals(VertexTag.ON,
 				tree.testVertex(new Vector3f(-0.75f, -0.75f, 0)));
 		assertEquals(VertexTag.IN,
 				tree.testVertex(new Vector3f(-0.8f, -0.8f, 0)));
@@ -93,5 +97,31 @@ public class BSPTreeTest {
 		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(-1.1f, 0, 0)));
 		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0, 1.1f, 0)));
 		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0, -1.1f, 0)));
+	}
+
+	@Test
+	public void testCube2Cube() throws Exception {
+		final IMesh meshA = XMLStateReader.fromXML(getClass()
+				.getResourceAsStream("boolIn1_1.xml"));
+		final IMesh meshB = XMLStateReader.fromXML(getClass()
+				.getResourceAsStream("boolIn1_2.xml"));
+
+		final TriangleMesh triMeshA = meshA.toTriangleMesh();
+		final TriangleMesh triMeshB = meshB.toTriangleMesh();
+
+		triMeshB.invert();
+		final BSPTree bspB = new BSPTree();
+		bspB.addMesh(triMeshB);
+
+		int count = 0;
+		for (final TriangleFace face : triMeshA.getFaces()) {
+			final Vertex[] verticies = face.getVertexArray();
+
+			if (bspB.testTriangle(verticies[0].getPoint(),
+					verticies[1].getPoint(), verticies[2].getPoint()) == BooleanTag.IN) {
+				count++;
+			}
+		}
+		assertEquals(6, count);
 	}
 }

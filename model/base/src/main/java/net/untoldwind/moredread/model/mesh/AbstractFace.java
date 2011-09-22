@@ -9,7 +9,8 @@ import net.untoldwind.moredread.model.state.IStateHolder;
 import com.jme.math.Plane;
 import com.jme.math.Vector3f;
 
-public abstract class AbstractFace<T extends Mesh<?>> implements IStateHolder, IFace {
+public abstract class AbstractFace<T extends Mesh<?>> implements IStateHolder,
+		IFace {
 	private final T owner;
 	protected final int index;
 	protected Vector3f center;
@@ -83,4 +84,6 @@ public abstract class AbstractFace<T extends Mesh<?>> implements IStateHolder, I
 	public abstract void updateCenter();
 
 	public abstract void updateMeanNormal();
+
+	public abstract void invert();
 }

@@ -154,6 +154,21 @@ public class PolyFace extends AbstractFace<PolyMesh> {
 	}
 
 	@Override
+	public void invert() {
+		int offset = 0;
+		for (final int stripCount : stripCounts) {
+			for (int i = 0; i < stripCount; i++) {
+				final Vertex v1 = vertices.get(offset + i);
+				final Vertex v2 = vertices.get(offset + (stripCount - i - 1));
+
+				vertices.set(offset + i, v2);
+				vertices.set(offset + (stripCount - i - 1), v1);
+			}
+			offset += stripCount;
+		}
+	}
+
+	@Override
 	public void readState(final IStateReader reader) throws IOException {
 		// TODO Auto-generated method stub
 
