@@ -26,7 +26,9 @@ public class BSPTree {
 	public BooleanTag testTriangle(final Vector3f v1, final Vector3f v2,
 			final Vector3f v3) {
 		if (root != null) {
-			return root.testTriangle(v1, v2, v3);
+			final Plane plane = MathUtils.planeForTriangle(v1, v2, v3);
+
+			return root.testFace(v1, v2, v3, plane);
 		}
 		return BooleanTag.OUT;
 	}
@@ -50,7 +52,7 @@ public class BSPTree {
 		if (root == null) {
 			root = new BSPNode(plane);
 		} else {
-			root.addTriangle(new Vector3f[] { v1, v2, v3 }, plane);
+			root.addFace(new Vector3f[] { v1, v2, v3 }, plane);
 		}
 	}
 
