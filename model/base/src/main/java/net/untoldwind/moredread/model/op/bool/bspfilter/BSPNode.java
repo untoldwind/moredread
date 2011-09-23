@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.jme.math.Plane;
-import com.jme.math.Vector3f;
 
 public class BSPNode {
 	private final Plane nodePlane;
@@ -15,11 +14,11 @@ public class BSPNode {
 		this.nodePlane = nodePlane;
 	}
 
-	public void addFace(final Vector3f[] vertices, final Plane plane) {
+	public void addFace(final BoolVertex[] vertices, final Plane plane) {
 		final VertexTag[] tags = new VertexTag[vertices.length];
 
 		for (int i = 0; i < tags.length; i++) {
-			tags[i] = MathUtils.testPoint(nodePlane, vertices[i]);
+			tags[i] = MathUtils.testVertex(nodePlane, vertices[i]);
 		}
 
 		if (VertexTag.allOn(tags)) {
@@ -32,17 +31,17 @@ public class BSPNode {
 			addOutChild(vertices, plane);
 			return;
 		} else {
-			final List<Vector3f> inside = new ArrayList<Vector3f>();
-			final List<Vector3f> outside = new ArrayList<Vector3f>();
-			Vector3f lpoint = vertices[vertices.length - 1];
-			VertexTag ltag = MathUtils.testPoint(nodePlane, lpoint);
+			final List<BoolVertex> inside = new ArrayList<BoolVertex>();
+			final List<BoolVertex> outside = new ArrayList<BoolVertex>();
+			BoolVertex lpoint = vertices[vertices.length - 1];
+			VertexTag ltag = MathUtils.testVertex(nodePlane, lpoint);
 			VertexTag tstate = ltag;
 
 			// classify each line segment, looking for endpoints which lie on
 			// different
 			// sides of the hyperplane.
-			for (final Vector3f npoint : vertices) {
-				final VertexTag ntag = MathUtils.testPoint(nodePlane, npoint);
+			for (final BoolVertex npoint : vertices) {
+				final VertexTag ntag = MathUtils.testVertex(nodePlane, npoint);
 
 				if (ltag != VertexTag.ON) { // last point not on hyperplane
 					if (tstate == VertexTag.IN) {
@@ -58,7 +57,7 @@ public class BSPNode {
 																	// in
 						// different
 						// half-spaces
-						final Vector3f mpoint = MathUtils.intersectLinePlane(
+						final BoolVertex mpoint = MathUtils.intersectLinePlane(
 								nodePlane, lpoint, npoint);
 						if (inChild != null) {
 							inside.add(mpoint);
@@ -83,13 +82,13 @@ public class BSPNode {
 				ltag = ntag;
 			}
 
-			addInChild(inside.toArray(new Vector3f[inside.size()]), plane);
-			addOutChild(outside.toArray(new Vector3f[outside.size()]), plane);
+			addInChild(inside.toArray(new BoolVertex[inside.size()]), plane);
+			addOutChild(outside.toArray(new BoolVertex[outside.size()]), plane);
 		}
 	}
 
-	public VertexTag testVertex(final Vector3f v) {
-		final VertexTag tag = MathUtils.testPoint(nodePlane, v);
+	public VertexTag testVertex(final BoolVertex v) {
+		final VertexTag tag = MathUtils.testVertex(nodePlane, v);
 		switch (tag) {
 		case ON:
 			if (inChild != null) {
@@ -112,135 +111,102 @@ public class BSPNode {
 		}
 	}
 
-	public BooleanTag testFace(final Vector3f v1, final Vector3f v2,
-			final Vector3f v3, final Plane plane) {
-		final TriangleTag tag = MathUtils.testTriangle(nodePlane, v1, v2, v3);
+	public BooleanTag testFace(final BoolVertex[] vertices, final Plane plane) {
+		final VertexTag[] tags = new VertexTag[vertices.length];
 
-		Vector3f v4, v5;
-		switch (tag) {
-		case IN_IN_IN:
-		case IN_IN_ON:
-		case IN_ON_IN:
-		case ON_IN_IN:
-		case IN_ON_ON:
-		case ON_IN_ON:
-		case ON_ON_IN:
-			return testTriangleIn(v1, v2, v3, plane);
+		for (int i = 0; i < tags.length; i++) {
+			tags[i] = MathUtils.testVertex(nodePlane, vertices[i]);
+		}
 
-		case OUT_OUT_OUT:
-		case OUT_OUT_ON:
-		case OUT_ON_OUT:
-		case ON_OUT_OUT:
-		case ON_ON_OUT:
-		case ON_OUT_ON:
-		case OUT_ON_ON:
-			return testTriangleOut(v1, v2, v3, plane);
-
-		case ON_ON_ON:
+		if (VertexTag.allOn(tags)) {
 			if (plane.getNormal().dot(nodePlane.getNormal()) > 0) {
-				return testTriangleIn(v1, v2, v3, plane);
+				return testFaceIn(vertices, plane);
 			} else {
-				return testTriangleOut(v1, v2, v3, plane);
+				return testFaceOut(vertices, plane);
+			}
+		} else if (VertexTag.allIn(tags)) {
+			return testFaceIn(vertices, plane);
+		} else if (VertexTag.allOut(tags)) {
+			return testFaceOut(vertices, plane);
+		} else {
+			final List<BoolVertex> inside = new ArrayList<BoolVertex>();
+			final List<BoolVertex> outside = new ArrayList<BoolVertex>();
+			BoolVertex lpoint = vertices[vertices.length - 1];
+			VertexTag ltag = MathUtils.testVertex(nodePlane, lpoint);
+			VertexTag tstate = ltag;
+
+			// classify each line segment, looking for endpoints which lie on
+			// different
+			// sides of the hyperplane.
+			for (final BoolVertex npoint : vertices) {
+				final VertexTag ntag = MathUtils.testVertex(nodePlane, npoint);
+
+				if (ltag != VertexTag.ON) { // last point not on hyperplane
+					if (tstate == VertexTag.IN) {
+						if (inChild != null) {
+							inside.add(lpoint);
+						}
+					} else {
+						if (outChild != null) {
+							outside.add(lpoint);
+						}
+					}
+					if (ntag != VertexTag.ON && ntag != tstate) { // last, self
+																	// in
+						// different
+						// half-spaces
+						final BoolVertex mpoint = MathUtils.intersectLinePlane(
+								nodePlane, lpoint, npoint);
+						if (inChild != null) {
+							inside.add(mpoint);
+						}
+						if (outChild != null) {
+							outside.add(mpoint);
+						}
+						tstate = ntag;
+					}
+				} else { // last point on hyperplane, so we're switching
+					// half-spaces
+					// boundary point belong to both faces
+					if (inChild != null) {
+						inside.add(lpoint);
+					}
+					if (outChild != null) {
+						outside.add(lpoint);
+					}
+					tstate = ntag; // state changes to new point tag
+				}
+				lpoint = npoint; // save point, tag for next iteration
+				ltag = ntag;
 			}
 
-		case IN_OUT_ON:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v1, v2);
-			return BooleanTag.combine(testTriangleIn(v1, v4, v3, plane),
-					testTriangleOut(v4, v2, v3, plane));
-
-		case OUT_IN_ON:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v1, v2);
-			return BooleanTag.combine(testTriangleOut(v1, v4, v3, plane),
-					testTriangleIn(v4, v2, v3, plane));
-
-		case IN_ON_OUT:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v1, v3);
-			return BooleanTag.combine(testTriangleIn(v1, v2, v4, plane),
-					testTriangleOut(v2, v3, v4, plane));
-
-		case OUT_ON_IN:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v1, v3);
-			return BooleanTag.combine(testTriangleOut(v1, v2, v4, plane),
-					testTriangleIn(v2, v3, v4, plane));
-
-		case ON_IN_OUT:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v2, v3);
-			return BooleanTag.combine(testTriangleIn(v1, v2, v4, plane),
-					testTriangleOut(v4, v3, v1, plane));
-
-		case ON_OUT_IN:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v2, v3);
-			return BooleanTag.combine(testTriangleOut(v1, v2, v4, plane),
-					testTriangleIn(v4, v3, v1, plane));
-
-		case IN_OUT_OUT:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v1, v2);
-			v5 = MathUtils.intersectLinePlane(nodePlane, v1, v3);
-
-			return BooleanTag.combine(testTriangleIn(v1, v4, v5, plane),
-					testTriangleOut(v4, v2, v5, plane),
-					testTriangleOut(v2, v3, v5, plane));
-
-		case OUT_IN_IN:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v1, v2);
-			v5 = MathUtils.intersectLinePlane(nodePlane, v1, v3);
-
-			return BooleanTag.combine(testTriangleOut(v1, v4, v5, plane),
-					testTriangleIn(v4, v2, v5, plane),
-					testTriangleIn(v2, v3, v5, plane));
-
-		case OUT_IN_OUT:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v1, v2);
-			v5 = MathUtils.intersectLinePlane(nodePlane, v2, v3);
-			return BooleanTag.combine(testTriangleIn(v4, v2, v5, plane),
-					testTriangleOut(v1, v4, v5, plane),
-					testTriangleOut(v1, v5, v3, plane));
-
-		case IN_OUT_IN:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v1, v2);
-			v5 = MathUtils.intersectLinePlane(nodePlane, v2, v3);
-			return BooleanTag.combine(testTriangleOut(v4, v2, v5, plane),
-					testTriangleIn(v1, v4, v5, plane),
-					testTriangleIn(v1, v5, v3, plane));
-
-		case OUT_OUT_IN:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v1, v3);
-			v5 = MathUtils.intersectLinePlane(nodePlane, v2, v3);
-			return BooleanTag.combine(testTriangleIn(v4, v5, v3, plane),
-					testTriangleOut(v1, v2, v5, plane),
-					testTriangleOut(v1, v5, v4, plane));
-
-		case IN_IN_OUT:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v1, v3);
-			v5 = MathUtils.intersectLinePlane(nodePlane, v2, v3);
-			return BooleanTag.combine(testTriangleOut(v4, v5, v3, plane),
-					testTriangleIn(v1, v2, v5, plane),
-					testTriangleIn(v1, v5, v4, plane));
-
-		default:
-			throw new IllegalStateException("Unhandled tag: " + tag);
+			return BooleanTag.combine(
+					testFaceIn(inside.toArray(new BoolVertex[inside.size()]),
+							plane),
+					testFaceOut(
+							outside.toArray(new BoolVertex[outside.size()]),
+							plane));
 		}
 	}
 
-	private BooleanTag testTriangleIn(final Vector3f v1, final Vector3f v2,
-			final Vector3f v3, final Plane plane) {
+	private BooleanTag testFaceIn(final BoolVertex[] vertices, final Plane plane) {
 		if (inChild != null) {
-			return inChild.testFace(v1, v2, v3, plane);
+			return inChild.testFace(vertices, plane);
 		} else {
 			return BooleanTag.IN;
 		}
 	}
 
-	private BooleanTag testTriangleOut(final Vector3f v1, final Vector3f v2,
-			final Vector3f v3, final Plane plane) {
+	private BooleanTag testFaceOut(final BoolVertex[] vertices,
+			final Plane plane) {
 		if (outChild != null) {
-			return outChild.testFace(v1, v2, v3, plane);
+			return outChild.testFace(vertices, plane);
 		} else {
 			return BooleanTag.OUT;
 		}
 	}
 
-	private void addOutChild(final Vector3f[] vertices, final Plane plane) {
+	private void addOutChild(final BoolVertex[] vertices, final Plane plane) {
 		if (outChild == null) {
 			outChild = new BSPNode(plane);
 		} else {
@@ -248,7 +214,7 @@ public class BSPNode {
 		}
 	}
 
-	private void addInChild(final Vector3f[] vertices, final Plane plane) {
+	private void addInChild(final BoolVertex[] vertices, final Plane plane) {
 		if (inChild == null) {
 			inChild = new BSPNode(plane);
 		} else {

@@ -68,8 +68,8 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 			final TriangleFace face = it.next();
 			final Vertex[] verticies = face.getVertexArray();
 
-			switch (filter.testTriangle(verticies[0].getPoint(),
-					verticies[1].getPoint(), verticies[2].getPoint())) {
+			switch (filter.testTriangle(verticies[0], verticies[1],
+					verticies[2])) {
 			case IN:
 				final int i1 = transferredIndex(result, verticies[0], vertexMap);
 				final int i2 = transferredIndex(result, verticies[1], vertexMap);

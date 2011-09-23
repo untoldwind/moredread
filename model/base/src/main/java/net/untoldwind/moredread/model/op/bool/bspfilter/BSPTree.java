@@ -1,5 +1,6 @@
 package net.untoldwind.moredread.model.op.bool.bspfilter;
 
+import net.untoldwind.moredread.model.mesh.IVertex;
 import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
 import net.untoldwind.moredread.model.mesh.Vertex;
@@ -16,19 +17,28 @@ public class BSPTree {
 		}
 	}
 
-	public VertexTag testVertex(final Vector3f v) {
+	public VertexTag testVertex(final IVertex v) {
 		if (root != null) {
-			return root.testVertex(v);
+			return root.testVertex(new BoolVertex(v));
 		}
 		return VertexTag.OUT;
 	}
 
-	public BooleanTag testTriangle(final Vector3f v1, final Vector3f v2,
-			final Vector3f v3) {
+	public VertexTag testPoint(final Vector3f v) {
 		if (root != null) {
-			final Plane plane = MathUtils.planeForTriangle(v1, v2, v3);
+			return root.testVertex(new BoolVertex(v));
+		}
+		return VertexTag.OUT;
+	}
 
-			return root.testFace(v1, v2, v3, plane);
+	public BooleanTag testTriangle(final IVertex v1, final IVertex v2,
+			final IVertex v3) {
+		if (root != null) {
+			final Plane plane = MathUtils.planeForTriangle(v1.getPoint(),
+					v2.getPoint(), v3.getPoint());
+
+			return root.testFace(new BoolVertex[] { new BoolVertex(v1),
+					new BoolVertex(v2), new BoolVertex(v3) }, plane);
 		}
 		return BooleanTag.OUT;
 	}
@@ -52,7 +62,8 @@ public class BSPTree {
 		if (root == null) {
 			root = new BSPNode(plane);
 		} else {
-			root.addFace(new Vector3f[] { v1, v2, v3 }, plane);
+			root.addFace(new BoolVertex[] { new BoolVertex(v1),
+					new BoolVertex(v2), new BoolVertex(v3) }, plane);
 		}
 	}
 

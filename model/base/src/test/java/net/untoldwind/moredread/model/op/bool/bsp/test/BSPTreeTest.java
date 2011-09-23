@@ -27,16 +27,16 @@ public class BSPTreeTest {
 
 		tree.addMesh(mesh.toTriangleMesh());
 
-		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0, 0, 0)));
-		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0.9f, 0, 0)));
-		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(1.1f, 0, 0)));
-		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0, 1.1f, 0)));
-		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0, 0, 1.1f)));
-		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(-1.1f, 0, 0)));
-		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0, -1.1f, 0)));
-		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0, 0, -1.1f)));
-		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0, 1, 1.1f)));
-		assertEquals(VertexTag.ON, tree.testVertex(new Vector3f(1, 0.5f, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0, 0, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0.9f, 0, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(1.1f, 0, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, 1.1f, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, 0, 1.1f)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(-1.1f, 0, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, -1.1f, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, 0, -1.1f)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, 1, 1.1f)));
+		assertEquals(VertexTag.ON, tree.testPoint(new Vector3f(1, 0.5f, 0)));
 	}
 
 	@Test
@@ -47,16 +47,16 @@ public class BSPTreeTest {
 
 		tree.addMesh(triMesh);
 
-		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0, 0, 0)));
-		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0.9f, 0, 0)));
-		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(1.1f, 0, 0)));
-		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0, 1.1f, 0)));
-		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0, 0, 1.1f)));
-		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(-1.1f, 0, 0)));
-		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0, -1.1f, 0)));
-		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0, 0, -1.1f)));
-		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0, 1, 1.1f)));
-		assertEquals(VertexTag.ON, tree.testVertex(new Vector3f(1, 0.5f, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, 0, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0.9f, 0, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(1.1f, 0, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0, 1.1f, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0, 0, 1.1f)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(-1.1f, 0, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0, -1.1f, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0, 0, -1.1f)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0, 1, 1.1f)));
+		assertEquals(VertexTag.ON, tree.testPoint(new Vector3f(1, 0.5f, 0)));
 
 	}
 
@@ -71,34 +71,33 @@ public class BSPTreeTest {
 
 		tree.addMesh(mesh.toTriangleMesh());
 
-		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0, 0, 0)));
-		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0.5f, 0, 0)));
-		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(-0.5f, 0, 0)));
-		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0, 0.5f, 0)));
-		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0, -0.5f, 0)));
-		assertEquals(VertexTag.ON, tree.testVertex(new Vector3f(0.75f, 0, 0)));
-		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0.8f, 0, 0)));
-		assertEquals(VertexTag.ON, tree.testVertex(new Vector3f(-0.75f, 0, 0)));
-		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(-0.8f, 0, 0)));
-		assertEquals(VertexTag.ON, tree.testVertex(new Vector3f(0, 0.75f, 0)));
-		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0, 0.8f, 0)));
-		assertEquals(VertexTag.ON, tree.testVertex(new Vector3f(0, -0.75f, 0)));
-		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0, -0.8f, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, 0, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0.5f, 0, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(-0.5f, 0, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, 0.5f, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, -0.5f, 0)));
+		assertEquals(VertexTag.ON, tree.testPoint(new Vector3f(0.75f, 0, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0.8f, 0, 0)));
+		assertEquals(VertexTag.ON, tree.testPoint(new Vector3f(-0.75f, 0, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(-0.8f, 0, 0)));
+		assertEquals(VertexTag.ON, tree.testPoint(new Vector3f(0, 0.75f, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0, 0.8f, 0)));
+		assertEquals(VertexTag.ON, tree.testPoint(new Vector3f(0, -0.75f, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0, -0.8f, 0)));
+		assertEquals(VertexTag.ON, tree.testPoint(new Vector3f(0.75f, 0.5f, 0)));
 		assertEquals(VertexTag.ON,
-				tree.testVertex(new Vector3f(0.75f, 0.5f, 0)));
+				tree.testPoint(new Vector3f(0.75f, 0.75f, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0.8f, 0.8f, 0)));
 		assertEquals(VertexTag.ON,
-				tree.testVertex(new Vector3f(0.75f, 0.75f, 0)));
-		assertEquals(VertexTag.IN, tree.testVertex(new Vector3f(0.8f, 0.8f, 0)));
+				tree.testPoint(new Vector3f(-0.75f, -0.5f, 0)));
 		assertEquals(VertexTag.ON,
-				tree.testVertex(new Vector3f(-0.75f, -0.5f, 0)));
-		assertEquals(VertexTag.ON,
-				tree.testVertex(new Vector3f(-0.75f, -0.75f, 0)));
+				tree.testPoint(new Vector3f(-0.75f, -0.75f, 0)));
 		assertEquals(VertexTag.IN,
-				tree.testVertex(new Vector3f(-0.8f, -0.8f, 0)));
-		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(1.1f, 0, 0)));
-		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(-1.1f, 0, 0)));
-		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0, 1.1f, 0)));
-		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0, -1.1f, 0)));
+				tree.testPoint(new Vector3f(-0.8f, -0.8f, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(1.1f, 0, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(-1.1f, 0, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, 1.1f, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, -1.1f, 0)));
 	}
 
 	@Test
@@ -122,8 +121,7 @@ public class BSPTreeTest {
 		for (final TriangleFace face : triMeshA.getFaces()) {
 			final Vertex[] verticies = face.getVertexArray();
 
-			if (bspB.testTriangle(verticies[0].getPoint(),
-					verticies[1].getPoint(), verticies[2].getPoint()) == BooleanTag.IN) {
+			if (bspB.testTriangle(verticies[0], verticies[1], verticies[2]) == BooleanTag.IN) {
 				count++;
 			}
 		}
@@ -153,8 +151,7 @@ public class BSPTreeTest {
 		for (final TriangleFace face : meshB.getFaces()) {
 			final Vertex[] verticies = face.getVertexArray();
 
-			if (bspA.testTriangle(verticies[0].getPoint(),
-					verticies[1].getPoint(), verticies[2].getPoint()) == BooleanTag.IN) {
+			if (bspA.testTriangle(verticies[0], verticies[1], verticies[2]) == BooleanTag.IN) {
 				count++;
 			}
 		}
@@ -184,8 +181,7 @@ public class BSPTreeTest {
 		for (final TriangleFace face : meshB.getFaces()) {
 			final Vertex[] verticies = face.getVertexArray();
 
-			if (bspA.testTriangle(verticies[0].getPoint(),
-					verticies[1].getPoint(), verticies[2].getPoint()) == BooleanTag.IN) {
+			if (bspA.testTriangle(verticies[0], verticies[1], verticies[2]) == BooleanTag.IN) {
 				count++;
 			}
 		}

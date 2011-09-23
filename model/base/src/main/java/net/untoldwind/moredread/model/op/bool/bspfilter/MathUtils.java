@@ -20,14 +20,8 @@ public class MathUtils {
 		return new Plane(normal, normal.dot(v1));
 	}
 
-	public static TriangleTag testTriangle(final Plane plane,
-			final Vector3f v1, final Vector3f v2, final Vector3f v3) {
-		return TriangleTag.fromVertexTags(testPoint(plane, v1),
-				testPoint(plane, v2), testPoint(plane, v3));
-	}
-
-	public static VertexTag testPoint(final Plane plane, final Vector3f v) {
-		final float distance = plane.pseudoDistance(v);
+	public static VertexTag testVertex(final Plane plane, final BoolVertex v) {
+		final float distance = plane.pseudoDistance(v.getPoint());
 
 		if (distance < -1e-5f) {
 			return VertexTag.IN;
@@ -38,22 +32,23 @@ public class MathUtils {
 		}
 	}
 
-	public static Vector3f intersectLinePlane(final Plane plane,
-			final Vector3f p1, final Vector3f p2) {
-		final Vector3f intersection = new Vector3f(p1);
-		final Vector3f diff = p2.subtract(p1);
+	public static BoolVertex intersectLinePlane(final Plane plane,
+			final BoolVertex v1, final BoolVertex v2) {
+		final Vector3f intersection = new Vector3f(v1.getPoint());
+		final Vector3f diff = v2.getPoint().subtract(v1.getPoint());
 
 		final float den = plane.normal.dot(diff);
 
 		if (den != 0) {
-			final float lambda = (plane.constant - plane.normal.dot(p1)) / den;
+			final float lambda = (plane.constant - plane.normal.dot(v1
+					.getPoint())) / den;
 
 			intersection.set(diff);
 			intersection.multLocal(lambda);
-			intersection.addLocal(p1);
+			intersection.addLocal(v1.getPoint());
 
-			return intersection;
+			return new BoolVertex(intersection);
 		}
-		return intersection;
+		return new BoolVertex(intersection);
 	}
 }
