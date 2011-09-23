@@ -39,16 +39,13 @@ public class MathUtils {
 
 		final float den = plane.normal.dot(diff);
 
-		if (den != 0) {
-			final float lambda = (plane.constant - plane.normal.dot(v1
-					.getPoint())) / den;
+		final float lambda = (plane.constant - plane.normal.dot(v1.getPoint()))
+				/ den;
 
-			intersection.set(diff);
-			intersection.multLocal(lambda);
-			intersection.addLocal(v1.getPoint());
+		intersection.set(diff);
+		intersection.multLocal(lambda);
+		intersection.addLocal(v1.getPoint());
 
-			return new BoolVertex(intersection);
-		}
-		return new BoolVertex(intersection);
+		return new BoolVertex(intersection, v1.getIndex(), v2.getIndex(), plane);
 	}
 }

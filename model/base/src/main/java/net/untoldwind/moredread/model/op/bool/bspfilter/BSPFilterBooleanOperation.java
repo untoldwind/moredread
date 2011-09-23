@@ -23,8 +23,8 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 		final boolean invertMeshB = (operation != BoolOperation.INTERSECTION);
 		final boolean invertResult = (operation == BoolOperation.UNION);
 
-		final Map<Integer, Integer> vertexMapA = new HashMap<Integer, Integer>();
-		final Map<Integer, Integer> vertexMapB = new HashMap<Integer, Integer>();
+		final Map<BoolVertex.IBoolIndex, Integer> vertexMapA = new HashMap<BoolVertex.IBoolIndex, Integer>();
+		final Map<BoolVertex.IBoolIndex, Integer> vertexMapB = new HashMap<BoolVertex.IBoolIndex, Integer>();
 
 		PolyMesh result = new PolyMesh();
 
@@ -61,7 +61,7 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 
 	private void bspFilter(final PolyMesh result, final BSPTree filter,
 			final List<TriangleFace> source,
-			final Map<Integer, Integer> vertexMap) {
+			final Map<BoolVertex.IBoolIndex, Integer> vertexMap) {
 		for (final TriangleFace face : source) {
 			final Vertex[] verticies = face.getVertexArray();
 
@@ -77,13 +77,8 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 				final int indices[] = new int[vertices.length];
 
 				for (int i = 0; i < vertices.length; i++) {
-					if (vertices[i].getOrginalIndex() != null) {
-						indices[i] = transferredIndex(result, vertices[i],
-								vertexMap);
-					} else {
-						indices[i] = result.addVertex(vertices[i].getPoint())
-								.getIndex();
-					}
+					indices[i] = transferredIndex(result, vertices[i],
+							vertexMap);
 				}
 				result.addFace(indices);
 			}
@@ -91,12 +86,13 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 	}
 
 	private int transferredIndex(final PolyMesh result,
-			final BoolVertex vertex, final Map<Integer, Integer> vertexMap) {
-		Integer index = vertexMap.get(vertex.getOrginalIndex());
+			final BoolVertex vertex,
+			final Map<BoolVertex.IBoolIndex, Integer> vertexMap) {
+		Integer index = vertexMap.get(vertex.getIndex());
 
 		if (index == null) {
 			index = result.addVertex(vertex.getPoint()).getIndex();
-			vertexMap.put(vertex.getOrginalIndex(), index);
+			vertexMap.put(vertex.getIndex(), index);
 		}
 		return index;
 	}

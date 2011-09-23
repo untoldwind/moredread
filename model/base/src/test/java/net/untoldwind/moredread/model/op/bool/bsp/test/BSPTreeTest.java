@@ -116,8 +116,6 @@ public class BSPTreeTest {
 		final BSPTree bspB = new BSPTree();
 		bspB.addMesh(triMeshB);
 
-		System.out
-				.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		int count = 0;
 		for (final TriangleFace face : triMeshA.getFaces()) {
 			final Vertex[] verticies = face.getVertexArray();
@@ -126,7 +124,7 @@ public class BSPTreeTest {
 					.testTriangle(verticies[0], verticies[1], verticies[2])
 					.size();
 		}
-		assertEquals(6, count);
+		assertEquals(22, count);
 	}
 
 	@Test
