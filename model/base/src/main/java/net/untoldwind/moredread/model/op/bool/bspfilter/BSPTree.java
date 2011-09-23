@@ -50,7 +50,7 @@ public class BSPTree {
 		if (root == null) {
 			root = new BSPNode(plane);
 		} else {
-			root.addTriangle(v1, v2, v3, plane);
+			root.addTriangle(new Vector3f[] { v1, v2, v3 }, plane);
 		}
 	}
 }

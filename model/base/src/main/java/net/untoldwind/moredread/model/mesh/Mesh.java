@@ -87,12 +87,6 @@ public abstract class Mesh<T extends AbstractFace<?>> implements IMesh,
 		return faces.get(faceIndex);
 	}
 
-	public void invert() {
-		for (final AbstractFace<?> face : faces) {
-			face.invert();
-		}
-	}
-
 	void markDirty() {
 		dirty = true;
 	}

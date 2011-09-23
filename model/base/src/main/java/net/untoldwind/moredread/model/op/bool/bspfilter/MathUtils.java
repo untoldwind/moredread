@@ -7,8 +7,9 @@ import com.jme.math.Vector3f;
 public class MathUtils {
 	public static Plane planeForTriangle(final Vector3f v1, final Vector3f v2,
 			final Vector3f v3) {
-		final Vector3f normal = v2.subtract(v1);
-		normal.crossLocal(v3.x - v1.x, v3.y - v1.y, v3.z - v1.z);
+		final Vector3f normal = v2.subtract(v1).normalize();
+		final Vector3f other = v3.subtract(v1).normalize();
+		normal.crossLocal(other);
 
 		final float len = normal.length();
 

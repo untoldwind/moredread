@@ -15,7 +15,7 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 
 	@Override
 	public TriangleMesh performBoolean(final BoolOperation operation,
-			final TriangleMesh meshA, final TriangleMesh meshB) {
+			TriangleMesh meshA, TriangleMesh meshB) {
 		final boolean invertMeshA = (operation == BoolOperation.UNION);
 		final boolean invertMeshB = (operation != BoolOperation.INTERSECTION);
 		final boolean invertResult = (operation == BoolOperation.UNION);
@@ -23,14 +23,14 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 		final Map<Integer, Integer> vertexMapA = new HashMap<Integer, Integer>();
 		final Map<Integer, Integer> vertexMapB = new HashMap<Integer, Integer>();
 
-		final TriangleMesh result = new TriangleMesh();
+		TriangleMesh result = new TriangleMesh();
 
 		if (invertMeshA) {
-			meshA.invert();
+			meshA = meshA.invert();
 		}
 
 		if (invertMeshB) {
-			meshB.invert();
+			meshB = meshB.invert();
 		}
 
 		final List<TriangleFace> facesA = new ArrayList<TriangleFace>(
@@ -46,7 +46,7 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 		bspFilter(result, bspB, facesA, vertexMapA);
 
 		if (invertResult) {
-			result.invert();
+			result = result.invert();
 		}
 
 		return result;

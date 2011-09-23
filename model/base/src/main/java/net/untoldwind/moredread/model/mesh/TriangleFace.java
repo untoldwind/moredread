@@ -119,15 +119,6 @@ public class TriangleFace extends AbstractFace<TriangleMesh> {
 	}
 
 	@Override
-	public void invert() {
-		Vertex v;
-
-		v = vertices[0];
-		vertices[0] = vertices[2];
-		vertices[2] = v;
-	}
-
-	@Override
 	public void readState(final IStateReader reader) throws IOException {
 		// TODO Auto-generated method stub
 

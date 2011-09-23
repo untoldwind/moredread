@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mesh class="net.untoldwind.moredread.model.mesh.TriangleMesh">
+	<numVertices>8</numVertices>
+	<vertex x="-2.0" y="-2.0" z="-2.0" />
+	<vertex x="2.0" y="-2.0" z="-2.0" />
+	<vertex x="2.0" y="2.0" z="-2.0" />
+	<vertex x="-2.0" y="2.0" z="-2.0" />
+	<vertex x="-2.0" y="-2.0" z="2.0" />
+	<vertex x="2.0" y="-2.0" z="2.0" />
+	<vertex x="2.0" y="2.0" z="2.0" />
+	<vertex x="-2.0" y="2.0" z="2.0" />
+	<numFaces>12</numFaces>
+	<index>3</index>
+	<index>2</index>
+	<index>1</index>
+	<index>1</index>
+	<index>0</index>
+	<index>3</index>
+	<index>4</index>
+	<index>5</index>
+	<index>6</index>
+	<index>6</index>
+	<index>7</index>
+	<index>4</index>
+	<index>4</index>
+	<index>7</index>
+	<index>3</index>
+	<index>3</index>
+	<index>0</index>
+	<index>4</index>
+	<index>1</index>
+	<index>2</index>
+	<index>6</index>
+	<index>6</index>
+	<index>5</index>
+	<index>1</index>
+	<index>0</index>
+	<index>1</index>
+	<index>5</index>
+	<index>5</index>
+	<index>4</index>
+	<index>0</index>
+	<index>2</index>
+	<index>3</index>
+	<index>7</index>
+	<index>7</index>
+	<index>6</index>
+	<index>2</index>
+</mesh>

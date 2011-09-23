@@ -84,6 +84,4 @@ public abstract class AbstractFace<T extends Mesh<?>> implements IStateHolder,
 	public abstract void updateCenter();
 
 	public abstract void updateMeanNormal();
-
-	public abstract void invert();
 }

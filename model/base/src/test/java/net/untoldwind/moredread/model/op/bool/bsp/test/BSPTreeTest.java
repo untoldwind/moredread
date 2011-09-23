@@ -10,9 +10,11 @@ import net.untoldwind.moredread.model.op.bool.bspfilter.BSPTree;
 import net.untoldwind.moredread.model.op.bool.bspfilter.BooleanTag;
 import net.untoldwind.moredread.model.op.bool.bspfilter.VertexTag;
 import net.untoldwind.moredread.model.state.XMLStateReader;
+import net.untoldwind.moredread.model.transform.MatrixTransformation;
 
 import org.junit.Test;
 
+import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 
 public class BSPTreeTest {
@@ -39,10 +41,9 @@ public class BSPTreeTest {
 	@Test
 	public void testInOutCubeInverted() throws Exception {
 		final IMesh mesh = new CubeMeshGenerator().generateMesh(null);
-		final TriangleMesh triMesh = mesh.toTriangleMesh();
+		final TriangleMesh triMesh = mesh.toTriangleMesh().invert();
 		final BSPTree tree = new BSPTree();
 
-		triMesh.invert();
 		tree.addMesh(triMesh);
 
 		assertEquals(VertexTag.OUT, tree.testVertex(new Vector3f(0, 0, 0)));
@@ -107,9 +108,8 @@ public class BSPTreeTest {
 				.getResourceAsStream("boolIn1_2.xml"));
 
 		final TriangleMesh triMeshA = meshA.toTriangleMesh();
-		final TriangleMesh triMeshB = meshB.toTriangleMesh();
+		final TriangleMesh triMeshB = meshB.toTriangleMesh().invert();
 
-		triMeshB.invert();
 		final BSPTree bspB = new BSPTree();
 		bspB.addMesh(triMeshB);
 
@@ -123,5 +123,63 @@ public class BSPTreeTest {
 			}
 		}
 		assertEquals(6, count);
+	}
+
+	@Test
+	public void testDodecaeder2Cube() throws Exception {
+		TriangleMesh meshA = XMLStateReader.fromXML(getClass()
+				.getResourceAsStream("boolIn2_1.xml"));
+		TriangleMesh meshB = XMLStateReader.fromXML(getClass()
+				.getResourceAsStream("boolIn2_2.xml"));
+
+		meshA = (TriangleMesh) meshA.transform(new MatrixTransformation(
+				new Vector3f(3, 3, 3), new Quaternion(),
+				new Vector3f(-10, 0, 0)));
+		meshB = meshB.invert();
+		final BSPTree bspA = new BSPTree();
+		bspA.addMesh(meshA);
+
+		int count = 0;
+		for (final TriangleFace face : meshB.getFaces()) {
+			final Vertex[] verticies = face.getVertexArray();
+
+			if (bspA.testTriangle(verticies[0].getPoint(),
+					verticies[1].getPoint(), verticies[2].getPoint()) == BooleanTag.IN) {
+				count++;
+			}
+		}
+		assertEquals(0, count);
+	}
+
+	@Test
+	public void testDodecaeder2Cube2() throws Exception {
+		TriangleMesh meshA = XMLStateReader.fromXML(getClass()
+				.getResourceAsStream("boolIn2_1.xml"));
+		TriangleMesh meshB = XMLStateReader.fromXML(getClass()
+				.getResourceAsStream("boolIn2_2.xml"));
+
+		meshA = (TriangleMesh) meshA.transform(new MatrixTransformation(
+				new Vector3f(3, 3, 3), new Quaternion(), new Vector3f(
+						-7.31787f, 0, 0)));
+		meshB = meshB.invert();
+		final BSPTree bspA = new BSPTree();
+		bspA.addMesh(meshA);
+
+		int count = 0;
+		for (final TriangleFace face : meshB.getFaces()) {
+			final Vertex[] verticies = face.getVertexArray();
+
+			if (bspA.testTriangle(verticies[0].getPoint(),
+					verticies[1].getPoint(), verticies[2].getPoint()) == BooleanTag.IN) {
+				final Vertex[] vertices = face.getVertexArray();
+
+				for (final Vertex vertex : vertices) {
+					System.out.println(">>> " + vertex.getPoint() + " "
+							+ bspA.testVertex(vertex.getPoint()));
+				}
+				count++;
+			}
+		}
+		// assertEquals(0, count);
 	}
 }

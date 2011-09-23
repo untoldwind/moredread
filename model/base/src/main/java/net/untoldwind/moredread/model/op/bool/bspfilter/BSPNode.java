@@ -1,5 +1,8 @@
 package net.untoldwind.moredread.model.op.bool.bspfilter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.jme.math.Plane;
 import com.jme.math.Vector3f;
 
@@ -12,110 +15,76 @@ public class BSPNode {
 		this.nodePlane = nodePlane;
 	}
 
-	public void addTriangle(final Vector3f v1, final Vector3f v2,
-			final Vector3f v3, final Plane plane) {
-		final TriangleTag tag = MathUtils.testTriangle(nodePlane, v1, v2, v3);
+	public void addTriangle(final Vector3f[] vertices, final Plane plane) {
+		final VertexTag[] tags = new VertexTag[vertices.length];
 
-		Vector3f v4, v5;
+		for (int i = 0; i < tags.length; i++) {
+			tags[i] = MathUtils.testPoint(nodePlane, vertices[i]);
+		}
 
-		switch (tag) {
-		case ON_ON_ON:
-			// All on => ignore
+		if (VertexTag.allOn(tags)) {
+			// Ignore
 			return;
-		case IN_IN_IN:
-		case IN_IN_ON:
-		case IN_ON_IN:
-		case ON_IN_IN:
-		case IN_ON_ON:
-		case ON_IN_ON:
-		case ON_ON_IN:
-			// All in
-			addInChild(v1, v2, v3, plane);
+		} else if (VertexTag.allIn(tags)) {
+			addInChild(vertices, plane);
 			return;
-		case OUT_OUT_OUT:
-		case OUT_OUT_ON:
-		case OUT_ON_OUT:
-		case ON_OUT_OUT:
-		case OUT_ON_ON:
-		case ON_OUT_ON:
-		case ON_ON_OUT:
-			// All out
-			addOutChild(v1, v2, v3, plane);
+		} else if (VertexTag.allOut(tags)) {
+			addOutChild(vertices, plane);
 			return;
-		case IN_OUT_ON:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v1, v2);
-			addInChild(v1, v4, v3, plane);
-			addOutChild(v4, v2, v3, plane);
-			return;
-		case OUT_IN_ON:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v1, v2);
-			addOutChild(v1, v4, v3, plane);
-			addInChild(v4, v2, v3, plane);
-			return;
-		case IN_ON_OUT:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v1, v3);
-			addInChild(v1, v2, v4, plane);
-			addOutChild(v4, v2, v3, plane);
-			return;
-		case OUT_ON_IN:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v1, v3);
-			addOutChild(v1, v2, v4, plane);
-			addInChild(v4, v2, v3, plane);
-			return;
-		case ON_IN_OUT:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v2, v3);
-			addInChild(v1, v2, v4, plane);
-			addOutChild(v1, v4, v3, plane);
-			return;
-		case ON_OUT_IN:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v2, v3);
-			addOutChild(v1, v2, v4, plane);
-			addInChild(v1, v4, v3, plane);
-			return;
-		case IN_OUT_OUT:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v1, v2);
-			v5 = MathUtils.intersectLinePlane(nodePlane, v1, v3);
-			addInChild(v1, v4, v5, plane);
-			addOutChild(v4, v2, v3, plane);
-			addOutChild(v4, v3, v5, plane);
-			return;
-		case OUT_IN_IN:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v1, v2);
-			v5 = MathUtils.intersectLinePlane(nodePlane, v1, v3);
-			addOutChild(v1, v4, v5, plane);
-			addInChild(v4, v2, v3, plane);
-			addInChild(v4, v3, v5, plane);
-			return;
-		case OUT_IN_OUT:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v2, v1);
-			v5 = MathUtils.intersectLinePlane(nodePlane, v2, v3);
-			addInChild(v4, v2, v5, plane);
-			addOutChild(v1, v4, v3, plane);
-			addOutChild(v4, v5, v3, plane);
-			return;
-		case IN_OUT_IN:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v2, v1);
-			v5 = MathUtils.intersectLinePlane(nodePlane, v2, v3);
-			addOutChild(v4, v2, v5, plane);
-			addInChild(v1, v4, v3, plane);
-			addInChild(v4, v5, v3, plane);
-			return;
-		case OUT_OUT_IN:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v2, v3);
-			v5 = MathUtils.intersectLinePlane(nodePlane, v1, v3);
-			addInChild(v4, v3, v5, plane);
-			addOutChild(v1, v2, v4, plane);
-			addOutChild(v4, v5, v1, plane);
-			return;
-		case IN_IN_OUT:
-			v4 = MathUtils.intersectLinePlane(nodePlane, v2, v3);
-			v5 = MathUtils.intersectLinePlane(nodePlane, v1, v3);
-			addOutChild(v4, v3, v5, plane);
-			addInChild(v1, v2, v4, plane);
-			addInChild(v4, v5, v1, plane);
-			return;
-		default:
-			throw new IllegalStateException("Unhandled tag: " + tag);
+		} else {
+			final List<Vector3f> inside = new ArrayList<Vector3f>();
+			final List<Vector3f> outside = new ArrayList<Vector3f>();
+			Vector3f lpoint = vertices[vertices.length - 1];
+			VertexTag ltag = MathUtils.testPoint(nodePlane, lpoint);
+			VertexTag tstate = ltag;
+
+			// classify each line segment, looking for endpoints which lie on
+			// different
+			// sides of the hyperplane.
+			for (final Vector3f npoint : vertices) {
+				final VertexTag ntag = MathUtils.testPoint(nodePlane, npoint);
+
+				if (ltag != VertexTag.ON) { // last point not on hyperplane
+					if (tstate == VertexTag.IN) {
+						if (inChild != null) {
+							inside.add(lpoint);
+						}
+					} else {
+						if (outChild != null) {
+							outside.add(lpoint);
+						}
+					}
+					if (ntag != VertexTag.ON && ntag != tstate) { // last, self
+																	// in
+						// different
+						// half-spaces
+						final Vector3f mpoint = MathUtils.intersectLinePlane(
+								nodePlane, lpoint, npoint);
+						if (inChild != null) {
+							inside.add(mpoint);
+						}
+						if (outChild != null) {
+							outside.add(mpoint);
+						}
+						tstate = ntag;
+					}
+				} else { // last point on hyperplane, so we're switching
+					// half-spaces
+					// boundary point belong to both faces
+					if (inChild != null) {
+						inside.add(lpoint);
+					}
+					if (outChild != null) {
+						outside.add(lpoint);
+					}
+					tstate = ntag; // state changes to new point tag
+				}
+				lpoint = npoint; // save point, tag for next iteration
+				ltag = ntag;
+			}
+
+			addInChild(inside.toArray(new Vector3f[inside.size()]), plane);
+			addOutChild(outside.toArray(new Vector3f[outside.size()]), plane);
 		}
 	}
 
@@ -146,6 +115,9 @@ public class BSPNode {
 	public BooleanTag testTriangle(final Vector3f v1, final Vector3f v2,
 			final Vector3f v3) {
 		final TriangleTag tag = MathUtils.testTriangle(nodePlane, v1, v2, v3);
+		if (MathUtils.planeForTriangle(v1, v2, v3) == null) {
+			System.out.println(v1 + " " + v2 + " " + v3);
+		}
 
 		Vector3f v4, v5;
 		switch (tag) {
@@ -266,21 +238,19 @@ public class BSPNode {
 		}
 	}
 
-	private void addOutChild(final Vector3f v1, final Vector3f v2,
-			final Vector3f v3, final Plane plane) {
+	private void addOutChild(final Vector3f[] vertices, final Plane plane) {
 		if (outChild == null) {
 			outChild = new BSPNode(plane);
 		} else {
-			outChild.addTriangle(v1, v2, v3, plane);
+			outChild.addTriangle(vertices, plane);
 		}
 	}
 
-	private void addInChild(final Vector3f v1, final Vector3f v2,
-			final Vector3f v3, final Plane plane) {
+	private void addInChild(final Vector3f[] vertices, final Plane plane) {
 		if (inChild == null) {
 			inChild = new BSPNode(plane);
 		} else {
-			inChild.addTriangle(v1, v2, v3, plane);
+			inChild.addTriangle(vertices, plane);
 		}
 	}
 
