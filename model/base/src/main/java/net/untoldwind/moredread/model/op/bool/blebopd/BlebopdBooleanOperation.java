@@ -3,6 +3,7 @@ package net.untoldwind.moredread.model.op.bool.blebopd;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
 import net.untoldwind.moredread.model.mesh.Vertex;
@@ -11,8 +12,10 @@ import net.untoldwind.moredread.model.op.IBooleanOperation;
 public class BlebopdBooleanOperation implements IBooleanOperation {
 
 	@Override
-	public TriangleMesh performBoolean(final BoolOperation operation,
-			final TriangleMesh meshA, final TriangleMesh meshB) {
+	public IMesh performBoolean(final BoolOperation operation, final IMesh inA,
+			final IMesh inB) {
+		final TriangleMesh meshA = inA.toTriangleMesh();
+		final TriangleMesh meshB = inB.toTriangleMesh();
 		final boolean invertMeshA = (operation == BoolOperation.UNION);
 		final boolean invertMeshB = (operation != BoolOperation.INTERSECTION);
 		final boolean invertMeshC = (operation == BoolOperation.UNION);
@@ -35,15 +38,15 @@ public class BlebopdBooleanOperation implements IBooleanOperation {
 			if (invertMeshA) {
 				final Plane3d plane = MathUtils.createPlane3d(v3.getPoint3d(),
 						v2.getPoint3d(), v1.getPoint3d());
-				final BoolFace boolFace = new BoolFace(v3, v2, v1, plane, face
-						.getIndex());
+				final BoolFace boolFace = new BoolFace(v3, v2, v1, plane,
+						face.getIndex());
 				facesA.add(boolFace);
 				meshC.addFace(boolFace);
 			} else {
 				final Plane3d plane = MathUtils.createPlane3d(v1.getPoint3d(),
 						v2.getPoint3d(), v3.getPoint3d());
-				final BoolFace boolFace = new BoolFace(v1, v2, v3, plane, face
-						.getIndex());
+				final BoolFace boolFace = new BoolFace(v1, v2, v3, plane,
+						face.getIndex());
 				facesA.add(boolFace);
 				meshC.addFace(boolFace);
 			}
@@ -59,17 +62,15 @@ public class BlebopdBooleanOperation implements IBooleanOperation {
 			if (invertMeshB) {
 				final Plane3d plane = MathUtils.createPlane3d(v3.getPoint3d(),
 						v2.getPoint3d(), v1.getPoint3d());
-				final BoolFace boolFace = new BoolFace(v3, v2, v1, plane, face
-						.getIndex()
-						+ facesA.size());
+				final BoolFace boolFace = new BoolFace(v3, v2, v1, plane,
+						face.getIndex() + facesA.size());
 				facesB.add(boolFace);
 				meshC.addFace(boolFace);
 			} else {
 				final Plane3d plane = MathUtils.createPlane3d(v1.getPoint3d(),
 						v2.getPoint3d(), v3.getPoint3d());
-				final BoolFace boolFace = new BoolFace(v1, v2, v3, plane, face
-						.getIndex()
-						+ facesA.size());
+				final BoolFace boolFace = new BoolFace(v1, v2, v3, plane,
+						face.getIndex() + facesA.size());
 				facesB.add(boolFace);
 				meshC.addFace(boolFace);
 			}

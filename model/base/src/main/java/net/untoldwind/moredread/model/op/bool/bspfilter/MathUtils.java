@@ -7,8 +7,8 @@ import com.jme.math.Vector3f;
 public class MathUtils {
 	public static Plane planeForTriangle(final Vector3f v1, final Vector3f v2,
 			final Vector3f v3) {
-		final Vector3f normal = v2.subtract(v1).normalize();
-		final Vector3f other = v3.subtract(v1).normalize();
+		final Vector3f normal = v2.subtract(v1).normalizeLocal();
+		final Vector3f other = v3.subtract(v1).normalizeLocal();
 		normal.crossLocal(other);
 
 		final float len = normal.length();
@@ -29,9 +29,9 @@ public class MathUtils {
 	public static VertexTag testPoint(final Plane plane, final Vector3f v) {
 		final float distance = plane.pseudoDistance(v);
 
-		if (distance < -FastMath.FLT_EPSILON) {
+		if (distance < -1e-5f) {
 			return VertexTag.IN;
-		} else if (distance > FastMath.FLT_EPSILON) {
+		} else if (distance > 1e-5f) {
 			return VertexTag.OUT;
 		} else {
 			return VertexTag.ON;

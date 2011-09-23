@@ -8,6 +8,7 @@ import net.untoldwind.moredread.model.mesh.TriangleMesh;
 import net.untoldwind.moredread.model.mesh.Vertex;
 import net.untoldwind.moredread.model.op.bool.bspfilter.BSPTree;
 import net.untoldwind.moredread.model.op.bool.bspfilter.BooleanTag;
+import net.untoldwind.moredread.model.op.bool.bspfilter.UnitRescale;
 import net.untoldwind.moredread.model.op.bool.bspfilter.VertexTag;
 import net.untoldwind.moredread.model.state.XMLStateReader;
 import net.untoldwind.moredread.model.transform.MatrixTransformation;
@@ -110,6 +111,10 @@ public class BSPTreeTest {
 		final TriangleMesh triMeshA = meshA.toTriangleMesh();
 		final TriangleMesh triMeshB = meshB.toTriangleMesh().invert();
 
+		final UnitRescale unitRescale = new UnitRescale(triMeshA, triMeshB);
+		unitRescale.rescaleInput(triMeshA);
+		unitRescale.rescaleInput(triMeshB);
+
 		final BSPTree bspB = new BSPTree();
 		bspB.addMesh(triMeshB);
 
@@ -136,6 +141,11 @@ public class BSPTreeTest {
 				new Vector3f(3, 3, 3), new Quaternion(),
 				new Vector3f(-10, 0, 0)));
 		meshB = meshB.invert();
+
+		final UnitRescale unitRescale = new UnitRescale(meshA, meshB);
+		unitRescale.rescaleInput(meshA);
+		unitRescale.rescaleInput(meshB);
+
 		final BSPTree bspA = new BSPTree();
 		bspA.addMesh(meshA);
 
@@ -162,6 +172,11 @@ public class BSPTreeTest {
 				new Vector3f(3, 3, 3), new Quaternion(), new Vector3f(
 						-7.31787f, 0, 0)));
 		meshB = meshB.invert();
+
+		final UnitRescale unitRescale = new UnitRescale(meshA, meshB);
+		unitRescale.rescaleInput(meshA);
+		unitRescale.rescaleInput(meshB);
+
 		final BSPTree bspA = new BSPTree();
 		bspA.addMesh(meshA);
 
@@ -171,15 +186,9 @@ public class BSPTreeTest {
 
 			if (bspA.testTriangle(verticies[0].getPoint(),
 					verticies[1].getPoint(), verticies[2].getPoint()) == BooleanTag.IN) {
-				final Vertex[] vertices = face.getVertexArray();
-
-				for (final Vertex vertex : vertices) {
-					System.out.println(">>> " + vertex.getPoint() + " "
-							+ bspA.testVertex(vertex.getPoint()));
-				}
 				count++;
 			}
 		}
-		// assertEquals(0, count);
+		assertEquals(0, count);
 	}
 }

@@ -53,4 +53,11 @@ public class BSPTree {
 			root.addTriangle(new Vector3f[] { v1, v2, v3 }, plane);
 		}
 	}
+
+	public void dump() {
+		System.out.println(">>> BSP");
+		if (root != null) {
+			root.dump(" ");
+		}
+	}
 }

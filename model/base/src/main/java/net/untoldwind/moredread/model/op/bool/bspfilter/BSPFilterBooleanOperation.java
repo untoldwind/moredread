@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
 import net.untoldwind.moredread.model.mesh.Vertex;
@@ -14,8 +15,10 @@ import net.untoldwind.moredread.model.op.IBooleanOperation;
 public class BSPFilterBooleanOperation implements IBooleanOperation {
 
 	@Override
-	public TriangleMesh performBoolean(final BoolOperation operation,
-			TriangleMesh meshA, TriangleMesh meshB) {
+	public IMesh performBoolean(final BoolOperation operation, final IMesh inA,
+			final IMesh inB) {
+		TriangleMesh meshA = inA.toTriangleMesh();
+		TriangleMesh meshB = inB.toTriangleMesh();
 		final boolean invertMeshA = (operation == BoolOperation.UNION);
 		final boolean invertMeshB = (operation != BoolOperation.INTERSECTION);
 		final boolean invertResult = (operation == BoolOperation.UNION);
@@ -32,6 +35,9 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 		if (invertMeshB) {
 			meshB = meshB.invert();
 		}
+		final UnitRescale unitRescale = new UnitRescale(meshA, meshB);
+		unitRescale.rescaleInput(meshA);
+		unitRescale.rescaleInput(meshB);
 
 		final List<TriangleFace> facesA = new ArrayList<TriangleFace>(
 				meshA.getFaces());
@@ -48,6 +54,7 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 		if (invertResult) {
 			result = result.invert();
 		}
+		unitRescale.rescaleOutput(result);
 
 		return result;
 	}

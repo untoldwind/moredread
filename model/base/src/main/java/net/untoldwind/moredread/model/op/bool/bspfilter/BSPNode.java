@@ -254,4 +254,15 @@ public class BSPNode {
 		}
 	}
 
+	public void dump(final String prefix) {
+		System.out.println(prefix + nodePlane);
+		if (inChild != null) {
+			System.out.println(prefix + "In");
+			inChild.dump(prefix + "   ");
+		}
+		if (outChild != null) {
+			System.out.println(prefix + "Out");
+			outChild.dump(prefix + "   ");
+		}
+	}
 }
