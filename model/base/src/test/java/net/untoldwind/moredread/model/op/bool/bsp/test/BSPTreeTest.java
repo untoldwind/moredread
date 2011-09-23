@@ -7,7 +7,6 @@ import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
 import net.untoldwind.moredread.model.mesh.Vertex;
 import net.untoldwind.moredread.model.op.bool.bspfilter.BSPTree;
-import net.untoldwind.moredread.model.op.bool.bspfilter.BooleanTag;
 import net.untoldwind.moredread.model.op.bool.bspfilter.UnitRescale;
 import net.untoldwind.moredread.model.op.bool.bspfilter.VertexTag;
 import net.untoldwind.moredread.model.state.XMLStateReader;
@@ -110,20 +109,22 @@ public class BSPTreeTest {
 		final TriangleMesh triMeshA = meshA.toTriangleMesh();
 		final TriangleMesh triMeshB = meshB.toTriangleMesh().invert();
 
-		final UnitRescale unitRescale = new UnitRescale(triMeshA, triMeshB);
-		unitRescale.rescaleInput(triMeshA);
-		unitRescale.rescaleInput(triMeshB);
+		// final UnitRescale unitRescale = new UnitRescale(triMeshA, triMeshB);
+		// unitRescale.rescaleInput(triMeshA);
+		// unitRescale.rescaleInput(triMeshB);
 
 		final BSPTree bspB = new BSPTree();
 		bspB.addMesh(triMeshB);
 
+		System.out
+				.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		int count = 0;
 		for (final TriangleFace face : triMeshA.getFaces()) {
 			final Vertex[] verticies = face.getVertexArray();
 
-			if (bspB.testTriangle(verticies[0], verticies[1], verticies[2]) == BooleanTag.IN) {
-				count++;
-			}
+			count += bspB
+					.testTriangle(verticies[0], verticies[1], verticies[2])
+					.size();
 		}
 		assertEquals(6, count);
 	}
@@ -151,9 +152,9 @@ public class BSPTreeTest {
 		for (final TriangleFace face : meshB.getFaces()) {
 			final Vertex[] verticies = face.getVertexArray();
 
-			if (bspA.testTriangle(verticies[0], verticies[1], verticies[2]) == BooleanTag.IN) {
-				count++;
-			}
+			count += bspA
+					.testTriangle(verticies[0], verticies[1], verticies[2])
+					.size();
 		}
 		assertEquals(0, count);
 	}
@@ -181,9 +182,9 @@ public class BSPTreeTest {
 		for (final TriangleFace face : meshB.getFaces()) {
 			final Vertex[] verticies = face.getVertexArray();
 
-			if (bspA.testTriangle(verticies[0], verticies[1], verticies[2]) == BooleanTag.IN) {
-				count++;
-			}
+			count += bspA
+					.testTriangle(verticies[0], verticies[1], verticies[2])
+					.size();
 		}
 		assertEquals(0, count);
 	}

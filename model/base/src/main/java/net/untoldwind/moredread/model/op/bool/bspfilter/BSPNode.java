@@ -45,13 +45,9 @@ public class BSPNode {
 
 				if (ltag != VertexTag.ON) { // last point not on hyperplane
 					if (tstate == VertexTag.IN) {
-						if (inChild != null) {
-							inside.add(lpoint);
-						}
+						inside.add(lpoint);
 					} else {
-						if (outChild != null) {
-							outside.add(lpoint);
-						}
+						outside.add(lpoint);
 					}
 					if (ntag != VertexTag.ON && ntag != tstate) { // last, self
 																	// in
@@ -59,23 +55,15 @@ public class BSPNode {
 						// half-spaces
 						final BoolVertex mpoint = MathUtils.intersectLinePlane(
 								nodePlane, lpoint, npoint);
-						if (inChild != null) {
-							inside.add(mpoint);
-						}
-						if (outChild != null) {
-							outside.add(mpoint);
-						}
+						inside.add(mpoint);
+						outside.add(mpoint);
 						tstate = ntag;
 					}
 				} else { // last point on hyperplane, so we're switching
 					// half-spaces
 					// boundary point belong to both faces
-					if (inChild != null) {
-						inside.add(lpoint);
-					}
-					if (outChild != null) {
-						outside.add(lpoint);
-					}
+					inside.add(lpoint);
+					outside.add(lpoint);
 					tstate = ntag; // state changes to new point tag
 				}
 				lpoint = npoint; // save point, tag for next iteration
@@ -111,7 +99,8 @@ public class BSPNode {
 		}
 	}
 
-	public BooleanTag testFace(final BoolVertex[] vertices, final Plane plane) {
+	public void testFace(final BoolVertex[] vertices, final Plane plane,
+			final List<BoolFace> inFaces) {
 		final VertexTag[] tags = new VertexTag[vertices.length];
 
 		for (int i = 0; i < tags.length; i++) {
@@ -120,14 +109,14 @@ public class BSPNode {
 
 		if (VertexTag.allOn(tags)) {
 			if (plane.getNormal().dot(nodePlane.getNormal()) > 0) {
-				return testFaceIn(vertices, plane);
+				testFaceIn(vertices, plane, inFaces);
 			} else {
-				return testFaceOut(vertices, plane);
+				testFaceOut(vertices, plane, inFaces);
 			}
 		} else if (VertexTag.allIn(tags)) {
-			return testFaceIn(vertices, plane);
+			testFaceIn(vertices, plane, inFaces);
 		} else if (VertexTag.allOut(tags)) {
-			return testFaceOut(vertices, plane);
+			testFaceOut(vertices, plane, inFaces);
 		} else {
 			final List<BoolVertex> inside = new ArrayList<BoolVertex>();
 			final List<BoolVertex> outside = new ArrayList<BoolVertex>();
@@ -143,13 +132,9 @@ public class BSPNode {
 
 				if (ltag != VertexTag.ON) { // last point not on hyperplane
 					if (tstate == VertexTag.IN) {
-						if (inChild != null) {
-							inside.add(lpoint);
-						}
+						inside.add(lpoint);
 					} else {
-						if (outChild != null) {
-							outside.add(lpoint);
-						}
+						outside.add(lpoint);
 					}
 					if (ntag != VertexTag.ON && ntag != tstate) { // last, self
 																	// in
@@ -157,52 +142,41 @@ public class BSPNode {
 						// half-spaces
 						final BoolVertex mpoint = MathUtils.intersectLinePlane(
 								nodePlane, lpoint, npoint);
-						if (inChild != null) {
-							inside.add(mpoint);
-						}
-						if (outChild != null) {
-							outside.add(mpoint);
-						}
+						inside.add(mpoint);
+						outside.add(mpoint);
 						tstate = ntag;
 					}
 				} else { // last point on hyperplane, so we're switching
 					// half-spaces
 					// boundary point belong to both faces
-					if (inChild != null) {
-						inside.add(lpoint);
-					}
-					if (outChild != null) {
-						outside.add(lpoint);
-					}
+					inside.add(lpoint);
+					outside.add(lpoint);
 					tstate = ntag; // state changes to new point tag
 				}
 				lpoint = npoint; // save point, tag for next iteration
 				ltag = ntag;
 			}
 
-			return BooleanTag.combine(
-					testFaceIn(inside.toArray(new BoolVertex[inside.size()]),
-							plane),
-					testFaceOut(
-							outside.toArray(new BoolVertex[outside.size()]),
-							plane));
+			testFaceIn(inside.toArray(new BoolVertex[inside.size()]), plane,
+					inFaces);
+			testFaceOut(outside.toArray(new BoolVertex[outside.size()]), plane,
+					inFaces);
 		}
 	}
 
-	private BooleanTag testFaceIn(final BoolVertex[] vertices, final Plane plane) {
+	private void testFaceIn(final BoolVertex[] vertices, final Plane plane,
+			final List<BoolFace> inFaces) {
 		if (inChild != null) {
-			return inChild.testFace(vertices, plane);
+			inChild.testFace(vertices, plane, inFaces);
 		} else {
-			return BooleanTag.IN;
+			inFaces.add(new BoolFace(vertices));
 		}
 	}
 
-	private BooleanTag testFaceOut(final BoolVertex[] vertices,
-			final Plane plane) {
+	private void testFaceOut(final BoolVertex[] vertices, final Plane plane,
+			final List<BoolFace> inFaces) {
 		if (outChild != null) {
-			return outChild.testFace(vertices, plane);
-		} else {
-			return BooleanTag.OUT;
+			outChild.testFace(vertices, plane, inFaces);
 		}
 	}
 

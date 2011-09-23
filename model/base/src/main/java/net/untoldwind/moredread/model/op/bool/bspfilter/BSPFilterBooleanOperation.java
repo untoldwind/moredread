@@ -2,11 +2,11 @@ package net.untoldwind.moredread.model.op.bool.bspfilter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import net.untoldwind.moredread.model.mesh.IMesh;
+import net.untoldwind.moredread.model.mesh.PolyMesh;
 import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
 import net.untoldwind.moredread.model.mesh.Vertex;
@@ -26,7 +26,7 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 		final Map<Integer, Integer> vertexMapA = new HashMap<Integer, Integer>();
 		final Map<Integer, Integer> vertexMapB = new HashMap<Integer, Integer>();
 
-		TriangleMesh result = new TriangleMesh();
+		PolyMesh result = new PolyMesh();
 
 		if (invertMeshA) {
 			meshA = meshA.invert();
@@ -59,39 +59,44 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 		return result;
 	}
 
-	private void bspFilter(final TriangleMesh result, final BSPTree filter,
+	private void bspFilter(final PolyMesh result, final BSPTree filter,
 			final List<TriangleFace> source,
 			final Map<Integer, Integer> vertexMap) {
-		final Iterator<TriangleFace> it = source.iterator();
-
-		while (it.hasNext()) {
-			final TriangleFace face = it.next();
+		for (final TriangleFace face : source) {
 			final Vertex[] verticies = face.getVertexArray();
 
-			switch (filter.testTriangle(verticies[0], verticies[1],
-					verticies[2])) {
-			case IN:
-				final int i1 = transferredIndex(result, verticies[0], vertexMap);
-				final int i2 = transferredIndex(result, verticies[1], vertexMap);
-				final int i3 = transferredIndex(result, verticies[2], vertexMap);
+			final List<BoolFace> inFaces = filter.testTriangle(verticies[0],
+					verticies[1], verticies[2]);
 
-				result.addFace(i1, i2, i3);
-				it.remove();
-				break;
-			case OUT:
-				it.remove();
-				break;
+			for (final BoolFace inFace : inFaces) {
+				final BoolVertex[] vertices = inFace.getVertices();
+				if (vertices.length < 3) {
+					continue;
+				}
+
+				final int indices[] = new int[vertices.length];
+
+				for (int i = 0; i < vertices.length; i++) {
+					if (vertices[i].getOrginalIndex() != null) {
+						indices[i] = transferredIndex(result, vertices[i],
+								vertexMap);
+					} else {
+						indices[i] = result.addVertex(vertices[i].getPoint())
+								.getIndex();
+					}
+				}
+				result.addFace(indices);
 			}
 		}
 	}
 
-	private int transferredIndex(final TriangleMesh result,
-			final Vertex vertex, final Map<Integer, Integer> vertexMap) {
-		Integer index = vertexMap.get(vertex.getIndex());
+	private int transferredIndex(final PolyMesh result,
+			final BoolVertex vertex, final Map<Integer, Integer> vertexMap) {
+		Integer index = vertexMap.get(vertex.getOrginalIndex());
 
 		if (index == null) {
 			index = result.addVertex(vertex.getPoint()).getIndex();
-			vertexMap.put(vertex.getIndex(), index);
+			vertexMap.put(vertex.getOrginalIndex(), index);
 		}
 		return index;
 	}

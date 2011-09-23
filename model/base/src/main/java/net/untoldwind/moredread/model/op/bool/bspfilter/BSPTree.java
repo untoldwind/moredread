@@ -1,5 +1,8 @@
 package net.untoldwind.moredread.model.op.bool.bspfilter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.untoldwind.moredread.model.mesh.IVertex;
 import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
@@ -31,16 +34,17 @@ public class BSPTree {
 		return VertexTag.OUT;
 	}
 
-	public BooleanTag testTriangle(final IVertex v1, final IVertex v2,
+	public List<BoolFace> testTriangle(final IVertex v1, final IVertex v2,
 			final IVertex v3) {
+		final List<BoolFace> inFaces = new ArrayList<BoolFace>();
 		if (root != null) {
 			final Plane plane = MathUtils.planeForTriangle(v1.getPoint(),
 					v2.getPoint(), v3.getPoint());
 
-			return root.testFace(new BoolVertex[] { new BoolVertex(v1),
-					new BoolVertex(v2), new BoolVertex(v3) }, plane);
+			root.testFace(new BoolVertex[] { new BoolVertex(v1),
+					new BoolVertex(v2), new BoolVertex(v3) }, plane, inFaces);
 		}
-		return BooleanTag.OUT;
+		return inFaces;
 	}
 
 	private void addFace(final TriangleFace face) {

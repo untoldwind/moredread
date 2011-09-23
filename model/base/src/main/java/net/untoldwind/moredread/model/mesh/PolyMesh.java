@@ -103,6 +103,11 @@ public class PolyMesh extends Mesh<PolyFace> {
 		return triangleMesh;
 	}
 
+	public PolyMesh invert() {
+		// TODO
+		return this;
+	}
+
 	@Override
 	public IMesh transform(final ITransformation transformation) {
 		final PolyMesh newMesh = new PolyMesh();

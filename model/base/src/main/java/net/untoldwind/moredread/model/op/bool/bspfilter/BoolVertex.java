@@ -26,4 +26,15 @@ public class BoolVertex {
 		return orginalIndex;
 	}
 
+	@Override
+	public String toString() {
+		final StringBuilder builder = new StringBuilder();
+		builder.append("BoolVertex [point=");
+		builder.append(point);
+		builder.append(", orginalIndex=");
+		builder.append(orginalIndex);
+		builder.append("]");
+		return builder.toString();
+	}
+
 }
