@@ -36,6 +36,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.contexts.IContextActivation;
+import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
@@ -45,9 +47,13 @@ public class ModelTreeView extends ViewPart implements
 
 	public static final String ID = "net.untoldwind.moredread.ui.modelTreeView";
 
-	TreeViewer modelViewer;
+	public static final String CONTEXT_ID = "net.untoldwind.moredread.ui.context.modelView";
 
-	volatile boolean changing;
+	private TreeViewer modelViewer;
+
+	private volatile boolean changing;
+
+	private IContextActivation contextActivation;
 
 	/**
 	 * {@inheritDoc}
@@ -134,10 +140,21 @@ public class ModelTreeView extends ViewPart implements
 		getSite()
 				.registerContextMenu(menuMgr, getSite().getSelectionProvider());
 
+		final IContextService contextService = (IContextService) getSite()
+				.getService(IContextService.class);
+		contextActivation = contextService.activateContext(CONTEXT_ID);
+
 		MoreDreadUI.getDefault().getSceneHolder().getScene()
 				.getSceneSelection().addSceneSelectionChangeListener(this);
 		MoreDreadUI.getDefault().getSceneHolder().getScene()
 				.addSceneChangeListener(this);
+	}
+
+	@Override
+	public void dispose() {
+		final IContextService contextService = (IContextService) getSite()
+				.getService(IContextService.class);
+		contextService.deactivateContext(contextActivation);
 	}
 
 	public void sceneSelectionChanged(final SceneSelectionChangeEvent event) {

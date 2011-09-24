@@ -329,6 +329,11 @@
             name="In 3D view"
             parentId="org.eclipse.ui.contexts.window">
       </context>
+      <context
+            id="net.untoldwind.moredread.ui.context.modelView"
+            name="Model Tree"
+            parentId="org.eclipse.ui.contexts.window">
+      </context>
    </extension>
    <extension
          point="org.eclipse.core.runtime.adapters">
