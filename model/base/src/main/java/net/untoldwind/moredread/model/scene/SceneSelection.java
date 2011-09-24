@@ -73,7 +73,8 @@ public class SceneSelection implements ISceneSelection {
 			}
 
 			fireSceneSelectionChangeEvent(new SceneSelectionChangeEvent(scene,
-					this.selectedNodes));
+					this.selectedNodes, selectedFaces, selectedEdges,
+					selectedVertices));
 		}
 	}
 
@@ -95,7 +96,8 @@ public class SceneSelection implements ISceneSelection {
 			node.markDirty();
 
 			fireSceneSelectionChangeEvent(new SceneSelectionChangeEvent(scene,
-					selectedNodes));
+					selectedNodes, selectedFaces, selectedEdges,
+					selectedVertices));
 		}
 	}
 
@@ -117,7 +119,7 @@ public class SceneSelection implements ISceneSelection {
 		}
 
 		fireSceneSelectionChangeEvent(new SceneSelectionChangeEvent(scene,
-				selectedNodes));
+				selectedNodes, selectedFaces, selectedEdges, selectedVertices));
 	}
 
 	public void setSelectedFace(final IMeshNode node, final FaceId faceIndex) {
@@ -133,9 +135,9 @@ public class SceneSelection implements ISceneSelection {
 			selectedFaces.add(faceSelection);
 			faceSelection.getNode().markDirty();
 
-			// TODO: Might require finer events
 			fireSceneSelectionChangeEvent(new SceneSelectionChangeEvent(scene,
-					selectedNodes));
+					selectedNodes, selectedFaces, selectedEdges,
+					selectedVertices));
 		}
 	}
 
@@ -152,9 +154,8 @@ public class SceneSelection implements ISceneSelection {
 		}
 		node.markDirty();
 
-		// TODO: Might require finer events
 		fireSceneSelectionChangeEvent(new SceneSelectionChangeEvent(scene,
-				selectedNodes));
+				selectedNodes, selectedFaces, selectedEdges, selectedVertices));
 	}
 
 	public void setSelectedEdge(final IGeometryNode<?, ?> node,
@@ -172,9 +173,9 @@ public class SceneSelection implements ISceneSelection {
 			selectedEdges.add(edgeSelection);
 			edgeSelection.getNode().markDirty();
 
-			// TODO: Might require finer events
 			fireSceneSelectionChangeEvent(new SceneSelectionChangeEvent(scene,
-					selectedNodes));
+					selectedNodes, selectedFaces, selectedEdges,
+					selectedVertices));
 		}
 	}
 
@@ -192,9 +193,8 @@ public class SceneSelection implements ISceneSelection {
 		}
 		node.markDirty();
 
-		// TODO: Might require finer events
 		fireSceneSelectionChangeEvent(new SceneSelectionChangeEvent(scene,
-				selectedNodes));
+				selectedNodes, selectedFaces, selectedEdges, selectedVertices));
 	}
 
 	public void setSelectedVertex(final IGeometryNode<?, ?> node,
@@ -213,9 +213,9 @@ public class SceneSelection implements ISceneSelection {
 			selectedVertices.add(vertexSelection);
 			vertexSelection.getNode().markDirty();
 
-			// TODO: Might require finer events
 			fireSceneSelectionChangeEvent(new SceneSelectionChangeEvent(scene,
-					selectedNodes));
+					selectedNodes, selectedFaces, selectedEdges,
+					selectedVertices));
 		}
 	}
 
@@ -234,9 +234,8 @@ public class SceneSelection implements ISceneSelection {
 		}
 		node.markDirty();
 
-		// TODO: Might require finer events
 		fireSceneSelectionChangeEvent(new SceneSelectionChangeEvent(scene,
-				selectedNodes));
+				selectedNodes, selectedFaces, selectedEdges, selectedVertices));
 	}
 
 	public boolean isNodeSelected(final INode node) {

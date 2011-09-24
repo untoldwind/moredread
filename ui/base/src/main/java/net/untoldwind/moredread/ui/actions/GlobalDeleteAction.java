@@ -1,13 +1,11 @@
 package net.untoldwind.moredread.ui.actions;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.ISceneHolder;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.scene.event.ISceneSelectionChangeListener;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
+import net.untoldwind.moredread.model.scene.op.DeleteFacesOperation;
+import net.untoldwind.moredread.model.scene.op.DeleteNodesOperation;
 import net.untoldwind.moredread.ui.MoreDreadUI;
 
 import org.eclipse.jface.action.Action;
@@ -43,7 +41,24 @@ public class GlobalDeleteAction extends Action {
 							@Override
 							public void sceneSelectionChanged(
 									final SceneSelectionChangeEvent event) {
-								setEnabled(!event.getSelectedNodes().isEmpty());
+								switch (sceneHolder.getSelectionMode()) {
+								case OBJECT:
+									setEnabled(!event.getSelectedNodes()
+											.isEmpty());
+									break;
+								case FACE:
+									setEnabled(!event.getSelectedFaces()
+											.isEmpty());
+									break;
+								case EDGE:
+									setEnabled(!event.getSelectedEdges()
+											.isEmpty());
+									break;
+								case VERTEX:
+									setEnabled(!event.getSelectedEdges()
+											.isEmpty());
+									break;
+								}
 							}
 						});
 	}
@@ -52,15 +67,15 @@ public class GlobalDeleteAction extends Action {
 	public void run() {
 		final Scene scene = sceneHolder.getScene();
 
-		scene.getSceneChangeHandler().beginUndoable("Delete nodes");
-
-		final List<INode> nodes = new ArrayList<INode>(sceneHolder.getScene()
-				.getSceneSelection().getSelectedNodes());
-
-		for (final INode node : nodes) {
-			node.remove();
+		switch (sceneHolder.getSelectionMode()) {
+		case OBJECT:
+			scene.undoableChange(new DeleteNodesOperation(scene
+					.getSceneSelection().getSelectedNodes()));
+			break;
+		case FACE:
+			scene.undoableChange(new DeleteFacesOperation(scene
+					.getSceneSelection().getSelectedFaces()));
+			return;
 		}
-
-		scene.getSceneChangeHandler().commit();
 	}
 }
