@@ -35,6 +35,6 @@ public class BooleanOperationFactory {
 
 	public static IBooleanOperation createDefault() {
 		// Kind of pointless to make this configurable at this point
-		return createBooleanOperation(Implementation.BLEBOPD);
+		return createBooleanOperation(Implementation.BSPFILTER);
 	}
 }

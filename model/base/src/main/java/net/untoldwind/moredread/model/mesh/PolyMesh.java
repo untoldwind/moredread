@@ -105,8 +105,29 @@ public class PolyMesh extends Mesh<PolyFaceId, PolyFace> {
 	}
 
 	public PolyMesh invert() {
-		// TODO
-		return this;
+		final PolyMesh mesh = new PolyMesh();
+
+		for (final Vertex vertex : vertices) {
+			mesh.addVertex(vertex.getPoint(), vertex.isSmooth());
+		}
+
+		for (final PolyFace face : faces.values()) {
+			final Iterator<Vertex> it = face.getVertices().iterator();
+			final List<Integer> stripCounts = face.getStripCounts();
+			final int[][] faceStrips = new int[stripCounts.size()][];
+
+			for (int i = 0; i < faceStrips.length; i++) {
+				final int stripCount = stripCounts.get(i);
+				faceStrips[i] = new int[stripCount];
+
+				for (int j = stripCount - 1; j >= 0; j--) {
+					faceStrips[i][j] = it.next().getIndex();
+				}
+			}
+			mesh.addFace(faceStrips);
+		}
+
+		return mesh;
 	}
 
 	@Override
