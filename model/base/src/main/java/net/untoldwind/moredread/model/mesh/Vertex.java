@@ -88,11 +88,15 @@ public class Vertex implements IStateHolder, IVertex {
 		return edges;
 	}
 
+	void removeEdge(final Edge edge) {
+		edges.remove(edge);
+	}
+
 	public Set<Face<?, ?>> getFaces() {
 		return faces;
 	}
 
-	public void removeFace(final Face<?, ?> face) {
+	void removeFace(final Face<?, ?> face) {
 		faces.remove(face);
 	}
 

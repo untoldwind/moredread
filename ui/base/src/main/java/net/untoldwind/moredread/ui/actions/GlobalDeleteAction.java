@@ -4,6 +4,7 @@ import net.untoldwind.moredread.model.scene.ISceneHolder;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.scene.event.ISceneSelectionChangeListener;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
+import net.untoldwind.moredread.model.scene.op.DeleteEdgesOperation;
 import net.untoldwind.moredread.model.scene.op.DeleteFacesOperation;
 import net.untoldwind.moredread.model.scene.op.DeleteNodesOperation;
 import net.untoldwind.moredread.ui.MoreDreadUI;
@@ -75,7 +76,11 @@ public class GlobalDeleteAction extends Action {
 		case FACE:
 			scene.undoableChange(new DeleteFacesOperation(scene
 					.getSceneSelection().getSelectedFaces()));
-			return;
+			break;
+		case EDGE:
+			scene.undoableChange(new DeleteEdgesOperation(scene
+					.getSceneSelection().getSelectedEdges()));
+			break;
 		}
 	}
 }

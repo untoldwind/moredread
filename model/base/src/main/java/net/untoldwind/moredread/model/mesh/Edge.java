@@ -69,8 +69,22 @@ public class Edge implements IEdge {
 		return faces;
 	}
 
-	public void removeFace(final Face<?, ?> face) {
+	void removeFace(final Face<?, ?> face) {
 		faces.remove(face);
+	}
+
+	void remove() {
+		if (ownerMesh != null) {
+			final Set<FaceId> faceIds = new HashSet<FaceId>();
+			for (final Face<?, ?> face : faces) {
+				faceIds.add(face.getIndex());
+			}
+			for (final FaceId faceId : faceIds) {
+				ownerMesh.removeFace(faceId);
+			}
+		}
+		vertex1.removeEdge(this);
+		vertex2.removeEdge(this);
 	}
 
 	@Override

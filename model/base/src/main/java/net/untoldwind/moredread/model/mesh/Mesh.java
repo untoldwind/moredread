@@ -94,6 +94,14 @@ public abstract class Mesh<FaceK extends FaceId, FaceT extends Face<?, ?>>
 		}
 	}
 
+	public void removeEdge(final EdgeId edgeId) {
+		final Edge edge = edges.get(edgeId);
+		if (edge != null) {
+			edge.remove();
+			edges.remove(edgeId);
+		}
+	}
+
 	void markDirty() {
 		dirty = true;
 	}

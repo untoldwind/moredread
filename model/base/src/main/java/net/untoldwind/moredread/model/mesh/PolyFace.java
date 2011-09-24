@@ -142,9 +142,12 @@ public class PolyFace extends Face<PolyFaceId, PolyMesh> {
 	}
 
 	@Override
-	public void remove() {
+	void remove() {
 		for (final Edge edge : edges) {
 			edge.removeFace(this);
+		}
+		for (final Vertex vertex : vertices) {
+			vertex.removeFace(this);
 		}
 	}
 

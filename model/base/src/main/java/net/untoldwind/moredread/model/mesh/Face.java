@@ -11,7 +11,7 @@ import com.jme.math.Vector3f;
 
 public abstract class Face<FaceK extends FaceId, MeshT extends Mesh<?, ?>>
 		implements IStateHolder, IFace {
-	private final MeshT owner;
+	protected final MeshT owner;
 	protected final FaceK index;
 	protected Vector3f center;
 	protected Vector3f meanNormal;
@@ -85,5 +85,5 @@ public abstract class Face<FaceK extends FaceId, MeshT extends Mesh<?, ?>>
 
 	public abstract void updateMeanNormal();
 
-	public abstract void remove();
+	abstract void remove();
 }

@@ -107,6 +107,11 @@ public class EdgeSelectionModelControl extends Line implements IModelControl {
 			final IPolygon polygon = ((IPolygonNode) node).getGeometry();
 			edge = polygon.getEdge(edgeIndex);
 		}
+
+		if (edge == null) {
+			return;
+		}
+
 		final Vector3f v1 = node.localToWorld(edge.getVertex1().getPoint(),
 				new Vector3f());
 		final Vector3f v2 = node.localToWorld(edge.getVertex2().getPoint(),
