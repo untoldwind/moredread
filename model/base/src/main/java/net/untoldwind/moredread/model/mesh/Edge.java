@@ -69,6 +69,10 @@ public class Edge implements IEdge {
 		return faces;
 	}
 
+	public void removeFace(final Face<?, ?> face) {
+		faces.remove(face);
+	}
+
 	@Override
 	public boolean equals(final Object obj) {
 		if (obj == null) {

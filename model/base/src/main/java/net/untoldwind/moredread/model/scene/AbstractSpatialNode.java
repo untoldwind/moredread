@@ -181,6 +181,9 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 
 		parent.removeChild(this);
 		scene.unregisterNode(this);
+
+		parent = null;
+		scene = null;
 	}
 
 	// TODO: Replace this method by an NodeVisitor pattern (i.e. decouple model

@@ -84,4 +84,6 @@ public abstract class Face<FaceK extends FaceId, MeshT extends Mesh<?, ?>>
 	public abstract void updateCenter();
 
 	public abstract void updateMeanNormal();
+
+	public abstract void remove();
 }

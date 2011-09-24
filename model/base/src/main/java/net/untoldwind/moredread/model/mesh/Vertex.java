@@ -92,6 +92,10 @@ public class Vertex implements IStateHolder, IVertex {
 		return faces;
 	}
 
+	public void removeFace(final Face<?, ?> face) {
+		faces.remove(face);
+	}
+
 	@Override
 	public List<? extends IVertex> getNeighbours() {
 		final List<IVertex> neighbours = new ArrayList<IVertex>();

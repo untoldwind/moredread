@@ -109,6 +109,13 @@ public class QuadFace extends Face<QuadFaceId, QuadMesh> {
 	}
 
 	@Override
+	public void remove() {
+		for (final Edge edge : edges) {
+			edge.removeFace(this);
+		}
+	}
+
+	@Override
 	public IPolygon transform(final ITransformation transformation) {
 		final List<IPoint> new_vertices = new ArrayList<IPoint>(vertices.length);
 

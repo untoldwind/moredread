@@ -86,6 +86,14 @@ public abstract class Mesh<FaceK extends FaceId, FaceT extends Face<?, ?>>
 		return faces.get(faceIndex);
 	}
 
+	public void removeFace(final FaceId faceId) {
+		final FaceT face = faces.get(faceId);
+		if (face != null) {
+			face.remove();
+			faces.remove(faceId);
+		}
+	}
+
 	void markDirty() {
 		dirty = true;
 	}

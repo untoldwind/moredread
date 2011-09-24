@@ -69,6 +69,7 @@ public class SceneChangeHandler implements IAdaptable {
 		for (final INode node : affectedNodes) {
 			node.markDirty();
 		}
+		scene.getSceneSelection().checkSelection();
 		scene.fireSceneGeometryChangeEvent(new SceneChangeEvent(scene,
 				affectedNodes));
 
@@ -102,6 +103,7 @@ public class SceneChangeHandler implements IAdaptable {
 		for (final INode node : affectedNodes) {
 			node.markDirty();
 		}
+		scene.getSceneSelection().checkSelection();
 		scene.fireSceneGeometryChangeEvent(new SceneChangeEvent(scene,
 				affectedNodes));
 	}

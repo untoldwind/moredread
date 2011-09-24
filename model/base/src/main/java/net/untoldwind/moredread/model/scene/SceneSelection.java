@@ -3,6 +3,7 @@ package net.untoldwind.moredread.model.scene;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -236,6 +237,68 @@ public class SceneSelection implements ISceneSelection {
 
 		fireSceneSelectionChangeEvent(new SceneSelectionChangeEvent(scene,
 				selectedNodes, selectedFaces, selectedEdges, selectedVertices));
+	}
+
+	void checkSelection() {
+		boolean changed = false;
+		final Iterator<INode> nodeIt = selectedNodes.iterator();
+
+		while (nodeIt.hasNext()) {
+			if (nodeIt.next().getScene() == null) {
+				nodeIt.remove();
+				changed = true;
+			}
+		}
+
+		final Iterator<FaceSelection> faceIt = selectedFaces.iterator();
+
+		while (faceIt.hasNext()) {
+			final FaceSelection faceSelection = faceIt.next();
+
+			if (faceSelection.getNode().getScene() == null) {
+				faceIt.remove();
+				changed = true;
+			} else {
+				if (faceSelection.getNode() instanceof IMeshNode) {
+					final IMeshNode meshNode = faceSelection.getNode();
+
+					if (meshNode.getGeometry().getFace(
+							faceSelection.getFaceIndex()) == null) {
+						faceIt.remove();
+						changed = true;
+					}
+				}
+			}
+		}
+
+		final Iterator<EdgeSelection> edgeIt = selectedEdges.iterator();
+
+		while (edgeIt.hasNext()) {
+			final EdgeSelection edgeSelection = edgeIt.next();
+
+			if (edgeSelection.getNode().getScene() == null) {
+				edgeIt.remove();
+				changed = true;
+			} else {
+				if (edgeSelection.getNode() instanceof IMeshNode) {
+					final IMeshNode meshNode = (IMeshNode) edgeSelection
+							.getNode();
+
+					if (meshNode.getGeometry().getEdge(
+							edgeSelection.getEdgeIndex()) == null) {
+						edgeIt.remove();
+						changed = true;
+					}
+				}
+			}
+		}
+
+		if (changed) {
+			fireSceneSelectionChangeEvent(new SceneSelectionChangeEvent(scene,
+					selectedNodes, selectedFaces, selectedEdges,
+					selectedVertices));
+		}
+
 	}
 
 	public boolean isNodeSelected(final INode node) {
