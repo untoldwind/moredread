@@ -2,6 +2,7 @@ package net.untoldwind.moredread.model.op;
 
 import net.untoldwind.moredread.model.op.bool.blebopd.BlebopdBooleanOperation;
 import net.untoldwind.moredread.model.op.bool.blebopf.BlebopfBooleanOperation;
+import net.untoldwind.moredread.model.op.bool.bspfilter.BSPFilterBooleanOperation;
 
 public class BooleanOperationFactory {
 	public enum Implementation {
@@ -14,7 +15,8 @@ public class BooleanOperationFactory {
 		 * Blenders boolop in double (the name roughly reflects the stability of
 		 * this algorithm)
 		 */
-		BLEBOPD
+		BLEBOPD,
+		BSPFILTER
 	};
 
 	public static IBooleanOperation createBooleanOperation(
@@ -24,6 +26,8 @@ public class BooleanOperationFactory {
 			return new BlebopfBooleanOperation();
 		case BLEBOPD:
 			return new BlebopdBooleanOperation();
+		case BSPFILTER:
+			return new BSPFilterBooleanOperation();
 		}
 
 		throw new RuntimeException("Unknown implementation: " + implementation);

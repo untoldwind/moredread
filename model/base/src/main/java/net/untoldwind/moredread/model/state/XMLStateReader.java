@@ -1,6 +1,8 @@
 package net.untoldwind.moredread.model.state;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.io.StringReader;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
@@ -236,13 +238,39 @@ public class XMLStateReader implements IStateReader {
 		return result;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static <T extends IStateHolder> T fromXML(final String xml) {
+		return fromXML(new StringReader(xml));
+	}
+
+	public static <T extends IStateHolder> T fromXML(final InputStream in) {
 		try {
 			final SAXReader reader = new SAXReader();
 			reader.setIgnoreComments(true);
 			reader.setStripWhitespaceText(true);
-			final Document document = reader.read(new StringReader(xml));
+			final Document document = reader.read(in);
+
+			return fromXML(document);
+		} catch (final Exception e) {
+			throw new RuntimeException("Very unexpected IOException", e);
+		}
+	}
+
+	public static <T extends IStateHolder> T fromXML(final Reader in) {
+		try {
+			final SAXReader reader = new SAXReader();
+			reader.setIgnoreComments(true);
+			reader.setStripWhitespaceText(true);
+			final Document document = reader.read(in);
+
+			return fromXML(document);
+		} catch (final Exception e) {
+			throw new RuntimeException("Very unexpected IOException", e);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T extends IStateHolder> T fromXML(final Document document) {
+		try {
 			final Element element = document.getRootElement();
 			final String className = element.attributeValue("class");
 			final XMLStateReader stateReader = new XMLStateReader(document,

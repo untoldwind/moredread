@@ -3,6 +3,7 @@ package net.untoldwind.moredread.ui.options.node;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
 import net.untoldwind.moredread.model.scene.op.CollapseGeneratorNodeOperation;
 import net.untoldwind.moredread.ui.options.IOptionView;
+import net.untoldwind.moredread.ui.options.generator.IGeneratorOptionView;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.swt.SWT;
@@ -17,7 +18,7 @@ public class GeneratorNodeOptions implements IOptionView {
 	private final GeneratorNode node;
 
 	Composite container;
-	IOptionView generatorOptions;
+	IGeneratorOptionView generatorOptions;
 
 	GeneratorNodeOptions(final GeneratorNode node) {
 		this.node = node;
@@ -32,11 +33,11 @@ public class GeneratorNodeOptions implements IOptionView {
 		layout.marginWidth = 0;
 		container.setLayout(layout);
 
-		generatorOptions = (IOptionView) node.getMeshGenerator().getAdapter(
-				IOptionView.class);
+		generatorOptions = (IGeneratorOptionView) node.getMeshGenerator()
+				.getAdapter(IGeneratorOptionView.class);
 
 		if (generatorOptions != null) {
-			generatorOptions.createControls(container);
+			generatorOptions.createControls(container, node);
 		} else {
 			final Composite empty = new Composite(container, SWT.NONE);
 			empty.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -58,6 +59,13 @@ public class GeneratorNodeOptions implements IOptionView {
 	@Override
 	public void dispose() {
 		container.dispose();
+	}
+
+	@Override
+	public void update() {
+		if (generatorOptions != null) {
+			generatorOptions.update(node);
+		}
 	}
 
 	public static class Factory implements IAdapterFactory {

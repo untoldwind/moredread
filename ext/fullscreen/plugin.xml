@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="com.bandlem.eclipse.fullscreen.ui.Startup"></startup>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="com.bandlem.eclipse.fullscreen.ui.ToggleFullScreenHandler"
+            id="com.bandlem.eclipse.fullscreen.ui.ToggleFullScreen"
+            name="Toggle Full Screen">
+      </command>
+      <command
+            defaultHandler="com.bandlem.eclipse.fullscreen.ui.ToggleFullScreenEscapeHandler"
+            id="com.bandlem.eclipse.fullscreen.ui.ToggleFullScreenEscape"
+            name="ToggleFullScreenEscape">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:window">
+                           <command
+                                 commandId="com.bandlem.eclipse.fullscreen.ui.ToggleFullScreen"
+                                 label="Toggle Full Screen"/>
+      </menuContribution>
+   </extension>
+
+</plugin>

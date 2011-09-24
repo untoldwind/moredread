@@ -2,7 +2,7 @@ package net.untoldwind.moredread.ui.controls.impl;
 
 import java.util.List;
 
-import net.untoldwind.moredread.model.enums.Direction;
+import net.untoldwind.moredread.model.enums.CartesianDirection;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
@@ -19,7 +19,7 @@ import com.jme.scene.shape.Pyramid;
 public class DirectionArrowModelControl extends Node implements IModelControl {
 	private static final long serialVersionUID = 1L;
 
-	private final Direction direction;
+	private final CartesianDirection direction;
 
 	private final IToolAdapter toolAdapter;
 	private final ColorRGBA color;
@@ -28,7 +28,7 @@ public class DirectionArrowModelControl extends Node implements IModelControl {
 
 	private transient LineControlHandle lineControlHandle;
 
-	public DirectionArrowModelControl(final Direction direction,
+	public DirectionArrowModelControl(final CartesianDirection direction,
 			final IToolAdapter toolAdapter) {
 		super(direction + "ArrowControl");
 

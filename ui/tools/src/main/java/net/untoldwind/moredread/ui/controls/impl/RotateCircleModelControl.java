@@ -4,7 +4,7 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.untoldwind.moredread.model.enums.Plane;
+import net.untoldwind.moredread.model.enums.CartesianPlane;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
@@ -31,7 +31,7 @@ public class RotateCircleModelControl extends Node implements IModelControl {
 
 	private transient PolyLineControlHandle polyLineControlHandle;
 
-	public RotateCircleModelControl(final Plane plane,
+	public RotateCircleModelControl(final CartesianPlane plane,
 			final IToolAdapter toolAdapter) {
 		this.toolAdapter = toolAdapter;
 

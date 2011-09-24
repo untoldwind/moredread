@@ -1,12 +1,13 @@
 package net.untoldwind.moredread.model.op;
 
-import net.untoldwind.moredread.model.mesh.TriangleMesh;
+import net.untoldwind.moredread.model.mesh.IMesh;
 
 public interface IBooleanOperation {
 	public enum BoolOperation {
-		INTERSECTION, UNION, DIFFERENCE
+		INTERSECTION,
+		UNION,
+		DIFFERENCE
 	}
 
-	TriangleMesh performBoolean(BoolOperation operation, TriangleMesh meshA,
-			TriangleMesh meshB);
+	IMesh performBoolean(BoolOperation operation, IMesh meshA, IMesh meshB);
 }

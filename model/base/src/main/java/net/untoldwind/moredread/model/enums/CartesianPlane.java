@@ -3,7 +3,10 @@ package net.untoldwind.moredread.model.enums;
 import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
 
-public enum Plane {
+/**
+ * A plane in the Cartesian coordinate system.
+ */
+public enum CartesianPlane {
 	XY(0, 0, 1) {
 		@Override
 		public Vector3f project(final Vector3f center, final Vector3f position,
@@ -29,7 +32,7 @@ public enum Plane {
 
 	private Vector3f normal;
 
-	private Plane(final float x, final float y, final float z) {
+	private CartesianPlane(final float x, final float y, final float z) {
 		this.normal = new Vector3f(x, y, z);
 	}
 
@@ -40,17 +43,17 @@ public enum Plane {
 	public abstract Vector3f project(Vector3f center, Vector3f position,
 			float u, float v);
 
-	public static Plane choose(final Vector3f direction) {
+	public static CartesianPlane choose(final Vector3f direction) {
 		final float x = FastMath.abs(direction.x);
 		final float y = FastMath.abs(direction.y);
 		final float z = FastMath.abs(direction.z);
 
 		if (x >= y && x >= z) {
-			return Plane.YZ;
+			return CartesianPlane.YZ;
 		} else if (y >= x && y >= z) {
-			return Plane.XZ;
+			return CartesianPlane.XZ;
 		} else {
-			return Plane.XY;
+			return CartesianPlane.XY;
 		}
 	}
 }

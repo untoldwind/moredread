@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mesh class="net.untoldwind.moredread.model.mesh.PolyMesh">
+	<numVertices>16</numVertices>
+	<vertex x="-1.0" y="-1.0" z="-1.0" />
+	<vertex x="1.0" y="-1.0" z="-1.0" />
+	<vertex x="1.0" y="1.0" z="-1.0" />
+	<vertex x="-1.0" y="1.0" z="-1.0" />
+	<vertex x="-1.0" y="-1.0" z="1.0" />
+	<vertex x="1.0" y="-1.0" z="1.0" />
+	<vertex x="1.0" y="1.0" z="1.0" />
+	<vertex x="-1.0" y="1.0" z="1.0" />
+	<vertex x="-0.75" y="-0.75" z="-1.0" />
+	<vertex x="0.75" y="-0.75" z="-1.0" />
+	<vertex x="0.75" y="0.75" z="-1.0" />
+	<vertex x="-0.75" y="0.75" z="-1.0" />
+	<vertex x="-0.75" y="-0.75" z="1.0" />
+	<vertex x="0.75" y="-0.75" z="1.0" />
+	<vertex x="0.75" y="0.75" z="1.0" />
+	<vertex x="-0.75" y="0.75" z="1.0" />
+	<numFaces>10</numFaces>
+	<numStips>2</numStips>
+	<stripCount>4</stripCount>
+	<index>3</index>
+	<index>2</index>
+	<index>1</index>
+	<index>0</index>
+	<stripCount>4</stripCount>
+	<index>8</index>
+	<index>9</index>
+	<index>10</index>
+	<index>11</index>
+	<numStips>2</numStips>
+	<stripCount>4</stripCount>
+	<index>4</index>
+	<index>5</index>
+	<index>6</index>
+	<index>7</index>
+	<stripCount>4</stripCount>
+	<index>15</index>
+	<index>14</index>
+	<index>13</index>
+	<index>12</index>
+	<numStips>1</numStips>
+	<stripCount>4</stripCount>
+	<index>4</index>
+	<index>7</index>
+	<index>3</index>
+	<index>0</index>
+	<numStips>1</numStips>
+	<stripCount>4</stripCount>
+	<index>1</index>
+	<index>2</index>
+	<index>6</index>
+	<index>5</index>
+	<numStips>1</numStips>
+	<stripCount>4</stripCount>
+	<index>0</index>
+	<index>1</index>
+	<index>5</index>
+	<index>4</index>
+	<numStips>1</numStips>
+	<stripCount>4</stripCount>
+	<index>2</index>
+	<index>3</index>
+	<index>7</index>
+	<index>6</index>
+	<numStips>1</numStips>
+	<stripCount>4</stripCount>
+	<index>8</index>
+	<index>12</index>
+	<index>13</index>
+	<index>9</index>
+	<numStips>1</numStips>
+	<stripCount>4</stripCount>
+	<index>10</index>
+	<index>14</index>
+	<index>15</index>
+	<index>11</index>
+	<numStips>1</numStips>
+	<stripCount>4</stripCount>
+	<index>13</index>
+	<index>14</index>
+	<index>10</index>
+	<index>9</index>
+	<numStips>1</numStips>
+	<stripCount>4</stripCount>
+	<index>11</index>
+	<index>15</index>
+	<index>12</index>
+	<index>8</index>
+</mesh>

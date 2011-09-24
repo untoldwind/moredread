@@ -4,7 +4,10 @@ import com.jme.math.FastMath;
 import com.jme.math.Quaternion;
 import com.jme.math.Vector3f;
 
-public enum Direction {
+/**
+ * A direction in the Cartesian coordinate system.
+ */
+public enum CartesianDirection {
 	X(new Quaternion(new float[] { 0, 0, -FastMath.HALF_PI })) {
 		@Override
 		public float getValue(final Vector3f vector) {
@@ -22,8 +25,8 @@ public enum Direction {
 		}
 
 		@Override
-		public Plane getOrthoPlane() {
-			return Plane.YZ;
+		public CartesianPlane getOrthogonalPlane() {
+			return CartesianPlane.YZ;
 		}
 	},
 	Y(new Quaternion(new float[] { 0, 0, 0 })) {
@@ -43,8 +46,8 @@ public enum Direction {
 		}
 
 		@Override
-		public Plane getOrthoPlane() {
-			return Plane.XZ;
+		public CartesianPlane getOrthogonalPlane() {
+			return CartesianPlane.XZ;
 		}
 	},
 	Z(new Quaternion(new float[] { FastMath.HALF_PI, 0, 0 })) {
@@ -64,14 +67,14 @@ public enum Direction {
 		}
 
 		@Override
-		public Plane getOrthoPlane() {
-			return Plane.XY;
+		public CartesianPlane getOrthogonalPlane() {
+			return CartesianPlane.XY;
 		}
 	};
 
 	private final Quaternion standardRotation;
 
-	private Direction(final Quaternion standardRotation) {
+	private CartesianDirection(final Quaternion standardRotation) {
 		this.standardRotation = standardRotation;
 	}
 
@@ -85,5 +88,8 @@ public enum Direction {
 
 	public abstract float getValue(Vector3f vector);
 
-	public abstract Plane getOrthoPlane();
+	/**
+	 * Get the corresponding orthogonal/perpendicular plane.
+	 */
+	public abstract CartesianPlane getOrthogonalPlane();
 }

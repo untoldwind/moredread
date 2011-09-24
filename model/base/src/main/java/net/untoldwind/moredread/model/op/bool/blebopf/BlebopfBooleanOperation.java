@@ -3,6 +3,7 @@ package net.untoldwind.moredread.model.op.bool.blebopf;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleFaceId;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
@@ -14,8 +15,10 @@ import com.jme.math.Plane;
 public class BlebopfBooleanOperation implements IBooleanOperation {
 
 	@Override
-	public TriangleMesh performBoolean(final BoolOperation operation,
-			final TriangleMesh meshA, final TriangleMesh meshB) {
+	public IMesh performBoolean(final BoolOperation operation, final IMesh inA,
+			final IMesh inB) {
+		final TriangleMesh meshA = inA.toTriangleMesh();
+		final TriangleMesh meshB = inB.toTriangleMesh();
 		final boolean invertMeshA = (operation == BoolOperation.UNION);
 		final boolean invertMeshB = (operation != BoolOperation.INTERSECTION);
 		final boolean invertMeshC = (operation == BoolOperation.UNION);
@@ -36,17 +39,17 @@ public class BlebopfBooleanOperation implements IBooleanOperation {
 			final BoolVertex v3 = meshC.getVertex(face.getVertex(2).getIndex());
 
 			if (invertMeshA) {
-				final Plane plane = MathUtils.createPlane(v3.getPoint(), v2
-						.getPoint(), v1.getPoint());
-				final BoolFace boolFace = new BoolFace(v3, v2, v1, plane, face
-						.getIndex());
+				final Plane plane = MathUtils.createPlane(v3.getPoint(),
+						v2.getPoint(), v1.getPoint());
+				final BoolFace boolFace = new BoolFace(v3, v2, v1, plane,
+						face.getIndex());
 				facesA.add(boolFace);
 				meshC.addFace(boolFace);
 			} else {
-				final Plane plane = MathUtils.createPlane(v1.getPoint(), v2
-						.getPoint(), v3.getPoint());
-				final BoolFace boolFace = new BoolFace(v1, v2, v3, plane, face
-						.getIndex());
+				final Plane plane = MathUtils.createPlane(v1.getPoint(),
+						v2.getPoint(), v3.getPoint());
+				final BoolFace boolFace = new BoolFace(v1, v2, v3, plane,
+						face.getIndex());
 				facesA.add(boolFace);
 				meshC.addFace(boolFace);
 			}
@@ -60,25 +63,23 @@ public class BlebopfBooleanOperation implements IBooleanOperation {
 			final BoolVertex v3 = meshC.getVertex(face.getVertex(2).getIndex()
 					+ vertexOffsetB);
 			if (invertMeshB) {
-				final Plane plane = MathUtils.createPlane(v3.getPoint(), v2
-						.getPoint(), v1.getPoint());
+				final Plane plane = MathUtils.createPlane(v3.getPoint(),
+						v2.getPoint(), v1.getPoint());
 				final TriangleFaceId faceId = face.getIndex();
 				final BoolFace boolFace = new BoolFace(v3, v2, v1, plane,
 						new TriangleFaceId(faceId.getIndex1() + vertexOffsetB,
-								faceId.getIndex2() + vertexOffsetB, faceId
-										.getIndex3()
-										+ vertexOffsetB));
+								faceId.getIndex2() + vertexOffsetB,
+								faceId.getIndex3() + vertexOffsetB));
 				facesB.add(boolFace);
 				meshC.addFace(boolFace);
 			} else {
-				final Plane plane = MathUtils.createPlane(v1.getPoint(), v2
-						.getPoint(), v3.getPoint());
+				final Plane plane = MathUtils.createPlane(v1.getPoint(),
+						v2.getPoint(), v3.getPoint());
 				final TriangleFaceId faceId = face.getIndex();
 				final BoolFace boolFace = new BoolFace(v1, v2, v3, plane,
 						new TriangleFaceId(faceId.getIndex1() + vertexOffsetB,
-								faceId.getIndex2() + vertexOffsetB, faceId
-										.getIndex3()
-										+ vertexOffsetB));
+								faceId.getIndex2() + vertexOffsetB,
+								faceId.getIndex3() + vertexOffsetB));
 				facesB.add(boolFace);
 				meshC.addFace(boolFace);
 			}

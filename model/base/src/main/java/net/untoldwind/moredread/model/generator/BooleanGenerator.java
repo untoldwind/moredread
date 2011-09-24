@@ -53,8 +53,8 @@ public class BooleanGenerator implements IMeshGenerator {
 			final IBooleanOperation booleanOperation = BooleanOperationFactory
 					.createDefault();
 
-			return booleanOperation.performBoolean(boolOperation,
-					inputs[0].toTriangleMesh(), inputs[1].toTriangleMesh());
+			return booleanOperation.performBoolean(boolOperation, inputs[0],
+					inputs[1]);
 		}
 	}
 

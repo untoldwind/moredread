@@ -40,6 +40,23 @@ public class TriangleMesh extends Mesh<TriangleFaceId, TriangleFace> {
 		return this;
 	}
 
+	public TriangleMesh invert() {
+		final TriangleMesh mesh = new TriangleMesh();
+
+		for (final Vertex vertex : vertices) {
+			mesh.addVertex(vertex.getPoint(), vertex.isSmooth());
+		}
+
+		for (final TriangleFace face : faces.values()) {
+			final Vertex vertices[] = face.getVertexArray();
+
+			mesh.addFace(vertices[2].getIndex(), vertices[1].getIndex(),
+					vertices[0].getIndex());
+		}
+
+		return mesh;
+	}
+
 	@Override
 	public IMesh transform(final ITransformation transformation) {
 		final TriangleMesh newMesh = new TriangleMesh();
