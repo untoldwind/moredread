@@ -17,7 +17,7 @@ import com.jme.math.Vector3f;
 public class Vertex implements IStateHolder, IVertex {
 	private final Mesh<?, ?> ownerMesh;
 	private final Polygon ownerPolygon;
-	private final int index;
+	private int index;
 	private Vector3f point;
 	private boolean smooth;
 	private final Set<Edge> edges;
@@ -66,6 +66,10 @@ public class Vertex implements IStateHolder, IVertex {
 		return index;
 	}
 
+	void setIndex(final int index) {
+		this.index = index;
+	}
+
 	@Override
 	public Vector3f getPoint() {
 		return point;
@@ -98,6 +102,16 @@ public class Vertex implements IStateHolder, IVertex {
 
 	void removeFace(final Face<?, ?> face) {
 		faces.remove(face);
+	}
+
+	void remove() {
+		if (ownerMesh != null) {
+			final Set<EdgeId> edgeIds = new HashSet<EdgeId>();
+			for (final Edge edge : edges) {
+				edgeIds.add(edge.getIndex());
+			}
+			ownerMesh.removeEdges(edgeIds);
+		}
 	}
 
 	@Override

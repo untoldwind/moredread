@@ -102,6 +102,11 @@ public class VertexSelectionModelControl extends Point implements IModelControl 
 			final IPolygon polygon = ((IPolygonNode) node).getGeometry();
 			vertex = polygon.getVertex(vertexIndex);
 		}
+
+		if (vertex == null) {
+			return;
+		}
+
 		final FloatBuffer vertexBuffer = BufferUtils.createVector3Buffer(1);
 		final Vector3f v = node.localToWorld(vertex.getPoint(), new Vector3f());
 

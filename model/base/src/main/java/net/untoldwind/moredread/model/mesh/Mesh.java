@@ -3,9 +3,11 @@ package net.untoldwind.moredread.model.mesh;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.untoldwind.moredread.model.enums.GeometryType;
 import net.untoldwind.moredread.model.enums.MeshType;
@@ -86,20 +88,44 @@ public abstract class Mesh<FaceK extends FaceId, FaceT extends Face<?, ?>>
 		return faces.get(faceIndex);
 	}
 
-	public void removeFace(final FaceId faceId) {
-		final FaceT face = faces.get(faceId);
-		if (face != null) {
-			face.remove();
-			faces.remove(faceId);
+	public void removeFaces(final Set<FaceId> faceIds) {
+		for (final FaceId faceId : faceIds) {
+			final FaceT face = faces.get(faceId);
+			if (face != null) {
+				face.remove();
+				faces.remove(faceId);
+			}
 		}
+		markDirty();
 	}
 
-	public void removeEdge(final EdgeId edgeId) {
-		final Edge edge = edges.get(edgeId);
-		if (edge != null) {
-			edge.remove();
-			edges.remove(edgeId);
+	public void removeEdges(final Set<EdgeId> edgeIds) {
+		for (final EdgeId edgeId : edgeIds) {
+			final Edge edge = edges.get(edgeId);
+			if (edge != null) {
+				edge.remove();
+				edges.remove(edgeId);
+			}
 		}
+		markDirty();
+	}
+
+	public void removeVertices(final Set<Integer> vertexIds) {
+		final Iterator<Vertex> it = vertices.iterator();
+
+		while (it.hasNext()) {
+			final Vertex vertex = it.next();
+
+			if (vertexIds.contains(vertex.getIndex())) {
+				vertex.remove();
+				it.remove();
+			}
+		}
+		int index = 0;
+		for (final Vertex vertex : vertices) {
+			vertex.setIndex(index++);
+		}
+		markDirty();
 	}
 
 	void markDirty() {

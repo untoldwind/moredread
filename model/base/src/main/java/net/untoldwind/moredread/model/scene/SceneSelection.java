@@ -293,6 +293,28 @@ public class SceneSelection implements ISceneSelection {
 			}
 		}
 
+		final Iterator<VertexSelection> vertexIt = selectedVertices.iterator();
+
+		while (vertexIt.hasNext()) {
+			final VertexSelection vertexSelection = vertexIt.next();
+
+			if (vertexSelection.getNode().getScene() == null) {
+				vertexIt.remove();
+				changed = true;
+			} else {
+				if (vertexSelection.getNode() instanceof IMeshNode) {
+					final IMeshNode meshNode = (IMeshNode) vertexSelection
+							.getNode();
+
+					if (meshNode.getGeometry().getVertex(
+							vertexSelection.getVertexIndex()) == null) {
+						vertexIt.remove();
+						changed = true;
+					}
+				}
+			}
+		}
+
 		if (changed) {
 			fireSceneSelectionChangeEvent(new SceneSelectionChangeEvent(scene,
 					selectedNodes, selectedFaces, selectedEdges,

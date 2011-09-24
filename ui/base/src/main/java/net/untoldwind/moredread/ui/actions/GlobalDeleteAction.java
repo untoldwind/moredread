@@ -7,6 +7,7 @@ import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
 import net.untoldwind.moredread.model.scene.op.DeleteEdgesOperation;
 import net.untoldwind.moredread.model.scene.op.DeleteFacesOperation;
 import net.untoldwind.moredread.model.scene.op.DeleteNodesOperation;
+import net.untoldwind.moredread.model.scene.op.DeleteVerticesOperation;
 import net.untoldwind.moredread.ui.MoreDreadUI;
 
 import org.eclipse.jface.action.Action;
@@ -56,7 +57,7 @@ public class GlobalDeleteAction extends Action {
 											.isEmpty());
 									break;
 								case VERTEX:
-									setEnabled(!event.getSelectedEdges()
+									setEnabled(!event.getSelectedVertices()
 											.isEmpty());
 									break;
 								}
@@ -80,6 +81,11 @@ public class GlobalDeleteAction extends Action {
 		case EDGE:
 			scene.undoableChange(new DeleteEdgesOperation(scene
 					.getSceneSelection().getSelectedEdges()));
+			break;
+		case VERTEX:
+			scene.undoableChange(new DeleteVerticesOperation(scene
+					.getSceneSelection().getSelectedVertices()));
+
 			break;
 		}
 	}

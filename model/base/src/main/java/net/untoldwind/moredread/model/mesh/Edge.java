@@ -79,9 +79,7 @@ public class Edge implements IEdge {
 			for (final Face<?, ?> face : faces) {
 				faceIds.add(face.getIndex());
 			}
-			for (final FaceId faceId : faceIds) {
-				ownerMesh.removeFace(faceId);
-			}
+			ownerMesh.removeFaces(faceIds);
 		}
 		vertex1.removeEdge(this);
 		vertex2.removeEdge(this);
