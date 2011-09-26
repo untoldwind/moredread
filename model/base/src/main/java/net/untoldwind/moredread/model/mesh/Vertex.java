@@ -93,16 +93,8 @@ public class Vertex<FaceT extends Face<?, ?, ?>> implements IStateHolder,
 		return edges;
 	}
 
-	void removeEdge(final Edge<FaceT> edge) {
-		edges.remove(edge);
-	}
-
 	public Set<FaceT> getFaces() {
 		return faces;
-	}
-
-	void removeFace(final FaceT face) {
-		faces.remove(face);
 	}
 
 	void remove() {

@@ -111,10 +111,10 @@ public class QuadFace extends Face<QuadFaceId, QuadFace, QuadMesh> {
 	@Override
 	void remove() {
 		for (final Edge<QuadFace> edge : edges) {
-			edge.removeFace(this);
+			edge.getFaces().remove(this);
 		}
 		for (final Vertex<QuadFace> vertex : vertices) {
-			vertex.removeFace(this);
+			vertex.getFaces().remove(this);
 		}
 	}
 

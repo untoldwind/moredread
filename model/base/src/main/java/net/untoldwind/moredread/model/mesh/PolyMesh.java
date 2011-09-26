@@ -95,8 +95,20 @@ public class PolyMesh extends Mesh<PolyFaceId, PolyFace> {
 			return null;
 		}
 
-		// TODO Auto-generated method stub
-		return null;
+		final Vertex<PolyFace> vertex = addVertex(point);
+		final Edge<PolyFace> newEdge1 = addEdge(edge.getVertex1(), vertex);
+		final Edge<PolyFace> newEdge2 = addEdge(vertex, edge.getVertex2());
+		final List<PolyFace> faces = new ArrayList<PolyFace>(edge.getFaces());
+
+		for (final PolyFace face : faces) {
+			face.addMidpoint(edge, vertex, newEdge1, newEdge2);
+		}
+		edge.remove();
+		edges.remove(edgeId);
+
+		markDirty();
+
+		return vertex;
 	}
 
 	@Override

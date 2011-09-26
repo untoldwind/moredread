@@ -183,12 +183,24 @@
             categoryId="net.untoldwind.moredread.ui.tool.category.polygon"
             class="net.untoldwind.moredread.ui.tools.creation.CreatePolygonToolHandler"
             icon="icons/CreatePolygon.png"
-            id="moredread-ui-tools.tool1"
+            id="net.untoldwind.moredread.ui.tool.create.polygon"
             label="Create Polygon"
             type="TOGGLE">
          <enablement
                selectionCount="0-*"
                selectionMode="OBJECT">
+         </enablement>
+      </tool>
+      <tool
+            categoryId="net.untoldwind.moredread.ui.tool.category.utilities"
+            class="net.untoldwind.moredread.ui.tools.utilities.AddMidpointToolHandler"
+            icon="icons/AddMidpoint.png"
+            id="net.untoldwind.moredread.ui.tool.utility.addMidpoint"
+            label="Add midpoint"
+            type="PUSH">
+         <enablement
+               selectionCount="1-*"
+               selectionMode="EDGE">
          </enablement>
       </tool>
    </extension>

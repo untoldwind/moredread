@@ -146,11 +146,41 @@ public class PolyFace extends Face<PolyFaceId, PolyFace, PolyMesh> {
 	@Override
 	void remove() {
 		for (final Edge<PolyFace> edge : edges) {
-			edge.removeFace(this);
+			edge.getFaces().remove(this);
 		}
 		for (final Vertex<PolyFace> vertex : vertices) {
-			vertex.removeFace(this);
+			vertex.getFaces().remove(this);
 		}
+	}
+
+	void addMidpoint(final Edge<PolyFace> edge,
+			final Vertex<PolyFace> midpoint, final Edge<PolyFace> newEdge1,
+			final Edge<PolyFace> newEdge2) {
+		int offset = 0;
+		for (int i = 0; i < stripCounts.size(); i++) {
+			final int stripCount = stripCounts.get(i);
+
+			for (int j = 0; j < stripCount; j++) {
+				final Vertex<PolyFace> v1 = vertices.get(j + offset);
+				final Vertex<PolyFace> v2 = vertices.get(((j + 1) % stripCount)
+						+ offset);
+
+				if (edge.isConnection(v1, v2)) {
+					edge.getFaces().remove(this);
+					newEdge1.getFaces().add(this);
+					newEdge2.getFaces().add(this);
+					midpoint.getFaces().add(this);
+
+					vertices.add(j + offset + 1, midpoint);
+					stripCounts.set(i, stripCount + 1);
+
+					return;
+				}
+			}
+			offset += stripCount;
+		}
+		throw new IllegalStateException("Edge " + edge + " not found in face "
+				+ this);
 	}
 
 	@Override

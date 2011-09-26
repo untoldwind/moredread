@@ -10,4 +10,6 @@ public interface IEdge {
 	IVertex getVertex2();
 
 	Set<? extends IFace> getFaces();
+
+	boolean isConnection(IVertex vertex1, IVertex vertex2);
 }

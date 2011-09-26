@@ -71,8 +71,13 @@ public class Edge<FaceT extends Face<?, ?, ?>> implements IEdge {
 		return faces;
 	}
 
-	void removeFace(final FaceT face) {
-		faces.remove(face);
+	@Override
+	public boolean isConnection(final IVertex vertex1, final IVertex vertex2) {
+		return (vertex1.getIndex() == this.vertex1.getIndex() && vertex2
+				.getIndex() == this.vertex2.getIndex())
+				|| (vertex1.getIndex() == this.vertex2.getIndex() && vertex2
+						.getIndex() == this.vertex1.getIndex());
+
 	}
 
 	void remove() {
@@ -83,8 +88,8 @@ public class Edge<FaceT extends Face<?, ?, ?>> implements IEdge {
 			}
 			ownerMesh.removeFaces(faceIds);
 		}
-		vertex1.removeEdge(this);
-		vertex2.removeEdge(this);
+		vertex1.getEdges().remove(this);
+		vertex2.getEdges().remove(this);
 	}
 
 	@Override

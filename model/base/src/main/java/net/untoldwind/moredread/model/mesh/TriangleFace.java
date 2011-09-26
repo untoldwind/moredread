@@ -111,10 +111,10 @@ public class TriangleFace extends
 	@Override
 	void remove() {
 		for (final Edge<TriangleFace> edge : edges) {
-			edge.removeFace(this);
+			edge.getFaces().remove(this);
 		}
 		for (final Vertex<TriangleFace> vertex : vertices) {
-			vertex.removeFace(this);
+			vertex.getFaces().remove(this);
 		}
 	}
 

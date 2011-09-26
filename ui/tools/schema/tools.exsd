@@ -128,6 +128,9 @@
                <documentation>
                   
                </documentation>
+               <appinfo>
+                  <meta.attribute kind="identifier" basedOn="net.untoldwind.moredread.ui.tools/category/@id"/>
+               </appinfo>
             </annotation>
          </attribute>
          <attribute name="type" use="required">
