@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.untoldwind.moredread.model.mesh.Edge;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IVertex;
 import net.untoldwind.moredread.model.mesh.PolyFace;
@@ -32,8 +31,6 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 		final Map<BoolVertex.IBoolIndex, Integer> vertexMapA = new HashMap<BoolVertex.IBoolIndex, Integer>();
 		final Map<BoolVertex.IBoolIndex, Integer> vertexMapB = new HashMap<BoolVertex.IBoolIndex, Integer>();
 
-		PolyMesh result = new PolyMesh();
-
 		if (invertMeshA) {
 			meshA = meshA.invert();
 		}
@@ -54,10 +51,22 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 		final BSPTree bspB = new BSPTree();
 		bspB.addMesh(meshB);
 
-		bspFilter(result, vertexSet, bspA, facesB, vertexMapB);
-		bspFilter(result, vertexSet, bspB, facesA, vertexMapA);
-		checkMidpoints(result);
+		final List<List<Integer>> faces = new ArrayList<List<Integer>>();
+		PolyMesh result = new PolyMesh();
 
+		bspFilter(result, faces, vertexSet, bspA, facesB, vertexMapB);
+		bspFilter(result, faces, vertexSet, bspB, facesA, vertexMapA);
+		mergeMidpoints(result, faces);
+
+		for (final List<Integer> face : faces) {
+			final int[] indices = new int[face.size()];
+
+			for (int i = 0; i < indices.length; i++) {
+				indices[i] = face.get(i);
+			}
+
+			result.addFace(indices);
+		}
 		if (invertResult) {
 			result = result.invert();
 		}
@@ -66,7 +75,8 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 		return result;
 	}
 
-	private void bspFilter(final PolyMesh result, final VertexSet vertexSet,
+	private void bspFilter(final PolyMesh result,
+			final List<List<Integer>> faces, final VertexSet vertexSet,
 			final BSPTree filter, final List<TriangleFace> source,
 			final Map<BoolVertex.IBoolIndex, Integer> vertexMap) {
 		for (final TriangleFace face : source) {
@@ -81,13 +91,14 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 					continue;
 				}
 
-				final int indices[] = new int[vertices.length];
+				final List<Integer> indices = new ArrayList<Integer>(
+						verticies.length);
 
 				for (int i = 0; i < vertices.length; i++) {
-					indices[i] = transferredIndex(result, vertexSet,
-							vertices[i], vertexMap);
+					indices.add(transferredIndex(result, vertexSet,
+							vertices[i], vertexMap));
 				}
-				result.addFace(indices);
+				faces.add(indices);
 			}
 		}
 	}
@@ -110,16 +121,23 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 		return index;
 	}
 
-	private void checkMidpoints(final PolyMesh result) {
+	private void mergeMidpoints(final PolyMesh result,
+			final List<List<Integer>> faces) {
 		for (final Vertex<PolyFace> vertex : result.getVertices()) {
-			for (final Edge<PolyFace> edge : result.getEdges()) {
-				if (vertex.getIndex() != edge.getVertex1().getIndex()
-						&& vertex.getIndex() != edge.getVertex2().getIndex()
-						&& MathUtils.isOnLine(vertex.getPoint(), edge
-								.getVertex1().getPoint(), edge.getVertex2()
-								.getPoint())) {
-					result.addMidpoint(edge.getIndex(), vertex);
-					break;
+			for (final List<Integer> face : faces) {
+				IVertex prev = result.getVertex(face.get(face.size() - 1));
+				for (int i = 0; i < face.size(); i++) {
+					final IVertex next = result.getVertex(face.get(i));
+
+					if (vertex.getIndex() != prev.getIndex()
+							&& vertex.getIndex() != next.getIndex()
+							&& MathUtils.isOnLine(vertex.getPoint(),
+									prev.getPoint(), next.getPoint())) {
+						face.add(i, vertex.getIndex());
+						prev = vertex;
+					} else {
+						prev = next;
+					}
 				}
 			}
 		}
