@@ -21,4 +21,6 @@ public interface IMesh extends IGeometry<IMesh> {
 	IFace getFace(final FaceId faceIndex);
 
 	TriangleMesh toTriangleMesh();
+
+	PolyMesh toPolyMesh();
 }

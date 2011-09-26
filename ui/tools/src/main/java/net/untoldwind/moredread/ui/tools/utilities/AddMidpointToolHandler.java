@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import net.untoldwind.moredread.model.mesh.IEdge;
-import net.untoldwind.moredread.model.mesh.Mesh;
+import net.untoldwind.moredread.model.mesh.PolyMesh;
 import net.untoldwind.moredread.model.scene.AbstractSceneOperation;
 import net.untoldwind.moredread.model.scene.IMeshNode;
 import net.untoldwind.moredread.model.scene.INode;
@@ -31,7 +31,8 @@ public class AddMidpointToolHandler implements IToolHandler {
 					final INode node = edgeSelection.getNode();
 					if (node instanceof IMeshNode) {
 						final IMeshNode meshNode = (MeshNode) node;
-						final Mesh<?, ?> mesh = meshNode.getEditableGeometry();
+						final PolyMesh mesh = meshNode.getEditableGeometry()
+								.toPolyMesh();
 						final IEdge edge = mesh.getEdge(edgeSelection
 								.getEdgeIndex());
 						final Vector3f point = new Vector3f();
@@ -40,6 +41,8 @@ public class AddMidpointToolHandler implements IToolHandler {
 						point.divideLocal(2);
 
 						mesh.addMidpoint(edgeSelection.getEdgeIndex(), point);
+
+						meshNode.setGeometry(mesh);
 					}
 				}
 			}

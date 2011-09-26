@@ -7,8 +7,6 @@ import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 import net.untoldwind.moredread.model.transform.ITransformation;
 
-import com.jme.math.Vector3f;
-
 public class QuadMesh extends Mesh<QuadFaceId, QuadFace> {
 	@Override
 	public MeshType getMeshType() {
@@ -42,19 +40,6 @@ public class QuadMesh extends Mesh<QuadFaceId, QuadFace> {
 	}
 
 	@Override
-	public Vertex<QuadFace> addMidpoint(final EdgeId edgeId,
-			final Vector3f point) {
-		final Edge<QuadFace> edge = edges.get(edgeId);
-
-		if (edge == null) {
-			return null;
-		}
-
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public TriangleMesh toTriangleMesh() {
 		final TriangleMesh mesh = new TriangleMesh();
 
@@ -69,6 +54,24 @@ public class QuadMesh extends Mesh<QuadFaceId, QuadFace> {
 					vertices[2].getIndex());
 			mesh.addFace(vertices[2].getIndex(), vertices[3].getIndex(),
 					vertices[0].getIndex());
+		}
+
+		return mesh;
+	}
+
+	@Override
+	public PolyMesh toPolyMesh() {
+		final PolyMesh mesh = new PolyMesh();
+
+		for (final Vertex<QuadFace> vertex : vertices) {
+			mesh.addVertex(vertex.getPoint(), vertex.isSmooth());
+		}
+
+		for (final QuadFace face : faces.values()) {
+			final Vertex<QuadFace> vertices[] = face.getVertexArray();
+
+			mesh.addFace(vertices[0].getIndex(), vertices[1].getIndex(),
+					vertices[2].getIndex(), vertices[3].getIndex());
 		}
 
 		return mesh;

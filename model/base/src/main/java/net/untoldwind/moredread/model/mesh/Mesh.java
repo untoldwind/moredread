@@ -142,10 +142,5 @@ public abstract class Mesh<FaceK extends FaceId, FaceT extends Face<?, ?, ?>>
 		return false;
 	}
 
-	public abstract Vertex<FaceT> addMidpoint(final EdgeId edgeId,
-			final Vector3f point);
-
 	public abstract MeshType getMeshType();
-
-	public abstract TriangleMesh toTriangleMesh();
 }

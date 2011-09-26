@@ -86,7 +86,6 @@ public class PolyMesh extends Mesh<PolyFaceId, PolyFace> {
 
 	}
 
-	@Override
 	public Vertex<PolyFace> addMidpoint(final EdgeId edgeId,
 			final Vector3f point) {
 		final Edge<PolyFace> edge = edges.get(edgeId);
@@ -131,6 +130,11 @@ public class PolyMesh extends Mesh<PolyFaceId, PolyFace> {
 			}
 		}
 		return triangleMesh;
+	}
+
+	@Override
+	public PolyMesh toPolyMesh() {
+		return this;
 	}
 
 	public PolyMesh invert() {

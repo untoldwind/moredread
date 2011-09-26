@@ -7,8 +7,6 @@ import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 import net.untoldwind.moredread.model.transform.ITransformation;
 
-import com.jme.math.Vector3f;
-
 public class TriangleMesh extends Mesh<TriangleFaceId, TriangleFace> {
 	@Override
 	public MeshType getMeshType() {
@@ -40,21 +38,26 @@ public class TriangleMesh extends Mesh<TriangleFaceId, TriangleFace> {
 	}
 
 	@Override
-	public Vertex<TriangleFace> addMidpoint(final EdgeId edgeId,
-			final Vector3f point) {
-		final Edge<TriangleFace> edge = edges.get(edgeId);
-
-		if (edge == null) {
-			return null;
-		}
-
-		// TODO Auto-generated method stub
-		return null;
+	public TriangleMesh toTriangleMesh() {
+		return this;
 	}
 
 	@Override
-	public TriangleMesh toTriangleMesh() {
-		return this;
+	public PolyMesh toPolyMesh() {
+		final PolyMesh mesh = new PolyMesh();
+
+		for (final Vertex<TriangleFace> vertex : vertices) {
+			mesh.addVertex(vertex.getPoint(), vertex.isSmooth());
+		}
+
+		for (final TriangleFace face : faces.values()) {
+			final Vertex<TriangleFace> vertices[] = face.getVertexArray();
+
+			mesh.addFace(vertices[0].getIndex(), vertices[1].getIndex(),
+					vertices[2].getIndex());
+		}
+
+		return mesh;
 	}
 
 	public TriangleMesh invert() {
