@@ -48,4 +48,25 @@ public class MathUtils {
 
 		return new BoolVertex(intersection, v1.getIndex(), v2.getIndex(), plane);
 	}
+
+	public static boolean isOnLine(final Vector3f p, final Vector3f v1,
+			final Vector3f v2) {
+		final Vector3f diff1 = v2.subtract(v1);
+		final float l1 = diff1.lengthSquared();
+
+		if (l1 < FastMath.FLT_EPSILON) {
+			return false;
+		}
+		final Vector3f diff2 = p.subtract(v1);
+		final float u = diff1.dot(diff2) / l1;
+
+		if (u < 0.0 || u > 1.0) {
+			return false;
+		}
+
+		final float dist = diff1.multLocal(u).addLocal(v1).subtractLocal(p)
+				.length();
+
+		return dist < 1e-5;
+	}
 }

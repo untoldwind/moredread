@@ -166,8 +166,11 @@ public class PolyFace extends Face<PolyFaceId, PolyFace, PolyMesh> {
 						+ offset);
 
 				if (edge.isConnection(v1, v2)) {
+					edges.remove(edge);
 					edge.getFaces().remove(this);
+					edges.add(newEdge1);
 					newEdge1.getFaces().add(this);
+					edges.add(newEdge2);
 					newEdge2.getFaces().add(this);
 					midpoint.getFaces().add(this);
 

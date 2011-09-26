@@ -13,7 +13,6 @@ import net.untoldwind.moredread.model.op.IUnaryOperation;
 import net.untoldwind.moredread.model.op.UnaryOperationFactory;
 import net.untoldwind.moredread.model.state.XMLStateReader;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.jme.math.Vector3f;
@@ -72,7 +71,6 @@ public class CoplanarMergeTest {
 	}
 
 	@Test
-	@Ignore
 	public void testBooleanResult2() throws Exception {
 		final String xml = readString(getClass().getResourceAsStream(
 				"bool-result2.xml"));

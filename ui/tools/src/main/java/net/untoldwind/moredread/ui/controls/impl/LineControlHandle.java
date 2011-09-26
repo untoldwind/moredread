@@ -17,9 +17,9 @@ public class LineControlHandle implements IControlHandle {
 	private final Float fixedSalience;
 	private Vector2f screenStart;
 	private Vector2f screenDirection;
-	private Vector2f dragScreenDirection;
 
-	private transient Vector3f moveStart;
+	private volatile transient Vector2f dragScreenDirection;
+	private volatile transient Vector3f moveStart;
 
 	public LineControlHandle(final IModelControl modelControl,
 			final Camera camera, final Vector3f worldPoint1,

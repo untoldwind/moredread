@@ -4,7 +4,9 @@ import java.util.Collections;
 import java.util.List;
 
 import net.untoldwind.moredread.model.mesh.IEdge;
+import net.untoldwind.moredread.model.mesh.PolyFace;
 import net.untoldwind.moredread.model.mesh.PolyMesh;
+import net.untoldwind.moredread.model.mesh.Vertex;
 import net.untoldwind.moredread.model.scene.AbstractSceneOperation;
 import net.untoldwind.moredread.model.scene.IMeshNode;
 import net.untoldwind.moredread.model.scene.INode;
@@ -40,7 +42,8 @@ public class AddMidpointToolHandler implements IToolHandler {
 						point.addLocal(edge.getVertex2().getPoint());
 						point.divideLocal(2);
 
-						mesh.addMidpoint(edgeSelection.getEdgeIndex(), point);
+						final Vertex<PolyFace> vertex = mesh.addVertex(point);
+						mesh.addMidpoint(edgeSelection.getEdgeIndex(), vertex);
 
 						meshNode.setGeometry(mesh);
 					}

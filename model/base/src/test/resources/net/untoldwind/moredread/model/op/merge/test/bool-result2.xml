@@ -1,119 +1,204 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <mesh class="net.untoldwind.moredread.model.mesh.PolyMesh">
-	<numVertices>20</numVertices>
+	<numVertices>30</numVertices>
+	<vertex x="-0.69999987" y="1.0" z="-0.7" />
+	<vertex x="1.0" y="-0.69999975" z="-0.7" />
+	<vertex x="1.0" y="1.0" z="-0.7" />
+	<vertex x="1.0" y="-0.8" z="-0.7" />
+	<vertex x="-0.9" y="1.0" z="-0.7" />
+	<vertex x="-0.9" y="-0.8" z="-0.7" />
+	<vertex x="-0.9" y="1.0" z="1.0000001" />
+	<vertex x="-0.9" y="-0.50000006" z="1.0" />
+	<vertex x="-0.9" y="1.0" z="-0.5" />
+	<vertex x="-0.9" y="-0.8" z="1.0" />
+	<vertex x="0.80000013" y="-0.8" z="1.0000001" />
+	<vertex x="1.0" y="-0.8" z="1.0" />
 	<vertex x="-1.0" y="1.0" z="-1.0" />
 	<vertex x="1.0" y="1.0" z="-1.0" />
 	<vertex x="1.0" y="-1.0" z="-1.0" />
 	<vertex x="-1.0" y="-1.0" z="-1.0" />
+	<vertex x="-0.9" y="-0.89999986" z="1.0" />
 	<vertex x="-1.0" y="-1.0" z="1.0" />
 	<vertex x="-0.90000004" y="-1.0" z="1.0" />
 	<vertex x="1.0" y="-1.0" z="1.0" />
-	<vertex x="-0.9" y="1.0" z="1.0" />
+	<vertex x="-0.8000001" y="-0.8000001" z="1.0" />
 	<vertex x="-1.0" y="1.0" z="1.0" />
 	<vertex x="-1.0" y="0.7" z="-0.7" />
 	<vertex x="-1.0" y="1.0" z="-0.7000001" />
 	<vertex x="-1.0" y="-1.0" z="-0.7" />
-	<vertex x="1.0" y="-0.7" z="-0.7000001" />
-	<vertex x="1.0" y="1.0" z="-0.7" />
 	<vertex x="1.0" y="-1.0" z="-0.7000001" />
 	<vertex x="-0.7000001" y="-1.0" z="-0.7000001" />
 	<vertex x="-0.90000004" y="-1.0" z="-0.7000001" />
 	<vertex x="0.70000005" y="1.0" z="-0.7000001" />
 	<vertex x="-0.90000004" y="1.0" z="0.90000004" />
-	<vertex x="-0.8999999" y="1.0" z="-0.7" />
-	<numFaces>17</numFaces>
+	<numFaces>28</numFaces>
 	<numStips>1</numStips>
-	<stripCount>3</stripCount>
+	<stripCount>4</stripCount>
 	<index>0</index>
 	<index>1</index>
 	<index>2</index>
+	<index>28</index>
 	<numStips>1</numStips>
-	<stripCount>3</stripCount>
-	<index>2</index>
+	<stripCount>5</stripCount>
 	<index>3</index>
-	<index>0</index>
-	<numStips>1</numStips>
-	<stripCount>3</stripCount>
-	<index>0</index>
-	<index>9</index>
-	<index>10</index>
-	<numStips>1</numStips>
-	<stripCount>4</stripCount>
-	<index>9</index>
-	<index>4</index>
-	<index>8</index>
-	<index>10</index>
-	<numStips>1</numStips>
-	<stripCount>4</stripCount>
-	<index>9</index>
-	<index>0</index>
-	<index>3</index>
-	<index>11</index>
-	<numStips>1</numStips>
-	<stripCount>3</stripCount>
-	<index>4</index>
-	<index>9</index>
-	<index>11</index>
-	<numStips>1</numStips>
-	<stripCount>4</stripCount>
-	<index>12</index>
-	<index>2</index>
 	<index>1</index>
-	<index>13</index>
-	<numStips>1</numStips>
-	<stripCount>3</stripCount>
-	<index>2</index>
-	<index>12</index>
-	<index>14</index>
-	<numStips>1</numStips>
-	<stripCount>4</stripCount>
-	<index>15</index>
-	<index>3</index>
-	<index>2</index>
-	<index>14</index>
-	<numStips>1</numStips>
-	<stripCount>3</stripCount>
-	<index>6</index>
-	<index>15</index>
-	<index>14</index>
-	<numStips>1</numStips>
-	<stripCount>3</stripCount>
-	<index>3</index>
-	<index>15</index>
-	<index>11</index>
-	<numStips>1</numStips>
-	<stripCount>4</stripCount>
-	<index>11</index>
-	<index>16</index>
-	<index>5</index>
+	<index>0</index>
 	<index>4</index>
-	<numStips>1</numStips>
-	<stripCount>4</stripCount>
-	<index>16</index>
-	<index>15</index>
-	<index>6</index>
 	<index>5</index>
 	<numStips>1</numStips>
 	<stripCount>4</stripCount>
-	<index>17</index>
-	<index>1</index>
-	<index>0</index>
-	<index>10</index>
-	<numStips>1</numStips>
-	<stripCount>4</stripCount>
-	<index>10</index>
+	<index>6</index>
+	<index>7</index>
 	<index>8</index>
-	<index>18</index>
-	<index>19</index>
+	<index>29</index>
 	<numStips>1</numStips>
-	<stripCount>3</stripCount>
-	<index>1</index>
-	<index>17</index>
-	<index>13</index>
-	<numStips>1</numStips>
-	<stripCount>3</stripCount>
-	<index>18</index>
+	<stripCount>5</stripCount>
+	<index>5</index>
+	<index>4</index>
 	<index>8</index>
 	<index>7</index>
+	<index>9</index>
+	<numStips>1</numStips>
+	<stripCount>4</stripCount>
+	<index>3</index>
+	<index>5</index>
+	<index>10</index>
+	<index>11</index>
+	<numStips>1</numStips>
+	<stripCount>4</stripCount>
+	<index>10</index>
+	<index>5</index>
+	<index>9</index>
+	<index>20</index>
+	<numStips>1</numStips>
+	<stripCount>3</stripCount>
+	<index>12</index>
+	<index>13</index>
+	<index>14</index>
+	<numStips>1</numStips>
+	<stripCount>3</stripCount>
+	<index>14</index>
+	<index>15</index>
+	<index>12</index>
+	<numStips>1</numStips>
+	<stripCount>3</stripCount>
+	<index>16</index>
+	<index>17</index>
+	<index>18</index>
+	<numStips>1</numStips>
+	<stripCount>6</stripCount>
+	<index>19</index>
+	<index>11</index>
+	<index>10</index>
+	<index>20</index>
+	<index>16</index>
+	<index>18</index>
+	<numStips>1</numStips>
+	<stripCount>6</stripCount>
+	<index>17</index>
+	<index>16</index>
+	<index>9</index>
+	<index>7</index>
+	<index>6</index>
+	<index>21</index>
+	<numStips>1</numStips>
+	<stripCount>3</stripCount>
+	<index>9</index>
+	<index>16</index>
+	<index>20</index>
+	<numStips>1</numStips>
+	<stripCount>3</stripCount>
+	<index>12</index>
+	<index>22</index>
+	<index>23</index>
+	<numStips>1</numStips>
+	<stripCount>4</stripCount>
+	<index>22</index>
+	<index>17</index>
+	<index>21</index>
+	<index>23</index>
+	<numStips>1</numStips>
+	<stripCount>4</stripCount>
+	<index>22</index>
+	<index>12</index>
+	<index>15</index>
+	<index>24</index>
+	<numStips>1</numStips>
+	<stripCount>3</stripCount>
+	<index>17</index>
+	<index>22</index>
+	<index>24</index>
+	<numStips>1</numStips>
+	<stripCount>4</stripCount>
+	<index>1</index>
+	<index>14</index>
+	<index>13</index>
+	<index>2</index>
+	<numStips>1</numStips>
+	<stripCount>4</stripCount>
+	<index>14</index>
+	<index>1</index>
+	<index>3</index>
+	<index>25</index>
+	<numStips>1</numStips>
+	<stripCount>4</stripCount>
+	<index>25</index>
+	<index>3</index>
+	<index>11</index>
+	<index>19</index>
+	<numStips>1</numStips>
+	<stripCount>4</stripCount>
+	<index>26</index>
+	<index>15</index>
+	<index>14</index>
+	<index>25</index>
+	<numStips>1</numStips>
+	<stripCount>3</stripCount>
+	<index>19</index>
+	<index>26</index>
+	<index>25</index>
+	<numStips>1</numStips>
+	<stripCount>4</stripCount>
+	<index>15</index>
+	<index>26</index>
+	<index>27</index>
+	<index>24</index>
+	<numStips>1</numStips>
+	<stripCount>4</stripCount>
+	<index>24</index>
+	<index>27</index>
+	<index>18</index>
+	<index>17</index>
+	<numStips>1</numStips>
+	<stripCount>4</stripCount>
+	<index>27</index>
+	<index>26</index>
+	<index>19</index>
+	<index>18</index>
+	<numStips>1</numStips>
+	<stripCount>6</stripCount>
+	<index>28</index>
+	<index>13</index>
+	<index>12</index>
+	<index>23</index>
+	<index>4</index>
+	<index>0</index>
+	<numStips>1</numStips>
+	<stripCount>5</stripCount>
+	<index>23</index>
+	<index>21</index>
+	<index>29</index>
+	<index>8</index>
+	<index>4</index>
+	<numStips>1</numStips>
+	<stripCount>3</stripCount>
+	<index>13</index>
+	<index>28</index>
+	<index>2</index>
+	<numStips>1</numStips>
+	<stripCount>3</stripCount>
+	<index>29</index>
+	<index>21</index>
+	<index>6</index>
 </mesh>

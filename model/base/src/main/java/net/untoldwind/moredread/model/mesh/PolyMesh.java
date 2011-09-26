@@ -12,8 +12,6 @@ import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 import net.untoldwind.moredread.model.transform.ITransformation;
 
-import com.jme.math.Vector3f;
-
 public class PolyMesh extends Mesh<PolyFaceId, PolyFace> {
 
 	private int faceCounter = 0;
@@ -87,14 +85,13 @@ public class PolyMesh extends Mesh<PolyFaceId, PolyFace> {
 	}
 
 	public Vertex<PolyFace> addMidpoint(final EdgeId edgeId,
-			final Vector3f point) {
+			final Vertex<PolyFace> vertex) {
 		final Edge<PolyFace> edge = edges.get(edgeId);
 
 		if (edge == null) {
 			return null;
 		}
 
-		final Vertex<PolyFace> vertex = addVertex(point);
 		final Edge<PolyFace> newEdge1 = addEdge(edge.getVertex1(), vertex);
 		final Edge<PolyFace> newEdge2 = addEdge(vertex, edge.getVertex2());
 		final List<PolyFace> faces = new ArrayList<PolyFace>(edge.getFaces());

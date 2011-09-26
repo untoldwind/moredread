@@ -5,11 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.untoldwind.moredread.model.mesh.Edge;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IVertex;
+import net.untoldwind.moredread.model.mesh.PolyFace;
 import net.untoldwind.moredread.model.mesh.PolyMesh;
 import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
+import net.untoldwind.moredread.model.mesh.Vertex;
 import net.untoldwind.moredread.model.op.IBooleanOperation;
 import net.untoldwind.moredread.model.op.utils.UnitRescale;
 import net.untoldwind.moredread.model.op.utils.VertexSet;
@@ -53,6 +56,7 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 
 		bspFilter(result, vertexSet, bspA, facesB, vertexMapB);
 		bspFilter(result, vertexSet, bspB, facesA, vertexMapA);
+		checkMidpoints(result);
 
 		if (invertResult) {
 			result = result.invert();
@@ -104,5 +108,20 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 			vertexMap.put(vertex.getIndex(), index);
 		}
 		return index;
+	}
+
+	private void checkMidpoints(final PolyMesh result) {
+		for (final Vertex<PolyFace> vertex : result.getVertices()) {
+			for (final Edge<PolyFace> edge : result.getEdges()) {
+				if (vertex.getIndex() != edge.getVertex1().getIndex()
+						&& vertex.getIndex() != edge.getVertex2().getIndex()
+						&& MathUtils.isOnLine(vertex.getPoint(), edge
+								.getVertex1().getPoint(), edge.getVertex2()
+								.getPoint())) {
+					result.addMidpoint(edge.getIndex(), vertex);
+					break;
+				}
+			}
+		}
 	}
 }
