@@ -21,21 +21,26 @@ import com.jme.math.Vector3f;
 public abstract class AbstractCenterSizeCreationToolHandler implements
 		IToolHandler {
 	protected IToolController toolController;
+	protected IModelControl activeControl;
 
 	@Override
 	public void activated(final IToolController toolController,
 			final Scene scene) {
 		this.toolController = toolController;
+		this.activeControl = new PlaneRestrictedModelControl(
+				createToolAdapter(scene));
 	}
 
 	@Override
 	public void aborted(final IToolController toolController, final Scene scene) {
+		this.activeControl = null;
 		scene.getSceneChangeHandler().rollback();
 	}
 
 	@Override
 	public void completed(final IToolController toolController,
 			final Scene scene) {
+		this.activeControl = null;
 		scene.getSceneChangeHandler().commit();
 	}
 
@@ -44,7 +49,9 @@ public abstract class AbstractCenterSizeCreationToolHandler implements
 			final IViewport viewport) {
 		final List<IModelControl> controls = new ArrayList<IModelControl>();
 
-		controls.add(new PlaneRestrictedModelControl(createToolAdapter(scene)));
+		if (activeControl != null) {
+			controls.add(activeControl);
+		}
 
 		return controls;
 	}
