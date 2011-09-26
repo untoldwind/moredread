@@ -13,6 +13,7 @@ import net.untoldwind.moredread.model.op.IUnaryOperation;
 import net.untoldwind.moredread.model.op.UnaryOperationFactory;
 import net.untoldwind.moredread.model.state.XMLStateReader;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.jme.math.Vector3f;
@@ -68,5 +69,21 @@ public class CoplanarMergeTest {
 
 		assertNotNull(result);
 		assertEquals(MeshType.POLY, result.getMeshType());
+	}
+
+	@Test
+	@Ignore
+	public void testBooleanResult2() throws Exception {
+		final String xml = readString(getClass().getResourceAsStream(
+				"bool-result2.xml"));
+
+		final IMesh mesh = XMLStateReader.fromXML(xml);
+		final IUnaryOperation mergeOperation = UnaryOperationFactory
+				.createOperation(UnaryOperationFactory.Implementation.COPLANAR_MERGE);
+		final IMesh result = mergeOperation.perform(mesh);
+
+		assertNotNull(result);
+		assertEquals(MeshType.POLY, result.getMeshType());
+
 	}
 }

@@ -1,4 +1,4 @@
-package net.untoldwind.moredread.model.op.bool.bspfilter;
+package net.untoldwind.moredread.model.op.utils;
 
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IVertex;

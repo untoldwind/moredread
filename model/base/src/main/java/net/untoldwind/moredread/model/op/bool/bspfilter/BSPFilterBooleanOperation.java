@@ -6,11 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import net.untoldwind.moredread.model.mesh.IMesh;
+import net.untoldwind.moredread.model.mesh.IVertex;
 import net.untoldwind.moredread.model.mesh.PolyMesh;
 import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
 import net.untoldwind.moredread.model.mesh.Vertex;
 import net.untoldwind.moredread.model.op.IBooleanOperation;
+import net.untoldwind.moredread.model.op.utils.UnitRescale;
+import net.untoldwind.moredread.model.op.utils.VertexSet;
 
 public class BSPFilterBooleanOperation implements IBooleanOperation {
 
@@ -23,6 +26,7 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 		final boolean invertMeshB = (operation != BoolOperation.INTERSECTION);
 		final boolean invertResult = (operation == BoolOperation.UNION);
 
+		final VertexSet vertexSet = new VertexSet();
 		final Map<BoolVertex.IBoolIndex, Integer> vertexMapA = new HashMap<BoolVertex.IBoolIndex, Integer>();
 		final Map<BoolVertex.IBoolIndex, Integer> vertexMapB = new HashMap<BoolVertex.IBoolIndex, Integer>();
 
@@ -48,8 +52,8 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 		final BSPTree bspB = new BSPTree();
 		bspB.addMesh(meshB);
 
-		bspFilter(result, bspA, facesB, vertexMapB);
-		bspFilter(result, bspB, facesA, vertexMapA);
+		bspFilter(result, vertexSet, bspA, facesB, vertexMapB);
+		bspFilter(result, vertexSet, bspB, facesA, vertexMapA);
 
 		if (invertResult) {
 			result = result.invert();
@@ -59,8 +63,8 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 		return result;
 	}
 
-	private void bspFilter(final PolyMesh result, final BSPTree filter,
-			final List<TriangleFace> source,
+	private void bspFilter(final PolyMesh result, final VertexSet vertexSet,
+			final BSPTree filter, final List<TriangleFace> source,
 			final Map<BoolVertex.IBoolIndex, Integer> vertexMap) {
 		for (final TriangleFace face : source) {
 			final Vertex[] verticies = face.getVertexArray();
@@ -77,8 +81,8 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 				final int indices[] = new int[vertices.length];
 
 				for (int i = 0; i < vertices.length; i++) {
-					indices[i] = transferredIndex(result, vertices[i],
-							vertexMap);
+					indices[i] = transferredIndex(result, vertexSet,
+							vertices[i], vertexMap);
 				}
 				result.addFace(indices);
 			}
@@ -86,12 +90,18 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 	}
 
 	private int transferredIndex(final PolyMesh result,
-			final BoolVertex vertex,
+			final VertexSet vertexSet, final BoolVertex vertex,
 			final Map<BoolVertex.IBoolIndex, Integer> vertexMap) {
 		Integer index = vertexMap.get(vertex.getIndex());
 
 		if (index == null) {
-			index = result.addVertex(vertex.getPoint()).getIndex();
+			IVertex newVertex = vertexSet.findVertex(vertex.getPoint());
+
+			if (newVertex == null) {
+				newVertex = result.addVertex(vertex.getPoint());
+				vertexSet.addVertex(newVertex);
+			}
+			index = newVertex.getIndex();
 			vertexMap.put(vertex.getIndex(), index);
 		}
 		return index;

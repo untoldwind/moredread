@@ -7,8 +7,8 @@ import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
 import net.untoldwind.moredread.model.mesh.Vertex;
 import net.untoldwind.moredread.model.op.bool.bspfilter.BSPTree;
-import net.untoldwind.moredread.model.op.bool.bspfilter.UnitRescale;
 import net.untoldwind.moredread.model.op.bool.bspfilter.VertexTag;
+import net.untoldwind.moredread.model.op.utils.UnitRescale;
 import net.untoldwind.moredread.model.state.XMLStateReader;
 import net.untoldwind.moredread.model.transform.MatrixTransformation;
 
