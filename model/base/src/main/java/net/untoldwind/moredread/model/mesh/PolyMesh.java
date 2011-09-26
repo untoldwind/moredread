@@ -12,6 +12,8 @@ import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 import net.untoldwind.moredread.model.transform.ITransformation;
 
+import com.jme.math.Vector3f;
+
 public class PolyMesh extends Mesh<PolyFaceId, PolyFace> {
 
 	private int faceCounter = 0;
@@ -25,20 +27,21 @@ public class PolyMesh extends Mesh<PolyFaceId, PolyFace> {
 	}
 
 	public PolyFace addFace(final int... vertexIndices) {
-		final List<Vertex> vertexList = new ArrayList<Vertex>(
+		final List<Vertex<PolyFace>> vertexList = new ArrayList<Vertex<PolyFace>>(
 				vertexIndices.length);
 
 		for (final int vertexIndes : vertexIndices) {
-			final Vertex vertex = vertices.get(vertexIndes);
+			final Vertex<PolyFace> vertex = vertices.get(vertexIndes);
 
 			vertexList.add(vertex);
 		}
 
-		final List<Edge> edgeList = new ArrayList<Edge>(vertexIndices.length);
+		final List<Edge<PolyFace>> edgeList = new ArrayList<Edge<PolyFace>>(
+				vertexIndices.length);
 
 		for (int i = 0; i < vertexIndices.length; i++) {
-			final Vertex vertex1 = vertexList.get(i);
-			final Vertex vertex2 = vertexList.get((i + 1)
+			final Vertex<PolyFace> vertex1 = vertexList.get(i);
+			final Vertex<PolyFace> vertex2 = vertexList.get((i + 1)
 					% vertexIndices.length);
 
 			edgeList.add(addEdge(vertex1, vertex2));
@@ -52,9 +55,10 @@ public class PolyMesh extends Mesh<PolyFaceId, PolyFace> {
 		return face;
 	}
 
+	@SuppressWarnings("unchecked")
 	public PolyFace addFace(final int[][] vertexStripIndices) {
-		final Vertex[][] vertexStrips = new Vertex[vertexStripIndices.length][];
-		final List<Edge> edgeList = new ArrayList<Edge>();
+		final Vertex<PolyFace>[][] vertexStrips = new Vertex[vertexStripIndices.length][];
+		final List<Edge<PolyFace>> edgeList = new ArrayList<Edge<PolyFace>>();
 
 		for (int k = 0; k < vertexStripIndices.length; k++) {
 			final int[] vertexIndices = vertexStripIndices[k];
@@ -62,12 +66,12 @@ public class PolyMesh extends Mesh<PolyFaceId, PolyFace> {
 			vertexStrips[k] = new Vertex[vertexStripIndices[k].length];
 
 			for (int i = 0; i < vertexIndices.length; i++) {
-				final Vertex vertex1 = vertices.get(vertexIndices[i]);
+				final Vertex<PolyFace> vertex1 = vertices.get(vertexIndices[i]);
 
 				vertexStrips[k][i] = vertex1;
 
-				final Vertex vertex2 = vertices.get(vertexIndices[(i + 1)
-						% vertexIndices.length]);
+				final Vertex<PolyFace> vertex2 = vertices
+						.get(vertexIndices[(i + 1) % vertexIndices.length]);
 
 				edgeList.add(addEdge(vertex1, vertex2));
 			}
@@ -83,16 +87,29 @@ public class PolyMesh extends Mesh<PolyFaceId, PolyFace> {
 	}
 
 	@Override
+	public Vertex<PolyFace> addMidpoint(final EdgeId edgeId,
+			final Vector3f point) {
+		final Edge<PolyFace> edge = edges.get(edgeId);
+
+		if (edge == null) {
+			return null;
+		}
+
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public TriangleMesh toTriangleMesh() {
 		final TriangleMesh triangleMesh = new TriangleMesh();
 		final ITriangulator triangulator = TriangulatorFactory.createDefault();
 
-		for (final Vertex vertex : vertices) {
+		for (final Vertex<PolyFace> vertex : vertices) {
 			triangleMesh.addVertex(vertex.getPoint(), vertex.isSmooth());
 		}
 
 		for (final PolyFace face : faces.values()) {
-			final List<Vertex> vertices = face.getVertices();
+			final List<Vertex<PolyFace>> vertices = face.getVertices();
 			final int[] indices = triangulator.triangulate(face);
 
 			for (int i = 0; i < indices.length; i += 3) {
@@ -107,12 +124,12 @@ public class PolyMesh extends Mesh<PolyFaceId, PolyFace> {
 	public PolyMesh invert() {
 		final PolyMesh mesh = new PolyMesh();
 
-		for (final Vertex vertex : vertices) {
+		for (final Vertex<PolyFace> vertex : vertices) {
 			mesh.addVertex(vertex.getPoint(), vertex.isSmooth());
 		}
 
 		for (final PolyFace face : faces.values()) {
-			final Iterator<Vertex> it = face.getVertices().iterator();
+			final Iterator<Vertex<PolyFace>> it = face.getVertices().iterator();
 			final List<Integer> stripCounts = face.getStripCounts();
 			final int[][] faceStrips = new int[stripCounts.size()][];
 
@@ -140,7 +157,7 @@ public class PolyMesh extends Mesh<PolyFaceId, PolyFace> {
 		for (final PolyFace face : faces.values()) {
 			final int[] stripCounts = face.getPolygonStripCounts();
 			final int[][] vertexStripIndices = new int[stripCounts.length][];
-			final Iterator<Vertex> it = face.getVertices().iterator();
+			final Iterator<Vertex<PolyFace>> it = face.getVertices().iterator();
 			for (int i = 0; i < stripCounts.length; i++) {
 				vertexStripIndices[i] = new int[stripCounts[i]];
 				for (int j = 0; j < stripCounts[i]; j++) {
@@ -189,7 +206,7 @@ public class PolyMesh extends Mesh<PolyFaceId, PolyFace> {
 		writer.writeInt("numFaces", faces.size());
 		for (final PolyFace face : faces.values()) {
 			writer.writeInt("numStips", face.getStripCounts().size());
-			final Iterator<Vertex> it = face.getVertices().iterator();
+			final Iterator<Vertex<PolyFace>> it = face.getVertices().iterator();
 			for (final Integer stripCount : face.getStripCounts()) {
 				writer.writeInt("stripCount", stripCount);
 				for (int i = 0; i < stripCount; i++) {

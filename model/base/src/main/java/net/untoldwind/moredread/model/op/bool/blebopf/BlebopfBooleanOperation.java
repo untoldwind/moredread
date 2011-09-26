@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.untoldwind.moredread.model.mesh.IMesh;
+import net.untoldwind.moredread.model.mesh.IVertex;
 import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleFaceId;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
-import net.untoldwind.moredread.model.mesh.Vertex;
 import net.untoldwind.moredread.model.op.IBooleanOperation;
 
 import com.jme.math.Plane;
@@ -25,11 +25,11 @@ public class BlebopfBooleanOperation implements IBooleanOperation {
 
 		final BoolMesh meshC = new BoolMesh();
 
-		for (final Vertex vertex : meshA.getVertices()) {
+		for (final IVertex vertex : meshA.getVertices()) {
 			meshC.addVertex(vertex.getPoint());
 		}
 		final int vertexOffsetB = meshC.getNumVertexs();
-		for (final Vertex vertex : meshB.getVertices()) {
+		for (final IVertex vertex : meshB.getVertices()) {
 			meshC.addVertex(vertex.getPoint());
 		}
 		final List<BoolFace> facesA = new ArrayList<BoolFace>();

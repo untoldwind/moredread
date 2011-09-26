@@ -28,14 +28,14 @@ public class UnitRescale {
 	}
 
 	public void rescaleInput(final Mesh<?, ?> input) {
-		for (final Vertex vertex : input.getVertices()) {
+		for (final Vertex<?> vertex : input.getVertices()) {
 			vertex.setPoint(vertex.getPoint().subtract(translation)
 					.divideLocal(scale));
 		}
 	}
 
 	public void rescaleOutput(final Mesh<?, ?> output) {
-		for (final Vertex vertex : output.getVertices()) {
+		for (final Vertex<?> vertex : output.getVertices()) {
 			vertex.setPoint(vertex.getPoint().mult(scale).addLocal(translation));
 		}
 	}

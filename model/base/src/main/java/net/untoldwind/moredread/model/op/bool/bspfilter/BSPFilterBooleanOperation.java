@@ -10,7 +10,6 @@ import net.untoldwind.moredread.model.mesh.IVertex;
 import net.untoldwind.moredread.model.mesh.PolyMesh;
 import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
-import net.untoldwind.moredread.model.mesh.Vertex;
 import net.untoldwind.moredread.model.op.IBooleanOperation;
 import net.untoldwind.moredread.model.op.utils.UnitRescale;
 import net.untoldwind.moredread.model.op.utils.VertexSet;
@@ -67,7 +66,7 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 			final BSPTree filter, final List<TriangleFace> source,
 			final Map<BoolVertex.IBoolIndex, Integer> vertexMap) {
 		for (final TriangleFace face : source) {
-			final Vertex[] verticies = face.getVertexArray();
+			final IVertex[] verticies = face.getVertexArray();
 
 			final List<BoolFace> inFaces = filter.testTriangle(verticies[0],
 					verticies[1], verticies[2]);

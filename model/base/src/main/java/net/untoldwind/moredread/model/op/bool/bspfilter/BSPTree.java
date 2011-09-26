@@ -6,7 +6,6 @@ import java.util.List;
 import net.untoldwind.moredread.model.mesh.IVertex;
 import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
-import net.untoldwind.moredread.model.mesh.Vertex;
 
 import com.jme.math.Plane;
 import com.jme.math.Vector3f;
@@ -48,7 +47,7 @@ public class BSPTree {
 	}
 
 	private void addFace(final TriangleFace face) {
-		final Vertex[] verticies = face.getVertexArray();
+		final IVertex[] verticies = face.getVertexArray();
 
 		addTriangle(verticies[0].getPoint(), verticies[1].getPoint(),
 				verticies[2].getPoint());

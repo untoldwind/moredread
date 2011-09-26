@@ -3,9 +3,9 @@ package net.untoldwind.moredread.model.op.bool.bsp.test;
 import static org.junit.Assert.assertEquals;
 import net.untoldwind.moredread.model.generator.CubeMeshGenerator;
 import net.untoldwind.moredread.model.mesh.IMesh;
+import net.untoldwind.moredread.model.mesh.IVertex;
 import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
-import net.untoldwind.moredread.model.mesh.Vertex;
 import net.untoldwind.moredread.model.op.bool.bspfilter.BSPTree;
 import net.untoldwind.moredread.model.op.bool.bspfilter.VertexTag;
 import net.untoldwind.moredread.model.op.utils.UnitRescale;
@@ -118,7 +118,7 @@ public class BSPTreeTest {
 
 		int count = 0;
 		for (final TriangleFace face : triMeshA.getFaces()) {
-			final Vertex[] verticies = face.getVertexArray();
+			final IVertex[] verticies = face.getVertexArray();
 
 			count += bspB
 					.testTriangle(verticies[0], verticies[1], verticies[2])
@@ -148,7 +148,7 @@ public class BSPTreeTest {
 
 		int count = 0;
 		for (final TriangleFace face : meshB.getFaces()) {
-			final Vertex[] verticies = face.getVertexArray();
+			final IVertex[] verticies = face.getVertexArray();
 
 			count += bspA
 					.testTriangle(verticies[0], verticies[1], verticies[2])
@@ -178,7 +178,7 @@ public class BSPTreeTest {
 
 		int count = 0;
 		for (final TriangleFace face : meshB.getFaces()) {
-			final Vertex[] verticies = face.getVertexArray();
+			final IVertex[] verticies = face.getVertexArray();
 
 			count += bspA
 					.testTriangle(verticies[0], verticies[1], verticies[2])

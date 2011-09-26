@@ -11,22 +11,22 @@ import net.untoldwind.moredread.model.transform.ITransformation;
 
 import com.jme.math.Vector3f;
 
-public class QuadFace extends Face<QuadFaceId, QuadMesh> {
-	private final Vertex[] vertices;
-	private final Edge[] edges;
+public class QuadFace extends Face<QuadFaceId, QuadFace, QuadMesh> {
+	private final Vertex<QuadFace>[] vertices;
+	private final Edge<QuadFace>[] edges;
 
 	QuadFace(final QuadMesh owner, final QuadFaceId index,
-			final Vertex[] vertices, final Edge[] edges) {
+			final Vertex<QuadFace>[] vertices, final Edge<QuadFace>[] edges) {
 		super(owner, index);
 
 		this.vertices = vertices;
 		this.edges = edges;
 
-		for (final Vertex vertex : vertices) {
+		for (final Vertex<QuadFace> vertex : vertices) {
 			vertex.getFaces().add(this);
 		}
 
-		for (final Edge edge : edges) {
+		for (final Edge<QuadFace> edge : edges) {
 			edge.getFaces().add(this);
 		}
 	}
@@ -36,22 +36,22 @@ public class QuadFace extends Face<QuadFaceId, QuadMesh> {
 		return 4;
 	}
 
-	public Vertex getVertex(final int index) {
+	public Vertex<QuadFace> getVertex(final int index) {
 		return vertices[index];
 	}
 
 	@Override
-	public List<Vertex> getVertices() {
+	public List<Vertex<QuadFace>> getVertices() {
 		return Arrays.asList(vertices);
 	}
 
-	public Vertex[] getVertexArray() {
+	public Vertex<QuadFace>[] getVertexArray() {
 		return vertices;
 	}
 
 	@Override
 	public IEdge getEdge(final EdgeId edgeIndex) {
-		for (final Edge edge : edges) {
+		for (final Edge<QuadFace> edge : edges) {
 			if (edge.getIndex().equals(edgeIndex)) {
 				return edge;
 			}
@@ -60,7 +60,7 @@ public class QuadFace extends Face<QuadFaceId, QuadMesh> {
 	}
 
 	@Override
-	public List<Edge> getEdges() {
+	public List<Edge<QuadFace>> getEdges() {
 		return Arrays.asList(edges);
 	}
 
@@ -83,7 +83,7 @@ public class QuadFace extends Face<QuadFaceId, QuadMesh> {
 	public void updateCenter() {
 		center = new Vector3f(0, 0, 0);
 
-		for (final Vertex vertex : vertices) {
+		for (final Vertex<QuadFace> vertex : vertices) {
 			center.addLocal(vertex.getPoint());
 		}
 
@@ -110,10 +110,10 @@ public class QuadFace extends Face<QuadFaceId, QuadMesh> {
 
 	@Override
 	void remove() {
-		for (final Edge edge : edges) {
+		for (final Edge<QuadFace> edge : edges) {
 			edge.removeFace(this);
 		}
-		for (final Vertex vertex : vertices) {
+		for (final Vertex<QuadFace> vertex : vertices) {
 			vertex.removeFace(this);
 		}
 	}
@@ -138,7 +138,7 @@ public class QuadFace extends Face<QuadFaceId, QuadMesh> {
 
 	@Override
 	public void writeState(final IStateWriter writer) throws IOException {
-		for (final Vertex vertex : vertices) {
+		for (final Vertex<QuadFace> vertex : vertices) {
 			writer.writeInt("vertexIndex", vertex.getIndex());
 		}
 	}

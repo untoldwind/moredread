@@ -9,7 +9,7 @@ import net.untoldwind.moredread.model.state.IStateHolder;
 import com.jme.math.Plane;
 import com.jme.math.Vector3f;
 
-public abstract class Face<FaceK extends FaceId, MeshT extends Mesh<?, ?>>
+public abstract class Face<FaceK extends FaceId, FaceT extends Face<?, ?, ?>, MeshT extends Mesh<?, ?>>
 		implements IStateHolder, IFace {
 	protected final MeshT owner;
 	protected final FaceK index;
@@ -79,7 +79,7 @@ public abstract class Face<FaceK extends FaceId, MeshT extends Mesh<?, ?>>
 		meanNormal = null;
 	}
 
-	public abstract List<Vertex> getVertices();
+	public abstract List<Vertex<FaceT>> getVertices();
 
 	public abstract void updateCenter();
 

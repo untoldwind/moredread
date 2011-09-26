@@ -15,17 +15,17 @@ import net.untoldwind.moredread.model.state.IStateHolder;
 
 import com.jme.math.Vector3f;
 
-public abstract class Mesh<FaceK extends FaceId, FaceT extends Face<?, ?>>
+public abstract class Mesh<FaceK extends FaceId, FaceT extends Face<?, ?, ?>>
 		implements IMesh, IStateHolder {
 	protected int vertexCount = 0;
-	protected final List<Vertex> vertices;
-	protected final Map<EdgeId, Edge> edges;
+	protected final List<Vertex<FaceT>> vertices;
+	protected final Map<EdgeId, Edge<FaceT>> edges;
 	protected final Map<FaceK, FaceT> faces;
 	protected boolean dirty = false;
 
 	protected Mesh() {
-		vertices = new ArrayList<Vertex>();
-		edges = new HashMap<EdgeId, Edge>();
+		vertices = new ArrayList<Vertex<FaceT>>();
+		edges = new HashMap<EdgeId, Edge<FaceT>>();
 		faces = new LinkedHashMap<FaceK, FaceT>();
 	}
 
@@ -34,40 +34,42 @@ public abstract class Mesh<FaceK extends FaceId, FaceT extends Face<?, ?>>
 		return GeometryType.MESH;
 	}
 
-	public Vertex addVertex(final Vector3f point) {
+	public Vertex<FaceT> addVertex(final Vector3f point) {
 		return addVertex(point, false);
 	}
 
-	public Vertex addVertex(final Vector3f point, final boolean smooth) {
-		final Vertex vertex = new Vertex(this, vertices.size(), point);
+	public Vertex<FaceT> addVertex(final Vector3f point, final boolean smooth) {
+		final Vertex<FaceT> vertex = new Vertex<FaceT>(this, vertices.size(),
+				point);
 
 		vertices.add(vertex);
 
 		return vertex;
 	}
 
-	public List<Vertex> getVertices() {
+	public List<Vertex<FaceT>> getVertices() {
 		return vertices;
 	}
 
 	@Override
-	public Vertex getVertex(final int vertexIndes) {
+	public Vertex<FaceT> getVertex(final int vertexIndes) {
 		if (vertexIndes < 0 || vertexIndes >= vertices.size()) {
 			return null;
 		}
 		return vertices.get(vertexIndes);
 	}
 
-	public Edge getEdge(final EdgeId edgeIndex) {
+	public Edge<FaceT> getEdge(final EdgeId edgeIndex) {
 		return edges.get(edgeIndex);
 	}
 
-	protected Edge addEdge(final Vertex vertex1, final Vertex vertex2) {
-		Edge edge = edges
-				.get(new EdgeId(vertex1.getIndex(), vertex2.getIndex()));
+	protected Edge<FaceT> addEdge(final Vertex<FaceT> vertex1,
+			final Vertex<FaceT> vertex2) {
+		Edge<FaceT> edge = edges.get(new EdgeId(vertex1.getIndex(), vertex2
+				.getIndex()));
 
 		if (edge == null) {
-			edge = new Edge(this, vertex1, vertex2);
+			edge = new Edge<FaceT>(this, vertex1, vertex2);
 
 			edges.put(edge.getIndex(), edge);
 		}
@@ -75,7 +77,7 @@ public abstract class Mesh<FaceK extends FaceId, FaceT extends Face<?, ?>>
 		return edge;
 	}
 
-	public Collection<Edge> getEdges() {
+	public Collection<Edge<FaceT>> getEdges() {
 		return edges.values();
 	}
 
@@ -101,7 +103,7 @@ public abstract class Mesh<FaceK extends FaceId, FaceT extends Face<?, ?>>
 
 	public void removeEdges(final Set<EdgeId> edgeIds) {
 		for (final EdgeId edgeId : edgeIds) {
-			final Edge edge = edges.get(edgeId);
+			final Edge<FaceT> edge = edges.get(edgeId);
 			if (edge != null) {
 				edge.remove();
 				edges.remove(edgeId);
@@ -111,10 +113,10 @@ public abstract class Mesh<FaceK extends FaceId, FaceT extends Face<?, ?>>
 	}
 
 	public void removeVertices(final Set<Integer> vertexIds) {
-		final Iterator<Vertex> it = vertices.iterator();
+		final Iterator<Vertex<FaceT>> it = vertices.iterator();
 
 		while (it.hasNext()) {
-			final Vertex vertex = it.next();
+			final Vertex<FaceT> vertex = it.next();
 
 			if (vertexIds.contains(vertex.getIndex())) {
 				vertex.remove();
@@ -122,7 +124,7 @@ public abstract class Mesh<FaceK extends FaceId, FaceT extends Face<?, ?>>
 			}
 		}
 		int index = 0;
-		for (final Vertex vertex : vertices) {
+		for (final Vertex<FaceT> vertex : vertices) {
 			vertex.setIndex(index++);
 		}
 		markDirty();
@@ -139,6 +141,9 @@ public abstract class Mesh<FaceK extends FaceId, FaceT extends Face<?, ?>>
 		}
 		return false;
 	}
+
+	public abstract Vertex<FaceT> addMidpoint(final EdgeId edgeId,
+			final Vector3f point);
 
 	public abstract MeshType getMeshType();
 

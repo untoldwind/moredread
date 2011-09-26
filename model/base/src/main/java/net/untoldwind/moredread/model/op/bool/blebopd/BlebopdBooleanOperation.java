@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.untoldwind.moredread.model.mesh.IMesh;
+import net.untoldwind.moredread.model.mesh.IVertex;
 import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleFaceId;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
-import net.untoldwind.moredread.model.mesh.Vertex;
 import net.untoldwind.moredread.model.op.IBooleanOperation;
 
 public class BlebopdBooleanOperation implements IBooleanOperation {
@@ -23,11 +23,11 @@ public class BlebopdBooleanOperation implements IBooleanOperation {
 
 		final BoolMesh meshC = new BoolMesh();
 
-		for (final Vertex vertex : meshA.getVertices()) {
+		for (final IVertex vertex : meshA.getVertices()) {
 			meshC.addVertex(new Vector3d(vertex.getPoint()));
 		}
 		final int vertexOffsetB = meshC.getNumVertexs();
-		for (final Vertex vertex : meshB.getVertices()) {
+		for (final IVertex vertex : meshB.getVertices()) {
 			meshC.addVertex(new Vector3d(vertex.getPoint()));
 		}
 		final List<BoolFace> facesA = new ArrayList<BoolFace>();
@@ -66,9 +66,8 @@ public class BlebopdBooleanOperation implements IBooleanOperation {
 				final TriangleFaceId faceId = face.getIndex();
 				final BoolFace boolFace = new BoolFace(v3, v2, v1, plane,
 						new TriangleFaceId(faceId.getIndex1() + vertexOffsetB,
-								faceId.getIndex2() + vertexOffsetB, faceId
-										.getIndex3()
-										+ vertexOffsetB));
+								faceId.getIndex2() + vertexOffsetB,
+								faceId.getIndex3() + vertexOffsetB));
 				facesB.add(boolFace);
 				meshC.addFace(boolFace);
 			} else {
@@ -77,9 +76,8 @@ public class BlebopdBooleanOperation implements IBooleanOperation {
 				final TriangleFaceId faceId = face.getIndex();
 				final BoolFace boolFace = new BoolFace(v1, v2, v3, plane,
 						new TriangleFaceId(faceId.getIndex1() + vertexOffsetB,
-								faceId.getIndex2() + vertexOffsetB, faceId
-										.getIndex3()
-										+ vertexOffsetB));
+								faceId.getIndex2() + vertexOffsetB,
+								faceId.getIndex3() + vertexOffsetB));
 				facesB.add(boolFace);
 				meshC.addFace(boolFace);
 			}

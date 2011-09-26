@@ -14,22 +14,23 @@ import net.untoldwind.moredread.model.transform.ITransformation;
 
 import com.jme.math.Vector3f;
 
-public class Vertex implements IStateHolder, IVertex {
+public class Vertex<FaceT extends Face<?, ?, ?>> implements IStateHolder,
+		IVertex {
 	private final Mesh<?, ?> ownerMesh;
 	private final Polygon ownerPolygon;
 	private int index;
 	private Vector3f point;
 	private boolean smooth;
-	private final Set<Edge> edges;
-	private final Set<Face<?, ?>> faces;
+	private final Set<Edge<FaceT>> edges;
+	private final Set<FaceT> faces;
 
 	Vertex(final Mesh<?, ?> owner, final int index, final Vector3f point) {
 		this.ownerMesh = owner;
 		this.ownerPolygon = null;
 		this.index = index;
 		this.point = point.clone();
-		this.edges = new HashSet<Edge>();
-		this.faces = new HashSet<Face<?, ?>>();
+		this.edges = new HashSet<Edge<FaceT>>();
+		this.faces = new HashSet<FaceT>();
 	}
 
 	Vertex(final Polygon owner, final int index, final Vector3f point) {
@@ -37,8 +38,8 @@ public class Vertex implements IStateHolder, IVertex {
 		this.ownerPolygon = owner;
 		this.index = index;
 		this.point = point.clone();
-		this.edges = new HashSet<Edge>();
-		this.faces = new HashSet<Face<?, ?>>();
+		this.edges = new HashSet<Edge<FaceT>>();
+		this.faces = new HashSet<FaceT>();
 	}
 
 	@Override
@@ -77,7 +78,7 @@ public class Vertex implements IStateHolder, IVertex {
 
 	public void setPoint(final Vector3f point) {
 		this.point.set(point);
-		for (final Face<?, ?> face : faces) {
+		for (final FaceT face : faces) {
 			face.markDirty();
 		}
 		if (ownerMesh != null) {
@@ -88,26 +89,26 @@ public class Vertex implements IStateHolder, IVertex {
 		}
 	}
 
-	public Set<Edge> getEdges() {
+	public Set<Edge<FaceT>> getEdges() {
 		return edges;
 	}
 
-	void removeEdge(final Edge edge) {
+	void removeEdge(final Edge<FaceT> edge) {
 		edges.remove(edge);
 	}
 
-	public Set<Face<?, ?>> getFaces() {
+	public Set<FaceT> getFaces() {
 		return faces;
 	}
 
-	void removeFace(final Face<?, ?> face) {
+	void removeFace(final FaceT face) {
 		faces.remove(face);
 	}
 
 	void remove() {
 		if (ownerMesh != null) {
 			final Set<EdgeId> edgeIds = new HashSet<EdgeId>();
-			for (final Edge edge : edges) {
+			for (final Edge<FaceT> edge : edges) {
 				edgeIds.add(edge.getIndex());
 			}
 			ownerMesh.removeEdges(edgeIds);
@@ -145,7 +146,7 @@ public class Vertex implements IStateHolder, IVertex {
 			return false;
 		}
 
-		final Vertex castObj = (Vertex) obj;
+		final Vertex<?> castObj = (Vertex<?>) obj;
 
 		return index == castObj.index && smooth == castObj.smooth
 				&& point.equals(castObj.point);

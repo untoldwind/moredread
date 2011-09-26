@@ -46,7 +46,7 @@ public class DeleteFacesOperation implements ISceneOperation {
 
 			mesh.removeFaces(faces.get(meshNode));
 
-			for (final Edge edge : mesh.getEdges()) {
+			for (final Edge<?> edge : mesh.getEdges()) {
 				if (edge.getFaces().isEmpty()) {
 					obsoleteEdgeIds.add(edge.getIndex());
 				}
@@ -54,7 +54,7 @@ public class DeleteFacesOperation implements ISceneOperation {
 			mesh.removeEdges(obsoleteEdgeIds);
 
 			final Set<Integer> obsoleteVertexId = new HashSet<Integer>();
-			for (final Vertex vertex : mesh.getVertices()) {
+			for (final Vertex<?> vertex : mesh.getVertices()) {
 				if (vertex.getEdges().isEmpty()) {
 					obsoleteVertexId.add(vertex.getIndex());
 				}
