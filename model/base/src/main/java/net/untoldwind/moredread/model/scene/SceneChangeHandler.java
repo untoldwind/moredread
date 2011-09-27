@@ -31,6 +31,10 @@ public class SceneChangeHandler implements IAdaptable {
 		this.scene = scene;
 	}
 
+	public boolean isStageEmpty() {
+		return stage == null || stage.isEmpty();
+	}
+
 	public void beginUndoable(final String label) {
 		begin(label, true);
 	}

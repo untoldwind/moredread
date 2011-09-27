@@ -6,9 +6,9 @@ import java.util.List;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IPoint;
 import net.untoldwind.moredread.model.mesh.IPolygon;
-import net.untoldwind.moredread.model.scene.IGeometryNode;
 import net.untoldwind.moredread.model.scene.IMeshNode;
 import net.untoldwind.moredread.model.scene.IPolygonNode;
+import net.untoldwind.moredread.model.scene.IVertexGeometryNode;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
@@ -29,12 +29,12 @@ public class VertexSelectionModelControl extends Point implements IModelControl 
 
 	private final IToolAdapter toolAdapter;
 
-	private final IGeometryNode<?, ?> node;
+	private final IVertexGeometryNode<?, ?> node;
 	private final int vertexIndex;
 
 	private transient PointControlHandle pointControlHandle;
 
-	public VertexSelectionModelControl(final IGeometryNode<?, ?> node,
+	public VertexSelectionModelControl(final IVertexGeometryNode<?, ?> node,
 			final int vertexIndex, final IToolAdapter toolAdapter) {
 		this.toolAdapter = toolAdapter;
 		this.node = node;

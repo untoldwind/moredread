@@ -144,5 +144,4 @@ public class LineControlHandle implements IControlHandle {
 		return modelControl.getToolAdapter().handleDragEnd(modelControl,
 				moveStart, v, modifiers);
 	}
-
 }

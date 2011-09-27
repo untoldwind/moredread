@@ -10,11 +10,13 @@ import net.untoldwind.moredread.annotations.Singleton;
 import net.untoldwind.moredread.model.mesh.Edge;
 import net.untoldwind.moredread.model.mesh.EdgeId;
 import net.untoldwind.moredread.model.mesh.IEdge;
+import net.untoldwind.moredread.model.mesh.IEdgeGeometry;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IPolygon;
 import net.untoldwind.moredread.model.mesh.Mesh;
 import net.untoldwind.moredread.model.mesh.Polygon;
 import net.untoldwind.moredread.model.mesh.Vertex;
+import net.untoldwind.moredread.model.scene.IEdgeGeometryNode;
 import net.untoldwind.moredread.model.scene.IGeometryNode;
 import net.untoldwind.moredread.model.scene.IMeshNode;
 import net.untoldwind.moredread.model.scene.INode;
@@ -56,26 +58,17 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 		final List<IModelControl> controls = new ArrayList<IModelControl>();
 
 		for (final INode node : scene.getSceneSelection().getSelectedNodes()) {
-			if (node instanceof IMeshNode) {
-				final IMeshNode meshNode = (IMeshNode) node;
-				final IMesh mesh = meshNode.getGeometry();
+			if (node instanceof IEdgeGeometryNode<?, ?>) {
+				final IEdgeGeometryNode<?, ?> edgeGeometryNode = (IEdgeGeometryNode<?, ?>) node;
+				final IEdgeGeometry<?> geometry = edgeGeometryNode
+						.getGeometry();
 
-				if (mesh != null) {
-					for (final IEdge edge : mesh.getEdges()) {
-						controls.add(new EdgeSelectionModelControl(meshNode,
-								edge.getIndex(), new SelectToolAdapter(scene,
-										meshNode, edge.getIndex())));
-					}
-				}
-			} else if (node instanceof IPolygonNode) {
-				final IPolygonNode polygonNode = (IPolygonNode) node;
-				final IPolygon polygon = polygonNode.getGeometry();
-
-				if (polygon != null) {
-					for (final IEdge edge : polygon.getEdges()) {
-						controls.add(new EdgeSelectionModelControl(polygonNode,
-								edge.getIndex(), new SelectToolAdapter(scene,
-										polygonNode, edge.getIndex())));
+				if (geometry != null) {
+					for (final IEdge edge : geometry.getEdges()) {
+						controls.add(new EdgeSelectionModelControl(
+								edgeGeometryNode, edge.getIndex(),
+								new SelectToolAdapter(scene, edgeGeometryNode,
+										edge.getIndex())));
 					}
 				}
 			}
@@ -89,11 +82,11 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 
 	private static class SelectToolAdapter implements IToolAdapter {
 		private final Scene scene;
-		private final IGeometryNode<?, ?> node;
+		private final IEdgeGeometryNode<?, ?> node;
 		private final EdgeId edgeIndex;
 
 		private SelectToolAdapter(final Scene scene,
-				final IGeometryNode<?, ?> node, final EdgeId edgeIndex) {
+				final IEdgeGeometryNode<?, ?> node, final EdgeId edgeIndex) {
 			this.scene = scene;
 			this.node = node;
 			this.edgeIndex = edgeIndex;

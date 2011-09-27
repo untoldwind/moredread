@@ -241,7 +241,9 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 	@Override
 	public void sceneChanged(final SceneChangeEvent event) {
 		implementor.updateDisplayNodes();
-		implementor.updateToolControls();
+		if (event.getScene().getSceneChangeHandler().isStageEmpty()) {
+			implementor.updateToolControls();
+		}
 		canvas.queueRender();
 	}
 

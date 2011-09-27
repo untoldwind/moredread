@@ -10,6 +10,7 @@ import net.untoldwind.moredread.annotations.Singleton;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IPolygon;
 import net.untoldwind.moredread.model.mesh.IVertex;
+import net.untoldwind.moredread.model.mesh.IVertexGeometry;
 import net.untoldwind.moredread.model.mesh.Mesh;
 import net.untoldwind.moredread.model.mesh.Polygon;
 import net.untoldwind.moredread.model.mesh.Vertex;
@@ -17,6 +18,7 @@ import net.untoldwind.moredread.model.scene.IGeometryNode;
 import net.untoldwind.moredread.model.scene.IMeshNode;
 import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.IPolygonNode;
+import net.untoldwind.moredread.model.scene.IVertexGeometryNode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.scene.SceneSelection.VertexSelection;
 import net.untoldwind.moredread.ui.controls.IModelControl;
@@ -52,27 +54,17 @@ public class VertexSelectionToolHandler implements IToolHandler {
 		final List<IModelControl> controls = new ArrayList<IModelControl>();
 
 		for (final INode node : scene.getSceneSelection().getSelectedNodes()) {
-			if (node instanceof IMeshNode) {
-				final IMeshNode meshNode = (IMeshNode) node;
-				final IMesh mesh = meshNode.getGeometry();
+			if (node instanceof IVertexGeometryNode<?, ?>) {
+				final IVertexGeometryNode<?, ?> vertexGeometryNode = (IVertexGeometryNode<?, ?>) node;
+				final IVertexGeometry<?> geometry = vertexGeometryNode
+						.getGeometry();
 
-				if (mesh != null) {
-					for (final IVertex vertex : mesh.getVertices()) {
-						controls.add(new VertexSelectionModelControl(meshNode,
-								vertex.getIndex(), new SelectToolAdapter(scene,
-										meshNode, vertex.getIndex())));
-					}
-				}
-			} else if (node instanceof IPolygonNode) {
-				final IPolygonNode polygonNode = (IPolygonNode) node;
-				final IPolygon polygon = polygonNode.getGeometry();
-
-				if (polygon != null) {
-					for (final IVertex vertex : polygon.getVertices()) {
+				if (geometry != null) {
+					for (final IVertex vertex : geometry.getVertices()) {
 						controls.add(new VertexSelectionModelControl(
-								polygonNode, vertex.getIndex(),
-								new SelectToolAdapter(scene, polygonNode,
-										vertex.getIndex())));
+								vertexGeometryNode, vertex.getIndex(),
+								new SelectToolAdapter(scene,
+										vertexGeometryNode, vertex.getIndex())));
 					}
 				}
 			}
@@ -87,11 +79,11 @@ public class VertexSelectionToolHandler implements IToolHandler {
 
 	private static class SelectToolAdapter implements IToolAdapter {
 		private final Scene scene;
-		private final IGeometryNode<?, ?> node;
+		private final IVertexGeometryNode<?, ?> node;
 		private final int vertexIndex;
 
 		private SelectToolAdapter(final Scene scene,
-				final IGeometryNode<?, ?> node, final int vertexIndex) {
+				final IVertexGeometryNode<?, ?> node, final int vertexIndex) {
 			this.scene = scene;
 			this.node = node;
 			this.vertexIndex = vertexIndex;

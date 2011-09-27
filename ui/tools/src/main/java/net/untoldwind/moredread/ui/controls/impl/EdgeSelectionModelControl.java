@@ -7,7 +7,7 @@ import net.untoldwind.moredread.model.mesh.EdgeId;
 import net.untoldwind.moredread.model.mesh.IEdge;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IPolygon;
-import net.untoldwind.moredread.model.scene.IGeometryNode;
+import net.untoldwind.moredread.model.scene.IEdgeGeometryNode;
 import net.untoldwind.moredread.model.scene.IMeshNode;
 import net.untoldwind.moredread.model.scene.IPolygonNode;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
@@ -29,12 +29,12 @@ public class EdgeSelectionModelControl extends Line implements IModelControl {
 
 	private final IToolAdapter toolAdapter;
 
-	private final IGeometryNode<?, ?> node;
+	private final IEdgeGeometryNode<?, ?> node;
 	private final EdgeId edgeIndex;
 
 	private transient LineControlHandle lineControlHandle;
 
-	public EdgeSelectionModelControl(final IGeometryNode<?, ?> node,
+	public EdgeSelectionModelControl(final IEdgeGeometryNode<?, ?> node,
 			final EdgeId edgeIndex, final IToolAdapter toolAdapter) {
 		this.toolAdapter = toolAdapter;
 		this.node = node;
