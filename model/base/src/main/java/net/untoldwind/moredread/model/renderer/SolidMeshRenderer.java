@@ -51,7 +51,7 @@ public class SolidMeshRenderer implements IMeshRendererAdapter {
 		for (final TriangleFace face : mesh.getFaces()) {
 			if (colors == null || colorProvider.isFaceVisible(face.getIndex())) {
 				final Vector3f normal = face.getMeanNormal();
-				for (final Vertex<TriangleFace> vertex : face.getVertices()) {
+				for (final Vertex vertex : face.getVertices()) {
 					final Vector3f point = vertex.getPoint();
 
 					points.add(point);
@@ -121,7 +121,7 @@ public class SolidMeshRenderer implements IMeshRendererAdapter {
 		for (final QuadFace face : mesh.getFaces()) {
 			if (colors == null || colorProvider.isFaceVisible(face.getIndex())) {
 				final Vector3f normal = face.getMeanNormal();
-				for (final Vertex<QuadFace> vertex : face.getVertices()) {
+				for (final Vertex vertex : face.getVertices()) {
 					final Vector3f point = vertex.getPoint();
 
 					points.add(point);
@@ -195,7 +195,7 @@ public class SolidMeshRenderer implements IMeshRendererAdapter {
 			if (colors == null || colorProvider.isFaceVisible(face.getIndex())) {
 				final Vector3f normal = face.getMeanNormal();
 
-				final List<Vertex<PolyFace>> vertices = face.getVertices();
+				final List<Vertex> vertices = face.getVertices();
 				final int[] indices = triangulator.triangulate(face);
 
 				// TODO: This can (should) be slightly optimized

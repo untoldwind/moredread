@@ -3,11 +3,8 @@ package net.untoldwind.moredread.model.mesh;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import net.untoldwind.moredread.model.enums.GeometryType;
 import net.untoldwind.moredread.model.state.IStateReader;
@@ -16,17 +13,12 @@ import net.untoldwind.moredread.model.transform.ITransformation;
 
 import com.jme.math.Vector3f;
 
-public class Polygon implements IPolygon {
-	private final List<Vertex<Face<?, ?, ?>>> vertices;
+public class Polygon extends EdgeGeometry<IPolygon> implements IPolygon {
 	private int[] stripCounts;
 	private int[] contourCounts;
 	private boolean closed;
-	protected boolean dirty = false;
-	protected Map<EdgeId, Edge<Face<?, ?, ?>>> edges;
 
 	public Polygon() {
-		this.vertices = new ArrayList<Vertex<Face<?, ?, ?>>>();
-		this.edges = new HashMap<EdgeId, Edge<Face<?, ?, ?>>>();
 		this.stripCounts = new int[] { 0 };
 		this.contourCounts = new int[] { 1 };
 		this.closed = false;
@@ -34,8 +26,6 @@ public class Polygon implements IPolygon {
 
 	public Polygon(final IPoint[] points, final int[] stripCounts,
 			final int[] contourCounts, final boolean closed) {
-		this.vertices = new ArrayList<Vertex<Face<?, ?, ?>>>();
-		this.edges = new HashMap<EdgeId, Edge<Face<?, ?, ?>>>();
 		for (final IPoint point : points) {
 			addVertex(point.getPoint(), false);
 		}
@@ -44,16 +34,16 @@ public class Polygon implements IPolygon {
 		this.closed = closed;
 
 		int k = 0;
-		final Iterator<Vertex<Face<?, ?, ?>>> it = vertices.iterator();
+		final Iterator<Vertex> it = vertices.iterator();
 		for (int i = 0; i < contourCounts.length; i++) {
 			for (int j = 0; j < contourCounts[i]; j++) {
 				final int stripCount = stripCounts[k++];
 
-				final Vertex<Face<?, ?, ?>> first = it.next();
-				Vertex<Face<?, ?, ?>> last = first;
+				final Vertex first = it.next();
+				Vertex last = first;
 
 				for (int l = 1; l < stripCount; l++) {
-					final Vertex<Face<?, ?, ?>> vertex = it.next();
+					final Vertex vertex = it.next();
 
 					addEdge(vertex, last);
 
@@ -69,26 +59,24 @@ public class Polygon implements IPolygon {
 	public Polygon(final List<? extends IPoint> points,
 			final int[] stripCounts, final int[] contourCounts,
 			final boolean closed) {
-		this.vertices = new ArrayList<Vertex<Face<?, ?, ?>>>();
 		for (final IPoint point : points) {
 			addVertex(point.getPoint(), false);
 		}
 		this.stripCounts = stripCounts;
 		this.contourCounts = contourCounts;
 		this.closed = closed;
-		this.edges = new HashMap<EdgeId, Edge<Face<?, ?, ?>>>();
 
 		int k = 0;
-		final Iterator<Vertex<Face<?, ?, ?>>> it = vertices.iterator();
+		final Iterator<Vertex> it = vertices.iterator();
 		for (int i = 0; i < contourCounts.length; i++) {
 			for (int j = 0; j < contourCounts[i]; j++) {
 				final int stripCount = stripCounts[k++];
 
-				final Vertex<Face<?, ?, ?>> first = it.next();
-				Vertex<Face<?, ?, ?>> last = first;
+				final Vertex first = it.next();
+				Vertex last = first;
 
 				for (int l = 1; l < stripCount; l++) {
-					final Vertex<Face<?, ?, ?>> vertex = it.next();
+					final Vertex vertex = it.next();
 
 					addEdge(vertex, last);
 
@@ -111,43 +99,8 @@ public class Polygon implements IPolygon {
 		return vertices.size();
 	}
 
-	@Override
-	public Vertex<Face<?, ?, ?>> getVertex(final int vertexIndes) {
-		if (vertexIndes < 0 || vertexIndes >= vertices.size()) {
-			return null;
-		}
-		return vertices.get(vertexIndes);
-	}
-
-	@Override
-	public List<? extends IVertex> getVertices() {
-		return vertices;
-	}
-
-	@Override
-	public Edge<Face<?, ?, ?>> getEdge(final EdgeId edgeIndex) {
-		return edges.get(edgeIndex);
-	}
-
-	@Override
-	public Collection<? extends IEdge> getEdges() {
-		return edges.values();
-	}
-
-	public Vertex<Face<?, ?, ?>> addVertex(final Vector3f point,
-			final boolean smooth) {
-		final Vertex<Face<?, ?, ?>> vertex = new Vertex<Face<?, ?, ?>>(this,
-				vertices.size(), point);
-
-		vertices.add(vertex);
-
-		return vertex;
-	}
-
-	public Vertex<Face<?, ?, ?>> appendVertex(final Vector3f point,
-			final boolean smooth) {
-		final Vertex<Face<?, ?, ?>> vertex = new Vertex<Face<?, ?, ?>>(this,
-				vertices.size(), point);
+	public Vertex appendVertex(final Vector3f point, final boolean smooth) {
+		final Vertex vertex = new Vertex(this, vertices.size(), point);
 
 		vertices.add(vertex);
 
@@ -157,20 +110,6 @@ public class Polygon implements IPolygon {
 		}
 
 		return vertex;
-	}
-
-	protected Edge<Face<?, ?, ?>> addEdge(final Vertex<Face<?, ?, ?>> vertex1,
-			final Vertex<Face<?, ?, ?>> vertex2) {
-		Edge<Face<?, ?, ?>> edge = edges.get(new EdgeId(vertex1.getIndex(),
-				vertex2.getIndex()));
-
-		if (edge == null) {
-			edge = new Edge<Face<?, ?, ?>>(this, vertex1, vertex2);
-
-			edges.put(edge.getIndex(), edge);
-		}
-
-		return edge;
 	}
 
 	@Override
@@ -231,18 +170,6 @@ public class Polygon implements IPolygon {
 		return new Polygon(new_vertices, stripCounts, contourCounts, closed);
 	}
 
-	void markDirty() {
-		dirty = true;
-	}
-
-	public boolean clearDirty() {
-		if (dirty) {
-			dirty = false;
-			return true;
-		}
-		return false;
-	}
-
 	@Override
 	public void readState(final IStateReader reader) throws IOException {
 		final int numVerices = reader.readInt();
@@ -255,16 +182,16 @@ public class Polygon implements IPolygon {
 		closed = reader.readBoolean();
 
 		int k = 0;
-		final Iterator<Vertex<Face<?, ?, ?>>> it = vertices.iterator();
+		final Iterator<Vertex> it = vertices.iterator();
 		for (int i = 0; i < contourCounts.length; i++) {
 			for (int j = 0; j < contourCounts[i]; j++) {
 				final int stripCount = stripCounts[k++];
 
-				final Vertex<Face<?, ?, ?>> first = it.next();
-				Vertex<Face<?, ?, ?>> last = first;
+				final Vertex first = it.next();
+				Vertex last = first;
 
 				for (int l = 1; l < stripCount; l++) {
-					final Vertex<Face<?, ?, ?>> vertex = it.next();
+					final Vertex vertex = it.next();
 
 					addEdge(vertex, last);
 

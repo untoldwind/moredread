@@ -251,7 +251,7 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 			for (final EdgeSelection edgeSelection : scene.getSceneSelection()
 					.getSelectedEdges()) {
 				final IGeometryNode<?, ?> node = edgeSelection.getNode();
-				Edge<?> edge;
+				Edge edge;
 
 				if (node instanceof IMeshNode) {
 					final Mesh<?, ?> mesh = ((IMeshNode) node)
@@ -263,7 +263,7 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 					edge = polygon.getEdge(edgeSelection.getEdgeIndex());
 				}
 
-				final Vertex<?> vertex1 = edge.getVertex1();
+				final Vertex vertex1 = edge.getVertex1();
 				final VertexSelection vertex1Id = new VertexSelection(node,
 						vertex1.getIndex());
 				if (!updatedVertices.contains(vertex1Id)) {
@@ -275,7 +275,7 @@ public class EdgeSelectionToolHandler implements IToolHandler {
 							new Vector3f()));
 				}
 
-				final Vertex<?> vertex2 = edge.getVertex2();
+				final Vertex vertex2 = edge.getVertex2();
 				final VertexSelection vertex2Id = new VertexSelection(node,
 						vertex2.getIndex());
 				if (!updatedVertices.contains(vertex2Id)) {

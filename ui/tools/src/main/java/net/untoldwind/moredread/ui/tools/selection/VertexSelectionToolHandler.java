@@ -250,7 +250,7 @@ public class VertexSelectionToolHandler implements IToolHandler {
 			for (final VertexSelection vertexSelection : scene
 					.getSceneSelection().getSelectedVertices()) {
 				final IGeometryNode<?, ?> node = vertexSelection.getNode();
-				Vertex<?> vertex;
+				Vertex vertex;
 
 				if (node instanceof IMeshNode) {
 					final Mesh<?, ?> mesh = ((IMeshNode) node)

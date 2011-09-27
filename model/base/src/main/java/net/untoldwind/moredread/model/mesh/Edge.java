@@ -3,59 +3,39 @@ package net.untoldwind.moredread.model.mesh;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Edge<FaceT extends Face<?, ?, ?>> implements IEdge {
-	private final Mesh<?, ?> ownerMesh;
-	private final Polygon ownerPolygon;
+public class Edge implements IEdge {
+	private final EdgeGeometry<?> owner;
 	private final EdgeId index;
-	private final Vertex<FaceT> vertex1;
-	private final Vertex<FaceT> vertex2;
+	private final Vertex vertex1;
+	private final Vertex vertex2;
 	private boolean smooth;
 
-	private final Set<FaceT> faces;
+	private final Set<Face<?, ?>> faces;
 
-	Edge(final Mesh<?, ?> owner, final Vertex<FaceT> vertex1,
-			final Vertex<FaceT> vertex2) {
-		this.ownerMesh = owner;
-		this.ownerPolygon = null;
+	Edge(final EdgeGeometry<?> owner, final Vertex vertex1, final Vertex vertex2) {
+		this.owner = owner;
 		this.index = new EdgeId(vertex1.getIndex(), vertex2.getIndex());
 		this.vertex1 = vertex1;
 		this.vertex2 = vertex2;
-		this.faces = new HashSet<FaceT>();
+		this.faces = new HashSet<Face<?, ?>>();
 
 		vertex1.getEdges().add(this);
 		vertex2.getEdges().add(this);
 	}
 
-	Edge(final Polygon owner, final Vertex<FaceT> vertex1,
-			final Vertex<FaceT> vertex2) {
-		this.ownerMesh = null;
-		this.ownerPolygon = owner;
-		this.index = new EdgeId(vertex1.getIndex(), vertex2.getIndex());
-		this.vertex1 = vertex1;
-		this.vertex2 = vertex2;
-		this.faces = new HashSet<FaceT>();
-
-		vertex1.getEdges().add(this);
-		vertex2.getEdges().add(this);
-	}
-
-	public Mesh<?, ?> getOwnerMesh() {
-		return ownerMesh;
-	}
-
-	public Polygon getOwnerPolygon() {
-		return ownerPolygon;
+	public EdgeGeometry<?> getOwner() {
+		return owner;
 	}
 
 	public EdgeId getIndex() {
 		return index;
 	}
 
-	public Vertex<FaceT> getVertex1() {
+	public Vertex getVertex1() {
 		return vertex1;
 	}
 
-	public Vertex<FaceT> getVertex2() {
+	public Vertex getVertex2() {
 		return vertex2;
 	}
 
@@ -67,7 +47,7 @@ public class Edge<FaceT extends Face<?, ?, ?>> implements IEdge {
 		this.smooth = smooth;
 	}
 
-	public Set<FaceT> getFaces() {
+	public Set<Face<?, ?>> getFaces() {
 		return faces;
 	}
 
@@ -81,12 +61,12 @@ public class Edge<FaceT extends Face<?, ?, ?>> implements IEdge {
 	}
 
 	void remove() {
-		if (ownerMesh != null) {
+		if (owner instanceof Mesh) {
 			final Set<FaceId> faceIds = new HashSet<FaceId>();
-			for (final FaceT face : faces) {
+			for (final Face<?, ?> face : faces) {
 				faceIds.add(face.getIndex());
 			}
-			ownerMesh.removeFaces(faceIds);
+			((Mesh<?, ?>) owner).removeFaces(faceIds);
 		}
 		vertex1.getEdges().remove(this);
 		vertex2.getEdges().remove(this);
@@ -104,7 +84,7 @@ public class Edge<FaceT extends Face<?, ?, ?>> implements IEdge {
 			return false;
 		}
 
-		final Edge<?> castObj = (Edge<?>) obj;
+		final Edge castObj = (Edge) obj;
 
 		return index.equals(castObj.index) && smooth == castObj.smooth
 				&& vertex1.equals(castObj.vertex1)

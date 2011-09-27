@@ -7,7 +7,6 @@ import java.util.Map;
 
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IVertex;
-import net.untoldwind.moredread.model.mesh.PolyFace;
 import net.untoldwind.moredread.model.mesh.PolyMesh;
 import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
@@ -123,7 +122,7 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 
 	private void mergeMidpoints(final PolyMesh result,
 			final List<List<Integer>> faces) {
-		for (final Vertex<PolyFace> vertex : result.getVertices()) {
+		for (final Vertex vertex : result.getVertices()) {
 			for (final List<Integer> face : faces) {
 				IVertex prev = result.getVertex(face.get(face.size() - 1));
 				for (int i = 0; i < face.size(); i++) {

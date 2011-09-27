@@ -15,15 +15,13 @@ public class TriangleMesh extends Mesh<TriangleFaceId, TriangleFace> {
 
 	public TriangleFace addFace(final int vertexIndex1, final int vertexIndex2,
 			final int vertexIndex3) {
-		@SuppressWarnings("unchecked")
-		final Vertex<TriangleFace> vertexArr[] = new Vertex[3];
+		final Vertex vertexArr[] = new Vertex[3];
 
 		vertexArr[0] = vertices.get(vertexIndex1);
 		vertexArr[1] = vertices.get(vertexIndex2);
 		vertexArr[2] = vertices.get(vertexIndex3);
 
-		@SuppressWarnings("unchecked")
-		final Edge<TriangleFace> edgeArr[] = new Edge[3];
+		final Edge edgeArr[] = new Edge[3];
 
 		edgeArr[0] = addEdge(vertexArr[0], vertexArr[1]);
 		edgeArr[1] = addEdge(vertexArr[1], vertexArr[2]);
@@ -46,12 +44,12 @@ public class TriangleMesh extends Mesh<TriangleFaceId, TriangleFace> {
 	public PolyMesh toPolyMesh() {
 		final PolyMesh mesh = new PolyMesh();
 
-		for (final Vertex<TriangleFace> vertex : vertices) {
+		for (final Vertex vertex : vertices) {
 			mesh.addVertex(vertex.getPoint(), vertex.isSmooth());
 		}
 
 		for (final TriangleFace face : faces.values()) {
-			final Vertex<TriangleFace> vertices[] = face.getVertexArray();
+			final Vertex vertices[] = face.getVertexArray();
 
 			mesh.addFace(vertices[0].getIndex(), vertices[1].getIndex(),
 					vertices[2].getIndex());
@@ -63,12 +61,12 @@ public class TriangleMesh extends Mesh<TriangleFaceId, TriangleFace> {
 	public TriangleMesh invert() {
 		final TriangleMesh mesh = new TriangleMesh();
 
-		for (final Vertex<TriangleFace> vertex : vertices) {
+		for (final Vertex vertex : vertices) {
 			mesh.addVertex(vertex.getPoint(), vertex.isSmooth());
 		}
 
 		for (final TriangleFace face : faces.values()) {
-			final Vertex<TriangleFace> vertices[] = face.getVertexArray();
+			final Vertex vertices[] = face.getVertexArray();
 
 			mesh.addFace(vertices[2].getIndex(), vertices[1].getIndex(),
 					vertices[0].getIndex());
@@ -116,7 +114,7 @@ public class TriangleMesh extends Mesh<TriangleFaceId, TriangleFace> {
 		}
 		writer.writeInt("numFaces", faces.size());
 		for (final TriangleFace face : faces.values()) {
-			final Vertex<TriangleFace>[] vertices = face.getVertexArray();
+			final Vertex[] vertices = face.getVertexArray();
 			for (int i = 0; i < 3; i++) {
 				writer.writeInt("index", vertices[i].getIndex());
 			}

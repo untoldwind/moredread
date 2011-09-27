@@ -228,10 +228,10 @@ public class FaceSelectionToolHandler implements IToolHandler {
 					.getSelectedFaces()) {
 				final IMeshNode node = faceSelection.getNode();
 				final Mesh<?, ?> mesh = node.getEditableGeometry();
-				final Face<?, ?, ?> face = mesh.getFace(faceSelection
+				final Face<?, ?> face = mesh.getFace(faceSelection
 						.getFaceIndex());
 
-				for (final Vertex<?> vertex : face.getVertices()) {
+				for (final Vertex vertex : face.getVertices()) {
 					final VertexSelection vertexId = new VertexSelection(node,
 							vertex.getIndex());
 					if (!updatedVertices.contains(vertexId)) {

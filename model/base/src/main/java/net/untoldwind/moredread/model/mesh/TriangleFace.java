@@ -11,24 +11,22 @@ import net.untoldwind.moredread.model.transform.ITransformation;
 
 import com.jme.math.Vector3f;
 
-public class TriangleFace extends
-		Face<TriangleFaceId, TriangleFace, TriangleMesh> {
-	private final Vertex<TriangleFace>[] vertices;
-	private final Edge<TriangleFace>[] edges;
+public class TriangleFace extends Face<TriangleFaceId, TriangleFace> {
+	private final Vertex[] vertices;
+	private final Edge[] edges;
 
 	TriangleFace(final TriangleMesh owner, final TriangleFaceId index,
-			final Vertex<TriangleFace>[] vertices,
-			final Edge<TriangleFace>[] edges) {
+			final Vertex[] vertices, final Edge[] edges) {
 		super(owner, index);
 
 		this.vertices = vertices;
 		this.edges = edges;
 
-		for (final Vertex<TriangleFace> vertex : vertices) {
+		for (final Vertex vertex : vertices) {
 			vertex.getFaces().add(this);
 		}
 
-		for (final Edge<TriangleFace> edge : edges) {
+		for (final Edge edge : edges) {
 			edge.getFaces().add(this);
 		}
 	}
@@ -38,22 +36,22 @@ public class TriangleFace extends
 		return 3;
 	}
 
-	public Vertex<TriangleFace> getVertex(final int index) {
+	public Vertex getVertex(final int index) {
 		return vertices[index];
 	}
 
 	@Override
-	public List<Vertex<TriangleFace>> getVertices() {
+	public List<Vertex> getVertices() {
 		return Arrays.asList(vertices);
 	}
 
-	public Vertex<TriangleFace>[] getVertexArray() {
+	public Vertex[] getVertexArray() {
 		return vertices;
 	}
 
 	@Override
 	public IEdge getEdge(final EdgeId edgeIndex) {
-		for (final Edge<TriangleFace> edge : edges) {
+		for (final Edge edge : edges) {
 			if (edge.getIndex().equals(edgeIndex)) {
 				return edge;
 			}
@@ -62,7 +60,7 @@ public class TriangleFace extends
 	}
 
 	@Override
-	public List<Edge<TriangleFace>> getEdges() {
+	public List<Edge> getEdges() {
 		return Arrays.asList(edges);
 	}
 
@@ -85,7 +83,7 @@ public class TriangleFace extends
 	public void updateCenter() {
 		center = new Vector3f(0, 0, 0);
 
-		for (final Vertex<TriangleFace> vertex : vertices) {
+		for (final Vertex vertex : vertices) {
 			center.addLocal(vertex.getPoint());
 		}
 
@@ -110,10 +108,10 @@ public class TriangleFace extends
 
 	@Override
 	void remove() {
-		for (final Edge<TriangleFace> edge : edges) {
+		for (final Edge edge : edges) {
 			edge.getFaces().remove(this);
 		}
-		for (final Vertex<TriangleFace> vertex : vertices) {
+		for (final Vertex vertex : vertices) {
 			vertex.getFaces().remove(this);
 		}
 	}
@@ -138,7 +136,7 @@ public class TriangleFace extends
 
 	@Override
 	public void writeState(final IStateWriter writer) throws IOException {
-		for (final Vertex<TriangleFace> vertex : vertices) {
+		for (final Vertex vertex : vertices) {
 			writer.writeInt("vertexIndex", vertex.getIndex());
 		}
 	}

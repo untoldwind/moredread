@@ -10,14 +10,13 @@ import net.untoldwind.moredread.model.transform.ITransformation;
 
 import com.jme.math.Vector3f;
 
-public class PolyFace extends Face<PolyFaceId, PolyFace, PolyMesh> {
-	private final List<Vertex<PolyFace>> vertices;
-	private final List<Edge<PolyFace>> edges;
+public class PolyFace extends Face<PolyFaceId, PolyFace> {
+	private final List<Vertex> vertices;
+	private final List<Edge> edges;
 	private final List<Integer> stripCounts;
 
 	PolyFace(final PolyMesh owner, final PolyFaceId index,
-			final List<Vertex<PolyFace>> vertices,
-			final List<Edge<PolyFace>> edges) {
+			final List<Vertex> vertices, final List<Edge> edges) {
 		super(owner, index);
 
 		this.vertices = vertices;
@@ -25,35 +24,34 @@ public class PolyFace extends Face<PolyFaceId, PolyFace, PolyMesh> {
 		this.stripCounts = new ArrayList<Integer>();
 		this.stripCounts.add(vertices.size());
 
-		for (final Vertex<PolyFace> vertex : vertices) {
+		for (final Vertex vertex : vertices) {
 			vertex.getFaces().add(this);
 		}
 
-		for (final Edge<PolyFace> edge : edges) {
+		for (final Edge edge : edges) {
 			edge.getFaces().add(this);
 		}
 	}
 
 	PolyFace(final PolyMesh owner, final PolyFaceId index,
-			final Vertex<PolyFace>[][] vertexStrips,
-			final List<Edge<PolyFace>> edges) {
+			final Vertex[][] vertexStrips, final List<Edge> edges) {
 		super(owner, index);
 
 		this.edges = edges;
 
-		this.vertices = new ArrayList<Vertex<PolyFace>>();
+		this.vertices = new ArrayList<Vertex>();
 		this.stripCounts = new ArrayList<Integer>();
-		for (final Vertex<PolyFace>[] strip : vertexStrips) {
+		for (final Vertex[] strip : vertexStrips) {
 			this.stripCounts.add(strip.length);
-			for (final Vertex<PolyFace> vertex : strip) {
+			for (final Vertex vertex : strip) {
 				this.vertices.add(vertex);
 			}
 		}
-		for (final Vertex<PolyFace> vertex : vertices) {
+		for (final Vertex vertex : vertices) {
 			vertex.getFaces().add(this);
 		}
 
-		for (final Edge<PolyFace> edge : edges) {
+		for (final Edge edge : edges) {
 			edge.getFaces().add(this);
 		}
 	}
@@ -64,18 +62,18 @@ public class PolyFace extends Face<PolyFaceId, PolyFace, PolyMesh> {
 	}
 
 	@Override
-	public Vertex<PolyFace> getVertex(final int index) {
+	public Vertex getVertex(final int index) {
 		return vertices.get(index);
 	}
 
 	@Override
-	public List<Vertex<PolyFace>> getVertices() {
+	public List<Vertex> getVertices() {
 		return vertices;
 	}
 
 	@Override
 	public IEdge getEdge(final EdgeId edgeIndex) {
-		for (final Edge<PolyFace> edge : edges) {
+		for (final Edge edge : edges) {
 			if (edge.getIndex().equals(edgeIndex)) {
 				return edge;
 			}
@@ -84,7 +82,7 @@ public class PolyFace extends Face<PolyFaceId, PolyFace, PolyMesh> {
 	}
 
 	@Override
-	public List<Edge<PolyFace>> getEdges() {
+	public List<Edge> getEdges() {
 		return edges;
 	}
 
@@ -117,7 +115,7 @@ public class PolyFace extends Face<PolyFaceId, PolyFace, PolyMesh> {
 	public void updateCenter() {
 		center = new Vector3f(0, 0, 0);
 
-		for (final Vertex<PolyFace> vertex : vertices) {
+		for (final Vertex vertex : vertices) {
 			center.addLocal(vertex.getPoint());
 		}
 
@@ -145,25 +143,23 @@ public class PolyFace extends Face<PolyFaceId, PolyFace, PolyMesh> {
 
 	@Override
 	void remove() {
-		for (final Edge<PolyFace> edge : edges) {
+		for (final Edge edge : edges) {
 			edge.getFaces().remove(this);
 		}
-		for (final Vertex<PolyFace> vertex : vertices) {
+		for (final Vertex vertex : vertices) {
 			vertex.getFaces().remove(this);
 		}
 	}
 
-	void addMidpoint(final Edge<PolyFace> edge,
-			final Vertex<PolyFace> midpoint, final Edge<PolyFace> newEdge1,
-			final Edge<PolyFace> newEdge2) {
+	void addMidpoint(final Edge edge, final Vertex midpoint,
+			final Edge newEdge1, final Edge newEdge2) {
 		int offset = 0;
 		for (int i = 0; i < stripCounts.size(); i++) {
 			final int stripCount = stripCounts.get(i);
 
 			for (int j = 0; j < stripCount; j++) {
-				final Vertex<PolyFace> v1 = vertices.get(j + offset);
-				final Vertex<PolyFace> v2 = vertices.get(((j + 1) % stripCount)
-						+ offset);
+				final Vertex v1 = vertices.get(j + offset);
+				final Vertex v2 = vertices.get(((j + 1) % stripCount) + offset);
 
 				if (edge.isConnection(v1, v2)) {
 					edges.remove(edge);
@@ -206,7 +202,7 @@ public class PolyFace extends Face<PolyFaceId, PolyFace, PolyMesh> {
 
 	public void writeState(final IStateWriter writer) throws IOException {
 		writer.writeInt("vertexNumber", vertices.size());
-		for (final Vertex<PolyFace> vertex : vertices) {
+		for (final Vertex vertex : vertices) {
 			writer.writeInt("vertexIndex", vertex.getIndex());
 		}
 	}

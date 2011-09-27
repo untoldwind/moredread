@@ -15,16 +15,14 @@ public class QuadMesh extends Mesh<QuadFaceId, QuadFace> {
 
 	public QuadFace addFace(final int vertexIndex1, final int vertexIndex2,
 			final int vertexIndex3, final int vertexIndex4) {
-		@SuppressWarnings("unchecked")
-		final Vertex<QuadFace> vertexArr[] = new Vertex[4];
+		final Vertex vertexArr[] = new Vertex[4];
 
 		vertexArr[0] = vertices.get(vertexIndex1);
 		vertexArr[1] = vertices.get(vertexIndex2);
 		vertexArr[2] = vertices.get(vertexIndex3);
 		vertexArr[3] = vertices.get(vertexIndex4);
 
-		@SuppressWarnings("unchecked")
-		final Edge<QuadFace> edgeArr[] = new Edge[4];
+		final Edge edgeArr[] = new Edge[4];
 
 		edgeArr[0] = addEdge(vertexArr[0], vertexArr[1]);
 		edgeArr[1] = addEdge(vertexArr[1], vertexArr[2]);
@@ -43,12 +41,12 @@ public class QuadMesh extends Mesh<QuadFaceId, QuadFace> {
 	public TriangleMesh toTriangleMesh() {
 		final TriangleMesh mesh = new TriangleMesh();
 
-		for (final Vertex<QuadFace> vertex : vertices) {
+		for (final Vertex vertex : vertices) {
 			mesh.addVertex(vertex.getPoint(), vertex.isSmooth());
 		}
 
 		for (final QuadFace face : faces.values()) {
-			final Vertex<QuadFace> vertices[] = face.getVertexArray();
+			final Vertex vertices[] = face.getVertexArray();
 
 			mesh.addFace(vertices[0].getIndex(), vertices[1].getIndex(),
 					vertices[2].getIndex());
@@ -63,12 +61,12 @@ public class QuadMesh extends Mesh<QuadFaceId, QuadFace> {
 	public PolyMesh toPolyMesh() {
 		final PolyMesh mesh = new PolyMesh();
 
-		for (final Vertex<QuadFace> vertex : vertices) {
+		for (final Vertex vertex : vertices) {
 			mesh.addVertex(vertex.getPoint(), vertex.isSmooth());
 		}
 
 		for (final QuadFace face : faces.values()) {
-			final Vertex<QuadFace> vertices[] = face.getVertexArray();
+			final Vertex vertices[] = face.getVertexArray();
 
 			mesh.addFace(vertices[0].getIndex(), vertices[1].getIndex(),
 					vertices[2].getIndex(), vertices[3].getIndex());
@@ -118,7 +116,7 @@ public class QuadMesh extends Mesh<QuadFaceId, QuadFace> {
 		}
 		writer.writeInt("numFaces", faces.size());
 		for (final QuadFace face : faces.values()) {
-			final Vertex<QuadFace>[] vertices = face.getVertexArray();
+			final Vertex[] vertices = face.getVertexArray();
 			for (int i = 0; i < 4; i++) {
 				writer.writeInt("index", vertices[i].getIndex());
 			}
