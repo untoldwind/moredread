@@ -14,6 +14,7 @@ import net.untoldwind.moredread.model.mesh.Mesh;
 import net.untoldwind.moredread.model.scene.AbstractSpatialComposite;
 import net.untoldwind.moredread.model.scene.MeshNode;
 import net.untoldwind.moredread.model.scene.Scene;
+import net.untoldwind.moredread.model.scene.SceneHolder;
 import net.untoldwind.moredread.model.state.BinaryStateReader;
 import net.untoldwind.moredread.model.state.BinaryStateWriter;
 import net.untoldwind.moredread.model.state.IStateReader;
@@ -26,7 +27,8 @@ public class MeshNodeTest {
 	@Test
 	public void testReadWriteState() throws Exception {
 		final Mesh<?, ?> mesh = new CubeMeshGenerator().generateMesh(null);
-		final Scene scene = new Scene();
+		final SceneHolder sceneHolder = new SceneHolder();
+		final Scene scene = sceneHolder.createScene();
 
 		scene.getSceneChangeHandler().beginNotUndoable();
 		final MeshNode node = new MeshNode(scene, mesh);

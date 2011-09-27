@@ -9,6 +9,7 @@ import net.untoldwind.moredread.model.scene.AbstractSceneOperation;
 import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
 import net.untoldwind.moredread.model.scene.Scene;
+import net.untoldwind.moredread.model.scene.SceneHolder;
 import net.untoldwind.moredread.model.transform.ITransformation;
 
 import org.junit.Before;
@@ -25,7 +26,8 @@ public class TransformationTest {
 
 	@Before
 	public void createScene() {
-		scene = new Scene();
+		final SceneHolder sceneHolder = new SceneHolder();
+		final Scene scene = sceneHolder.createScene();
 
 		scene.notUndoableChange(new AbstractSceneOperation("Test operation") {
 			@Override

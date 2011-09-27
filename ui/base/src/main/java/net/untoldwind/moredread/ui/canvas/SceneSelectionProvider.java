@@ -3,8 +3,7 @@ package net.untoldwind.moredread.ui.canvas;
 import java.util.ArrayList;
 
 import net.untoldwind.moredread.model.scene.INode;
-import net.untoldwind.moredread.model.scene.Scene;
-import net.untoldwind.moredread.model.scene.SceneSelection;
+import net.untoldwind.moredread.model.scene.ISceneHolder;
 import net.untoldwind.moredread.model.scene.event.ISceneSelectionChangeListener;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
 
@@ -19,12 +18,12 @@ import org.eclipse.jface.viewers.StructuredSelection;
 
 public class SceneSelectionProvider extends EventManager implements
 		ISelectionProvider, ISceneSelectionChangeListener {
-	private final SceneSelection sceneSelection;
+	private final ISceneHolder sceneHolder;
 
-	public SceneSelectionProvider(final Scene scene) {
-		this.sceneSelection = scene.getSceneSelection();
+	public SceneSelectionProvider(final ISceneHolder sceneHolder) {
+		this.sceneHolder = sceneHolder;
 
-		this.sceneSelection.addSceneSelectionChangeListener(this);
+		this.sceneHolder.addSceneSelectionChangeListener(this);
 	}
 
 	@Override
@@ -35,8 +34,8 @@ public class SceneSelectionProvider extends EventManager implements
 
 	@Override
 	public ISelection getSelection() {
-		return new StructuredSelection(new ArrayList<INode>(sceneSelection
-				.getSelectedNodes()));
+		return new StructuredSelection(new ArrayList<INode>(sceneHolder
+				.getScene().getSceneSelection().getSelectedNodes()));
 	}
 
 	@Override

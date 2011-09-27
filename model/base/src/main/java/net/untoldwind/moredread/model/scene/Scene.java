@@ -1,28 +1,25 @@
 package net.untoldwind.moredread.model.scene;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import net.untoldwind.moredread.model.scene.event.ISceneChangeListener;
 import net.untoldwind.moredread.model.scene.event.SceneChangeEvent;
 
 public class Scene extends Group {
+	private final SceneHolder sceneHolder;
 	private final SceneSelection sceneSelection;
 	private final SceneChangeHandler sceneChangeHandler;
 	private final SceneMetadata sceneMetadata;
-	private final List<ISceneChangeListener> geometryListeners;
 
 	private final Map<Long, INode> nodesById;
 
-	public Scene() {
+	public Scene(final SceneHolder sceneHolder) {
 		super(null, "Scene");
 
+		this.sceneHolder = sceneHolder;
 		sceneSelection = new SceneSelection(this);
 		sceneChangeHandler = new SceneChangeHandler(this);
 		sceneMetadata = new SceneMetadata();
-		geometryListeners = new ArrayList<ISceneChangeListener>();
 		nodesById = new HashMap<Long, INode>();
 		nodesById.put(nodeId, this);
 	}
@@ -45,18 +42,6 @@ public class Scene extends Group {
 
 	void unregisterNode(final INode node) {
 		nodesById.remove(node.getNodeId());
-	}
-
-	public void addSceneChangeListener(final ISceneChangeListener listener) {
-		synchronized (geometryListeners) {
-			geometryListeners.add(listener);
-		}
-	}
-
-	public void removeSceneChangeListener(final ISceneChangeListener listener) {
-		synchronized (geometryListeners) {
-			geometryListeners.remove(listener);
-		}
 	}
 
 	public INode getNode(final long nodeId) {
@@ -89,16 +74,10 @@ public class Scene extends Group {
 	}
 
 	protected void fireSceneGeometryChangeEvent(final SceneChangeEvent event) {
-		final ISceneChangeListener listenerArray[];
+		sceneHolder.fireSceneGeometryChangeEvent(event);
+	}
 
-		synchronized (geometryListeners) {
-			listenerArray = geometryListeners
-					.toArray(new ISceneChangeListener[geometryListeners.size()]);
-		}
-
-		for (final ISceneChangeListener listener : listenerArray) {
-			listener.sceneChanged(event);
-		}
-
+	public SceneHolder getSceneHolder() {
+		return sceneHolder;
 	}
 }

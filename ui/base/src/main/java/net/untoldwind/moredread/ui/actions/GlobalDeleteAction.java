@@ -36,33 +36,26 @@ public class GlobalDeleteAction extends Action {
 				.getSelectedNodes().isEmpty());
 
 		sceneHolder
-				.getScene()
-				.getSceneSelection()
-				.addSceneSelectionChangeListener(
-						new ISceneSelectionChangeListener() {
-							@Override
-							public void sceneSelectionChanged(
-									final SceneSelectionChangeEvent event) {
-								switch (sceneHolder.getSelectionMode()) {
-								case OBJECT:
-									setEnabled(!event.getSelectedNodes()
-											.isEmpty());
-									break;
-								case FACE:
-									setEnabled(!event.getSelectedFaces()
-											.isEmpty());
-									break;
-								case EDGE:
-									setEnabled(!event.getSelectedEdges()
-											.isEmpty());
-									break;
-								case VERTEX:
-									setEnabled(!event.getSelectedVertices()
-											.isEmpty());
-									break;
-								}
-							}
-						});
+				.addSceneSelectionChangeListener(new ISceneSelectionChangeListener() {
+					@Override
+					public void sceneSelectionChanged(
+							final SceneSelectionChangeEvent event) {
+						switch (sceneHolder.getSelectionMode()) {
+						case OBJECT:
+							setEnabled(!event.getSelectedNodes().isEmpty());
+							break;
+						case FACE:
+							setEnabled(!event.getSelectedFaces().isEmpty());
+							break;
+						case EDGE:
+							setEnabled(!event.getSelectedEdges().isEmpty());
+							break;
+						case VERTEX:
+							setEnabled(!event.getSelectedVertices().isEmpty());
+							break;
+						}
+					}
+				});
 	}
 
 	@Override

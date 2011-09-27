@@ -78,8 +78,8 @@ public class ToolSelectionView extends ViewPart implements
 		}
 		MoreDreadUI.getDefault().getSceneHolder()
 				.addSceneSelectionModeListener(this);
-		MoreDreadUI.getDefault().getSceneHolder().getScene()
-				.getSceneSelection().addSceneSelectionChangeListener(this);
+		MoreDreadUI.getDefault().getSceneHolder()
+				.addSceneSelectionChangeListener(this);
 		UIToolsPlugin.getDefault().getToolController()
 				.addToolActivationListener(this);
 
@@ -90,8 +90,8 @@ public class ToolSelectionView extends ViewPart implements
 	public void dispose() {
 		MoreDreadUI.getDefault().getSceneHolder()
 				.removeSceneSelectionModeListener(this);
-		MoreDreadUI.getDefault().getSceneHolder().getScene()
-				.getSceneSelection().removeSceneSelectionChangeListener(this);
+		MoreDreadUI.getDefault().getSceneHolder()
+				.removeSceneSelectionChangeListener(this);
 		UIToolsPlugin.getDefault().getToolController()
 				.removeToolActivationListener(this);
 

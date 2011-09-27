@@ -144,10 +144,9 @@ public class ModelTreeView extends ViewPart implements
 				.getService(IContextService.class);
 		contextActivation = contextService.activateContext(CONTEXT_ID);
 
-		MoreDreadUI.getDefault().getSceneHolder().getScene()
-				.getSceneSelection().addSceneSelectionChangeListener(this);
-		MoreDreadUI.getDefault().getSceneHolder().getScene()
-				.addSceneChangeListener(this);
+		MoreDreadUI.getDefault().getSceneHolder()
+				.addSceneSelectionChangeListener(this);
+		MoreDreadUI.getDefault().getSceneHolder().addSceneChangeListener(this);
 	}
 
 	@Override

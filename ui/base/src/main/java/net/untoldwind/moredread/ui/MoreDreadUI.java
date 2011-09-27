@@ -155,7 +155,9 @@ public class MoreDreadUI extends AbstractUIPlugin {
 	}
 
 	protected void initializeScene() {
-		final Scene scene = new Scene();
+		sceneHolder = new SceneHolder();
+
+		final Scene scene = sceneHolder.createScene();
 
 		scene.notUndoableChange(new AbstractSceneOperation("Create demo scene") {
 			@Override
@@ -300,8 +302,6 @@ public class MoreDreadUI extends AbstractUIPlugin {
 				new PolygonNode(scene, polygon);
 			}
 		});
-
-		sceneHolder = new SceneHolder(scene);
 
 		UIToolsPlugin.getDefault().getToolController()
 				.setSceneHolder(sceneHolder);

@@ -172,16 +172,15 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 
 		MoreDreadUI.getDefault().getSceneHolder()
 				.addSceneSelectionModeListener(this);
-		MoreDreadUI.getDefault().getSceneHolder().getScene()
-				.getSceneSelection().addSceneSelectionChangeListener(this);
-		MoreDreadUI.getDefault().getSceneHolder().getScene()
-				.addSceneChangeListener(this);
+		MoreDreadUI.getDefault().getSceneHolder()
+				.addSceneSelectionChangeListener(this);
+		MoreDreadUI.getDefault().getSceneHolder().addSceneChangeListener(this);
 		UIToolsPlugin.getDefault().getToolController()
 				.addToolActivationListener(this);
 
 		getSite().setSelectionProvider(
 				new SceneSelectionProvider(MoreDreadUI.getDefault()
-						.getSceneHolder().getScene()));
+						.getSceneHolder()));
 
 		final IContextService contextService = (IContextService) getSite()
 				.getService(IContextService.class);
@@ -197,9 +196,9 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 
 		MoreDreadUI.getDefault().getSceneHolder()
 				.removeSceneSelectionModeListener(this);
-		MoreDreadUI.getDefault().getSceneHolder().getScene()
-				.getSceneSelection().removeSceneSelectionChangeListener(this);
-		MoreDreadUI.getDefault().getSceneHolder().getScene()
+		MoreDreadUI.getDefault().getSceneHolder()
+				.removeSceneSelectionChangeListener(this);
+		MoreDreadUI.getDefault().getSceneHolder()
 				.removeSceneChangeListener(this);
 		UIToolsPlugin.getDefault().getToolController()
 				.removeToolActivationListener(this);

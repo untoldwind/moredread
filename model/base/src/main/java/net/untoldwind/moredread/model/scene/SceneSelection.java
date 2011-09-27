@@ -1,16 +1,13 @@
 package net.untoldwind.moredread.model.scene;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 import net.untoldwind.moredread.model.mesh.EdgeId;
 import net.untoldwind.moredread.model.mesh.FaceId;
-import net.untoldwind.moredread.model.scene.event.ISceneSelectionChangeListener;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
 
 public class SceneSelection implements ISceneSelection {
@@ -21,8 +18,6 @@ public class SceneSelection implements ISceneSelection {
 	private final Set<EdgeSelection> selectedEdges;
 	private final Set<VertexSelection> selectedVertices;
 
-	private final List<ISceneSelectionChangeListener> selectionListeners;
-
 	public SceneSelection(final Scene scene) {
 		this.scene = scene;
 
@@ -31,7 +26,6 @@ public class SceneSelection implements ISceneSelection {
 		selectedFaces = new HashSet<FaceSelection>();
 		selectedEdges = new HashSet<EdgeSelection>();
 		selectedVertices = new HashSet<VertexSelection>();
-		selectionListeners = new ArrayList<ISceneSelectionChangeListener>();
 	}
 
 	@Override
@@ -346,33 +340,9 @@ public class SceneSelection implements ISceneSelection {
 				.contains(new VertexSelection(node, vertexIndex));
 	}
 
-	public void addSceneSelectionChangeListener(
-			final ISceneSelectionChangeListener listener) {
-		synchronized (selectionListeners) {
-			selectionListeners.add(listener);
-		}
-	}
-
-	public void removeSceneSelectionChangeListener(
-			final ISceneSelectionChangeListener listener) {
-		synchronized (selectionListeners) {
-			selectionListeners.remove(listener);
-		}
-	}
-
 	protected void fireSceneSelectionChangeEvent(
 			final SceneSelectionChangeEvent event) {
-		ISceneSelectionChangeListener listenerArray[];
-
-		synchronized (selectionListeners) {
-			listenerArray = selectionListeners
-					.toArray(new ISceneSelectionChangeListener[selectionListeners
-							.size()]);
-		}
-
-		for (final ISceneSelectionChangeListener listener : listenerArray) {
-			listener.sceneSelectionChanged(event);
-		}
+		scene.getSceneHolder().fireSceneSelectionChangeEvent(event);
 	}
 
 	public static class FaceSelection {

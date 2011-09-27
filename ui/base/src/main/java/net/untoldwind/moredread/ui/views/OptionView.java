@@ -28,18 +28,17 @@ public class OptionView extends ViewPart implements ISceneChangeListener,
 		layout.marginWidth = 0;
 		optionsContainer.setLayout(layout);
 
-		MoreDreadUI.getDefault().getSceneHolder().getScene()
-				.addSceneChangeListener(this);
-		MoreDreadUI.getDefault().getSceneHolder().getScene()
-				.getSceneSelection().addSceneSelectionChangeListener(this);
+		MoreDreadUI.getDefault().getSceneHolder().addSceneChangeListener(this);
+		MoreDreadUI.getDefault().getSceneHolder()
+				.addSceneSelectionChangeListener(this);
 	}
 
 	@Override
 	public void dispose() {
-		MoreDreadUI.getDefault().getSceneHolder().getScene()
+		MoreDreadUI.getDefault().getSceneHolder()
 				.removeSceneChangeListener(this);
-		MoreDreadUI.getDefault().getSceneHolder().getScene()
-				.getSceneSelection().removeSceneSelectionChangeListener(this);
+		MoreDreadUI.getDefault().getSceneHolder()
+				.removeSceneSelectionChangeListener(this);
 		super.dispose();
 	}
 

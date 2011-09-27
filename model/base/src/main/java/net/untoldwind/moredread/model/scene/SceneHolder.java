@@ -5,7 +5,11 @@ import java.util.List;
 
 import net.untoldwind.moredread.model.enums.SelectionMode;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
+import net.untoldwind.moredread.model.scene.event.ISceneChangeListener;
+import net.untoldwind.moredread.model.scene.event.ISceneSelectionChangeListener;
 import net.untoldwind.moredread.model.scene.event.ISceneSelectionModeListener;
+import net.untoldwind.moredread.model.scene.event.SceneChangeEvent;
+import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionModeEvent;
 
 import com.jme.intersection.PickResults;
@@ -17,21 +21,30 @@ import com.jme.renderer.Renderer;
 import com.jme.scene.state.BlendState;
 import com.jme.scene.state.LightState;
 import com.jme.scene.state.MaterialState;
-import com.jme.scene.state.ZBufferState;
 import com.jme.scene.state.MaterialState.ColorMaterial;
 import com.jme.scene.state.MaterialState.MaterialFace;
+import com.jme.scene.state.ZBufferState;
 
 public class SceneHolder implements ISceneHolder {
-	private final Scene scene;
+	private Scene scene;
 	private SelectionMode selectionMode;
 	private final List<ISceneSelectionModeListener> selectionModeListeners;
+	private final List<ISceneChangeListener> changeListeners;
+	private final List<ISceneSelectionChangeListener> selectionListeners;
 
 	private transient com.jme.scene.Node displayNode;
 
-	public SceneHolder(final Scene scene) {
-		this.scene = scene;
+	public SceneHolder() {
 		this.selectionModeListeners = new ArrayList<ISceneSelectionModeListener>();
 		this.selectionMode = SelectionMode.OBJECT;
+		changeListeners = new ArrayList<ISceneChangeListener>();
+		selectionListeners = new ArrayList<ISceneSelectionChangeListener>();
+	}
+
+	public Scene createScene() {
+		scene = new Scene(this);
+
+		return scene;
 	}
 
 	@Override
@@ -105,6 +118,20 @@ public class SceneHolder implements ISceneHolder {
 	}
 
 	@Override
+	public void addSceneChangeListener(final ISceneChangeListener listener) {
+		synchronized (changeListeners) {
+			changeListeners.add(listener);
+		}
+	}
+
+	@Override
+	public void removeSceneChangeListener(final ISceneChangeListener listener) {
+		synchronized (changeListeners) {
+			changeListeners.remove(listener);
+		}
+	}
+
+	@Override
 	public void addSceneSelectionModeListener(
 			final ISceneSelectionModeListener listener) {
 		synchronized (selectionModeListeners) {
@@ -117,6 +144,35 @@ public class SceneHolder implements ISceneHolder {
 			final ISceneSelectionModeListener listener) {
 		synchronized (selectionModeListeners) {
 			selectionModeListeners.remove(listener);
+		}
+	}
+
+	public void addSceneSelectionChangeListener(
+			final ISceneSelectionChangeListener listener) {
+		synchronized (selectionListeners) {
+			selectionListeners.add(listener);
+		}
+	}
+
+	public void removeSceneSelectionChangeListener(
+			final ISceneSelectionChangeListener listener) {
+		synchronized (selectionListeners) {
+			selectionListeners.remove(listener);
+		}
+	}
+
+	protected void fireSceneSelectionChangeEvent(
+			final SceneSelectionChangeEvent event) {
+		ISceneSelectionChangeListener listenerArray[];
+
+		synchronized (selectionListeners) {
+			listenerArray = selectionListeners
+					.toArray(new ISceneSelectionChangeListener[selectionListeners
+							.size()]);
+		}
+
+		for (final ISceneSelectionChangeListener listener : listenerArray) {
+			listener.sceneSelectionChanged(event);
 		}
 	}
 
@@ -133,6 +189,20 @@ public class SceneHolder implements ISceneHolder {
 		for (final ISceneSelectionModeListener listener : listenerArray) {
 			listener.sceneSelectionModeChanged(event);
 		}
+	}
+
+	protected void fireSceneGeometryChangeEvent(final SceneChangeEvent event) {
+		final ISceneChangeListener listenerArray[];
+
+		synchronized (changeListeners) {
+			listenerArray = changeListeners
+					.toArray(new ISceneChangeListener[changeListeners.size()]);
+		}
+
+		for (final ISceneChangeListener listener : listenerArray) {
+			listener.sceneChanged(event);
+		}
+
 	}
 
 }

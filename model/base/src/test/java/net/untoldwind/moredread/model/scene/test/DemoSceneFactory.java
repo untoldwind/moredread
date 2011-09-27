@@ -13,12 +13,14 @@ import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
 import net.untoldwind.moredread.model.scene.MeshNode;
 import net.untoldwind.moredread.model.scene.Scene;
+import net.untoldwind.moredread.model.scene.SceneHolder;
 
 import com.jme.math.Vector3f;
 
 public class DemoSceneFactory {
 	Scene createScene() {
-		final Scene scene = new Scene();
+		final SceneHolder sceneHolder = new SceneHolder();
+		final Scene scene = sceneHolder.createScene();
 
 		scene.notUndoableChange(new AbstractSceneOperation("Create demo scene") {
 			@Override
