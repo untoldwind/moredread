@@ -11,6 +11,13 @@
             readerClass="net.untoldwind.moredread.model.io.impl.muf.MUFModelReader"
             writerClass="net.untoldwind.moredread.model.io.impl.muf.MUFModelWriter">
       </file-io>
+      <file-io
+            extension="dae"
+            id="net.untoldwind.moredread.model.io.collada"
+            label="Collada"
+            readerClass="net.untoldwind.moredread.model.io.impl.collada.ColladaReader"
+            writerClass="net.untoldwind.moredread.model.io.impl.collada.ColladaWriter">
+      </file-io>
    </extension>
 
 </plugin>
