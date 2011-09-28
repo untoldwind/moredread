@@ -18,10 +18,22 @@ public class Grid extends EdgeGeometry<IGrid> implements IGrid {
 		return GeometryType.GRID;
 	}
 
+	public Edge addEdge(final int index1, final int index2) {
+		return addEdge(vertices.get(index1), vertices.get(index2));
+	}
+
 	@Override
 	public IGrid transform(final ITransformation transformation) {
-		// TODO Auto-generated method stub
-		return null;
+		final Grid grid = new Grid();
+
+		for (final Vertex vertex : vertices) {
+			grid.addVertex(vertex.getPoint(), vertex.isSmooth());
+		}
+		for (final Edge edge : edges.values()) {
+			grid.addEdge(edge.getVertex1().getIndex(), edge.getVertex2()
+					.getIndex());
+		}
+		return grid;
 	}
 
 	@Override

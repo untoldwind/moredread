@@ -7,17 +7,12 @@ import java.util.List;
 import java.util.Set;
 
 import net.untoldwind.moredread.annotations.Singleton;
-import net.untoldwind.moredread.model.mesh.IMesh;
-import net.untoldwind.moredread.model.mesh.IPolygon;
 import net.untoldwind.moredread.model.mesh.IVertex;
 import net.untoldwind.moredread.model.mesh.IVertexGeometry;
-import net.untoldwind.moredread.model.mesh.Mesh;
-import net.untoldwind.moredread.model.mesh.Polygon;
 import net.untoldwind.moredread.model.mesh.Vertex;
+import net.untoldwind.moredread.model.mesh.VertexGeometry;
 import net.untoldwind.moredread.model.scene.IGeometryNode;
-import net.untoldwind.moredread.model.scene.IMeshNode;
 import net.untoldwind.moredread.model.scene.INode;
-import net.untoldwind.moredread.model.scene.IPolygonNode;
 import net.untoldwind.moredread.model.scene.IVertexGeometryNode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.scene.SceneSelection.VertexSelection;
@@ -159,22 +154,17 @@ public class VertexSelectionToolHandler implements IToolHandler {
 			for (final VertexSelection vertexSelection : scene
 					.getSceneSelection().getSelectedVertices()) {
 				final IGeometryNode<?, ?> node = vertexSelection.getNode();
-				IVertex vertex;
 
-				if (node instanceof IMeshNode) {
-					final IMesh mesh = ((IMeshNode) node).getGeometry();
-					vertex = mesh.getVertex(vertexSelection.getVertexIndex());
-				} else {
-					final IPolygon polygon = ((IPolygonNode) node)
+				if (node instanceof IVertexGeometryNode<?, ?>) {
+					final IVertexGeometry<?> geometry = ((IVertexGeometryNode<?, ?>) node)
 							.getGeometry();
-					vertex = polygon
-							.getVertex(vertexSelection.getVertexIndex());
+					final IVertex vertex = geometry.getVertex(vertexSelection
+							.getVertexIndex());
 
+					center.addLocal(node.localToWorld(vertex.getPoint(),
+							new Vector3f()));
+					count++;
 				}
-
-				center.addLocal(node.localToWorld(vertex.getPoint(),
-						new Vector3f()));
-				count++;
 			}
 			if (count > 0) {
 				center.divideLocal(count);
@@ -242,17 +232,17 @@ public class VertexSelectionToolHandler implements IToolHandler {
 			for (final VertexSelection vertexSelection : scene
 					.getSceneSelection().getSelectedVertices()) {
 				final IGeometryNode<?, ?> node = vertexSelection.getNode();
-				Vertex vertex;
+				Vertex vertex = null;
 
-				if (node instanceof IMeshNode) {
-					final Mesh<?, ?> mesh = ((IMeshNode) node)
+				if (node instanceof IVertexGeometryNode<?, ?>) {
+					final VertexGeometry<?> geometry = ((IVertexGeometryNode<?, ?>) node)
 							.getEditableGeometry();
-					vertex = mesh.getVertex(vertexSelection.getVertexIndex());
-				} else {
-					final Polygon polygon = ((IPolygonNode) node)
-							.getEditableGeometry();
-					vertex = polygon
-							.getVertex(vertexSelection.getVertexIndex());
+					vertex = geometry.getVertex(vertexSelection
+							.getVertexIndex());
+				}
+
+				if (vertex == null) {
+					continue;
 				}
 
 				final Vector3f worldPoint = node.localToWorld(

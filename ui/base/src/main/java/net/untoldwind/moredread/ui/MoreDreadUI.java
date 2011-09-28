@@ -14,6 +14,7 @@ import net.untoldwind.moredread.model.generator.DodecahedronMeshGenerator;
 import net.untoldwind.moredread.model.generator.GeosphereMeshGenerator;
 import net.untoldwind.moredread.model.generator.IcosahedronMeshGenerator;
 import net.untoldwind.moredread.model.generator.OctahedronMeshGenerator;
+import net.untoldwind.moredread.model.mesh.Grid;
 import net.untoldwind.moredread.model.mesh.IPoint;
 import net.untoldwind.moredread.model.mesh.Point;
 import net.untoldwind.moredread.model.mesh.PolyMesh;
@@ -22,6 +23,7 @@ import net.untoldwind.moredread.model.op.IBooleanOperation;
 import net.untoldwind.moredread.model.scene.AbstractSceneOperation;
 import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
+import net.untoldwind.moredread.model.scene.GridNode;
 import net.untoldwind.moredread.model.scene.ISceneHolder;
 import net.untoldwind.moredread.model.scene.MeshNode;
 import net.untoldwind.moredread.model.scene.PolygonNode;
@@ -300,6 +302,23 @@ public class MoreDreadUI extends AbstractUIPlugin {
 						new int[] { 1 }, false);
 
 				new PolygonNode(scene, polygon);
+
+				final Grid grid = new Grid();
+				for (int i = 0; i < 10; i++) {
+					for (int j = 0; j < 10; j++) {
+						grid.addVertex(new Vector3f(i, j, 0));
+						if (j > 0) {
+							grid.addEdge(i * 10 + j, i * 10 + j - 1);
+						}
+						if (i > 0) {
+							grid.addEdge(i * 10 + j, (i - 1) * 10 + j);
+						}
+					}
+				}
+
+				final GridNode gridNode = new GridNode(scene, grid);
+				gridNode.setLocalTranslation(new Vector3f(0, 0, 20f));
+
 			}
 		});
 

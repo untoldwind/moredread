@@ -7,6 +7,7 @@ import net.untoldwind.moredread.model.enums.SelectionMode;
 import net.untoldwind.moredread.model.mesh.EdgeId;
 import net.untoldwind.moredread.model.mesh.FaceId;
 import net.untoldwind.moredread.model.scene.IGeometryNode;
+import net.untoldwind.moredread.model.scene.IGridNode;
 import net.untoldwind.moredread.model.scene.IMeshNode;
 import net.untoldwind.moredread.model.scene.IPolygonNode;
 import net.untoldwind.moredread.model.scene.SceneSelection;
@@ -24,8 +25,11 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 	private final IMeshRendererAdapter selectedVertexMeshRenderer;
 	private final IMeshRendererAdapter solidMeshRenderer;
 	private final IPolygonRendererAdapter polygonRenderer;
+	private final IGridRendererAdapter gridRenderer;
 	private final IPolygonRendererAdapter selectedPolygonRenderer;
 	private final IPolygonRendererAdapter selectedVertexPolygonRenderer;
+	private final IGridRendererAdapter selectedGridRenderer;
+	private final IGridRendererAdapter selectedVertexGridRenderer;
 	private final Renderer renderer;
 	private final SelectionMode selectionMode;
 
@@ -43,6 +47,9 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 		this.polygonRenderer = new LinePolygonRendererAdapter(1f, true);
 		this.selectedPolygonRenderer = new LinePolygonRendererAdapter(3f, false);
 		this.selectedVertexPolygonRenderer = new VertexPolygonRendererAdapter();
+		this.gridRenderer = new LineGridRendererAdapter(1f, true);
+		this.selectedGridRenderer = new LineGridRendererAdapter(3f, false);
+		this.selectedVertexGridRenderer = new VertexGridRendererAdapter();
 	}
 
 	@Override
@@ -76,6 +83,17 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 				renderSelected((IPolygonNode) node, geometries);
 			} else {
 				renderNormal((IPolygonNode) node, geometries);
+			}
+
+			return geometries;
+		}
+		case GRID: {
+			final List<Spatial> geometries = new ArrayList<Spatial>();
+
+			if (node.isSelected()) {
+				renderSelected((IGridNode) node, geometries);
+			} else {
+				renderNormal((IGridNode) node, geometries);
 			}
 
 			return geometries;
@@ -123,9 +141,60 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 
 	}
 
+	private void renderSelected(final IGridNode node,
+			final List<Spatial> geometries) {
+		IColorProvider colorProvider = null;
+		switch (selectionMode) {
+		case EDGE:
+			colorProvider = getEdgeSelectionColors(node);
+			break;
+		case VERTEX:
+			colorProvider = getVertexSelectionColors(node);
+			break;
+		}
+
+		final Geometry geometry = selectedGridRenderer.renderGrid(
+				node.getRenderGeometry(), colorProvider);
+		if (geometry != null) {
+			geometry.setDefaultColor(ColorRGBA.black.clone());
+			geometry.setModelBound(new BoundingBox());
+			geometry.updateModelBound();
+			geometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+			geometries.add(geometry);
+		}
+
+		final Geometry vertexGeometry = selectedVertexGridRenderer.renderGrid(
+				node.getRenderGeometry(), colorProvider);
+		if (vertexGeometry != null) {
+			geometries.add(vertexGeometry);
+			vertexGeometry.setDefaultColor(ColorRGBA.black.clone());
+			vertexGeometry.setModelBound(new BoundingBox());
+			vertexGeometry.updateModelBound();
+			vertexGeometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+		}
+		if (parameters.isShowBoundingBoxOnSelected()) {
+			geometries.add(new BoundingBoxNode(node.getLocalBoundingBox()));
+		}
+
+	}
+
 	private void renderNormal(final IPolygonNode node,
 			final List<Spatial> geometries) {
 		final Geometry geometry = polygonRenderer.renderPolygon(
+				node.getRenderGeometry(), null);
+		if (geometry != null) {
+			geometry.setDefaultColor(ColorRGBA.black.clone());
+			geometry.setModelBound(new BoundingBox());
+			geometry.updateModelBound();
+			geometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+			geometries.add(geometry);
+		}
+
+	}
+
+	private void renderNormal(final IGridNode node,
+			final List<Spatial> geometries) {
+		final Geometry geometry = gridRenderer.renderGrid(
 				node.getRenderGeometry(), null);
 		if (geometry != null) {
 			geometry.setDefaultColor(ColorRGBA.black.clone());

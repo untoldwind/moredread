@@ -7,6 +7,7 @@ import java.util.List;
 import net.untoldwind.moredread.model.enums.SelectionMode;
 import net.untoldwind.moredread.model.mesh.EdgeId;
 import net.untoldwind.moredread.model.mesh.FaceId;
+import net.untoldwind.moredread.model.mesh.IGrid;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IPolygon;
 import net.untoldwind.moredread.model.scene.IGeometryNode;
@@ -25,6 +26,7 @@ public class SubSelectionNodeRenderer implements INodeRendererAdapter {
 	private final VertexMeshRenderer vertexMeshRenderer;
 	private final IMeshRendererAdapter solidMeshRenderer;
 	private final IPolygonRendererAdapter polygonRendererAdapter;
+	private final IGridRendererAdapter gridRendererAdapter;
 
 	public SubSelectionNodeRenderer(final Renderer renderer,
 			final SelectionMode selectionMode) {
@@ -36,6 +38,7 @@ public class SubSelectionNodeRenderer implements INodeRendererAdapter {
 		this.vertexMeshRenderer = new VertexMeshRenderer();
 		this.solidMeshRenderer = new SolidMeshRenderer();
 		this.polygonRendererAdapter = new LinePolygonRendererAdapter(1f, false);
+		this.gridRendererAdapter = new LineGridRendererAdapter(1f, false);
 	}
 
 	@Override
@@ -112,6 +115,20 @@ public class SubSelectionNodeRenderer implements INodeRendererAdapter {
 
 			final Geometry geometry = polygonRendererAdapter.renderPolygon(
 					(IPolygon) node.getRenderGeometry(), null);
+			if (geometry != null) {
+				geometries.add(geometry);
+				geometry.setDefaultColor(ColorRGBA.gray.clone());
+				geometry.setModelBound(new BoundingBox());
+				geometry.updateModelBound();
+				geometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+			}
+			return geometries;
+		}
+		case GRID: {
+			final List<Spatial> geometries = new ArrayList<Spatial>();
+
+			final Geometry geometry = gridRendererAdapter.renderGrid(
+					(IGrid) node.getRenderGeometry(), null);
 			if (geometry != null) {
 				geometries.add(geometry);
 				geometry.setDefaultColor(ColorRGBA.gray.clone());

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.untoldwind.moredread.model.enums.SelectionMode;
+import net.untoldwind.moredread.model.mesh.IGrid;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IPolygon;
 import net.untoldwind.moredread.model.scene.IGeometryNode;
@@ -20,6 +21,7 @@ public class GhostNodeRenderer implements INodeRendererAdapter {
 	private final WireframeMeshRenderer wireframeMeshRenderer;
 	private final IMeshRendererAdapter solidMeshRenderer;
 	private final IPolygonRendererAdapter polygonRendererAdapter;
+	private final IGridRendererAdapter gridRendererAdapter;
 
 	public GhostNodeRenderer(final Renderer renderer,
 			final SelectionMode selectionMode) {
@@ -30,6 +32,7 @@ public class GhostNodeRenderer implements INodeRendererAdapter {
 		this.wireframeMeshRenderer = new WireframeMeshRenderer(false, 1f, false);
 		this.solidMeshRenderer = new SolidMeshRenderer();
 		this.polygonRendererAdapter = new LinePolygonRendererAdapter(1f, false);
+		this.gridRendererAdapter = new LineGridRendererAdapter(1f, false);
 	}
 
 	@Override
@@ -75,6 +78,20 @@ public class GhostNodeRenderer implements INodeRendererAdapter {
 
 			final Geometry geometry = polygonRendererAdapter.renderPolygon(
 					(IPolygon) node.getRenderGeometry(), null);
+			if (geometry != null) {
+				geometries.add(geometry);
+				geometry.setDefaultColor(ColorRGBA.gray.clone());
+				geometry.setModelBound(new BoundingBox());
+				geometry.updateModelBound();
+				geometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+			}
+			return geometries;
+		}
+		case GRID: {
+			final List<Spatial> geometries = new ArrayList<Spatial>();
+
+			final Geometry geometry = gridRendererAdapter.renderGrid(
+					(IGrid) node.getRenderGeometry(), null);
 			if (geometry != null) {
 				geometries.add(geometry);
 				geometry.setDefaultColor(ColorRGBA.gray.clone());

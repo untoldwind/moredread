@@ -3,11 +3,8 @@ package net.untoldwind.moredread.ui.controls.impl;
 import java.nio.FloatBuffer;
 import java.util.List;
 
-import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IPoint;
-import net.untoldwind.moredread.model.mesh.IPolygon;
-import net.untoldwind.moredread.model.scene.IMeshNode;
-import net.untoldwind.moredread.model.scene.IPolygonNode;
+import net.untoldwind.moredread.model.mesh.IVertexGeometry;
 import net.untoldwind.moredread.model.scene.IVertexGeometryNode;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
@@ -94,13 +91,13 @@ public class VertexSelectionModelControl extends Point implements IModelControl 
 	}
 
 	void updateGeometry() {
-		IPoint vertex;
-		if (node instanceof IMeshNode) {
-			final IMesh mesh = ((IMeshNode) node).getGeometry();
-			vertex = mesh.getVertex(vertexIndex);
-		} else {
-			final IPolygon polygon = ((IPolygonNode) node).getGeometry();
-			vertex = polygon.getVertex(vertexIndex);
+		IPoint vertex = null;
+
+		if (node instanceof IVertexGeometryNode<?, ?>) {
+			final IVertexGeometry<?> geometry = ((IVertexGeometryNode<?, ?>) node)
+					.getGeometry();
+
+			vertex = geometry.getVertex(vertexIndex);
 		}
 
 		if (vertex == null) {
@@ -119,14 +116,18 @@ public class VertexSelectionModelControl extends Point implements IModelControl 
 	}
 
 	void updateHandle(final Camera camera) {
-		IPoint vertex;
-		if (node instanceof IMeshNode) {
-			final IMesh mesh = ((IMeshNode) node).getGeometry();
-			vertex = mesh.getVertex(vertexIndex);
-		} else {
-			final IPolygon polygon = ((IPolygonNode) node).getGeometry();
-			vertex = polygon.getVertex(vertexIndex);
+		IPoint vertex = null;
+		if (node instanceof IVertexGeometryNode<?, ?>) {
+			final IVertexGeometry<?> geometry = ((IVertexGeometryNode<?, ?>) node)
+					.getGeometry();
+
+			vertex = geometry.getVertex(vertexIndex);
 		}
+
+		if (vertex == null) {
+			return;
+		}
+
 		final Vector3f v = node.localToWorld(vertex.getPoint(), new Vector3f());
 
 		if (pointControlHandle == null) {
