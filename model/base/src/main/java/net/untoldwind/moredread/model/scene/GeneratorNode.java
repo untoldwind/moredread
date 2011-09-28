@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.List;
 
+import net.untoldwind.moredread.model.enums.GeometryType;
 import net.untoldwind.moredread.model.generator.IGeneratorInput;
 import net.untoldwind.moredread.model.generator.IMeshGenerator;
 import net.untoldwind.moredread.model.mesh.IMesh;
@@ -77,6 +78,11 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 
 	@Override
 	public void setGeometry(final Mesh<?, ?> geometry) {
+	}
+
+	@Override
+	public GeometryType getGeometryType() {
+		return GeometryType.MESH;
 	}
 
 	public IMeshGenerator getMeshGenerator() {

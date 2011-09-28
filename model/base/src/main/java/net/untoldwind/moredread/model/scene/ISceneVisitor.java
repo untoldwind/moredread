@@ -7,6 +7,8 @@ public interface ISceneVisitor<T> {
 
 	T visitMeshNode(MeshNode node);
 
+	T visitGridNode(GridNode node);
+
 	T visitPolygonNode(PolygonNode node);
 
 	T visitGeneratorNode(GeneratorNode generatorNode);

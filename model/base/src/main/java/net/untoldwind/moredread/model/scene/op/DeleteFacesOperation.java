@@ -22,14 +22,16 @@ public class DeleteFacesOperation implements ISceneOperation {
 		this.faces = new HashMap<IMeshNode, Set<FaceId>>();
 
 		for (final FaceSelection faceSelection : faceSelections) {
-			final IMeshNode meshNode = faceSelection.getNode();
-			Set<FaceId> faceIds = this.faces.get(meshNode);
+			if (faceSelection.getNode() instanceof IMeshNode) {
+				final IMeshNode meshNode = (IMeshNode) faceSelection.getNode();
+				Set<FaceId> faceIds = this.faces.get(meshNode);
 
-			if (faceIds == null) {
-				faceIds = new HashSet<FaceId>();
-				this.faces.put(meshNode, faceIds);
+				if (faceIds == null) {
+					faceIds = new HashSet<FaceId>();
+					this.faces.put(meshNode, faceIds);
+				}
+				faceIds.add(faceSelection.getFaceIndex());
 			}
-			faceIds.add(faceSelection.getFaceIndex());
 		}
 	}
 

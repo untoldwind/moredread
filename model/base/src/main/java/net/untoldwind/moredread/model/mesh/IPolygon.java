@@ -10,6 +10,4 @@ public interface IPolygon extends IEdgeGeometry<IPolygon> {
 	int[] getPolygonContourCounts();
 
 	boolean isClosed();
-
-	Vector3f getCenter();
 }

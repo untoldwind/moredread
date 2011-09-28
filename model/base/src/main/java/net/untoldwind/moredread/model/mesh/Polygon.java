@@ -147,19 +147,6 @@ public class Polygon extends EdgeGeometry<IPolygon> implements IPolygon {
 	}
 
 	@Override
-	public Vector3f getCenter() {
-		final Vector3f center = new Vector3f(0, 0, 0);
-
-		for (final IPoint vertex : vertices) {
-			center.addLocal(vertex.getPoint());
-		}
-
-		center.divideLocal(vertices.size());
-
-		return center;
-	}
-
-	@Override
 	public IPolygon transform(final ITransformation transformation) {
 		final List<IPoint> new_vertices = new ArrayList<IPoint>(vertices.size());
 

@@ -7,8 +7,9 @@ import java.util.List;
 import net.untoldwind.moredread.model.enums.SelectionMode;
 import net.untoldwind.moredread.model.mesh.EdgeId;
 import net.untoldwind.moredread.model.mesh.FaceId;
-import net.untoldwind.moredread.model.scene.IMeshNode;
-import net.untoldwind.moredread.model.scene.IPolygonNode;
+import net.untoldwind.moredread.model.mesh.IMesh;
+import net.untoldwind.moredread.model.mesh.IPolygon;
+import net.untoldwind.moredread.model.scene.IGeometryNode;
 import net.untoldwind.moredread.model.scene.SceneSelection;
 
 import com.jme.bounding.BoundingBox;
@@ -48,79 +49,85 @@ public class SubSelectionNodeRenderer implements INodeRendererAdapter {
 	}
 
 	@Override
-	public List<Spatial> renderNode(final IMeshNode node) {
-		if (!node.isSelected()) {
-			return Collections.emptyList();
-		}
-
-		final List<Spatial> geometries = new ArrayList<Spatial>();
-
-		IColorProvider colorProvider = null;
-
-		switch (selectionMode) {
-		case FACE:
-			colorProvider = getFaceSelectionColors(node);
-			break;
-		case EDGE:
-			colorProvider = getEdgeSelectionColors(node);
-			break;
-		case VERTEX:
-			colorProvider = getVertexSelectionColors(node);
-			break;
-		}
-
-		if (colorProvider != null) {
-			final Geometry solidGeometry = solidMeshRenderer.renderMesh(
-					node.getRenderGeometry(), colorProvider);
-			if (solidGeometry != null) {
-				geometries.add(solidGeometry);
-				solidGeometry.setModelBound(new BoundingBox());
-				solidGeometry.updateModelBound();
-				solidGeometry.setDefaultColor(node.getModelColor(0.5f));
-				solidGeometry.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
+	public List<Spatial> renderNode(final IGeometryNode<?, ?> node) {
+		switch (node.getGeometryType()) {
+		case MESH: {
+			if (!node.isSelected()) {
+				return Collections.emptyList();
 			}
-		}
 
-		final Geometry wireframeGeometry = wireframeMeshRenderer.renderMesh(
-				node.getRenderGeometry(), colorProvider);
-		if (wireframeGeometry != null) {
-			geometries.add(wireframeGeometry);
-			wireframeGeometry.setDefaultColor(ColorRGBA.black.clone());
-			wireframeGeometry.setModelBound(new BoundingBox());
-			wireframeGeometry.updateModelBound();
-			wireframeGeometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
-		}
+			final List<Spatial> geometries = new ArrayList<Spatial>();
 
-		final Geometry vertexGeometry = vertexMeshRenderer.renderMesh(
-				node.getRenderGeometry(), colorProvider);
-		if (vertexGeometry != null) {
-			geometries.add(vertexGeometry);
-			vertexGeometry.setDefaultColor(ColorRGBA.black.clone());
-			vertexGeometry.setModelBound(new BoundingBox());
-			vertexGeometry.updateModelBound();
-			vertexGeometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
-		}
+			IColorProvider colorProvider = null;
 
-		return geometries;
+			switch (selectionMode) {
+			case FACE:
+				colorProvider = getFaceSelectionColors(node);
+				break;
+			case EDGE:
+				colorProvider = getEdgeSelectionColors(node);
+				break;
+			case VERTEX:
+				colorProvider = getVertexSelectionColors(node);
+				break;
+			}
+
+			if (colorProvider != null) {
+				final Geometry solidGeometry = solidMeshRenderer.renderMesh(
+						(IMesh) node.getRenderGeometry(), colorProvider);
+				if (solidGeometry != null) {
+					geometries.add(solidGeometry);
+					solidGeometry.setModelBound(new BoundingBox());
+					solidGeometry.updateModelBound();
+					solidGeometry.setDefaultColor(node.getModelColor(0.5f));
+					solidGeometry
+							.setRenderQueueMode(Renderer.QUEUE_TRANSPARENT);
+				}
+			}
+
+			final Geometry wireframeGeometry = wireframeMeshRenderer
+					.renderMesh((IMesh) node.getRenderGeometry(), colorProvider);
+			if (wireframeGeometry != null) {
+				geometries.add(wireframeGeometry);
+				wireframeGeometry.setDefaultColor(ColorRGBA.black.clone());
+				wireframeGeometry.setModelBound(new BoundingBox());
+				wireframeGeometry.updateModelBound();
+				wireframeGeometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+			}
+
+			final Geometry vertexGeometry = vertexMeshRenderer.renderMesh(
+					(IMesh) node.getRenderGeometry(), colorProvider);
+			if (vertexGeometry != null) {
+				geometries.add(vertexGeometry);
+				vertexGeometry.setDefaultColor(ColorRGBA.black.clone());
+				vertexGeometry.setModelBound(new BoundingBox());
+				vertexGeometry.updateModelBound();
+				vertexGeometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+			}
+
+			return geometries;
+		}
+		case POLYGON: {
+			final List<Spatial> geometries = new ArrayList<Spatial>();
+
+			final Geometry geometry = polygonRendererAdapter.renderPolygon(
+					(IPolygon) node.getRenderGeometry(), null);
+			if (geometry != null) {
+				geometries.add(geometry);
+				geometry.setDefaultColor(ColorRGBA.gray.clone());
+				geometry.setModelBound(new BoundingBox());
+				geometry.updateModelBound();
+				geometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
+			}
+			return geometries;
+		}
+		default:
+			throw new RuntimeException("No render adapter for: "
+					+ node.getGeometryType());
+		}
 	}
 
-	@Override
-	public List<Spatial> renderNode(final IPolygonNode node) {
-		final List<Spatial> geometries = new ArrayList<Spatial>();
-
-		final Geometry geometry = polygonRendererAdapter.renderPolygon(
-				node.getRenderGeometry(), null);
-		if (geometry != null) {
-			geometries.add(geometry);
-			geometry.setDefaultColor(ColorRGBA.gray.clone());
-			geometry.setModelBound(new BoundingBox());
-			geometry.updateModelBound();
-			geometry.setRenderQueueMode(Renderer.QUEUE_OPAQUE);
-		}
-		return geometries;
-	}
-
-	private IColorProvider getFaceSelectionColors(final IMeshNode node) {
+	private IColorProvider getFaceSelectionColors(final IGeometryNode<?, ?> node) {
 		final ColorRGBA modelColor = node.getModelColor(0.5f);
 		final ColorRGBA selectedColor = new ColorRGBA(1.0f - modelColor.r,
 				1.0f - modelColor.g, 1.0f - modelColor.b, 0.5f);
@@ -161,7 +168,7 @@ public class SubSelectionNodeRenderer implements INodeRendererAdapter {
 		};
 	}
 
-	private IColorProvider getEdgeSelectionColors(final IMeshNode node) {
+	private IColorProvider getEdgeSelectionColors(final IGeometryNode<?, ?> node) {
 		final ColorRGBA modelColor = node.getModelColor(0.5f);
 		final ColorRGBA selectedColor = new ColorRGBA(1.0f - modelColor.r,
 				1.0f - modelColor.g, 1.0f - modelColor.b, 0.5f);
@@ -203,7 +210,8 @@ public class SubSelectionNodeRenderer implements INodeRendererAdapter {
 		};
 	}
 
-	private IColorProvider getVertexSelectionColors(final IMeshNode node) {
+	private IColorProvider getVertexSelectionColors(
+			final IGeometryNode<?, ?> node) {
 		final ColorRGBA modelColor = node.getModelColor(0.5f);
 		final ColorRGBA selectedColor = new ColorRGBA(1.0f - modelColor.r,
 				1.0f - modelColor.g, 1.0f - modelColor.b, 0.5f);

@@ -56,29 +56,34 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 	}
 
 	@Override
-	public List<Spatial> renderNode(final IMeshNode node) {
-		final List<Spatial> geometries = new ArrayList<Spatial>();
+	public List<Spatial> renderNode(final IGeometryNode<?, ?> node) {
+		switch (node.getGeometryType()) {
+		case MESH: {
+			final List<Spatial> geometries = new ArrayList<Spatial>();
 
-		if (node.isSelected()) {
-			renderSelected(node, geometries);
-		} else {
-			renderNormal(node, geometries);
+			if (node.isSelected()) {
+				renderSelected((IMeshNode) node, geometries);
+			} else {
+				renderNormal((IMeshNode) node, geometries);
+			}
+
+			return geometries;
 		}
+		case POLYGON: {
+			final List<Spatial> geometries = new ArrayList<Spatial>();
 
-		return geometries;
-	}
+			if (node.isSelected()) {
+				renderSelected((IPolygonNode) node, geometries);
+			} else {
+				renderNormal((IPolygonNode) node, geometries);
+			}
 
-	@Override
-	public List<Spatial> renderNode(final IPolygonNode node) {
-		final List<Spatial> geometries = new ArrayList<Spatial>();
-
-		if (node.isSelected()) {
-			renderSelected(node, geometries);
-		} else {
-			renderNormal(node, geometries);
+			return geometries;
 		}
-
-		return geometries;
+		default:
+			throw new RuntimeException("No render adapter for: "
+					+ node.getGeometryType());
+		}
 	}
 
 	private void renderSelected(final IPolygonNode node,

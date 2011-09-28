@@ -46,6 +46,19 @@ public abstract class VertexGeometry<T> implements IVertexGeometry<T> {
 		return vertices.get(vertexIndes);
 	}
 
+	@Override
+	public Vector3f getCenter() {
+		final Vector3f center = new Vector3f(0, 0, 0);
+
+		for (final IPoint vertex : vertices) {
+			center.addLocal(vertex.getPoint());
+		}
+
+		center.divideLocal(vertices.size());
+
+		return center;
+	}
+
 	public void removeVertices(final Set<Integer> vertexIds) {
 		final Iterator<Vertex> it = vertices.iterator();
 

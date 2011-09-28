@@ -1,96 +1,32 @@
 package net.untoldwind.moredread.model.scene;
 
-import java.io.IOException;
-import java.util.List;
-
+import net.untoldwind.moredread.model.enums.GeometryType;
 import net.untoldwind.moredread.model.mesh.IPolygon;
 import net.untoldwind.moredread.model.mesh.Polygon;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
-import net.untoldwind.moredread.model.scene.change.NodeGeometryChangedCommand;
-import net.untoldwind.moredread.model.state.IStateReader;
-import net.untoldwind.moredread.model.state.IStateWriter;
 
 import com.jme.scene.Node;
 import com.jme.scene.Spatial;
 
-public class PolygonNode extends ObjectNode implements IPolygonNode {
-	private Polygon polygon;
-
-	private transient com.jme.scene.Node displayNode;
-
-	private transient List<Spatial> renderedGeometries;
-	private transient BoundingBox worldBoundingBox;
-	private transient BoundingBox localBoundingBox;
-
+public class PolygonNode extends GeometryNode<IPolygon, Polygon> implements
+		IPolygonNode {
 	protected PolygonNode(final AbstractSpatialComposite<? extends INode> parent) {
 		super(parent, "Polygon");
 	}
 
 	public PolygonNode(final AbstractSpatialComposite<? extends INode> parent,
 			final Polygon polygon) {
-		super(parent, "Polygon");
-
-		this.polygon = polygon;
+		super(parent, "Polygon", polygon);
 	}
 
 	public PolygonNode(final AbstractSpatialComposite<? extends INode> parent,
 			final String name, final Polygon polygon) {
-		super(parent, name);
-
-		this.polygon = polygon;
+		super(parent, name, polygon);
 	}
 
 	@Override
-	public IPolygon getRenderGeometry() {
-		return polygon;
-	}
-
-	@Override
-	public IPolygon getGeometry() {
-		return polygon;
-	}
-
-	@Override
-	public Polygon getEditableGeometry() {
-		scene.getSceneChangeHandler().registerCommand(
-				new NodeGeometryChangedCommand(this));
-
-		return polygon;
-	}
-
-	@Override
-	public void setGeometry(final Polygon polygon) {
-		scene.getSceneChangeHandler().registerCommand(
-				new NodeGeometryChangedCommand(this));
-
-		this.polygon = polygon;
-	}
-
-	@Override
-	public BoundingBox getLocalBoundingBox() {
-		if (localBoundingBox == null) {
-			localBoundingBox = new BoundingBox(polygon.getVertices());
-		}
-		return localBoundingBox;
-	}
-
-	@Override
-	public BoundingBox getWorldBoundingBox() {
-		if (worldBoundingBox == null) {
-			worldBoundingBox = new BoundingBox(polygon.getVertices());
-			worldBoundingBox = worldBoundingBox.transform(getWorldRotation(),
-					getWorldTranslation(), getWorldScale());
-		}
-		return worldBoundingBox;
-	}
-
-	@Override
-	public void markDirty() {
-		super.markDirty();
-
-		worldBoundingBox = null;
-		localBoundingBox = null;
-		renderedGeometries = null;
+	public GeometryType getGeometryType() {
+		return GeometryType.POLYGON;
 	}
 
 	@Override
@@ -135,25 +71,4 @@ public class PolygonNode extends ObjectNode implements IPolygonNode {
 			}
 		}
 	}
-
-	@Override
-	public void readState(final IStateReader reader) throws IOException {
-		name = reader.readString();
-		modelColor = reader.readColor();
-		localTranslation = reader.readVector3f();
-		localScale = reader.readVector3f();
-		localRotation = reader.readQuaternion();
-		polygon = reader.readObject();
-	}
-
-	@Override
-	public void writeState(final IStateWriter writer) throws IOException {
-		writer.writeString("name", name);
-		writer.writeColor("modelColor", modelColor);
-		writer.writeVector3f("localTranslation", localTranslation);
-		writer.writeVector3f("localScale", localScale);
-		writer.writeQuaternion("localRotation", localRotation);
-		writer.writeObject("polygon", polygon);
-	}
-
 }

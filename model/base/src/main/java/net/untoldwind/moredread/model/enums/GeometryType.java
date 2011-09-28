@@ -1,5 +1,8 @@
 package net.untoldwind.moredread.model.enums;
 
 public enum GeometryType {
-	POINT, POLYGON, MESH
+	POINT,
+	POLYGON,
+	GRID,
+	MESH
 }

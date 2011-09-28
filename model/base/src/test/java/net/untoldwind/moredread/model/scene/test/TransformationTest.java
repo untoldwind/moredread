@@ -27,7 +27,7 @@ public class TransformationTest {
 	@Before
 	public void createScene() {
 		final SceneHolder sceneHolder = new SceneHolder();
-		final Scene scene = sceneHolder.createScene();
+		scene = sceneHolder.createScene();
 
 		scene.notUndoableChange(new AbstractSceneOperation("Test operation") {
 			@Override

@@ -254,7 +254,8 @@ public class SceneSelection implements ISceneSelection {
 				changed = true;
 			} else {
 				if (faceSelection.getNode() instanceof IMeshNode) {
-					final IMeshNode meshNode = faceSelection.getNode();
+					final IMeshNode meshNode = (IMeshNode) faceSelection
+							.getNode();
 
 					if (meshNode.getGeometry().getFace(
 							faceSelection.getFaceIndex()) == null) {
@@ -325,7 +326,8 @@ public class SceneSelection implements ISceneSelection {
 		return selectedParentNodes.contains(node);
 	}
 
-	public boolean isFaceSelected(final IMeshNode node, final FaceId faceIndex) {
+	public boolean isFaceSelected(final IGeometryNode<?, ?> node,
+			final FaceId faceIndex) {
 		return selectedFaces.contains(new FaceSelection(node, faceIndex));
 	}
 
@@ -346,15 +348,15 @@ public class SceneSelection implements ISceneSelection {
 	}
 
 	public static class FaceSelection {
-		private final IMeshNode node;
+		private final IGeometryNode<?, ?> node;
 		private final FaceId faceIndex;
 
-		FaceSelection(final IMeshNode node, final FaceId faceIndex) {
+		FaceSelection(final IGeometryNode<?, ?> node, final FaceId faceIndex) {
 			this.node = node;
 			this.faceIndex = faceIndex;
 		}
 
-		public IMeshNode getNode() {
+		public IGeometryNode<?, ?> getNode() {
 			return node;
 		}
 

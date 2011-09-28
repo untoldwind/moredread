@@ -152,13 +152,16 @@ public class FaceSelectionToolHandler implements IToolHandler {
 
 			for (final FaceSelection faceSelection : scene.getSceneSelection()
 					.getSelectedFaces()) {
-				final IMeshNode node = faceSelection.getNode();
-				final IMesh mesh = node.getGeometry();
-				final IFace face = mesh.getFace(faceSelection.getFaceIndex());
+				if (faceSelection.getNode() instanceof IMeshNode) {
+					final IMeshNode node = (IMeshNode) faceSelection.getNode();
+					final IMesh mesh = node.getGeometry();
+					final IFace face = mesh.getFace(faceSelection
+							.getFaceIndex());
 
-				center.addLocal(node.localToWorld(face.getCenter(),
-						new Vector3f()));
-				count++;
+					center.addLocal(node.localToWorld(face.getCenter(),
+							new Vector3f()));
+					count++;
+				}
 			}
 			if (count > 0) {
 				center.divideLocal(count);
@@ -226,24 +229,26 @@ public class FaceSelectionToolHandler implements IToolHandler {
 
 			for (final FaceSelection faceSelection : scene.getSceneSelection()
 					.getSelectedFaces()) {
-				final IMeshNode node = faceSelection.getNode();
-				final Mesh<?, ?> mesh = node.getEditableGeometry();
-				final Face<?, ?> face = mesh.getFace(faceSelection
-						.getFaceIndex());
+				if (faceSelection.getNode() instanceof IMeshNode) {
+					final IMeshNode node = (IMeshNode) faceSelection.getNode();
+					final Mesh<?, ?> mesh = node.getEditableGeometry();
+					final Face<?, ?> face = mesh.getFace(faceSelection
+							.getFaceIndex());
 
-				for (final Vertex vertex : face.getVertices()) {
-					final VertexSelection vertexId = new VertexSelection(node,
-							vertex.getIndex());
-					if (!updatedVertices.contains(vertexId)) {
-						updatedVertices.add(vertexId);
-						final Vector3f worldPoint = node.localToWorld(
-								vertex.getPoint(), new Vector3f());
-						worldPoint.subtractLocal(centerDiff);
-						vertex.setPoint(node.worldToLocal(worldPoint,
-								new Vector3f()));
+					for (final Vertex vertex : face.getVertices()) {
+						final VertexSelection vertexId = new VertexSelection(
+								node, vertex.getIndex());
+						if (!updatedVertices.contains(vertexId)) {
+							updatedVertices.add(vertexId);
+							final Vector3f worldPoint = node.localToWorld(
+									vertex.getPoint(), new Vector3f());
+							worldPoint.subtractLocal(centerDiff);
+							vertex.setPoint(node.worldToLocal(worldPoint,
+									new Vector3f()));
+						}
 					}
+					changedNodes.add(node);
 				}
-				changedNodes.add(node);
 			}
 		}
 	}
