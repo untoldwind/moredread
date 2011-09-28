@@ -1,5 +1,6 @@
 package net.untoldwind.moredread.model.io;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import net.untoldwind.moredread.model.io.impl.FileIODescriptor;
+import net.untoldwind.moredread.model.scene.ISceneHolder;
 import net.untoldwind.moredread.model.scene.Scene;
 
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -83,6 +85,47 @@ public class ModelIOPlugin extends AbstractUIPlugin {
 		return fileIOById.get(id);
 	}
 
+	public void sceneLoad(final ISceneHolder sceneHolder) {
+		final FileDialog fileDialog = new FileDialog(PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getShell(), SWT.OPEN);
+
+		final Map<String, String> fileExtensions = new LinkedHashMap<String, String>();
+		final List<IFileIODescriptor> fileIODescriptors = new ArrayList<IFileIODescriptor>();
+		for (final IFileIODescriptor descriptor : fileIOById.values()) {
+			if (descriptor.getExtension() != null) {
+				fileExtensions.put(descriptor.getExtension(),
+						descriptor.getLabel());
+				fileIODescriptors.add(descriptor);
+			}
+		}
+		fileDialog.setFilterPath(System.getProperty("user.home"));
+		fileDialog.setText("Open Scene ...");
+		fileDialog.setFilterExtensions(fileExtensions.keySet().toArray(
+				new String[fileExtensions.size()]));
+		fileDialog.setFilterNames(fileExtensions.values().toArray(
+				new String[fileExtensions.size()]));
+		String fileName = fileDialog.open();
+
+		if (fileName == null) {
+			return;
+		}
+
+		try {
+			final IFileIODescriptor fileIODescriptor = fileIODescriptors
+					.get(fileDialog.getFilterIndex());
+
+			if (!fileName.endsWith(fileIODescriptor.getExtension())) {
+				fileName += "." + fileIODescriptor.getExtension();
+			}
+
+			final FileInputStream in = new FileInputStream(fileName);
+
+			fileIODescriptor.getModelReader().readScene(sceneHolder, in);
+		} catch (final IOException e) {
+			log(e);
+		}
+	}
+
 	public void sceneSave(final Scene scene) {
 		String fileName = scene.getSceneMetadata().getFileName();
 
@@ -95,8 +138,8 @@ public class ModelIOPlugin extends AbstractUIPlugin {
 			final List<IFileIODescriptor> fileIODescriptors = new ArrayList<IFileIODescriptor>();
 			for (final IFileIODescriptor descriptor : fileIOById.values()) {
 				if (descriptor.getExtension() != null) {
-					fileExtensions.put(descriptor.getExtension(), descriptor
-							.getLabel());
+					fileExtensions.put(descriptor.getExtension(),
+							descriptor.getLabel());
 					fileIODescriptors.add(descriptor);
 				}
 			}
@@ -151,8 +194,8 @@ public class ModelIOPlugin extends AbstractUIPlugin {
 		final List<IFileIODescriptor> fileIODescriptors = new ArrayList<IFileIODescriptor>();
 		for (final IFileIODescriptor descriptor : fileIOById.values()) {
 			if (descriptor.getExtension() != null) {
-				fileExtensions.put(descriptor.getExtension(), descriptor
-						.getLabel());
+				fileExtensions.put(descriptor.getExtension(),
+						descriptor.getLabel());
 				fileIODescriptors.add(descriptor);
 			}
 		}

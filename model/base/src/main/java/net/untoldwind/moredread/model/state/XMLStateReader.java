@@ -137,12 +137,10 @@ public class XMLStateReader implements IStateReader {
 		final Element objectElement = childIterator.next();
 		final String className = objectElement.attributeValue("class");
 		try {
+			final T instance = creator.createInstance((Class<T>) Class
+					.forName(className));
 			final XMLStateReader reader = new XMLStateReader(document,
 					objectElement);
-			final Class<T> clazz = (Class<T>) Class.forName(className);
-			final Constructor<T> constructor = clazz.getDeclaredConstructor();
-			constructor.setAccessible(true);
-			final T instance = constructor.newInstance();
 			instance.readState(reader);
 
 			return instance;

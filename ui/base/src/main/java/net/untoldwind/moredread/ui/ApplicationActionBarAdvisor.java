@@ -1,6 +1,7 @@
 package net.untoldwind.moredread.ui;
 
 import net.untoldwind.moredread.ui.actions.GlobalDeleteAction;
+import net.untoldwind.moredread.ui.actions.GlobalOpenFileAction;
 import net.untoldwind.moredread.ui.actions.GlobalRedoAction;
 import net.untoldwind.moredread.ui.actions.GlobalUndoAction;
 
@@ -38,6 +39,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	private IWorkbenchAction aboutAction;
 	private IWorkbenchAction newWindowAction;
 	private IWorkbenchAction newAction;
+	private IAction openFileAction;
 	private IWorkbenchAction saveAction;
 	private IWorkbenchAction saveAsAction;
 	private IAction undoAction;
@@ -73,6 +75,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 		newAction = ActionFactory.NEW.create(window);
 		register(newAction);
+
+		openFileAction = new GlobalOpenFileAction(window);
+		register(openFileAction);
 
 		saveAction = ActionFactory.SAVE.create(window);
 		register(saveAction);
@@ -122,6 +127,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 		// File
 		fileMenu.add(newAction);
+		fileMenu.add(openFileAction);
 		fileMenu.add(new Separator());
 		fileMenu.add(saveAction);
 		fileMenu.add(saveAsAction);
