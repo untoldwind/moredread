@@ -5,7 +5,9 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import net.untoldwind.moredread.model.math.Camera;
 import net.untoldwind.moredread.model.math.Quaternion;
+import net.untoldwind.moredread.model.math.Vector2;
 import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.renderer.SolidNodeRenderer;
 import net.untoldwind.moredread.model.renderer.SolidNodeRendererParam;
@@ -30,19 +32,26 @@ import com.jme.intersection.TrianglePickResults;
 import com.jme.math.FastMath;
 import com.jme.math.Ray;
 import com.jme.math.Vector2f;
+import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.state.BlendState;
 import com.jme.scene.state.BlendState.BlendEquation;
 import com.jme.scene.state.ZBufferState;
-import com.jme.system.canvas.SimpleCanvasImpl;
+import com.jme.system.DisplaySystem;
+import com.jme.system.canvas.JMECanvasImplementor;
 
-public class MDCanvasImplementor extends SimpleCanvasImpl implements IViewport {
+public class MDCanvasImplementor extends JMECanvasImplementor implements
+		IViewport {
 
 	private Quaternion rotQuat;
 	private Vector3 axis;
 	long startTime = 0;
 	long fps = 0;
 	private InputHandler input;
+
+	protected Node rootNode;
+
+	protected Camera cam;
 
 	Node controlsNode;
 	Node backdropNode;
@@ -61,12 +70,91 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements IViewport {
 
 	public MDCanvasImplementor(final int width, final int height,
 			final ISceneHolder sceneHolder) {
-		super(width, height);
+		this.width = width;
+		this.height = height;
 
 		this.sceneHolder = sceneHolder;
 	}
 
 	@Override
+	public Camera getCamera() {
+		return cam;
+	}
+
+	@Override
+	public void doSetup() {
+
+		final DisplaySystem display = DisplaySystem.getDisplaySystem();
+		renderer = display.getRenderer();
+
+		/**
+		 * Create a camera specific to the DisplaySystem that works with the
+		 * width and height
+		 */
+		cam = new Camera(renderer.createCamera(width, height));
+
+		/** Set up how our camera sees. */
+		cam.setFrustumPerspective(45.0f, (float) width / (float) height, 1,
+				1000);
+		final Vector3 loc = new Vector3(0.0f, 0.0f, 25.0f);
+		final Vector3 left = new Vector3(-1.0f, 0.0f, 0.0f);
+		final Vector3 up = new Vector3(0.0f, 1.0f, 0.0f);
+		final Vector3 dir = new Vector3(0.0f, 0f, -1.0f);
+		/** Move our camera to a correct place and orientation. */
+		cam.setFrame(loc, left, up, dir);
+		/** Signal that we've changed our camera's location/frustum. */
+		cam.update();
+		/** Assign the camera to this renderer. */
+		renderer.setCamera(cam.toJME());
+
+		/** Set a black background. */
+		renderer.setBackgroundColor(ColorRGBA.black.clone());
+
+		/** Create rootNode */
+		rootNode = new Node("rootNode");
+
+		/**
+		 * Create a ZBuffer to display pixels closest to the camera above
+		 * farther ones.
+		 */
+		final ZBufferState buf = renderer.createZBufferState();
+		buf.setEnabled(true);
+		buf.setFunction(ZBufferState.TestFunction.LessThanOrEqualTo);
+
+		rootNode.setRenderState(buf);
+
+		simpleSetup();
+
+		/**
+		 * Update geometric and rendering information for both the rootNode and
+		 * fpsNode.
+		 */
+		rootNode.updateGeometricState(0.0f, true);
+		rootNode.updateRenderState();
+
+		setup = true;
+	}
+
+	@Override
+	public void doUpdate() {
+		simpleUpdate();
+
+		getRootNode().updateGeometricState(0, true);
+		getRootNode().updateWorldBound();
+	}
+
+	@Override
+	public void doRender() {
+		renderer.clearBuffers();
+		renderer.draw(rootNode);
+		simpleRender();
+		renderer.displayBackBuffer();
+	}
+
+	public Node getRootNode() {
+		return rootNode;
+	}
+
 	public void simpleSetup() {
 		controlsNode = new Node("controlsNode");
 		backdropNode = new Node("backdropNode");
@@ -93,7 +181,7 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements IViewport {
 
 		startTime = System.currentTimeMillis() + 5000;
 
-		input = new FirstPersonHandler(cam, 50, 1);
+		input = new FirstPersonHandler(cam.toJME(), 50, 1);
 
 		controlsNode.updateGeometricState(0, true);
 		controlsNode.updateRenderState();
@@ -113,13 +201,12 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements IViewport {
 			for (final IModelControl modelControl : modelControls) {
 				modelControl.updatePositions();
 			}
-			controlsNode.updateGeometricState(tpf, true);
+			controlsNode.updateGeometricState(0, true);
 			controlsNode.updateWorldBound();
 		}
 
 	}
 
-	@Override
 	public void simpleUpdate() {
 		input.update(0.05f);
 
@@ -127,7 +214,7 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements IViewport {
 			modelControl.viewportChanged(this);
 		}
 
-		controlsNode.updateGeometricState(tpf, true);
+		controlsNode.updateGeometricState(0, true);
 		controlsNode.updateWorldBound();
 
 		rotQuat.fromAngleNormalAxis(1 * FastMath.DEG_TO_RAD, axis);
@@ -137,7 +224,6 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements IViewport {
 		backdropNode.updateRenderState();
 	}
 
-	@Override
 	public void simpleRender() {
 		if (updateNecessary) {
 			final SolidNodeRendererParam rendererParam = new SolidNodeRendererParam(
@@ -187,13 +273,13 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements IViewport {
 	}
 
 	@Override
-	public INode pickNode(final Vector2f screenCoord) {
+	public INode pickNode(final Vector2 screenCoord) {
+		final Vector2f screen = screenCoord.toJME();
 		final PickResults results = new TrianglePickResults();
 		final Ray ray = new Ray();
 
-		renderer.getCamera().getWorldCoordinates(screenCoord, 0, ray.origin);
-		renderer.getCamera()
-				.getWorldCoordinates(screenCoord, 0.3f, ray.direction)
+		renderer.getCamera().getWorldCoordinates(screen, 0, ray.origin);
+		renderer.getCamera().getWorldCoordinates(screen, 0.3f, ray.direction)
 				.subtractLocal(ray.origin).normalizeLocal();
 
 		results.setCheckDistance(true);
@@ -244,7 +330,7 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements IViewport {
 	public boolean handleMove(final int x, final int y,
 			final EnumSet<Modifier> modifiers) {
 		if (activeControlHandle != null) {
-			return activeControlHandle.handleMove(new Vector2f(x, height - y),
+			return activeControlHandle.handleMove(new Vector2(x, height - y),
 					modifiers);
 		}
 		return false;
@@ -253,7 +339,7 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements IViewport {
 	public void handleClick(final int x, final int y,
 			final EnumSet<Modifier> modifiers) {
 		if (activeControlHandle != null) {
-			activeControlHandle.handleClick(new Vector2f(x, height - y),
+			activeControlHandle.handleClick(new Vector2(x, height - y),
 					modifiers);
 		}
 
@@ -262,7 +348,7 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements IViewport {
 	public void handleDragStart(final int startX, final int startY,
 			final EnumSet<Modifier> modifiers) {
 		if (activeControlHandle != null) {
-			activeControlHandle.handleDragStart(new Vector2f(startX, height
+			activeControlHandle.handleDragStart(new Vector2(startX, height
 					- startY), modifiers);
 		}
 	}
@@ -270,23 +356,23 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements IViewport {
 	public void handleDragMove(final int startX, final int startY,
 			final int endX, final int endY, final EnumSet<Modifier> modifiers) {
 		if (activeControlHandle != null) {
-			activeControlHandle.handleDragMove(new Vector2f(startX, height
-					- startY), new Vector2f(endX, height - endY), modifiers);
+			activeControlHandle.handleDragMove(new Vector2(startX, height
+					- startY), new Vector2(endX, height - endY), modifiers);
 		}
 	}
 
 	public void handleDragEnd(final int startX, final int startY,
 			final int endX, final int endY, final EnumSet<Modifier> modifiers) {
 		if (activeControlHandle != null) {
-			activeControlHandle.handleDragEnd(new Vector2f(startX, height
-					- startY), new Vector2f(endX, height - endY), modifiers);
+			activeControlHandle.handleDragEnd(new Vector2(startX, height
+					- startY), new Vector2(endX, height - endY), modifiers);
 		}
 	}
 
 	public boolean findControl(final int x, final int y) {
 		IControlHandle foundHandle = null;
 		float minSalience = Float.MAX_VALUE;
-		final Vector2f screenCoord = new Vector2f(x, height - y);
+		final Vector2 screenCoord = new Vector2(x, height - y);
 		for (final IControlHandle controlHandle : getControlHandles()) {
 			final float salience = controlHandle.matches(screenCoord);
 			if (salience >= 0 && salience < minSalience) {

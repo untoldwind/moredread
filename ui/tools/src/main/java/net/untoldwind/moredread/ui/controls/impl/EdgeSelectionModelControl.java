@@ -3,6 +3,7 @@ package net.untoldwind.moredread.ui.controls.impl;
 import java.nio.FloatBuffer;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Camera;
 import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.EdgeId;
 import net.untoldwind.moredread.model.mesh.IEdge;
@@ -13,7 +14,6 @@ import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 
-import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Line;
 import com.jme.scene.Spatial;
@@ -141,10 +141,9 @@ public class EdgeSelectionModelControl extends Line implements IModelControl {
 				new Vector3());
 
 		if (lineControlHandle == null) {
-			lineControlHandle = new LineControlHandle(this, camera, v1.toJME(),
-					v2.toJME());
+			lineControlHandle = new LineControlHandle(this, camera, v1, v2);
 		} else {
-			lineControlHandle.update(camera, v1.toJME(), v2.toJME());
+			lineControlHandle.update(camera, v1, v2);
 		}
 	}
 

@@ -50,13 +50,13 @@ public enum CartesianPlane {
 		}
 	};
 
-	private Vector3f normal;
+	private Vector3 normal;
 
 	private CartesianPlane(final float x, final float y, final float z) {
-		this.normal = new Vector3f(x, y, z);
+		this.normal = new Vector3(x, y, z);
 	}
 
-	public Vector3f getNormal() {
+	public Vector3 getNormal() {
 		return normal;
 	}
 
@@ -66,7 +66,7 @@ public enum CartesianPlane {
 	public abstract Vector3 project(Vector3 center, Vector3 position, float u,
 			float v);
 
-	public static CartesianPlane choose(final Vector3f direction) {
+	public static CartesianPlane choose(final Vector3 direction) {
 		final float x = FastMath.abs(direction.x);
 		final float y = FastMath.abs(direction.y);
 		final float z = FastMath.abs(direction.z);

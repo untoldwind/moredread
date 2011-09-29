@@ -28,8 +28,7 @@ public class GridBackdrop extends Node {
 	}
 
 	public void updateGrid(final IViewport viewport) {
-		final Vector3 direction = new Vector3(viewport.getCamera()
-				.getDirection());
+		final Vector3 direction = viewport.getCamera().getDirection();
 		final Vector3 center = viewport.getBoundingBox().getCenter();
 
 		direction.x = FastMath.sign(direction.x);

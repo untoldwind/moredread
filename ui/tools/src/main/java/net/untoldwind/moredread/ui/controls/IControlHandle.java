@@ -2,7 +2,7 @@ package net.untoldwind.moredread.ui.controls;
 
 import java.util.EnumSet;
 
-import com.jme.math.Vector2f;
+import net.untoldwind.moredread.model.math.Vector2;
 
 public interface IControlHandle {
 	float MAX_SALIENCE = 0.0f;
@@ -18,20 +18,19 @@ public interface IControlHandle {
 	 *         will be considered valid, i.e. returning a 0 is considered to be
 	 *         highest saliance of all.
 	 */
-	float matches(Vector2f screenCoord);
+	float matches(Vector2 screenCoord);
 
 	void setActive(boolean active);
 
-	boolean handleMove(Vector2f position, EnumSet<Modifier> modifiers);
+	boolean handleMove(Vector2 position, EnumSet<Modifier> modifiers);
 
-	boolean handleClick(Vector2f position, EnumSet<Modifier> modifiers);
+	boolean handleClick(Vector2 position, EnumSet<Modifier> modifiers);
 
-	boolean handleDragStart(Vector2f dragStart,
+	boolean handleDragStart(Vector2 dragStart, final EnumSet<Modifier> modifiers);
+
+	boolean handleDragMove(Vector2 dragStart, Vector2 dragEnd,
 			final EnumSet<Modifier> modifiers);
 
-	boolean handleDragMove(Vector2f dragStart, Vector2f dragEnd,
-			final EnumSet<Modifier> modifiers);
-
-	boolean handleDragEnd(Vector2f dragStart, Vector2f dragEnd,
+	boolean handleDragEnd(Vector2 dragStart, Vector2 dragEnd,
 			final EnumSet<Modifier> modifiers);
 }

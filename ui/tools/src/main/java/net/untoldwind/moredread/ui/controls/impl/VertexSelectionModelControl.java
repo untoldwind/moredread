@@ -3,6 +3,7 @@ package net.untoldwind.moredread.ui.controls.impl;
 import java.nio.FloatBuffer;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Camera;
 import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IPoint;
 import net.untoldwind.moredread.model.mesh.IVertexGeometry;
@@ -12,7 +13,6 @@ import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 
-import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Point;
 import com.jme.scene.Spatial;
@@ -131,9 +131,9 @@ public class VertexSelectionModelControl extends Point implements IModelControl 
 		final Vector3 v = node.localToWorld(vertex.getPoint(), new Vector3());
 
 		if (pointControlHandle == null) {
-			pointControlHandle = new PointControlHandle(this, camera, v.toJME());
+			pointControlHandle = new PointControlHandle(this, camera, v);
 		} else {
-			pointControlHandle.update(camera, v.toJME());
+			pointControlHandle.update(camera, v);
 		}
 	}
 

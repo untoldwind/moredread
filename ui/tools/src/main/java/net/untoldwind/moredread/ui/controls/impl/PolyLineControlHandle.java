@@ -4,31 +4,30 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Camera;
+import net.untoldwind.moredread.model.math.Vector2;
 import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.Modifier;
 
 import com.jme.math.FastMath;
-import com.jme.math.Vector2f;
-import com.jme.math.Vector3f;
-import com.jme.renderer.Camera;
 
 public class PolyLineControlHandle implements IControlHandle {
 	private final IModelControl modelControl;
 	private float salience;
 	private final Float fixedSalience;
-	private List<Vector3f> worldPoints;
-	private List<Vector2f> screenPoints;
-	private Vector2f center;
+	private List<Vector3> worldPoints;
+	private List<Vector2> screenPoints;
+	private Vector2 center;
 
 	public PolyLineControlHandle(final IModelControl modelControl,
-			final Camera camera, final List<Vector3f> points) {
+			final Camera camera, final List<Vector3> points) {
 		this(modelControl, camera, points, null);
 	}
 
 	public PolyLineControlHandle(final IModelControl modelControl,
-			final Camera camera, final List<Vector3f> points,
+			final Camera camera, final List<Vector3> points,
 			final Float fixedSalience) {
 		this.modelControl = modelControl;
 		this.fixedSalience = fixedSalience;
@@ -37,12 +36,12 @@ public class PolyLineControlHandle implements IControlHandle {
 	}
 
 	@Override
-	public float matches(final Vector2f screenCoord) {
+	public float matches(final Vector2 screenCoord) {
 		for (int i = 1; i < screenPoints.size(); i++) {
-			final Vector2f previous = screenPoints.get(i - 1);
-			final Vector2f current = screenPoints.get(i);
-			final Vector2f direction = current.subtract(previous);
-			final Vector2f diff = screenCoord.subtract(center);
+			final Vector2 previous = screenPoints.get(i - 1);
+			final Vector2 current = screenPoints.get(i);
+			final Vector2 direction = current.subtract(previous);
+			final Vector2 diff = screenCoord.subtract(center);
 
 			final float s = intersection(previous, direction, center, diff);
 
@@ -64,7 +63,7 @@ public class PolyLineControlHandle implements IControlHandle {
 	}
 
 	@Override
-	public boolean handleMove(final Vector2f position,
+	public boolean handleMove(final Vector2 position,
 			final EnumSet<Modifier> modifiers) {
 		final Vector3 point = project(position);
 
@@ -76,7 +75,7 @@ public class PolyLineControlHandle implements IControlHandle {
 	}
 
 	@Override
-	public boolean handleClick(final Vector2f position,
+	public boolean handleClick(final Vector2 position,
 			final EnumSet<Modifier> modifiers) {
 		final Vector3 point = project(position);
 
@@ -88,7 +87,7 @@ public class PolyLineControlHandle implements IControlHandle {
 	}
 
 	@Override
-	public boolean handleDragStart(final Vector2f dragStart,
+	public boolean handleDragStart(final Vector2 dragStart,
 			final EnumSet<Modifier> modifiers) {
 		final Vector3 point = project(dragStart);
 
@@ -100,8 +99,8 @@ public class PolyLineControlHandle implements IControlHandle {
 	}
 
 	@Override
-	public boolean handleDragMove(final Vector2f dragStart,
-			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
+	public boolean handleDragMove(final Vector2 dragStart,
+			final Vector2 dragEnd, final EnumSet<Modifier> modifiers) {
 		final Vector3 point1 = project(dragStart);
 		final Vector3 point2 = project(dragEnd);
 
@@ -113,8 +112,8 @@ public class PolyLineControlHandle implements IControlHandle {
 	}
 
 	@Override
-	public boolean handleDragEnd(final Vector2f dragStart,
-			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
+	public boolean handleDragEnd(final Vector2 dragStart,
+			final Vector2 dragEnd, final EnumSet<Modifier> modifiers) {
 		final Vector3 point1 = project(dragStart);
 		final Vector3 point2 = project(dragEnd);
 
@@ -125,17 +124,17 @@ public class PolyLineControlHandle implements IControlHandle {
 				point1, point2, modifiers);
 	}
 
-	public void update(final Camera camera, final List<Vector3f> points) {
+	public void update(final Camera camera, final List<Vector3> points) {
 		this.worldPoints = points;
-		this.screenPoints = new ArrayList<Vector2f>(points.size());
+		this.screenPoints = new ArrayList<Vector2>(points.size());
 		int count = 0;
 
 		this.salience = 0;
 
-		this.center = new Vector2f();
-		for (final Vector3f point : points) {
-			final Vector3f screenPoint3 = camera.getScreenCoordinates(point);
-			final Vector2f screenPoint = new Vector2f(screenPoint3.x,
+		this.center = new Vector2();
+		for (final Vector3 point : points) {
+			final Vector3 screenPoint3 = camera.getScreenCoordinates(point);
+			final Vector2 screenPoint = new Vector2(screenPoint3.x,
 					screenPoint3.y);
 			this.screenPoints.add(screenPoint);
 			this.center.addLocal(screenPoint);
@@ -148,12 +147,12 @@ public class PolyLineControlHandle implements IControlHandle {
 		}
 	}
 
-	private Vector3 project(final Vector2f screenCoord) {
+	private Vector3 project(final Vector2 screenCoord) {
 		for (int i = 1; i < screenPoints.size(); i++) {
-			final Vector2f previous = screenPoints.get(i - 1);
-			final Vector2f current = screenPoints.get(i);
-			final Vector2f direction = current.subtract(previous);
-			final Vector2f diff = screenCoord.subtract(center);
+			final Vector2 previous = screenPoints.get(i - 1);
+			final Vector2 current = screenPoints.get(i);
+			final Vector2 direction = current.subtract(previous);
+			final Vector2 diff = screenCoord.subtract(center);
 
 			final float s = intersection(previous, direction, center, diff);
 
@@ -166,8 +165,8 @@ public class PolyLineControlHandle implements IControlHandle {
 		return null;
 	}
 
-	private float intersection(final Vector2f v1, final Vector2f dir1,
-			final Vector2f v2, final Vector2f dir2) {
+	private float intersection(final Vector2 v1, final Vector2 dir1,
+			final Vector2 v2, final Vector2 dir2) {
 		final float det = dir1.x * dir2.y - dir1.y * dir2.x;
 
 		if (FastMath.abs(det) < FastMath.ZERO_TOLERANCE) {

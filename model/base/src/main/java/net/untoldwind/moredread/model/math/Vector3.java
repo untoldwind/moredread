@@ -3,6 +3,7 @@ package net.untoldwind.moredread.model.math;
 import com.jme.math.Vector3f;
 
 public class Vector3 implements Cloneable {
+	public final static Vector3 ZERO = new Vector3(0, 0, 0);
 	public float x;
 	public float y;
 	public float z;

@@ -2,30 +2,28 @@ package net.untoldwind.moredread.ui.controls.impl;
 
 import java.util.EnumSet;
 
+import net.untoldwind.moredread.model.math.Camera;
+import net.untoldwind.moredread.model.math.Vector2;
 import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.Modifier;
 
-import com.jme.math.Vector2f;
-import com.jme.math.Vector3f;
-import com.jme.renderer.Camera;
-
 public class PointControlHandle implements IControlHandle {
 	private final IModelControl modelControl;
-	private Vector3f worldPosition;
-	private Vector2f screenPosition;
+	private Vector3 worldPosition;
+	private Vector2 screenPosition;
 	private float salience;
 
 	public PointControlHandle(final IModelControl modelControl,
-			final Camera camera, final Vector3f worldPosition) {
+			final Camera camera, final Vector3 worldPosition) {
 		this.modelControl = modelControl;
 
 		update(camera, worldPosition);
 	}
 
 	@Override
-	public float matches(final Vector2f screenCoord) {
+	public float matches(final Vector2 screenCoord) {
 		if (screenPosition.distanceSquared(screenCoord) <= 25f) {
 			return salience;
 		}
@@ -33,12 +31,12 @@ public class PointControlHandle implements IControlHandle {
 		return -1;
 	}
 
-	public void update(final Camera camera, final Vector3f worldPosition) {
+	public void update(final Camera camera, final Vector3 worldPosition) {
 		this.worldPosition = worldPosition;
-		final Vector3f screenPosition = camera
+		final Vector3 screenPosition = camera
 				.getScreenCoordinates(worldPosition);
 
-		this.screenPosition = new Vector2f(screenPosition.x, screenPosition.y);
+		this.screenPosition = new Vector2(screenPosition.x, screenPosition.y);
 		this.salience = screenPosition.z;
 	}
 
@@ -48,7 +46,7 @@ public class PointControlHandle implements IControlHandle {
 	}
 
 	@Override
-	public boolean handleMove(final Vector2f position,
+	public boolean handleMove(final Vector2 position,
 			final EnumSet<Modifier> modifiers) {
 		// TODO: Project this?
 		return modelControl.getToolAdapter().handleMove(modelControl,
@@ -56,14 +54,14 @@ public class PointControlHandle implements IControlHandle {
 	}
 
 	@Override
-	public boolean handleClick(final Vector2f position,
+	public boolean handleClick(final Vector2 position,
 			final EnumSet<Modifier> modifiers) {
 		return modelControl.getToolAdapter().handleClick(modelControl,
 				new Vector3(worldPosition), modifiers);
 	}
 
 	@Override
-	public boolean handleDragStart(final Vector2f dragStart,
+	public boolean handleDragStart(final Vector2 dragStart,
 			final EnumSet<Modifier> modifiers) {
 		// TODO: Project this?
 		return modelControl.getToolAdapter().handleDragStart(modelControl,
@@ -72,8 +70,8 @@ public class PointControlHandle implements IControlHandle {
 	}
 
 	@Override
-	public boolean handleDragMove(final Vector2f dragStart,
-			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
+	public boolean handleDragMove(final Vector2 dragStart,
+			final Vector2 dragEnd, final EnumSet<Modifier> modifiers) {
 		// TODO: Project this?
 		return modelControl.getToolAdapter().handleDragMove(modelControl,
 				new Vector3(dragStart.x, dragStart.y, 0),
@@ -82,8 +80,8 @@ public class PointControlHandle implements IControlHandle {
 	}
 
 	@Override
-	public boolean handleDragEnd(final Vector2f dragStart,
-			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
+	public boolean handleDragEnd(final Vector2 dragStart,
+			final Vector2 dragEnd, final EnumSet<Modifier> modifiers) {
 		// TODO: Project this?
 		return modelControl.getToolAdapter().handleDragEnd(modelControl,
 				new Vector3(dragStart.x, dragStart.y, 0),

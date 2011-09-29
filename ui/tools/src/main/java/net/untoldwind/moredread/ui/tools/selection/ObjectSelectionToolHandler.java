@@ -8,6 +8,7 @@ import java.util.Map;
 
 import net.untoldwind.moredread.annotations.Singleton;
 import net.untoldwind.moredread.model.math.Quaternion;
+import net.untoldwind.moredread.model.math.Vector2;
 import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 import net.untoldwind.moredread.model.scene.INode;
@@ -23,7 +24,6 @@ import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 import net.untoldwind.moredread.ui.tools.spi.IToolHandler;
 
 import com.jme.math.FastMath;
-import com.jme.math.Vector2f;
 
 @Singleton
 public class ObjectSelectionToolHandler implements IToolHandler {
@@ -88,7 +88,7 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 		public boolean handleClick(final IModelControl modelControl,
 				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			if (modifiers.contains(Modifier.LEFT_MOUSE_BUTTON)) {
-				final INode node = viewport.pickNode(new Vector2f(point.x,
+				final INode node = viewport.pickNode(new Vector2(point.x,
 						point.y));
 
 				if (node != null) {

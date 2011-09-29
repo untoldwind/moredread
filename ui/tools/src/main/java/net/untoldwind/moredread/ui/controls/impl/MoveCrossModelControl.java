@@ -1,6 +1,7 @@
 package net.untoldwind.moredread.ui.controls.impl;
 
 import net.untoldwind.moredread.model.enums.CartesianDirection;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
@@ -49,11 +50,11 @@ public class MoveCrossModelControl extends CompositeModelControl implements
 
 	@Override
 	public void viewportChanged(final IViewport viewport) {
-		final Vector3f worldCenter = getWorldTranslation();
-		final Vector3f center = viewport.getCamera().getScreenCoordinates(
+		final Vector3 worldCenter = new Vector3(getWorldTranslation());
+		final Vector3 center = viewport.getCamera().getScreenCoordinates(
 				worldCenter);
 		worldCenter.addLocal(viewport.getCamera().getUp());
-		final Vector3f up = viewport.getCamera().getScreenCoordinates(
+		final Vector3 up = viewport.getCamera().getScreenCoordinates(
 				worldCenter);
 
 		final float dist = (center.x - up.x) * (center.x - up.x)

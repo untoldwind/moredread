@@ -3,13 +3,14 @@ package net.untoldwind.moredread.ui.controls.impl;
 import java.util.List;
 
 import net.untoldwind.moredread.model.enums.CartesianDirection;
+import net.untoldwind.moredread.model.math.Camera;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 
 import com.jme.math.Vector3f;
-import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Line;
 import com.jme.scene.Node;
@@ -111,16 +112,15 @@ public class DirectionArrowModelControl extends Node implements IModelControl {
 	}
 
 	void updateHandle(final Camera camera) {
-		final Vector3f worldCenter = getWorldTranslation();
+		final Vector3 worldCenter = new Vector3(getWorldTranslation());
 
 		if (lineControlHandle == null) {
 			lineControlHandle = new LineControlHandle(this, camera,
-					worldCenter, worldCenter.add(direction
-							.project(getWorldScale())),
-					IControlHandle.MAX_SALIENCE);
+					worldCenter, worldCenter.add(direction.project(new Vector3(
+							getWorldScale()))), IControlHandle.MAX_SALIENCE);
 		} else {
-			lineControlHandle.update(camera, worldCenter,
-					worldCenter.add(direction.project(getWorldScale())));
+			lineControlHandle.update(camera, worldCenter, worldCenter
+					.add(direction.project(new Vector3(getWorldScale()))));
 		}
 	}
 }

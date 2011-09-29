@@ -71,7 +71,7 @@ public class PlaneRestrictedModelControl extends Node implements IModelControl {
 
 	@Override
 	public void updatePositions() {
-		controlHandle.setPosition(toolAdapter.getCenter().toJME());
+		controlHandle.setPosition(toolAdapter.getCenter());
 
 		updateBackdrop();
 	}

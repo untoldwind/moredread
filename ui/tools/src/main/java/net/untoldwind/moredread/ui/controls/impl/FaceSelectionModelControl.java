@@ -5,6 +5,7 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Camera;
 import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.FaceId;
 import net.untoldwind.moredread.model.mesh.IMesh;
@@ -18,8 +19,6 @@ import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 
-import com.jme.math.Vector3f;
-import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Spatial;
 import com.jme.scene.TriMesh;
@@ -136,11 +135,10 @@ public class FaceSelectionModelControl extends TriMesh implements IModelControl 
 	void updateHandle(final Camera camera) {
 		final IMesh mesh = node.getGeometry();
 		final IPolygon face = mesh.getFace(faceIndex);
-		final List<Vector3f> points = new ArrayList<Vector3f>();
+		final List<Vector3> points = new ArrayList<Vector3>();
 
 		for (final IPoint vertex : face.getVertices()) {
-			points.add(node.localToWorld(vertex.getPoint(), new Vector3())
-					.toJME());
+			points.add(node.localToWorld(vertex.getPoint(), new Vector3()));
 		}
 
 		if (polygonControlHandle == null) {
