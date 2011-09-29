@@ -1,10 +1,8 @@
 package net.untoldwind.moredread.ui.input.event;
 
+import net.untoldwind.moredread.model.math.Camera;
+import net.untoldwind.moredread.model.math.Matrix3;
 import net.untoldwind.moredread.model.math.Vector3;
-
-import com.jme.math.Matrix3f;
-import com.jme.math.Vector3f;
-import com.jme.renderer.Camera;
 
 public class RotateAroundXCameraUpdate implements ICameraUpdate {
 	private final float amount;
@@ -32,23 +30,22 @@ public class RotateAroundXCameraUpdate implements ICameraUpdate {
 
 	@Override
 	public void updateComera(final Camera camera) {
-		final Matrix3f incr = new Matrix3f();
+		final Matrix3 incr = new Matrix3();
 
 		if (lockAxis == null) {
 			incr.fromAngleNormalAxis(amount, camera.getUp());
 		} else {
-			incr.fromAngleNormalAxis(amount, lockAxis.toJME());
+			incr.fromAngleNormalAxis(amount, lockAxis);
 		}
 
-		final Vector3f lookDir = camera.getLocation().subtract(
-				rotateCenter.toJME());
+		final Vector3 lookDir = camera.getLocation().subtract(rotateCenter);
 
 		incr.mult(lookDir, lookDir);
-		lookDir.add(rotateCenter.toJME(), camera.getLocation());
+		camera.setLocation(lookDir.add(rotateCenter));
 
-		incr.mult(camera.getUp(), camera.getUp());
-		incr.mult(camera.getLeft(), camera.getLeft());
-		incr.mult(camera.getDirection(), camera.getDirection());
+		camera.setUp(incr.mult(camera.getUp()));
+		camera.setLeft(incr.mult(camera.getLeft()));
+		camera.setDirection(incr.mult(camera.getDirection()));
 		camera.normalize();
 		camera.update();
 	}

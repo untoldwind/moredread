@@ -5,6 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.untoldwind.moredread.model.math.Camera;
 import net.untoldwind.moredread.ui.input.event.ICameraUpdate;
 import net.untoldwind.moredread.ui.input.event.IUIInputReceiver;
 
@@ -18,7 +19,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 
 import com.jme.input.InputSystem;
-import com.jme.renderer.Camera;
 import com.jme.system.DisplaySystem;
 import com.jme.system.canvas.JMECanvas;
 import com.jme.system.canvas.JMECanvasImplementor;
@@ -170,7 +170,7 @@ public class MDCanvas extends GLCanvas implements JMECanvas, IUIInputReceiver {
 		final Callable<?> exe = new Callable<Object>() {
 			public Object call() {
 				if (impl != null && impl.getRenderer() != null) {
-					final Camera camera = impl.getRenderer().getCamera();
+					final Camera camera = impl.getCamera();
 
 					update.updateComera(camera);
 					camera.apply();

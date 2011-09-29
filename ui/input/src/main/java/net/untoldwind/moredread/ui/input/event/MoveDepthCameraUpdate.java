@@ -1,7 +1,7 @@
 package net.untoldwind.moredread.ui.input.event;
 
-import com.jme.math.Vector3f;
-import com.jme.renderer.Camera;
+import net.untoldwind.moredread.model.math.Camera;
+import net.untoldwind.moredread.model.math.Vector3;
 
 public class MoveDepthCameraUpdate implements ICameraUpdate {
 
@@ -13,14 +13,13 @@ public class MoveDepthCameraUpdate implements ICameraUpdate {
 
 	@Override
 	public void updateComera(final Camera camera) {
-		final Vector3f loc = camera.getLocation();
+		final Vector3 loc = camera.getLocation();
 		if (!camera.isParallelProjection()) {
-			loc.addLocal(camera.getDirection().mult(amount));
+			camera.setLocation(loc.add(camera.getDirection().mult(amount)));
 		} else {
 			// move up instead of forward if in parallel mode
-			loc.addLocal(camera.getUp().mult(amount));
+			camera.setLocation(loc.add(camera.getUp().mult(amount)));
 		}
 		camera.update();
 	}
-
 }

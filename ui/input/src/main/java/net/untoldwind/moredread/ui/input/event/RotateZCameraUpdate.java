@@ -1,7 +1,7 @@
 package net.untoldwind.moredread.ui.input.event;
 
-import com.jme.math.Matrix3f;
-import com.jme.renderer.Camera;
+import net.untoldwind.moredread.model.math.Camera;
+import net.untoldwind.moredread.model.math.Matrix3;
 
 public class RotateZCameraUpdate implements ICameraUpdate {
 	private final float amount;
@@ -12,12 +12,12 @@ public class RotateZCameraUpdate implements ICameraUpdate {
 
 	@Override
 	public void updateComera(final Camera camera) {
-		final Matrix3f incr = new Matrix3f();
+		final Matrix3 incr = new Matrix3();
 		incr.fromAngleNormalAxis(amount, camera.getDirection());
 
-		incr.mult(camera.getLeft(), camera.getLeft());
-		incr.mult(camera.getDirection(), camera.getDirection());
-		incr.mult(camera.getUp(), camera.getUp());
+		camera.setLeft(incr.mult(camera.getLeft()));
+		camera.setDirection(incr.mult(camera.getDirection()));
+		camera.setUp(incr.mult(camera.getUp()));
 		camera.normalize();
 		camera.update();
 	}

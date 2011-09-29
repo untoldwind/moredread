@@ -26,16 +26,8 @@ public class Camera {
 				direction.toJME());
 	}
 
-	public void update() {
-		delegate.update();
-	}
-
-	public Vector3 getUp() {
-		return new Vector3(delegate.getUp());
-	}
-
-	public com.jme.renderer.Camera toJME() {
-		return delegate;
+	public Vector3 getLocation() {
+		return new Vector3(delegate.getLocation());
 	}
 
 	public Vector3 getWorldCoordinates(final Vector2 scenePosition,
@@ -43,4 +35,49 @@ public class Camera {
 		return new Vector3(delegate.getWorldCoordinates(scenePosition.toJME(),
 				zPos));
 	}
+
+	public Vector3 getLeft() {
+		return new Vector3(delegate.getLeft());
+	}
+
+	public Vector3 getUp() {
+		return new Vector3(delegate.getUp());
+	}
+
+	public void normalize() {
+		delegate.normalize();
+	}
+
+	public void update() {
+		delegate.update();
+	}
+
+	public void apply() {
+		delegate.apply();
+	}
+
+	public boolean isParallelProjection() {
+		return delegate.isParallelProjection();
+	}
+
+	public void setDirection(final Vector3 direction) {
+		delegate.setDirection(direction.toJME());
+	}
+
+	public void setUp(final Vector3 up) {
+		delegate.setUp(up.toJME());
+	}
+
+	public void setLeft(final Vector3 left) {
+		delegate.setLeft(left.toJME());
+	}
+
+	public void setLocation(final Vector3 location) {
+		delegate.setLocation(location.toJME());
+	}
+
+	public com.jme.renderer.Camera toJME() {
+		return delegate;
+	}
+
 }

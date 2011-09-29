@@ -1,7 +1,7 @@
 package net.untoldwind.moredread.ui.input.event;
 
-import com.jme.math.Vector3f;
-import com.jme.renderer.Camera;
+import net.untoldwind.moredread.model.math.Camera;
+import net.untoldwind.moredread.model.math.Vector3;
 
 public class MoveHorizontalCameraUpdate implements ICameraUpdate {
 
@@ -13,8 +13,8 @@ public class MoveHorizontalCameraUpdate implements ICameraUpdate {
 
 	@Override
 	public void updateComera(final Camera camera) {
-		final Vector3f loc = camera.getLocation();
-		loc.addLocal(camera.getLeft().mult(amount));
+		final Vector3 loc = camera.getLocation();
+		camera.setLocation(loc.add(camera.getLeft().mult(amount)));
 		camera.update();
 
 	}
