@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 import net.untoldwind.moredread.model.generator.AbstractCenterSizeGenerator;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.ui.controls.IModelControl;
@@ -16,7 +17,6 @@ import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 import net.untoldwind.moredread.ui.tools.spi.IToolHandler;
 
 import com.jme.math.FastMath;
-import com.jme.math.Vector3f;
 
 public abstract class AbstractCenterSizeCreationToolHandler implements
 		IToolHandler {
@@ -61,7 +61,7 @@ public abstract class AbstractCenterSizeCreationToolHandler implements
 	public abstract class AbstractCenterSizeCreationToolAdapter implements
 			IToolAdapter {
 		Scene scene;
-		Vector3f position = new Vector3f();
+		Vector3 position = new Vector3();
 		AbstractCenterSizeGenerator generator;
 		GeneratorNode node;
 
@@ -70,21 +70,21 @@ public abstract class AbstractCenterSizeCreationToolHandler implements
 		}
 
 		protected abstract AbstractCenterSizeGenerator createGenerator(
-				Vector3f point);
+				Vector3 point);
 
 		@Override
-		public Vector3f getCenter() {
+		public Vector3 getCenter() {
 			return position;
 		}
 
 		@Override
-		public Vector3f getFeedbackPoint() {
+		public Vector3 getFeedbackPoint() {
 			return getCenter();
 		}
 
 		@Override
 		public boolean handleClick(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			if (node == null) {
 				generator = createGenerator(point);
 
@@ -117,7 +117,7 @@ public abstract class AbstractCenterSizeCreationToolHandler implements
 
 		@Override
 		public boolean handleMove(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			this.position.set(point);
 
 			modelControl.updatePositions();
@@ -139,25 +139,25 @@ public abstract class AbstractCenterSizeCreationToolHandler implements
 
 		@Override
 		public boolean handleDragStart(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
 		@Override
 		public boolean handleDragMove(final IModelControl modelControl,
-				final Vector3f dragStart, final Vector3f dragEnd,
+				final Vector3 dragStart, final Vector3 dragEnd,
 				final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
 		@Override
 		public boolean handleDragEnd(final IModelControl modelControl,
-				final Vector3f dragStart, final Vector3f dragEnd,
+				final Vector3 dragStart, final Vector3 dragEnd,
 				final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
-		private float maxDistance(final Vector3f p1, final Vector3f p2) {
+		private float maxDistance(final Vector3 p1, final Vector3 p2) {
 			final float sizeX = FastMath.abs(p1.x - p2.x);
 			final float sizeY = FastMath.abs(p1.y - p2.y);
 			final float sizeZ = FastMath.abs(p1.z - p2.z);

@@ -41,7 +41,7 @@ public class Grid extends EdgeGeometry<IGrid> implements IGrid {
 		final int numVerices = reader.readInt();
 
 		for (int i = 0; i < numVerices; i++) {
-			addVertex(reader.readVector3f(), false);
+			addVertex(reader.readVector3(), false);
 		}
 
 		final int numEdges = reader.readInt();
@@ -58,7 +58,7 @@ public class Grid extends EdgeGeometry<IGrid> implements IGrid {
 	public void writeState(final IStateWriter writer) throws IOException {
 		writer.writeInt("numVerices", vertices.size());
 		for (final IPoint vertex : vertices) {
-			writer.writeVector3f("vertex", vertex.getPoint());
+			writer.writeVector3("vertex", vertex.getPoint());
 		}
 		writer.writeInt("numEdges", edges.size());
 		for (final IEdge edge : edges.values()) {

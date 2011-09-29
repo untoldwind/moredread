@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.untoldwind.moredread.model.enums.GeometryType;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IEdge;
 import net.untoldwind.moredread.model.mesh.IFace;
 import net.untoldwind.moredread.model.mesh.IPoint;
@@ -19,76 +20,74 @@ import net.untoldwind.moredread.model.transform.ITransformation;
 
 import org.junit.Test;
 
-import com.jme.math.Vector3f;
-
 public class VertexSetTest {
 	@Test
 	public void testSimple() throws Exception {
 		final VertexSet vertexSet = new VertexSet();
 
-		vertexSet.addVertex(new TestVertex(new Vector3f(0, 0, 0), 0));
-		vertexSet.addVertex(new TestVertex(new Vector3f(1, 0, 0), 1));
-		vertexSet.addVertex(new TestVertex(new Vector3f(0, 1, 0), 2));
-		vertexSet.addVertex(new TestVertex(new Vector3f(0, 0, 1), 3));
-		vertexSet.addVertex(new TestVertex(new Vector3f(1, 1, 0), 4));
-		vertexSet.addVertex(new TestVertex(new Vector3f(1, 0, 1), 5));
-		vertexSet.addVertex(new TestVertex(new Vector3f(0, 1, 1), 6));
-		vertexSet.addVertex(new TestVertex(new Vector3f(-1, 0, 0), 7));
+		vertexSet.addVertex(new TestVertex(new Vector3(0, 0, 0), 0));
+		vertexSet.addVertex(new TestVertex(new Vector3(1, 0, 0), 1));
+		vertexSet.addVertex(new TestVertex(new Vector3(0, 1, 0), 2));
+		vertexSet.addVertex(new TestVertex(new Vector3(0, 0, 1), 3));
+		vertexSet.addVertex(new TestVertex(new Vector3(1, 1, 0), 4));
+		vertexSet.addVertex(new TestVertex(new Vector3(1, 0, 1), 5));
+		vertexSet.addVertex(new TestVertex(new Vector3(0, 1, 1), 6));
+		vertexSet.addVertex(new TestVertex(new Vector3(-1, 0, 0), 7));
 
-		IVertex found = vertexSet.findVertex(new Vector3f(0, 0, 0));
+		IVertex found = vertexSet.findVertex(new Vector3(0, 0, 0));
 		assertNotNull(found);
 		assertEquals(0, found.getIndex());
-		found = vertexSet.findVertex(new Vector3f(0.000009f, 0, 0));
+		found = vertexSet.findVertex(new Vector3(0.000009f, 0, 0));
 		assertNotNull(found);
 		assertEquals(0, found.getIndex());
-		found = vertexSet.findVertex(new Vector3f(0.000009f, -0.000009f, 0));
+		found = vertexSet.findVertex(new Vector3(0.000009f, -0.000009f, 0));
 		assertNotNull(found);
 		assertEquals(0, found.getIndex());
-		found = vertexSet.findVertex(new Vector3f(0.000009f, -0.000009f,
+		found = vertexSet.findVertex(new Vector3(0.000009f, -0.000009f,
 				-0.000009f));
 		assertNotNull(found);
 		assertEquals(0, found.getIndex());
-		found = vertexSet.findVertex(new Vector3f(1.000009f, -0.000009f,
+		found = vertexSet.findVertex(new Vector3(1.000009f, -0.000009f,
 				-0.000009f));
 		assertNotNull(found);
 		assertEquals(1, found.getIndex());
-		found = vertexSet.findVertex(new Vector3f(-0.000009f, 0.999991f,
+		found = vertexSet.findVertex(new Vector3(-0.000009f, 0.999991f,
 				-0.000009f));
 		assertNotNull(found);
 		assertEquals(2, found.getIndex());
-		found = vertexSet.findVertex(new Vector3f(-0.000009f, 0.000009f,
+		found = vertexSet.findVertex(new Vector3(-0.000009f, 0.000009f,
 				1.000009f));
 		assertNotNull(found);
 		assertEquals(3, found.getIndex());
-		found = vertexSet.findVertex(new Vector3f(1.000009f, 0.999991f,
+		found = vertexSet.findVertex(new Vector3(1.000009f, 0.999991f,
 				0.000009f));
 		assertNotNull(found);
 		assertEquals(4, found.getIndex());
-		found = vertexSet.findVertex(new Vector3f(1.000009f, 0.000009f,
+		found = vertexSet.findVertex(new Vector3(1.000009f, 0.000009f,
 				0.999991f));
 		assertNotNull(found);
 		assertEquals(5, found.getIndex());
-		found = vertexSet.findVertex(new Vector3f(-0.000009f, 1.000009f,
+		found = vertexSet.findVertex(new Vector3(-0.000009f, 1.000009f,
 				0.999991f));
 		assertNotNull(found);
 		assertEquals(6, found.getIndex());
-		found = vertexSet.findVertex(new Vector3f(-1.000009f, -0.000009f,
+		found = vertexSet.findVertex(new Vector3(-1.000009f, -0.000009f,
 				-0.000009f));
 		assertNotNull(found);
 		assertEquals(7, found.getIndex());
 	}
 
 	private static class TestVertex implements IVertex {
-		private final Vector3f point;
+		private final Vector3 point;
 		private final int index;
 
-		public TestVertex(final Vector3f point, final int index) {
+		public TestVertex(final Vector3 point, final int index) {
 			this.point = point;
 			this.index = index;
 		}
 
 		@Override
-		public Vector3f getPoint() {
+		public Vector3 getPoint() {
 			return point;
 		}
 

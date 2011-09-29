@@ -2,6 +2,7 @@ package net.untoldwind.moredread.ui.controls.impl;
 
 import java.util.EnumSet;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.Modifier;
@@ -82,7 +83,8 @@ public class LineControlHandle implements IControlHandle {
 		final float amount = diff.dot(screenDirection)
 				/ screenDirection.lengthSquared();
 
-		final Vector3f v = worldDirection.mult(amount).addLocal(moveStart);
+		final Vector3 v = new Vector3(worldDirection.mult(amount).addLocal(
+				modelControl.getToolAdapter().getCenter().toJME()));
 
 		return modelControl.getToolAdapter().handleMove(modelControl, v,
 				modifiers);
@@ -95,7 +97,8 @@ public class LineControlHandle implements IControlHandle {
 		final float amount = diff.dot(screenDirection)
 				/ screenDirection.lengthSquared();
 
-		final Vector3f v = worldDirection.mult(amount).addLocal(moveStart);
+		final Vector3 v = new Vector3(worldDirection.mult(amount).addLocal(
+				modelControl.getToolAdapter().getCenter().toJME()));
 
 		return modelControl.getToolAdapter().handleClick(modelControl, v,
 				modifiers);
@@ -105,13 +108,14 @@ public class LineControlHandle implements IControlHandle {
 	public boolean handleDragStart(final Vector2f dragStart,
 			final EnumSet<Modifier> modifiers) {
 		dragScreenDirection = screenDirection.clone();
-		moveStart = modelControl.getToolAdapter().getCenter().clone();
+		moveStart = modelControl.getToolAdapter().getCenter().toJME();
 
 		final Vector2f diff = dragStart.subtract(dragStart);
 		final float amount = diff.dot(dragScreenDirection)
 				/ dragScreenDirection.lengthSquared();
 
-		final Vector3f v = worldDirection.mult(amount).addLocal(moveStart);
+		final Vector3 v = new Vector3(worldDirection.mult(amount).addLocal(
+				moveStart));
 
 		return modelControl.getToolAdapter().handleDragStart(modelControl, v,
 				modifiers);
@@ -124,10 +128,11 @@ public class LineControlHandle implements IControlHandle {
 		final float amount = diff.dot(dragScreenDirection)
 				/ dragScreenDirection.lengthSquared();
 
-		final Vector3f v = worldDirection.mult(amount).addLocal(moveStart);
+		final Vector3 v = new Vector3(worldDirection.mult(amount).addLocal(
+				moveStart));
 
 		return modelControl.getToolAdapter().handleDragMove(modelControl,
-				moveStart, v, modifiers);
+				new Vector3(moveStart), v, modifiers);
 	}
 
 	@Override
@@ -137,11 +142,13 @@ public class LineControlHandle implements IControlHandle {
 		final float amount = diff.dot(dragScreenDirection)
 				/ dragScreenDirection.lengthSquared();
 
-		final Vector3f v = worldDirection.mult(amount).addLocal(moveStart);
+		final Vector3 v1 = new Vector3(moveStart);
+		final Vector3 v2 = new Vector3(worldDirection.mult(amount).addLocal(
+				moveStart));
 
 		moveStart = null;
 
-		return modelControl.getToolAdapter().handleDragEnd(modelControl,
-				moveStart, v, modifiers);
+		return modelControl.getToolAdapter().handleDragEnd(modelControl, v1,
+				v2, modifiers);
 	}
 }

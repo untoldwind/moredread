@@ -5,6 +5,7 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.PolyFace;
 import net.untoldwind.moredread.model.mesh.PolyMesh;
@@ -16,7 +17,6 @@ import net.untoldwind.moredread.model.mesh.Vertex;
 import net.untoldwind.moredread.model.op.ITriangulator;
 import net.untoldwind.moredread.model.op.TriangulatorFactory;
 
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Geometry;
 import com.jme.scene.TriMesh;
@@ -40,8 +40,8 @@ public class SolidMeshRenderer implements IMeshRendererAdapter {
 
 	private Geometry renderTriangleMesh(final TriangleMesh mesh,
 			final IColorProvider colorProvider) {
-		final List<Vector3f> points = new ArrayList<Vector3f>();
-		final List<Vector3f> normals = new ArrayList<Vector3f>();
+		final List<Vector3> points = new ArrayList<Vector3>();
+		final List<Vector3> normals = new ArrayList<Vector3>();
 		List<ColorRGBA> colors = null;
 
 		if (colorProvider != null) {
@@ -50,9 +50,9 @@ public class SolidMeshRenderer implements IMeshRendererAdapter {
 
 		for (final TriangleFace face : mesh.getFaces()) {
 			if (colors == null || colorProvider.isFaceVisible(face.getIndex())) {
-				final Vector3f normal = face.getMeanNormal();
+				final Vector3 normal = face.getMeanNormal();
 				for (final Vertex vertex : face.getVertices()) {
-					final Vector3f point = vertex.getPoint();
+					final Vector3 point = vertex.getPoint();
 
 					points.add(point);
 					normals.add(normal);
@@ -84,8 +84,8 @@ public class SolidMeshRenderer implements IMeshRendererAdapter {
 		}
 
 		for (int i = 0; i < points.size(); i++) {
-			final Vector3f point = points.get(i);
-			final Vector3f normal = normals.get(i);
+			final Vector3 point = points.get(i);
+			final Vector3 normal = normals.get(i);
 			vertexBuffer.put(point.x);
 			vertexBuffer.put(point.y);
 			vertexBuffer.put(point.z);
@@ -110,8 +110,8 @@ public class SolidMeshRenderer implements IMeshRendererAdapter {
 
 	private Geometry renderQuadMesh(final QuadMesh mesh,
 			final IColorProvider colorProvider) {
-		final List<Vector3f> points = new ArrayList<Vector3f>();
-		final List<Vector3f> normals = new ArrayList<Vector3f>();
+		final List<Vector3> points = new ArrayList<Vector3>();
+		final List<Vector3> normals = new ArrayList<Vector3>();
 		List<ColorRGBA> colors = null;
 
 		if (colorProvider != null) {
@@ -120,9 +120,9 @@ public class SolidMeshRenderer implements IMeshRendererAdapter {
 
 		for (final QuadFace face : mesh.getFaces()) {
 			if (colors == null || colorProvider.isFaceVisible(face.getIndex())) {
-				final Vector3f normal = face.getMeanNormal();
+				final Vector3 normal = face.getMeanNormal();
 				for (final Vertex vertex : face.getVertices()) {
-					final Vector3f point = vertex.getPoint();
+					final Vector3 point = vertex.getPoint();
 
 					points.add(point);
 					normals.add(normal);
@@ -154,8 +154,8 @@ public class SolidMeshRenderer implements IMeshRendererAdapter {
 		}
 
 		for (int i = 0; i < points.size(); i++) {
-			final Vector3f point = points.get(i);
-			final Vector3f normal = normals.get(i);
+			final Vector3 point = points.get(i);
+			final Vector3 normal = normals.get(i);
 			vertexBuffer.put(point.x);
 			vertexBuffer.put(point.y);
 			vertexBuffer.put(point.z);
@@ -181,8 +181,8 @@ public class SolidMeshRenderer implements IMeshRendererAdapter {
 
 	private Geometry renderPolyMesh(final PolyMesh mesh,
 			final IColorProvider colorProvider) {
-		final List<Vector3f> points = new ArrayList<Vector3f>();
-		final List<Vector3f> normals = new ArrayList<Vector3f>();
+		final List<Vector3> points = new ArrayList<Vector3>();
+		final List<Vector3> normals = new ArrayList<Vector3>();
 		List<ColorRGBA> colors = null;
 
 		if (colorProvider != null) {
@@ -193,7 +193,7 @@ public class SolidMeshRenderer implements IMeshRendererAdapter {
 
 		for (final PolyFace face : mesh.getFaces()) {
 			if (colors == null || colorProvider.isFaceVisible(face.getIndex())) {
-				final Vector3f normal = face.getMeanNormal();
+				final Vector3 normal = face.getMeanNormal();
 
 				final List<Vertex> vertices = face.getVertices();
 				final int[] indices = triangulator.triangulate(face);
@@ -227,8 +227,8 @@ public class SolidMeshRenderer implements IMeshRendererAdapter {
 		}
 
 		for (int i = 0; i < points.size(); i++) {
-			final Vector3f point = points.get(i);
-			final Vector3f normal = normals.get(i);
+			final Vector3 point = points.get(i);
+			final Vector3 normal = normals.get(i);
 			vertexBuffer.put(point.x);
 			vertexBuffer.put(point.y);
 			vertexBuffer.put(point.z);

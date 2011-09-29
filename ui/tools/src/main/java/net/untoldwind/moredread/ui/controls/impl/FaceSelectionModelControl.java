@@ -5,6 +5,7 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.FaceId;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IPoint;
@@ -105,7 +106,7 @@ public class FaceSelectionModelControl extends TriMesh implements IModelControl 
 
 		face = node.localToWorld(face);
 
-		final Vector3f normal = face.getMeanNormal();
+		final Vector3 normal = face.getMeanNormal();
 		final List<? extends IPoint> vertices = face.getVertices();
 		final FloatBuffer vertexBuffer = BufferUtils
 				.createVector3Buffer(vertices.size());
@@ -113,7 +114,7 @@ public class FaceSelectionModelControl extends TriMesh implements IModelControl 
 				.createVector3Buffer(vertices.size());
 
 		for (final IPoint vertex : vertices) {
-			final Vector3f point = vertex.getPoint();
+			final Vector3 point = vertex.getPoint();
 
 			vertexBuffer.put(point.x);
 			vertexBuffer.put(point.y);
@@ -138,7 +139,8 @@ public class FaceSelectionModelControl extends TriMesh implements IModelControl 
 		final List<Vector3f> points = new ArrayList<Vector3f>();
 
 		for (final IPoint vertex : face.getVertices()) {
-			points.add(node.localToWorld(vertex.getPoint(), new Vector3f()));
+			points.add(node.localToWorld(vertex.getPoint(), new Vector3())
+					.toJME());
 		}
 
 		if (polygonControlHandle == null) {

@@ -1,9 +1,8 @@
 package net.untoldwind.moredread.model.op.bool.bspfilter;
 
+import net.untoldwind.moredread.model.math.Plane;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IVertex;
-
-import com.jme.math.Plane;
-import com.jme.math.Vector3f;
 
 public class BoolVertex {
 	public interface IBoolIndex {
@@ -86,15 +85,15 @@ public class BoolVertex {
 		}
 	}
 
-	private final Vector3f point;
+	private final Vector3 point;
 	private final IBoolIndex index;
 
-	public BoolVertex(final Vector3f point) {
+	public BoolVertex(final Vector3 point) {
 		this.point = point;
 		this.index = null;
 	}
 
-	public BoolVertex(final Vector3f point, final IBoolIndex index1,
+	public BoolVertex(final Vector3 point, final IBoolIndex index1,
 			final IBoolIndex index2, final Plane plane) {
 		this.point = point;
 		this.index = new ConstructedIndex(index1, index2, plane);
@@ -105,7 +104,7 @@ public class BoolVertex {
 		this.index = new IntegerIndex(vertex.getIndex());
 	}
 
-	public Vector3f getPoint() {
+	public Vector3 getPoint() {
 		return point;
 	}
 

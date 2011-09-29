@@ -19,7 +19,7 @@ import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 import org.junit.Test;
 
-import com.jme.math.Vector3f;
+import com.jme.math.Vector3;
 
 public class PolyMeshTest {
 	private final static boolean DEBUG = false;
@@ -29,35 +29,35 @@ public class PolyMeshTest {
 		final PolyMesh cube = new PolyMesh();
 
 		// Left Back Bottom
-		final Vertex vertex1 = cube.addVertex(new Vector3f(-1, -1, -1));
+		final Vertex vertex1 = cube.addVertex(new Vector3(-1, -1, -1));
 		assertNotNull("vertex1", vertex1);
 		assertEquals("vertex1.index", 0, vertex1.getIndex());
 		// Right Back Bottom
-		final Vertex vertex2 = cube.addVertex(new Vector3f(1, -1, -1));
+		final Vertex vertex2 = cube.addVertex(new Vector3(1, -1, -1));
 		assertNotNull("vertex2", vertex2);
 		assertEquals("vertex2.index", 1, vertex2.getIndex());
 		// Right Front Bottom
-		final Vertex vertex3 = cube.addVertex(new Vector3f(1, 1, -1));
+		final Vertex vertex3 = cube.addVertex(new Vector3(1, 1, -1));
 		assertNotNull("vertex3", vertex3);
 		assertEquals("vertex3.index", 2, vertex3.getIndex());
 		// Left Front Bottom
-		final Vertex vertex4 = cube.addVertex(new Vector3f(-1, 1, -1));
+		final Vertex vertex4 = cube.addVertex(new Vector3(-1, 1, -1));
 		assertNotNull("vertex4", vertex4);
 		assertEquals("vertex4.index", 3, vertex4.getIndex());
 		// Left Back Top
-		final Vertex vertex5 = cube.addVertex(new Vector3f(-1, -1, 1));
+		final Vertex vertex5 = cube.addVertex(new Vector3(-1, -1, 1));
 		assertNotNull("vertex5", vertex5);
 		assertEquals("vertex5.index", 4, vertex5.getIndex());
 		// Right Back Top
-		final Vertex vertex6 = cube.addVertex(new Vector3f(1, -1, 1));
+		final Vertex vertex6 = cube.addVertex(new Vector3(1, -1, 1));
 		assertNotNull("vertex6", vertex6);
 		assertEquals("vertex6.index", 5, vertex6.getIndex());
 		// Right Front Top
-		final Vertex vertex7 = cube.addVertex(new Vector3f(1, 1, 1));
+		final Vertex vertex7 = cube.addVertex(new Vector3(1, 1, 1));
 		assertNotNull("vertex7", vertex7);
 		assertEquals("vertex7.index", 6, vertex7.getIndex());
 		// Left Front Top
-		final Vertex vertex8 = cube.addVertex(new Vector3f(-1, 1, 1));
+		final Vertex vertex8 = cube.addVertex(new Vector3(-1, 1, 1));
 		assertNotNull("vertex8", vertex8);
 		assertEquals("vertex8.index", 7, vertex8.getIndex());
 
@@ -183,14 +183,14 @@ public class PolyMeshTest {
 	private PolyMesh createCube() {
 		final PolyMesh cube = new PolyMesh();
 
-		cube.addVertex(new Vector3f(-1, -1, -1));
-		cube.addVertex(new Vector3f(1, -1, -1));
-		cube.addVertex(new Vector3f(1, 1, -1));
-		cube.addVertex(new Vector3f(-1, 1, -1));
-		cube.addVertex(new Vector3f(-1, -1, 1));
-		cube.addVertex(new Vector3f(1, -1, 1));
-		cube.addVertex(new Vector3f(1, 1, 1));
-		cube.addVertex(new Vector3f(-1, 1, 1));
+		cube.addVertex(new Vector3(-1, -1, -1));
+		cube.addVertex(new Vector3(1, -1, -1));
+		cube.addVertex(new Vector3(1, 1, -1));
+		cube.addVertex(new Vector3(-1, 1, -1));
+		cube.addVertex(new Vector3(-1, -1, 1));
+		cube.addVertex(new Vector3(1, -1, 1));
+		cube.addVertex(new Vector3(1, 1, 1));
+		cube.addVertex(new Vector3(-1, 1, 1));
 
 		cube.addFace(0, 1, 2, 3);
 		cube.addFace(4, 5, 6, 7);

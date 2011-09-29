@@ -1,6 +1,7 @@
 package net.untoldwind.moredread.ui.utils;
 
 import static net.untoldwind.moredread.ui.utils.FormatUtils.formatAngle;
+import net.untoldwind.moredread.model.math.Quaternion;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -8,8 +9,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
-
-import com.jme.math.Quaternion;
 
 public class RotationText extends Composite {
 

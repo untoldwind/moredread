@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import net.untoldwind.moredread.model.enums.MeshType;
 import net.untoldwind.moredread.model.generator.CubeMeshGenerator;
 import net.untoldwind.moredread.model.generator.DodecahedronMeshGenerator;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IFace;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
@@ -15,12 +16,10 @@ import net.untoldwind.moredread.model.state.XMLStateReader;
 
 import org.junit.Test;
 
-import com.jme.math.Vector3f;
-
 public class CoplanarMergeTest {
 	@Test
 	public void testCubeMerge() throws Exception {
-		final TriangleMesh cube = new CubeMeshGenerator(new Vector3f(0, 0, 0),
+		final TriangleMesh cube = new CubeMeshGenerator(new Vector3(0, 0, 0),
 				1f).generateMesh(null).toTriangleMesh();
 
 		final IUnaryOperation mergeOperation = UnaryOperationFactory
@@ -39,7 +38,7 @@ public class CoplanarMergeTest {
 
 	@Test
 	public void testDodecahedronMerge() throws Exception {
-		final TriangleMesh cube = new DodecahedronMeshGenerator(new Vector3f(0,
+		final TriangleMesh cube = new DodecahedronMeshGenerator(new Vector3(0,
 				0, 0), 1f).generateMesh(null).toTriangleMesh();
 
 		final IUnaryOperation mergeOperation = UnaryOperationFactory

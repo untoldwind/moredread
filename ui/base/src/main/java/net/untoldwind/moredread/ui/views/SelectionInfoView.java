@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import net.untoldwind.moredread.model.math.Quaternion;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.scene.BoundingBox;
 import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.ISpatialNode;
@@ -26,11 +28,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.ISizeProvider;
 import org.eclipse.ui.part.ViewPart;
-
-import com.jme.math.Quaternion;
-import com.jme.math.Vector3f;
-
-;
 
 public class SelectionInfoView extends ViewPart implements
 		ISceneChangeListener, ISceneSelectionChangeListener, ISizeProvider {
@@ -140,7 +137,7 @@ public class SelectionInfoView extends ViewPart implements
 		final Scene scene = MoreDreadUI.getDefault().getSceneHolder()
 				.getScene();
 		BoundingBox boundingBox = null;
-		final Vector3f hotpoint = new Vector3f();
+		final Vector3 hotpoint = new Vector3();
 		final Quaternion rotation = new Quaternion();
 
 		final List<ISpatialNode> selection = new ArrayList<ISpatialNode>();

@@ -1,20 +1,20 @@
 package net.untoldwind.moredread.ui.input.event;
 
+import net.untoldwind.moredread.model.math.Vector3;
 
 import com.jme.math.Matrix3f;
-import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 
 public class RotateXCameraUpdate implements ICameraUpdate {
 	private final float amount;
 
-	private Vector3f lockAxis;
+	private Vector3 lockAxis;
 
 	public RotateXCameraUpdate(final float amount) {
 		this.amount = amount;
 	}
 
-	public RotateXCameraUpdate(final float amount, final Vector3f lockAxis) {
+	public RotateXCameraUpdate(final float amount, final Vector3 lockAxis) {
 		this.amount = amount;
 		this.lockAxis = lockAxis;
 	}
@@ -26,7 +26,7 @@ public class RotateXCameraUpdate implements ICameraUpdate {
 		if (lockAxis == null) {
 			incr.fromAngleNormalAxis(amount, camera.getUp());
 		} else {
-			incr.fromAngleNormalAxis(amount, lockAxis);
+			incr.fromAngleNormalAxis(amount, lockAxis.toJME());
 		}
 
 		incr.mult(camera.getUp(), camera.getUp());

@@ -10,13 +10,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Quaternion;
+import net.untoldwind.moredread.model.math.Vector3;
+
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 
 public class XMLStateReader implements IStateReader {
@@ -79,11 +80,10 @@ public class XMLStateReader implements IStateReader {
 	}
 
 	@Override
-	public Vector3f readVector3f() throws IOException {
+	public Vector3 readVector3() throws IOException {
 		final Element vectorElement = childIterator.next();
 
-		return new Vector3f(
-				Float.parseFloat(vectorElement.attributeValue("x")),
+		return new Vector3(Float.parseFloat(vectorElement.attributeValue("x")),
 				Float.parseFloat(vectorElement.attributeValue("y")),
 				Float.parseFloat(vectorElement.attributeValue("z")));
 	}

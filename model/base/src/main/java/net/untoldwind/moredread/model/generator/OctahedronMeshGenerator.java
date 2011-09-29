@@ -2,17 +2,16 @@ package net.untoldwind.moredread.model.generator;
 
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
-
-import com.jme.math.Vector3f;
 
 public class OctahedronMeshGenerator extends AbstractCenterSizeGenerator {
 
 	public OctahedronMeshGenerator() {
-		super(new Vector3f(), 1.0f);
+		super(new Vector3(), 1.0f);
 	}
 
-	public OctahedronMeshGenerator(final Vector3f center, final float size) {
+	public OctahedronMeshGenerator(final Vector3 center, final float size) {
 		super(center, size);
 	}
 
@@ -25,12 +24,12 @@ public class OctahedronMeshGenerator extends AbstractCenterSizeGenerator {
 	public TriangleMesh generateMesh(final List<IGeneratorInput> generatorInputs) {
 		final TriangleMesh mesh = new TriangleMesh();
 
-		mesh.addVertex(new Vector3f(size, 0, 0).addLocal(center));
-		mesh.addVertex(new Vector3f(-size, 0, 0).addLocal(center));
-		mesh.addVertex(new Vector3f(0, size, 0).addLocal(center));
-		mesh.addVertex(new Vector3f(0, -size, 0).addLocal(center));
-		mesh.addVertex(new Vector3f(0, 0, size).addLocal(center));
-		mesh.addVertex(new Vector3f(0, 0, -size).addLocal(center));
+		mesh.addVertex(new Vector3(size, 0, 0).addLocal(center));
+		mesh.addVertex(new Vector3(-size, 0, 0).addLocal(center));
+		mesh.addVertex(new Vector3(0, size, 0).addLocal(center));
+		mesh.addVertex(new Vector3(0, -size, 0).addLocal(center));
+		mesh.addVertex(new Vector3(0, 0, size).addLocal(center));
+		mesh.addVertex(new Vector3(0, 0, -size).addLocal(center));
 
 		mesh.addFace(4, 0, 2);
 		mesh.addFace(4, 2, 1);

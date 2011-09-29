@@ -3,9 +3,10 @@ package net.untoldwind.moredread.model.state;
 import java.io.IOException;
 import java.util.List;
 
-import com.jme.math.Quaternion;
+import net.untoldwind.moredread.model.math.Quaternion;
+import net.untoldwind.moredread.model.math.Vector3;
+
 import com.jme.math.Vector2f;
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 
 public interface IStateReader {
@@ -23,7 +24,7 @@ public interface IStateReader {
 
 	Vector2f readVector2f() throws IOException;
 
-	Vector3f readVector3f() throws IOException;
+	Vector3 readVector3() throws IOException;
 
 	Quaternion readQuaternion() throws IOException;
 

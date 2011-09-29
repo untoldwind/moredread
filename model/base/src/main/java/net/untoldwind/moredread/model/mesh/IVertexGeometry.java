@@ -2,7 +2,7 @@ package net.untoldwind.moredread.model.mesh;
 
 import java.util.List;
 
-import com.jme.math.Vector3f;
+import net.untoldwind.moredread.model.math.Vector3;
 
 public interface IVertexGeometry<T> extends IGeometry<T> {
 	int getVertexCount();
@@ -11,5 +11,5 @@ public interface IVertexGeometry<T> extends IGeometry<T> {
 
 	IVertex getVertex(final int vertexIndes);
 
-	Vector3f getCenter();
+	Vector3 getCenter();
 }

@@ -2,10 +2,10 @@ package net.untoldwind.moredread.model.renderer;
 
 import java.nio.FloatBuffer;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IGrid;
 import net.untoldwind.moredread.model.mesh.IVertex;
 
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Geometry;
 import com.jme.scene.Point;
@@ -26,7 +26,7 @@ public class VertexGridRendererAdapter implements IGridRendererAdapter {
 		}
 
 		for (final IVertex vertex : grid.getVertices()) {
-			final Vector3f p = vertex.getPoint();
+			final Vector3 p = vertex.getPoint();
 
 			vertexBuffer.put(p.x);
 			vertexBuffer.put(p.y);

@@ -2,6 +2,8 @@ package net.untoldwind.moredread.model.op.bool.bsp.test;
 
 import static org.junit.Assert.assertEquals;
 import net.untoldwind.moredread.model.generator.CubeMeshGenerator;
+import net.untoldwind.moredread.model.math.Quaternion;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IVertex;
 import net.untoldwind.moredread.model.mesh.TriangleFace;
@@ -14,9 +16,6 @@ import net.untoldwind.moredread.model.transform.MatrixTransformation;
 
 import org.junit.Test;
 
-import com.jme.math.Quaternion;
-import com.jme.math.Vector3f;
-
 public class BSPTreeTest {
 	@Test
 	public void testInOutCube() throws Exception {
@@ -26,16 +25,16 @@ public class BSPTreeTest {
 
 		tree.addMesh(mesh.toTriangleMesh());
 
-		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0, 0, 0)));
-		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0.9f, 0, 0)));
-		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(1.1f, 0, 0)));
-		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, 1.1f, 0)));
-		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, 0, 1.1f)));
-		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(-1.1f, 0, 0)));
-		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, -1.1f, 0)));
-		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, 0, -1.1f)));
-		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, 1, 1.1f)));
-		assertEquals(VertexTag.ON, tree.testPoint(new Vector3f(1, 0.5f, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3(0, 0, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3(0.9f, 0, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(1.1f, 0, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(0, 1.1f, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(0, 0, 1.1f)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(-1.1f, 0, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(0, -1.1f, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(0, 0, -1.1f)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(0, 1, 1.1f)));
+		assertEquals(VertexTag.ON, tree.testPoint(new Vector3(1, 0.5f, 0)));
 	}
 
 	@Test
@@ -46,16 +45,16 @@ public class BSPTreeTest {
 
 		tree.addMesh(triMesh);
 
-		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, 0, 0)));
-		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0.9f, 0, 0)));
-		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(1.1f, 0, 0)));
-		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0, 1.1f, 0)));
-		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0, 0, 1.1f)));
-		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(-1.1f, 0, 0)));
-		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0, -1.1f, 0)));
-		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0, 0, -1.1f)));
-		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0, 1, 1.1f)));
-		assertEquals(VertexTag.ON, tree.testPoint(new Vector3f(1, 0.5f, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(0, 0, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(0.9f, 0, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3(1.1f, 0, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3(0, 1.1f, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3(0, 0, 1.1f)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3(-1.1f, 0, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3(0, -1.1f, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3(0, 0, -1.1f)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3(0, 1, 1.1f)));
+		assertEquals(VertexTag.ON, tree.testPoint(new Vector3(1, 0.5f, 0)));
 
 	}
 
@@ -70,33 +69,31 @@ public class BSPTreeTest {
 
 		tree.addMesh(mesh.toTriangleMesh());
 
-		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, 0, 0)));
-		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0.5f, 0, 0)));
-		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(-0.5f, 0, 0)));
-		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, 0.5f, 0)));
-		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, -0.5f, 0)));
-		assertEquals(VertexTag.ON, tree.testPoint(new Vector3f(0.75f, 0, 0)));
-		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0.8f, 0, 0)));
-		assertEquals(VertexTag.ON, tree.testPoint(new Vector3f(-0.75f, 0, 0)));
-		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(-0.8f, 0, 0)));
-		assertEquals(VertexTag.ON, tree.testPoint(new Vector3f(0, 0.75f, 0)));
-		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0, 0.8f, 0)));
-		assertEquals(VertexTag.ON, tree.testPoint(new Vector3f(0, -0.75f, 0)));
-		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0, -0.8f, 0)));
-		assertEquals(VertexTag.ON, tree.testPoint(new Vector3f(0.75f, 0.5f, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(0, 0, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(0.5f, 0, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(-0.5f, 0, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(0, 0.5f, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(0, -0.5f, 0)));
+		assertEquals(VertexTag.ON, tree.testPoint(new Vector3(0.75f, 0, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3(0.8f, 0, 0)));
+		assertEquals(VertexTag.ON, tree.testPoint(new Vector3(-0.75f, 0, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3(-0.8f, 0, 0)));
+		assertEquals(VertexTag.ON, tree.testPoint(new Vector3(0, 0.75f, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3(0, 0.8f, 0)));
+		assertEquals(VertexTag.ON, tree.testPoint(new Vector3(0, -0.75f, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3(0, -0.8f, 0)));
+		assertEquals(VertexTag.ON, tree.testPoint(new Vector3(0.75f, 0.5f, 0)));
+		assertEquals(VertexTag.ON, tree.testPoint(new Vector3(0.75f, 0.75f, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3(0.8f, 0.8f, 0)));
 		assertEquals(VertexTag.ON,
-				tree.testPoint(new Vector3f(0.75f, 0.75f, 0)));
-		assertEquals(VertexTag.IN, tree.testPoint(new Vector3f(0.8f, 0.8f, 0)));
+				tree.testPoint(new Vector3(-0.75f, -0.5f, 0)));
 		assertEquals(VertexTag.ON,
-				tree.testPoint(new Vector3f(-0.75f, -0.5f, 0)));
-		assertEquals(VertexTag.ON,
-				tree.testPoint(new Vector3f(-0.75f, -0.75f, 0)));
-		assertEquals(VertexTag.IN,
-				tree.testPoint(new Vector3f(-0.8f, -0.8f, 0)));
-		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(1.1f, 0, 0)));
-		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(-1.1f, 0, 0)));
-		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, 1.1f, 0)));
-		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3f(0, -1.1f, 0)));
+				tree.testPoint(new Vector3(-0.75f, -0.75f, 0)));
+		assertEquals(VertexTag.IN, tree.testPoint(new Vector3(-0.8f, -0.8f, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(1.1f, 0, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(-1.1f, 0, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(0, 1.1f, 0)));
+		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(0, -1.1f, 0)));
 	}
 
 	@Test
@@ -134,9 +131,9 @@ public class BSPTreeTest {
 		TriangleMesh meshB = XMLStateReader.fromXML(getClass()
 				.getResourceAsStream("boolIn2_2.xml"));
 
-		meshA = (TriangleMesh) meshA.transform(new MatrixTransformation(
-				new Vector3f(3, 3, 3), new Quaternion(),
-				new Vector3f(-10, 0, 0)));
+		meshA = (TriangleMesh) meshA
+				.transform(new MatrixTransformation(new Vector3(3, 3, 3),
+						new Quaternion(), new Vector3(-10, 0, 0)));
 		meshB = meshB.invert();
 
 		final UnitRescale unitRescale = new UnitRescale(meshA, meshB);
@@ -165,8 +162,8 @@ public class BSPTreeTest {
 				.getResourceAsStream("boolIn2_2.xml"));
 
 		meshA = (TriangleMesh) meshA.transform(new MatrixTransformation(
-				new Vector3f(3, 3, 3), new Quaternion(), new Vector3f(
-						-7.31787f, 0, 0)));
+				new Vector3(3, 3, 3), new Quaternion(), new Vector3(-7.31787f,
+						0, 0)));
 		meshB = meshB.invert();
 
 		final UnitRescale unitRescale = new UnitRescale(meshA, meshB);

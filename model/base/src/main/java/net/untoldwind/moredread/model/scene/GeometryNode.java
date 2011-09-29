@@ -109,9 +109,9 @@ public abstract class GeometryNode<RO_GEOMETRY extends IVertexGeometry<?>, RW_GE
 		displayNode.setUserData(ISceneHolder.NODE_USERDATA_KEY, nodeRef);
 
 		displayNode.setName(name);
-		displayNode.setLocalRotation(localRotation);
-		displayNode.setLocalTranslation(localTranslation);
-		displayNode.setLocalScale(localScale);
+		displayNode.setLocalRotation(localRotation.toJME());
+		displayNode.setLocalTranslation(localTranslation.toJME());
+		displayNode.setLocalScale(localScale.toJME());
 
 		if (renderedGeometries == null) {
 			renderedGeometries = rendererAdapter.renderNode(this);
@@ -133,8 +133,8 @@ public abstract class GeometryNode<RO_GEOMETRY extends IVertexGeometry<?>, RW_GE
 	public void readState(final IStateReader reader) throws IOException {
 		name = reader.readString();
 		modelColor = reader.readColor();
-		localTranslation = reader.readVector3f();
-		localScale = reader.readVector3f();
+		localTranslation = reader.readVector3();
+		localScale = reader.readVector3();
 		localRotation = reader.readQuaternion();
 		geometry = reader.readObject();
 	}
@@ -143,8 +143,8 @@ public abstract class GeometryNode<RO_GEOMETRY extends IVertexGeometry<?>, RW_GE
 	public void writeState(final IStateWriter writer) throws IOException {
 		writer.writeString("name", name);
 		writer.writeColor("modelColor", modelColor);
-		writer.writeVector3f("localTranslation", localTranslation);
-		writer.writeVector3f("localScale", localScale);
+		writer.writeVector3("localTranslation", localTranslation);
+		writer.writeVector3("localScale", localScale);
 		writer.writeQuaternion("localRotation", localRotation);
 		writer.writeObject("geometry", geometry);
 	}

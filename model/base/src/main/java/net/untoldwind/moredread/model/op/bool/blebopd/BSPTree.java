@@ -76,9 +76,9 @@ public class BSPTree {
 		}
 
 		// update bounding box
-		boundingBox.add(p1.toVector3f());
-		boundingBox.add(p2.toVector3f());
-		boundingBox.add(p3.toVector3f());
+		boundingBox.add(p1.toVector3());
+		boundingBox.add(p2.toVector3());
+		boundingBox.add(p3.toVector3());
 	}
 
 	public BSPNode getRoot() {

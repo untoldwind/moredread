@@ -3,7 +3,7 @@ package net.untoldwind.moredread.model.op.bool.blebopf;
 import java.util.Iterator;
 import java.util.List;
 
-import com.jme.math.Vector3f;
+import net.untoldwind.moredread.model.math.Vector3;
 
 public class BoolImpl {
 	/**
@@ -80,9 +80,9 @@ public class BoolImpl {
 		while (it.hasNext()) {
 			final BoolFace face = it.next();
 
-			final Vector3f p1 = face.getVertex(0).getPoint();
-			final Vector3f p2 = face.getVertex(1).getPoint();
-			final Vector3f p3 = face.getVertex(2).getPoint();
+			final Vector3 p1 = face.getVertex(0).getPoint();
+			final Vector3 p2 = face.getVertex(1).getPoint();
+			final Vector3 p3 = face.getVertex(2).getPoint();
 			if ((tag = bsp.classifyFace(p1, p2, p3, face.getPlane())) == BoolTag.OUT
 					|| tag == BoolTag.OUTON) {
 				face.setTAG(BoolTag.BROKEN);
@@ -113,9 +113,9 @@ public class BoolImpl {
 		while (it.hasNext()) {
 			final BoolFace face = it.next();
 
-			final Vector3f p1 = face.getVertex(0).getPoint();
-			final Vector3f p2 = face.getVertex(1).getPoint();
-			final Vector3f p3 = face.getVertex(2).getPoint();
+			final Vector3 p1 = face.getVertex(0).getPoint();
+			final Vector3 p2 = face.getVertex(1).getPoint();
+			final Vector3 p3 = face.getVertex(2).getPoint();
 
 			if (bsp.filterFace(p1, p2, p3, face) == BoolTag.OUT) {
 				if (!inverted) {
@@ -140,9 +140,9 @@ public class BoolImpl {
 			final BSPTree bsp) {
 		for (final BoolFace face : faces) {
 			if (face.getTAG() != BoolTag.BROKEN) {
-				final Vector3f p1 = face.getVertex(0).getPoint();
-				final Vector3f p2 = face.getVertex(1).getPoint();
-				final Vector3f p3 = face.getVertex(2).getPoint();
+				final Vector3 p1 = face.getVertex(0).getPoint();
+				final Vector3 p2 = face.getVertex(1).getPoint();
+				final Vector3 p3 = face.getVertex(2).getPoint();
 				if (bsp.simplifiedClassifyFace(p1, p2, p3, face.getPlane()) != BoolTag.IN) {
 					face.setTAG(BoolTag.BROKEN);
 				}

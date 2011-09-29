@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.Modifier;
@@ -65,7 +66,7 @@ public class PolyLineControlHandle implements IControlHandle {
 	@Override
 	public boolean handleMove(final Vector2f position,
 			final EnumSet<Modifier> modifiers) {
-		final Vector3f point = project(position);
+		final Vector3 point = project(position);
 
 		if (point == null) {
 			return false;
@@ -77,7 +78,7 @@ public class PolyLineControlHandle implements IControlHandle {
 	@Override
 	public boolean handleClick(final Vector2f position,
 			final EnumSet<Modifier> modifiers) {
-		final Vector3f point = project(position);
+		final Vector3 point = project(position);
 
 		if (point == null) {
 			return false;
@@ -89,7 +90,7 @@ public class PolyLineControlHandle implements IControlHandle {
 	@Override
 	public boolean handleDragStart(final Vector2f dragStart,
 			final EnumSet<Modifier> modifiers) {
-		final Vector3f point = project(dragStart);
+		final Vector3 point = project(dragStart);
 
 		if (point == null) {
 			return false;
@@ -101,8 +102,8 @@ public class PolyLineControlHandle implements IControlHandle {
 	@Override
 	public boolean handleDragMove(final Vector2f dragStart,
 			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
-		final Vector3f point1 = project(dragStart);
-		final Vector3f point2 = project(dragEnd);
+		final Vector3 point1 = project(dragStart);
+		final Vector3 point2 = project(dragEnd);
 
 		if (point1 == null || point2 == null) {
 			return false;
@@ -114,8 +115,8 @@ public class PolyLineControlHandle implements IControlHandle {
 	@Override
 	public boolean handleDragEnd(final Vector2f dragStart,
 			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
-		final Vector3f point1 = project(dragStart);
-		final Vector3f point2 = project(dragEnd);
+		final Vector3 point1 = project(dragStart);
+		final Vector3 point2 = project(dragEnd);
 
 		if (point1 == null || point2 == null) {
 			return false;
@@ -147,7 +148,7 @@ public class PolyLineControlHandle implements IControlHandle {
 		}
 	}
 
-	private Vector3f project(final Vector2f screenCoord) {
+	private Vector3 project(final Vector2f screenCoord) {
 		for (int i = 1; i < screenPoints.size(); i++) {
 			final Vector2f previous = screenPoints.get(i - 1);
 			final Vector2f current = screenPoints.get(i);
@@ -157,8 +158,9 @@ public class PolyLineControlHandle implements IControlHandle {
 			final float s = intersection(previous, direction, center, diff);
 
 			if (s >= 0.0 && s <= 1.0f) {
-				return worldPoints.get(i).subtract(worldPoints.get(i - 1))
-						.multLocal(s).addLocal(worldPoints.get(i - 1));
+				return new Vector3(worldPoints.get(i)
+						.subtract(worldPoints.get(i - 1)).multLocal(s)
+						.addLocal(worldPoints.get(i - 1)));
 			}
 		}
 		return null;

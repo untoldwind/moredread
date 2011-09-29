@@ -3,12 +3,11 @@ package net.untoldwind.moredread.model.op.bool.bspfilter;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Plane;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IVertex;
 import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
-
-import com.jme.math.Plane;
-import com.jme.math.Vector3f;
 
 public class BSPTree {
 	BSPNode root;
@@ -26,7 +25,7 @@ public class BSPTree {
 		return VertexTag.OUT;
 	}
 
-	public VertexTag testPoint(final Vector3f v) {
+	public VertexTag testPoint(final Vector3 v) {
 		if (root != null) {
 			return root.testVertex(new BoolVertex(v));
 		}
@@ -53,8 +52,8 @@ public class BSPTree {
 				verticies[2].getPoint());
 	}
 
-	private void addTriangle(final Vector3f v1, final Vector3f v2,
-			final Vector3f v3) {
+	private void addTriangle(final Vector3 v1, final Vector3 v2,
+			final Vector3 v3) {
 		final Plane plane = MathUtils.planeForTriangle(v1, v2, v3);
 
 		if (plane == null) {

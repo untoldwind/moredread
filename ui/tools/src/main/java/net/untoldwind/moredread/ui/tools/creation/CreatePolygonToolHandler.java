@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.Polygon;
 import net.untoldwind.moredread.model.scene.PolygonNode;
 import net.untoldwind.moredread.model.scene.Scene;
@@ -16,8 +17,6 @@ import net.untoldwind.moredread.ui.controls.impl.PlaneRestrictedModelControl;
 import net.untoldwind.moredread.ui.tools.IToolController;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 import net.untoldwind.moredread.ui.tools.spi.IToolHandler;
-
-import com.jme.math.Vector3f;
 
 public class CreatePolygonToolHandler implements IToolHandler {
 	protected IToolController toolController;
@@ -69,26 +68,26 @@ public class CreatePolygonToolHandler implements IToolHandler {
 
 	public class CreatePolygonToolAdapter implements IToolAdapter {
 		Scene scene;
-		Vector3f lastPoint = new Vector3f();
-		Vector3f position = new Vector3f();
+		Vector3 lastPoint = new Vector3();
+		Vector3 position = new Vector3();
 
 		public CreatePolygonToolAdapter(final Scene scene) {
 			this.scene = scene;
 		}
 
 		@Override
-		public Vector3f getCenter() {
+		public Vector3 getCenter() {
 			return lastPoint;
 		}
 
 		@Override
-		public Vector3f getFeedbackPoint() {
+		public Vector3 getFeedbackPoint() {
 			return position;
 		}
 
 		@Override
 		public boolean handleMove(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			this.position.set(point);
 
 			modelControl.updatePositions();
@@ -108,7 +107,7 @@ public class CreatePolygonToolHandler implements IToolHandler {
 
 		@Override
 		public boolean handleClick(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			if (polygonNode == null) {
 				scene.getSceneChangeHandler().beginUndoable("Create polygon");
 				try {
@@ -143,14 +142,14 @@ public class CreatePolygonToolHandler implements IToolHandler {
 
 		@Override
 		public boolean handleDragStart(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			// TODO Auto-generated method stub
 			return false;
 		}
 
 		@Override
 		public boolean handleDragMove(final IModelControl modelControl,
-				final Vector3f dragStart, final Vector3f dragEnd,
+				final Vector3 dragStart, final Vector3 dragEnd,
 				final EnumSet<Modifier> modifiers) {
 			// TODO Auto-generated method stub
 			return false;
@@ -158,7 +157,7 @@ public class CreatePolygonToolHandler implements IToolHandler {
 
 		@Override
 		public boolean handleDragEnd(final IModelControl modelControl,
-				final Vector3f dragStart, final Vector3f dragEnd,
+				final Vector3 dragStart, final Vector3 dragEnd,
 				final EnumSet<Modifier> modifiers) {
 			// TODO Auto-generated method stub
 			return false;

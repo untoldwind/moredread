@@ -4,10 +4,9 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Plane;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.scene.BoundingBox;
-
-import com.jme.math.Plane;
-import com.jme.math.Vector3f;
 
 public class BSPTree {
 	BSPNode root;
@@ -64,12 +63,12 @@ public class BSPTree {
 	 * @param plane
 	 *            face plane.
 	 */
-	void addFace(final Vector3f p1, final Vector3f p2, final Vector3f p3,
+	void addFace(final Vector3 p1, final Vector3 p2, final Vector3 p3,
 			final Plane plane) {
 		if (root == null) {
 			root = new BSPNode(plane);
 		} else {
-			final List<Vector3f> points = new ArrayList<Vector3f>();
+			final List<Vector3> points = new ArrayList<Vector3>();
 
 			points.add(p1);
 			points.add(p2);
@@ -105,7 +104,7 @@ public class BSPTree {
 	 *            face plane.
 	 * @return BSP_IN, BSP_OUT or BSP_IN_OUT
 	 */
-	int classifyFace(final Vector3f p1, final Vector3f p2, final Vector3f p3,
+	int classifyFace(final Vector3 p1, final Vector3 p2, final Vector3 p3,
 			final Plane plane) {
 		if (root != null) {
 			return root.classifyFace(p1, p2, p3, plane);
@@ -127,7 +126,7 @@ public class BSPTree {
 	 *            face to test.
 	 * @return UNCLASSIFIED, BSP_IN, BSP_OUT or BSP_IN_OUT
 	 */
-	int filterFace(final Vector3f p1, final Vector3f p2, final Vector3f p3,
+	int filterFace(final Vector3 p1, final Vector3 p2, final Vector3 p3,
 			final BoolFace face) {
 		if (bspBB != null) {
 			return bspBB.classifyFace(p1, p2, p3, face.getPlane());
@@ -149,8 +148,8 @@ public class BSPTree {
 	 *            face plane.
 	 * @return BSP_IN, BSP_OUT or BSP_IN_OUT
 	 */
-	int simplifiedClassifyFace(final Vector3f p1, final Vector3f p2,
-			final Vector3f p3, final Plane plane) {
+	int simplifiedClassifyFace(final Vector3 p1, final Vector3 p2,
+			final Vector3 p3, final Plane plane) {
 		if (root != null) {
 			return root.simplifiedClassifyFace(p1, p2, p3, plane);
 		} else {

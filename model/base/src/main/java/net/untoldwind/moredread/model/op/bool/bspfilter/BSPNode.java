@@ -3,7 +3,7 @@ package net.untoldwind.moredread.model.op.bool.bspfilter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jme.math.Plane;
+import net.untoldwind.moredread.model.math.Plane;
 
 public class BSPNode {
 	private final Plane nodePlane;

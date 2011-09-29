@@ -3,6 +3,7 @@ package net.untoldwind.moredread.ui.controls.impl;
 import java.nio.FloatBuffer;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IPoint;
 import net.untoldwind.moredread.model.mesh.IVertexGeometry;
 import net.untoldwind.moredread.model.scene.IVertexGeometryNode;
@@ -11,7 +12,6 @@ import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 
-import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Point;
@@ -105,7 +105,7 @@ public class VertexSelectionModelControl extends Point implements IModelControl 
 		}
 
 		final FloatBuffer vertexBuffer = BufferUtils.createVector3Buffer(1);
-		final Vector3f v = node.localToWorld(vertex.getPoint(), new Vector3f());
+		final Vector3 v = node.localToWorld(vertex.getPoint(), new Vector3());
 
 		vertexBuffer.put(v.x);
 		vertexBuffer.put(v.y);
@@ -128,12 +128,12 @@ public class VertexSelectionModelControl extends Point implements IModelControl 
 			return;
 		}
 
-		final Vector3f v = node.localToWorld(vertex.getPoint(), new Vector3f());
+		final Vector3 v = node.localToWorld(vertex.getPoint(), new Vector3());
 
 		if (pointControlHandle == null) {
-			pointControlHandle = new PointControlHandle(this, camera, v);
+			pointControlHandle = new PointControlHandle(this, camera, v.toJME());
 		} else {
-			pointControlHandle.update(camera, v);
+			pointControlHandle.update(camera, v.toJME());
 		}
 	}
 

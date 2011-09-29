@@ -7,9 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.EdgeId;
-
-import com.jme.math.Vector3f;
 
 public class BoolMesh {
 	List<BoolVertex> vertices;
@@ -200,7 +199,7 @@ public class BoolMesh {
 		return null;
 	}
 
-	public BoolVertex addVertex(final Vector3f point) {
+	public BoolVertex addVertex(final Vector3 point) {
 		final BoolVertex vertex = new BoolVertex(point, vertices.size());
 		vertices.add(vertex);
 
@@ -241,8 +240,8 @@ public class BoolMesh {
 		// Update faces, edges and vertices
 		final BoolVertex oldVertex = oldIndex;
 		final BoolVertex newVertex = newIndex;
-		final List<BoolEdge> oldEdges = new ArrayList<BoolEdge>(oldVertex
-				.getEdges());
+		final List<BoolEdge> oldEdges = new ArrayList<BoolEdge>(
+				oldVertex.getEdges());
 
 		// Update faces to the newIndex
 		for (final BoolEdge edge : oldEdges) {

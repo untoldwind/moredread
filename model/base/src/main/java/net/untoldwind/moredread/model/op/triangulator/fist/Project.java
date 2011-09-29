@@ -1,7 +1,7 @@
 package net.untoldwind.moredread.model.op.triangulator.fist;
 
-import com.jme.math.Matrix4f;
-import com.jme.math.Vector3f;
+import net.untoldwind.moredread.model.math.Matrix4;
+import net.untoldwind.moredread.model.math.Vector3;
 
 class Project {
 
@@ -9,13 +9,14 @@ class Project {
 	 * This function projects the vertices of the polygons referenced by
 	 * loops[i1,..,i2-1] to an approximating plane.
 	 */
-	static void projectFace(Triangulator triRef, int loopMin, int loopMax) {
-		Vector3f normal, nr;
+	static void projectFace(final Triangulator triRef, final int loopMin,
+			final int loopMax) {
+		Vector3 normal, nr;
 		int i, j;
 		double d;
 
-		normal = new Vector3f();
-		nr = new Vector3f();
+		normal = new Vector3();
+		nr = new Vector3();
 
 		// determine the normal of the plane onto which the points get projected
 		determineNormal(triRef, triRef.loops[loopMin], normal);
@@ -52,8 +53,9 @@ class Project {
 	 * successive vertices of the polygon. we'll see whether this is a good
 	 * heuristic for finding a suitable plane normal...
 	 */
-	static void determineNormal(Triangulator triRef, int ind, Vector3f normal) {
-		Vector3f nr, pq, pr;
+	static void determineNormal(final Triangulator triRef, final int ind,
+			final Vector3 normal) {
+		Vector3 nr, pq, pr;
 		int ind0, ind1, ind2;
 		int i0, i1, i2;
 		double d;
@@ -64,11 +66,11 @@ class Project {
 		i0 = triRef.fetchData(ind0);
 		ind2 = triRef.fetchNextData(ind1);
 		i2 = triRef.fetchData(ind2);
-		pq = new Vector3f();
+		pq = new Vector3();
 		Basic.vectorSub(triRef.vertices[i0], triRef.vertices[i1], pq);
-		pr = new Vector3f();
+		pr = new Vector3();
 		Basic.vectorSub(triRef.vertices[i2], triRef.vertices[i1], pr);
-		nr = new Vector3f();
+		nr = new Vector3();
 		Basic.vectorProduct(pq, pr, nr);
 		d = Basic.lengthL2(nr);
 		if (Numerics.gt(d, Triangulator.ZERO)) {
@@ -118,16 +120,17 @@ class Project {
 	 * coincides with n3, and whose two other coordinate axes n1 and n2 are
 	 * orthonormal on n3. note that n3 is supposed to be of unit length!
 	 */
-	static void projectPoints(Triangulator triRef, int i1, int i2, Vector3f n3) {
-		Matrix4f matrix = new Matrix4f();
-		Vector3f vtx = new Vector3f();
-		Vector3f n1, n2;
+	static void projectPoints(final Triangulator triRef, final int i1,
+			final int i2, final Vector3 n3) {
+		final Matrix4 matrix = new Matrix4();
+		final Vector3 vtx = new Vector3();
+		Vector3 n1, n2;
 		double d;
 		int ind, ind1;
 		int i, j1;
 
-		n1 = new Vector3f();
-		n2 = new Vector3f();
+		n1 = new Vector3();
+		n2 = new Vector3();
 
 		// choose n1 and n2 appropriately
 		if ((Math.abs(n3.x) > 0.1) || (Math.abs(n3.y) > 0.1)) {

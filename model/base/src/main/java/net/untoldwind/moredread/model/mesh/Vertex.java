@@ -7,22 +7,21 @@ import java.util.List;
 import java.util.Set;
 
 import net.untoldwind.moredread.model.enums.GeometryType;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.state.IStateHolder;
 import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 import net.untoldwind.moredread.model.transform.ITransformation;
 
-import com.jme.math.Vector3f;
-
 public class Vertex implements IStateHolder, IVertex {
 	private final VertexGeometry<?> owner;
 	private int index;
-	private Vector3f point;
+	private Vector3 point;
 	private boolean smooth;
 	private final Set<Edge> edges;
 	private final Set<Face<?, ?>> faces;
 
-	Vertex(final VertexGeometry<?> owner, final int index, final Vector3f point) {
+	Vertex(final VertexGeometry<?> owner, final int index, final Vector3 point) {
 		this.owner = owner;
 		this.index = index;
 		this.point = point.clone();
@@ -56,11 +55,11 @@ public class Vertex implements IStateHolder, IVertex {
 	}
 
 	@Override
-	public Vector3f getPoint() {
+	public Vector3 getPoint() {
 		return point;
 	}
 
-	public void setPoint(final Vector3f point) {
+	public void setPoint(final Vector3 point) {
 		this.point.set(point);
 		for (final Face<?, ?> face : faces) {
 			face.markDirty();
@@ -142,11 +141,11 @@ public class Vertex implements IStateHolder, IVertex {
 	@Override
 	public void readState(final IStateReader reader) throws IOException {
 		smooth = reader.readBoolean();
-		point = reader.readVector3f();
+		point = reader.readVector3();
 	}
 
 	public void writeState(final IStateWriter writer) throws IOException {
 		writer.writeBoolean("smooth", smooth);
-		writer.writeVector3f("point", point);
+		writer.writeVector3("point", point);
 	}
 }

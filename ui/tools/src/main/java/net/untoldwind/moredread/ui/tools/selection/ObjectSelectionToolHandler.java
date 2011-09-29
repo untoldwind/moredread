@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import net.untoldwind.moredread.annotations.Singleton;
+import net.untoldwind.moredread.model.math.Quaternion;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.ISpatialNode;
@@ -21,9 +23,7 @@ import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 import net.untoldwind.moredread.ui.tools.spi.IToolHandler;
 
 import com.jme.math.FastMath;
-import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
-import com.jme.math.Vector3f;
 
 @Singleton
 public class ObjectSelectionToolHandler implements IToolHandler {
@@ -69,24 +69,24 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public Vector3f getCenter() {
-			return new Vector3f(0, 0, 0);
+		public Vector3 getCenter() {
+			return new Vector3(0, 0, 0);
 		}
 
 		@Override
-		public Vector3f getFeedbackPoint() {
+		public Vector3 getFeedbackPoint() {
 			return getCenter();
 		}
 
 		@Override
 		public boolean handleMove(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
 		@Override
 		public boolean handleClick(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			if (modifiers.contains(Modifier.LEFT_MOUSE_BUTTON)) {
 				final INode node = viewport.pickNode(new Vector2f(point.x,
 						point.y));
@@ -105,20 +105,20 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 
 		@Override
 		public boolean handleDragStart(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
 		@Override
 		public boolean handleDragMove(final IModelControl modelControl,
-				final Vector3f dragStart, final Vector3f dragEnd,
+				final Vector3 dragStart, final Vector3 dragEnd,
 				final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
 		@Override
 		public boolean handleDragEnd(final IModelControl modelControl,
-				final Vector3f dragStart, final Vector3f dragEnd,
+				final Vector3 dragStart, final Vector3 dragEnd,
 				final EnumSet<Modifier> modifiers) {
 			return false;
 		}
@@ -132,8 +132,8 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public Vector3f getCenter() {
-			final Vector3f center = new Vector3f();
+		public Vector3 getCenter() {
+			final Vector3 center = new Vector3();
 			int count = 0;
 			for (final INode node : scene.getSceneSelection()
 					.getSelectedNodes()) {
@@ -152,33 +152,33 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public Vector3f getFeedbackPoint() {
+		public Vector3 getFeedbackPoint() {
 			return getCenter();
 		}
 
 		@Override
 		public boolean handleMove(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
 		@Override
 		public boolean handleClick(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
 		@Override
 		public boolean handleDragStart(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
 		@Override
 		public boolean handleDragMove(final IModelControl modelControl,
-				final Vector3f dragStart, final Vector3f dragEnd,
+				final Vector3 dragStart, final Vector3 dragEnd,
 				final EnumSet<Modifier> modifiers) {
-			final Vector3f midCenter = getCenter();
+			final Vector3 midCenter = getCenter();
 
 			scene.getSceneChangeHandler().beginUndoable("Move nodes");
 
@@ -192,9 +192,9 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 
 		@Override
 		public boolean handleDragEnd(final IModelControl modelControl,
-				final Vector3f dragStart, final Vector3f dragEnd,
+				final Vector3 dragStart, final Vector3 dragEnd,
 				final EnumSet<Modifier> modifiers) {
-			final Vector3f midCenter = getCenter();
+			final Vector3 midCenter = getCenter();
 
 			scene.getSceneChangeHandler().beginUndoable("Move nodes");
 
@@ -206,20 +206,20 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 			return true;
 		}
 
-		private void updateScene(final Vector3f point, final Vector3f midCenter) {
+		private void updateScene(final Vector3 point, final Vector3 midCenter) {
 			final List<INode> changedNodes = new ArrayList<INode>();
 
 			for (final INode node : scene.getSceneSelection()
 					.getSelectedNodes()) {
 				if (node instanceof AbstractSpatialNode) {
 					final AbstractSpatialNode spatialNode = (AbstractSpatialNode) node;
-					final Vector3f centerDiff = spatialNode
+					final Vector3 centerDiff = spatialNode
 							.getWorldTranslation().subtract(midCenter);
 
-					Vector3f localCenter;
+					Vector3 localCenter;
 					if (node.getParent() != null) {
 						localCenter = spatialNode.getParent().worldToLocal(
-								point.add(centerDiff), new Vector3f());
+								point.add(centerDiff), new Vector3());
 					} else {
 						localCenter = point.add(centerDiff);
 					}
@@ -240,8 +240,8 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public Vector3f getCenter() {
-			final Vector3f center = new Vector3f();
+		public Vector3 getCenter() {
+			final Vector3 center = new Vector3();
 			int count = 0;
 			for (final INode node : scene.getSceneSelection()
 					.getSelectedNodes()) {
@@ -260,25 +260,25 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public Vector3f getFeedbackPoint() {
+		public Vector3 getFeedbackPoint() {
 			return getCenter();
 		}
 
 		@Override
 		public boolean handleMove(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
 		@Override
 		public boolean handleClick(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
 		@Override
 		public boolean handleDragStart(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			originalState = new HashMap<Long, Quaternion>();
 			for (final INode node : scene.getSceneSelection()
 					.getSelectedNodes()) {
@@ -294,12 +294,12 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 
 		@Override
 		public boolean handleDragMove(final IModelControl modelControl,
-				final Vector3f dragStart, final Vector3f dragEnd,
+				final Vector3 dragStart, final Vector3 dragEnd,
 				final EnumSet<Modifier> modifiers) {
-			final Vector3f center = getCenter();
-			final Vector3f start = dragStart.subtract(center).normalizeLocal();
-			final Vector3f end = dragEnd.subtract(center).normalizeLocal();
-			final Vector3f axis = start.cross(end);
+			final Vector3 center = getCenter();
+			final Vector3 start = dragStart.subtract(center).normalizeLocal();
+			final Vector3 end = dragEnd.subtract(center).normalizeLocal();
+			final Vector3 axis = start.cross(end);
 			final float dot = start.dot(end);
 			final float axisLen = axis.length();
 
@@ -322,12 +322,12 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 
 		@Override
 		public boolean handleDragEnd(final IModelControl modelControl,
-				final Vector3f dragStart, final Vector3f dragEnd,
+				final Vector3 dragStart, final Vector3 dragEnd,
 				final EnumSet<Modifier> modifiers) {
-			final Vector3f center = getCenter();
-			final Vector3f start = dragStart.subtract(center).normalizeLocal();
-			final Vector3f end = dragEnd.subtract(center).normalizeLocal();
-			final Vector3f axis = start.cross(end);
+			final Vector3 center = getCenter();
+			final Vector3 start = dragStart.subtract(center).normalizeLocal();
+			final Vector3 end = dragEnd.subtract(center).normalizeLocal();
+			final Vector3 axis = start.cross(end);
 			final float dot = start.dot(end);
 			final float axisLen = axis.length();
 
@@ -349,8 +349,7 @@ public class ObjectSelectionToolHandler implements IToolHandler {
 			return true;
 		}
 
-		private void updateScene(final Vector3f center,
-				final Quaternion rotation) {
+		private void updateScene(final Vector3 center, final Quaternion rotation) {
 			for (final INode node : scene.getSceneSelection()
 					.getSelectedNodes()) {
 				if (node instanceof AbstractSpatialNode) {

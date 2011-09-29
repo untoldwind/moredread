@@ -3,9 +3,8 @@ package net.untoldwind.moredread.model.op.bool.blebopf;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.Point;
-
-import com.jme.math.Vector3f;
 
 public class BoolVertex extends Point {
 	int index;
@@ -13,7 +12,7 @@ public class BoolVertex extends Point {
 	List<BoolEdge> edges;
 	int tag;
 
-	public BoolVertex(final Vector3f point, final int index) {
+	public BoolVertex(final Vector3 point, final int index) {
 		super(point);
 		this.index = index;
 

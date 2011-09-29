@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import com.jme.math.Vector3f;
+import net.untoldwind.moredread.model.math.Vector3;
 
 public abstract class VertexGeometry<T> implements IVertexGeometry<T> {
 	protected int vertexCount = 0;
@@ -16,11 +16,11 @@ public abstract class VertexGeometry<T> implements IVertexGeometry<T> {
 		vertices = new ArrayList<Vertex>();
 	}
 
-	public Vertex addVertex(final Vector3f point) {
+	public Vertex addVertex(final Vector3 point) {
 		return addVertex(point, false);
 	}
 
-	public Vertex addVertex(final Vector3f point, final boolean smooth) {
+	public Vertex addVertex(final Vector3 point, final boolean smooth) {
 		final Vertex vertex = new Vertex(this, vertices.size(), point);
 
 		vertices.add(vertex);
@@ -47,8 +47,8 @@ public abstract class VertexGeometry<T> implements IVertexGeometry<T> {
 	}
 
 	@Override
-	public Vector3f getCenter() {
-		final Vector3f center = new Vector3f(0, 0, 0);
+	public Vector3 getCenter() {
+		final Vector3 center = new Vector3(0, 0, 0);
 
 		for (final IPoint vertex : vertices) {
 			center.addLocal(vertex.getPoint());

@@ -3,6 +3,7 @@ package net.untoldwind.moredread.ui.controls.impl;
 import java.util.EnumSet;
 
 import net.untoldwind.moredread.model.enums.CartesianPlane;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.Modifier;
@@ -79,7 +80,7 @@ public class PlaneProjectControlHandle implements IControlHandle {
 		this.position.set(position);
 	}
 
-	private Vector3f project(final Vector2f scenePosition) {
+	private Vector3 project(final Vector2f scenePosition) {
 		final Vector3f origin = camera.getWorldCoordinates(scenePosition, 0);
 		final Vector3f direction = camera
 				.getWorldCoordinates(scenePosition, 0.3f).subtractLocal(origin)
@@ -90,6 +91,6 @@ public class PlaneProjectControlHandle implements IControlHandle {
 		dist /= plane.getNormal().dot(direction);
 
 		direction.multLocal(-dist);
-		return origin.addLocal(direction);
+		return new Vector3(origin.addLocal(direction));
 	}
 }

@@ -4,15 +4,16 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Quaternion;
+import net.untoldwind.moredread.model.math.Vector3;
+
 import org.dom4j.Document;
 import org.dom4j.DocumentFactory;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
 
-import com.jme.math.Quaternion;
 import com.jme.math.Vector2f;
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 
 public class XMLStateWriter implements IStateWriter {
@@ -83,7 +84,7 @@ public class XMLStateWriter implements IStateWriter {
 	}
 
 	@Override
-	public void writeVector3f(final String tag, final Vector3f value)
+	public void writeVector3(final String tag, final Vector3 value)
 			throws IOException {
 		final Element vectorElement = element.addElement(tag);
 

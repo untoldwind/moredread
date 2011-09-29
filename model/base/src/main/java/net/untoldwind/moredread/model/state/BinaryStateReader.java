@@ -9,9 +9,10 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jme.math.Quaternion;
+import net.untoldwind.moredread.model.math.Quaternion;
+import net.untoldwind.moredread.model.math.Vector3;
+
 import com.jme.math.Vector2f;
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 
 public class BinaryStateReader implements IStateReader {
@@ -64,8 +65,8 @@ public class BinaryStateReader implements IStateReader {
 	}
 
 	@Override
-	public Vector3f readVector3f() throws IOException {
-		return new Vector3f(input.readFloat(), input.readFloat(),
+	public Vector3 readVector3() throws IOException {
+		return new Vector3(input.readFloat(), input.readFloat(),
 				input.readFloat());
 	}
 

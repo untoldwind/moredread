@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.untoldwind.moredread.model.enums.StandardPlane;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.scene.BoundingBox;
 import net.untoldwind.moredread.ui.controls.IViewport;
 
 import com.jme.math.FastMath;
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Line;
 import com.jme.scene.Node;
@@ -19,7 +19,7 @@ public class GridBackdrop extends Node {
 	private static final long serialVersionUID = -2945873367704608296L;
 
 	private transient BoundingBox lastBoundingBox;
-	private transient Vector3f lastDirection;
+	private transient Vector3 lastDirection;
 
 	public GridBackdrop(final IViewport viewport) {
 		super("GridBackdrop");
@@ -28,9 +28,9 @@ public class GridBackdrop extends Node {
 	}
 
 	public void updateGrid(final IViewport viewport) {
-		final Vector3f direction = new Vector3f(viewport.getCamera()
+		final Vector3 direction = new Vector3(viewport.getCamera()
 				.getDirection());
-		final Vector3f center = viewport.getBoundingBox().getCenter();
+		final Vector3 center = viewport.getBoundingBox().getCenter();
 
 		direction.x = FastMath.sign(direction.x);
 		direction.y = FastMath.sign(direction.y);
@@ -108,7 +108,7 @@ public class GridBackdrop extends Node {
 		}
 
 		lastBoundingBox = new BoundingBox(viewport.getBoundingBox());
-		lastDirection = new Vector3f(direction);
+		lastDirection = new Vector3(direction);
 	}
 
 	Node generateGrid(final StandardPlane plane, final float uMin,
@@ -116,9 +116,9 @@ public class GridBackdrop extends Node {
 			final float size, final ColorRGBA uNullColor,
 			final ColorRGBA vNullColor) {
 		final Node result = new Node();
-		final List<Vector3f> points = new ArrayList<Vector3f>();
-		final List<Vector3f> uNullPoints = new ArrayList<Vector3f>();
-		final List<Vector3f> vNullPoints = new ArrayList<Vector3f>();
+		final List<Vector3> points = new ArrayList<Vector3>();
+		final List<Vector3> uNullPoints = new ArrayList<Vector3>();
+		final List<Vector3> vNullPoints = new ArrayList<Vector3>();
 
 		// Outside bounding quad (don't forget that we use segmented lines here)
 		points.add(plane.getTranslation(uMin, vMin));
@@ -167,7 +167,7 @@ public class GridBackdrop extends Node {
 
 		final FloatBuffer vertexBuffer = BufferUtils.createVector3Buffer(points
 				.size());
-		for (final Vector3f point : points) {
+		for (final Vector3 point : points) {
 			vertexBuffer.put(point.x);
 			vertexBuffer.put(point.y);
 			vertexBuffer.put(point.z);
@@ -183,7 +183,7 @@ public class GridBackdrop extends Node {
 		if (!uNullPoints.isEmpty()) {
 			final FloatBuffer nullBuffer = BufferUtils
 					.createVector3Buffer(uNullPoints.size());
-			for (final Vector3f point : uNullPoints) {
+			for (final Vector3 point : uNullPoints) {
 				nullBuffer.put(point.x);
 				nullBuffer.put(point.y);
 				nullBuffer.put(point.z);
@@ -198,7 +198,7 @@ public class GridBackdrop extends Node {
 		if (!vNullPoints.isEmpty()) {
 			final FloatBuffer nullBuffer = BufferUtils
 					.createVector3Buffer(vNullPoints.size());
-			for (final Vector3f point : vNullPoints) {
+			for (final Vector3 point : vNullPoints) {
 				nullBuffer.put(point.x);
 				nullBuffer.put(point.y);
 				nullBuffer.put(point.z);

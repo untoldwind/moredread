@@ -6,9 +6,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
-import com.jme.math.Quaternion;
+import net.untoldwind.moredread.model.math.Quaternion;
+import net.untoldwind.moredread.model.math.Vector3;
+
 import com.jme.math.Vector2f;
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 
 public class BinaryStateWriter implements IStateWriter {
@@ -64,7 +65,7 @@ public class BinaryStateWriter implements IStateWriter {
 	}
 
 	@Override
-	public void writeVector3f(final String tag, final Vector3f value)
+	public void writeVector3(final String tag, final Vector3 value)
 			throws IOException {
 		output.writeFloat(value.x);
 		output.writeFloat(value.y);

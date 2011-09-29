@@ -2,7 +2,7 @@ package net.untoldwind.moredread.model.op.bool.blebopd;
 
 import java.util.logging.Logger;
 
-import com.jme.math.Vector3f;
+import net.untoldwind.moredread.model.math.Vector3;
 
 public class Vector3d {
 	private static final Logger logger = Logger.getLogger(Vector3d.class
@@ -30,7 +30,7 @@ public class Vector3d {
 	 */
 	public double z;
 
-	public Vector3d(final Vector3f v) {
+	public Vector3d(final Vector3 v) {
 		x = v.x;
 		y = v.y;
 		z = v.z;
@@ -989,7 +989,7 @@ public class Vector3d {
 		throw new IllegalArgumentException("index must be either 0, 1 or 2");
 	}
 
-	public Vector3f toVector3f() {
-		return new Vector3f((float) x, (float) y, (float) z);
+	public Vector3 toVector3() {
+		return new Vector3((float) x, (float) y, (float) z);
 	}
 }

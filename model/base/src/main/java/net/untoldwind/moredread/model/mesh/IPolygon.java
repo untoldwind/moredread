@@ -1,9 +1,9 @@
 package net.untoldwind.moredread.model.mesh;
 
-import com.jme.math.Vector3f;
+import net.untoldwind.moredread.model.math.Vector3;
 
 public interface IPolygon extends IEdgeGeometry<IPolygon> {
-	Vector3f getMeanNormal();
+	Vector3 getMeanNormal();
 
 	int[] getPolygonStripCounts();
 

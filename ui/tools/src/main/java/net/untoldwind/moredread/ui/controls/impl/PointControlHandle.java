@@ -2,6 +2,7 @@ package net.untoldwind.moredread.ui.controls.impl;
 
 import java.util.EnumSet;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.Modifier;
@@ -51,14 +52,14 @@ public class PointControlHandle implements IControlHandle {
 			final EnumSet<Modifier> modifiers) {
 		// TODO: Project this?
 		return modelControl.getToolAdapter().handleMove(modelControl,
-				new Vector3f(position.x, position.y, 0), modifiers);
+				new Vector3(position.x, position.y, 0), modifiers);
 	}
 
 	@Override
 	public boolean handleClick(final Vector2f position,
 			final EnumSet<Modifier> modifiers) {
 		return modelControl.getToolAdapter().handleClick(modelControl,
-				worldPosition, modifiers);
+				new Vector3(worldPosition), modifiers);
 	}
 
 	@Override
@@ -66,7 +67,7 @@ public class PointControlHandle implements IControlHandle {
 			final EnumSet<Modifier> modifiers) {
 		// TODO: Project this?
 		return modelControl.getToolAdapter().handleDragStart(modelControl,
-				new Vector3f(dragStart.x, dragStart.y, 0), modifiers);
+				new Vector3(dragStart.x, dragStart.y, 0), modifiers);
 
 	}
 
@@ -75,8 +76,8 @@ public class PointControlHandle implements IControlHandle {
 			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
 		// TODO: Project this?
 		return modelControl.getToolAdapter().handleDragMove(modelControl,
-				new Vector3f(dragStart.x, dragStart.y, 0),
-				new Vector3f(dragEnd.x, dragEnd.y, 0), modifiers);
+				new Vector3(dragStart.x, dragStart.y, 0),
+				new Vector3(dragEnd.x, dragEnd.y, 0), modifiers);
 
 	}
 
@@ -85,8 +86,8 @@ public class PointControlHandle implements IControlHandle {
 			final Vector2f dragEnd, final EnumSet<Modifier> modifiers) {
 		// TODO: Project this?
 		return modelControl.getToolAdapter().handleDragEnd(modelControl,
-				new Vector3f(dragStart.x, dragStart.y, 0),
-				new Vector3f(dragEnd.x, dragEnd.y, 0), modifiers);
+				new Vector3(dragStart.x, dragStart.y, 0),
+				new Vector3(dragEnd.x, dragEnd.y, 0), modifiers);
 	}
 
 }

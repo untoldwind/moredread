@@ -1,5 +1,7 @@
 package net.untoldwind.moredread.ui.input.event;
 
+import net.untoldwind.moredread.model.math.Vector3;
+
 import com.jme.math.Matrix3f;
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
@@ -7,14 +9,14 @@ import com.jme.renderer.Camera;
 public class RotateAroundZCameraUpdate implements ICameraUpdate {
 	private final float amount;
 
-	private final Vector3f rotateCenter;
+	private final Vector3 rotateCenter;
 
 	public RotateAroundZCameraUpdate(final float amount) {
-		this(amount, new Vector3f());
+		this(amount, new Vector3());
 	}
 
 	public RotateAroundZCameraUpdate(final float amount,
-			final Vector3f rotateCenter) {
+			final Vector3 rotateCenter) {
 		this.amount = amount;
 		this.rotateCenter = rotateCenter;
 	}
@@ -24,10 +26,11 @@ public class RotateAroundZCameraUpdate implements ICameraUpdate {
 		final Matrix3f incr = new Matrix3f();
 		incr.fromAngleNormalAxis(amount, camera.getDirection());
 
-		final Vector3f lookDir = camera.getLocation().subtract(rotateCenter);
+		final Vector3f lookDir = camera.getLocation().subtract(
+				rotateCenter.toJME());
 
 		incr.mult(lookDir, lookDir);
-		lookDir.add(rotateCenter, camera.getLocation());
+		lookDir.add(rotateCenter.toJME(), camera.getLocation());
 
 		incr.mult(camera.getLeft(), camera.getLeft());
 		incr.mult(camera.getDirection(), camera.getDirection());

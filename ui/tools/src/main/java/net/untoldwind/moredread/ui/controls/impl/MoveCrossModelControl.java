@@ -24,13 +24,16 @@ public class MoveCrossModelControl extends CompositeModelControl implements
 	public MoveCrossModelControl(final IToolAdapter toolAdapter) {
 		super("MoveCrossControl");
 
-		xControl = new DirectionArrowModelControl(CartesianDirection.X, toolAdapter);
+		xControl = new DirectionArrowModelControl(CartesianDirection.X,
+				toolAdapter);
 		this.attachChild(xControl);
 		subControls.add(xControl);
-		yControl = new DirectionArrowModelControl(CartesianDirection.Y, toolAdapter);
+		yControl = new DirectionArrowModelControl(CartesianDirection.Y,
+				toolAdapter);
 		this.attachChild(yControl);
 		subControls.add(yControl);
-		zControl = new DirectionArrowModelControl(CartesianDirection.Z, toolAdapter);
+		zControl = new DirectionArrowModelControl(CartesianDirection.Z,
+				toolAdapter);
 		this.attachChild(zControl);
 		subControls.add(zControl);
 
@@ -65,7 +68,7 @@ public class MoveCrossModelControl extends CompositeModelControl implements
 
 	@Override
 	public void updatePositions() {
-		this.setLocalTranslation(toolAdapter.getCenter());
+		this.setLocalTranslation(toolAdapter.getCenter().toJME());
 	}
 
 	@Override

@@ -7,11 +7,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.untoldwind.moredread.model.enums.GeometryType;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 import net.untoldwind.moredread.model.transform.ITransformation;
-
-import com.jme.math.Vector3f;
 
 public class Polygon extends EdgeGeometry<IPolygon> implements IPolygon {
 	private int[] stripCounts;
@@ -99,7 +98,7 @@ public class Polygon extends EdgeGeometry<IPolygon> implements IPolygon {
 		return vertices.size();
 	}
 
-	public Vertex appendVertex(final Vector3f point, final boolean smooth) {
+	public Vertex appendVertex(final Vector3 point, final boolean smooth) {
 		final Vertex vertex = new Vertex(this, vertices.size(), point);
 
 		vertices.add(vertex);
@@ -113,11 +112,11 @@ public class Polygon extends EdgeGeometry<IPolygon> implements IPolygon {
 	}
 
 	@Override
-	public Vector3f getMeanNormal() {
-		final Vector3f meanNormal = new Vector3f(0, 0, 0);
+	public Vector3 getMeanNormal() {
+		final Vector3 meanNormal = new Vector3(0, 0, 0);
 		for (int i = 0; i < vertices.size(); i++) {
-			final Vector3f v1 = vertices.get(i).getPoint();
-			final Vector3f v2 = vertices.get((i + 1) % vertices.size())
+			final Vector3 v1 = vertices.get(i).getPoint();
+			final Vector3 v2 = vertices.get((i + 1) % vertices.size())
 					.getPoint();
 			meanNormal.addLocal(v1.cross(v2));
 		}
@@ -162,7 +161,7 @@ public class Polygon extends EdgeGeometry<IPolygon> implements IPolygon {
 		final int numVerices = reader.readInt();
 
 		for (int i = 0; i < numVerices; i++) {
-			addVertex(reader.readVector3f(), false);
+			addVertex(reader.readVector3(), false);
 		}
 		stripCounts = reader.readIntArray();
 		contourCounts = reader.readIntArray();
@@ -195,7 +194,7 @@ public class Polygon extends EdgeGeometry<IPolygon> implements IPolygon {
 	public void writeState(final IStateWriter writer) throws IOException {
 		writer.writeInt("numVerices", vertices.size());
 		for (final IPoint vertex : vertices) {
-			writer.writeVector3f("vertex", vertex.getPoint());
+			writer.writeVector3("vertex", vertex.getPoint());
 		}
 		writer.writeIntArray("stripCounts", stripCounts);
 		writer.writeIntArray("contourCounts", contourCounts);

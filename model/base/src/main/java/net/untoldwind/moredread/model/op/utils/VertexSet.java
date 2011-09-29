@@ -3,10 +3,10 @@ package net.untoldwind.moredread.model.op.utils;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IVertex;
 
 import com.jme.math.FastMath;
-import com.jme.math.Vector3f;
 
 public class VertexSet {
 	private final Map<VertexKey, IVertex> vertexMap = new HashMap<VertexKey, IVertex>();
@@ -15,17 +15,17 @@ public class VertexSet {
 		vertexMap.put(new VertexKey(vertex.getPoint()), vertex);
 	}
 
-	public IVertex findVertex(final Vector3f point) {
+	public IVertex findVertex(final Vector3 point) {
 		return vertexMap.get(new VertexKey(point));
 	}
 
 	private static class VertexKey {
 		private final float TOLERANCE = 1e-5f;
 
-		private final Vector3f point;
+		private final Vector3 point;
 		private final int hashCode;
 
-		VertexKey(final Vector3f point) {
+		VertexKey(final Vector3 point) {
 			this.point = point;
 			this.hashCode = 31 * 31 * Math.round(point.x / TOLERANCE / 2) + 31
 					* Math.round(point.y / TOLERANCE / 2)

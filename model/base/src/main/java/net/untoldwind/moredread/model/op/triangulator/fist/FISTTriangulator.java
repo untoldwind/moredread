@@ -2,11 +2,10 @@ package net.untoldwind.moredread.model.op.triangulator.fist;
 
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IPoint;
 import net.untoldwind.moredread.model.mesh.IPolygon;
 import net.untoldwind.moredread.model.op.ITriangulator;
-
-import com.jme.math.Vector3f;
 
 public class FISTTriangulator implements ITriangulator {
 
@@ -19,7 +18,7 @@ public class FISTTriangulator implements ITriangulator {
 		gi.stripCounts = polygon.getPolygonStripCounts();
 		final List<? extends IPoint> coordinatePoints = polygon.getVertices();
 
-		gi.coordinates = new Vector3f[coordinatePoints.size()];
+		gi.coordinates = new Vector3[coordinatePoints.size()];
 		for (int i = 0; i < gi.coordinates.length; i++) {
 			gi.coordinates[i] = coordinatePoints.get(i).getPoint();
 		}

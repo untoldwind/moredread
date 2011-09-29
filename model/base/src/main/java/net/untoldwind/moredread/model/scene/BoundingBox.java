@@ -3,16 +3,16 @@ package net.untoldwind.moredread.model.scene;
 import java.util.Iterator;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Matrix3;
+import net.untoldwind.moredread.model.math.Quaternion;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IPoint;
 
 import com.jme.math.FastMath;
-import com.jme.math.Matrix3f;
-import com.jme.math.Quaternion;
-import com.jme.math.Vector3f;
 
 public class BoundingBox {
 	private float xExtent, yExtent, zExtent;
-	private final Vector3f center = new Vector3f();
+	private final Vector3 center = new Vector3();
 
 	public BoundingBox() {
 	}
@@ -28,7 +28,7 @@ public class BoundingBox {
 		computeFromPoints(points);
 	}
 
-	public Vector3f getCenter() {
+	public Vector3 getCenter() {
 		return center;
 	}
 
@@ -44,7 +44,7 @@ public class BoundingBox {
 		return zExtent;
 	}
 
-	public void add(final Vector3f point) {
+	public void add(final Vector3 point) {
 		float minX = center.x - xExtent, minY = center.y - yExtent, minZ = center.z
 				- zExtent;
 		float maxX = center.x + xExtent, maxY = center.y + yExtent, maxZ = center.z
@@ -84,7 +84,7 @@ public class BoundingBox {
 
 		final Iterator<? extends IPoint> it = points.iterator();
 
-		Vector3f p = it.next().getPoint();
+		Vector3 p = it.next().getPoint();
 
 		float minX = p.x, minY = p.y, minZ = p.z;
 		float maxX = p.x, maxY = p.y, maxZ = p.z;
@@ -120,8 +120,8 @@ public class BoundingBox {
 	}
 
 	public void mergeLocal(final BoundingBox boundingBox) {
-		final Vector3f v1 = new Vector3f();
-		final Vector3f v2 = new Vector3f();
+		final Vector3 v1 = new Vector3();
+		final Vector3 v2 = new Vector3();
 
 		v1.x = center.x - xExtent;
 		if (v1.x > boundingBox.center.x - boundingBox.xExtent) {
@@ -156,25 +156,25 @@ public class BoundingBox {
 		zExtent = v2.z - center.z;
 	}
 
-	public Vector3f getMinPosition() {
-		return new Vector3f(center.x - xExtent, center.y - yExtent, center.z
+	public Vector3 getMinPosition() {
+		return new Vector3(center.x - xExtent, center.y - yExtent, center.z
 				- zExtent);
 	}
 
-	public Vector3f getMaxPosition() {
-		return new Vector3f(center.x + xExtent, center.y + yExtent, center.z
+	public Vector3 getMaxPosition() {
+		return new Vector3(center.x + xExtent, center.y + yExtent, center.z
 				+ zExtent);
 	}
 
 	public BoundingBox transform(final Quaternion rotate,
-			final Vector3f translate, final Vector3f scale) {
+			final Vector3 translate, final Vector3 scale) {
 		final BoundingBox box = new BoundingBox();
 
 		center.mult(scale, box.center);
 		rotate.mult(box.center, box.center);
 		box.center.addLocal(translate);
 
-		final Matrix3f transMatrix = new Matrix3f();
+		final Matrix3 transMatrix = new Matrix3();
 		transMatrix.set(rotate);
 		// Make the rotation matrix all positive to get the maximum x/y/z extent
 		transMatrix.m00 = FastMath.abs(transMatrix.m00);
@@ -187,8 +187,8 @@ public class BoundingBox {
 		transMatrix.m21 = FastMath.abs(transMatrix.m21);
 		transMatrix.m22 = FastMath.abs(transMatrix.m22);
 
-		final Vector3f v1 = new Vector3f();
-		final Vector3f v2 = new Vector3f();
+		final Vector3 v1 = new Vector3();
+		final Vector3 v2 = new Vector3();
 
 		v1.set(xExtent * scale.x, yExtent * scale.y, zExtent * scale.z);
 		transMatrix.mult(v1, v2);
@@ -201,8 +201,7 @@ public class BoundingBox {
 	}
 
 	public boolean intersects(final BoundingBox bb) {
-		if (!Vector3f.isValidVector(center)
-				|| !Vector3f.isValidVector(bb.center)) {
+		if (!Vector3.isValidVector(center) || !Vector3.isValidVector(bb.center)) {
 			return false;
 		}
 

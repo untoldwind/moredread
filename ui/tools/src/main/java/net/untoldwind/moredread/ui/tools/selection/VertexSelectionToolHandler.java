@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.untoldwind.moredread.annotations.Singleton;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IVertex;
 import net.untoldwind.moredread.model.mesh.IVertexGeometry;
 import net.untoldwind.moredread.model.mesh.Vertex;
@@ -24,8 +25,6 @@ import net.untoldwind.moredread.ui.controls.impl.VertexSelectionModelControl;
 import net.untoldwind.moredread.ui.tools.IToolController;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 import net.untoldwind.moredread.ui.tools.spi.IToolHandler;
-
-import com.jme.math.Vector3f;
 
 @Singleton
 public class VertexSelectionToolHandler implements IToolHandler {
@@ -85,25 +84,25 @@ public class VertexSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public Vector3f getCenter() {
+		public Vector3 getCenter() {
 			// TODO
-			return new Vector3f(0, 0, 0);
+			return new Vector3(0, 0, 0);
 		}
 
 		@Override
-		public Vector3f getFeedbackPoint() {
+		public Vector3 getFeedbackPoint() {
 			return getCenter();
 		}
 
 		@Override
 		public boolean handleMove(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
 		@Override
 		public boolean handleClick(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			// Click anywhere inside face is ok
 			if (modifiers.contains(Modifier.LEFT_MOUSE_BUTTON)) {
 				if (modifiers.contains(Modifier.SHIFT_KEY)) {
@@ -120,20 +119,20 @@ public class VertexSelectionToolHandler implements IToolHandler {
 
 		@Override
 		public boolean handleDragStart(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
 		@Override
 		public boolean handleDragMove(final IModelControl modelControl,
-				final Vector3f dragStart, final Vector3f dragEnd,
+				final Vector3 dragStart, final Vector3 dragEnd,
 				final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
 		@Override
 		public boolean handleDragEnd(final IModelControl modelControl,
-				final Vector3f dragStart, final Vector3f dragEnd,
+				final Vector3 dragStart, final Vector3 dragEnd,
 				final EnumSet<Modifier> modifiers) {
 			return false;
 		}
@@ -147,8 +146,8 @@ public class VertexSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public Vector3f getCenter() {
-			final Vector3f center = new Vector3f();
+		public Vector3 getCenter() {
+			final Vector3 center = new Vector3();
 			int count = 0;
 
 			for (final VertexSelection vertexSelection : scene
@@ -162,7 +161,7 @@ public class VertexSelectionToolHandler implements IToolHandler {
 							.getVertexIndex());
 
 					center.addLocal(node.localToWorld(vertex.getPoint(),
-							new Vector3f()));
+							new Vector3()));
 					count++;
 				}
 			}
@@ -173,31 +172,31 @@ public class VertexSelectionToolHandler implements IToolHandler {
 		}
 
 		@Override
-		public Vector3f getFeedbackPoint() {
+		public Vector3 getFeedbackPoint() {
 			return getCenter();
 		}
 
 		@Override
 		public boolean handleMove(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
 		@Override
 		public boolean handleClick(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
 		@Override
 		public boolean handleDragStart(final IModelControl modelControl,
-				final Vector3f point, final EnumSet<Modifier> modifiers) {
+				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			return false;
 		}
 
 		@Override
 		public boolean handleDragMove(final IModelControl modelControl,
-				final Vector3f dragStart, final Vector3f dragEnd,
+				final Vector3 dragStart, final Vector3 dragEnd,
 				final EnumSet<Modifier> modifiers) {
 			scene.getSceneChangeHandler().beginUndoable("Move vertices");
 
@@ -211,7 +210,7 @@ public class VertexSelectionToolHandler implements IToolHandler {
 
 		@Override
 		public boolean handleDragEnd(final IModelControl modelControl,
-				final Vector3f dragStart, final Vector3f dragEnd,
+				final Vector3 dragStart, final Vector3 dragEnd,
 				final EnumSet<Modifier> modifiers) {
 			scene.getSceneChangeHandler().beginUndoable("Move vertices");
 
@@ -223,8 +222,8 @@ public class VertexSelectionToolHandler implements IToolHandler {
 			return true;
 		}
 
-		private void updateScene(final Vector3f point) {
-			final Vector3f centerDiff = getCenter();
+		private void updateScene(final Vector3 point) {
+			final Vector3 centerDiff = getCenter();
 			centerDiff.subtractLocal(point);
 
 			final Set<INode> changedNodes = new HashSet<INode>();
@@ -245,10 +244,10 @@ public class VertexSelectionToolHandler implements IToolHandler {
 					continue;
 				}
 
-				final Vector3f worldPoint = node.localToWorld(
-						vertex.getPoint(), new Vector3f());
+				final Vector3 worldPoint = node.localToWorld(vertex.getPoint(),
+						new Vector3());
 				worldPoint.subtractLocal(centerDiff);
-				vertex.setPoint(node.worldToLocal(worldPoint, new Vector3f()));
+				vertex.setPoint(node.worldToLocal(worldPoint, new Vector3()));
 
 				changedNodes.add(node);
 			}

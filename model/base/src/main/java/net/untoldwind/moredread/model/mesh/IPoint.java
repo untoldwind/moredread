@@ -1,7 +1,7 @@
 package net.untoldwind.moredread.model.mesh;
 
-import com.jme.math.Vector3f;
+import net.untoldwind.moredread.model.math.Vector3;
 
 public interface IPoint extends IGeometry<IPoint> {
-	Vector3f getPoint();
+	Vector3 getPoint();
 }

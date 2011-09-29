@@ -1,11 +1,10 @@
 package net.untoldwind.moredread.model.scene;
 
+import net.untoldwind.moredread.model.math.Quaternion;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IPoint;
 import net.untoldwind.moredread.model.mesh.IPolygon;
 import net.untoldwind.moredread.model.transform.ITransformation;
-
-import com.jme.math.Quaternion;
-import com.jme.math.Vector3f;
 
 /**
  * A generic node in the scene tree with spatial dimensions.
@@ -15,11 +14,11 @@ import com.jme.math.Vector3f;
 public interface ISpatialNode extends INode {
 	Quaternion getLocalRotation();
 
-	Vector3f getLocalTranslation();
+	Vector3 getLocalTranslation();
 
-	Vector3f getLocalScale();
+	Vector3 getLocalScale();
 
-	Vector3f getWorldTranslation();
+	Vector3 getWorldTranslation();
 
 	ITransformation getLocalTransformation();
 
@@ -27,11 +26,11 @@ public interface ISpatialNode extends INode {
 
 	BoundingBox getWorldBoundingBox();
 
-	Vector3f localToWorld(final Vector3f in, Vector3f store);
+	Vector3 localToWorld(final Vector3 in, Vector3 store);
 
 	IPoint localToWorld(final IPoint point);
 
 	IPolygon localToWorld(final IPolygon polygon);
 
-	Vector3f worldToLocal(final Vector3f in, final Vector3f store);
+	Vector3 worldToLocal(final Vector3 in, final Vector3 store);
 }

@@ -2,6 +2,8 @@ package net.untoldwind.moredread.model.scene.change;
 
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Quaternion;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.Scene;
@@ -13,18 +15,15 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
-import com.jme.math.Quaternion;
-import com.jme.math.Vector3f;
-
 public class NodeTransformationChangeCommand extends AbstractOperation
 		implements ISceneChangeCommand {
 	private final long nodeId;
 	private Quaternion oldLocalRotation;
-	private Vector3f oldLocalTranslation;
-	private Vector3f oldLocalScale;
+	private Vector3 oldLocalTranslation;
+	private Vector3 oldLocalScale;
 	private Quaternion newLocalRotation;
-	private Vector3f newLocalTranslation;
-	private Vector3f newLocalScale;
+	private Vector3 newLocalTranslation;
+	private Vector3 newLocalScale;
 
 	public NodeTransformationChangeCommand(final AbstractSpatialNode node) {
 		super("Node " + node.getName() + " transformation change");
@@ -46,8 +45,8 @@ public class NodeTransformationChangeCommand extends AbstractOperation
 			throw new RuntimeException("Node " + nodeId + " not found in scene");
 		}
 		oldLocalRotation = new Quaternion(node.getLocalRotation());
-		oldLocalTranslation = new Vector3f(node.getLocalTranslation());
-		oldLocalScale = new Vector3f(node.getLocalScale());
+		oldLocalTranslation = new Vector3(node.getLocalTranslation());
+		oldLocalScale = new Vector3(node.getLocalScale());
 	}
 
 	@Override
@@ -59,8 +58,8 @@ public class NodeTransformationChangeCommand extends AbstractOperation
 			throw new RuntimeException("Node " + nodeId + " not found in scene");
 		}
 		newLocalRotation = new Quaternion(node.getLocalRotation());
-		newLocalTranslation = new Vector3f(node.getLocalTranslation());
-		newLocalScale = new Vector3f(node.getLocalScale());
+		newLocalTranslation = new Vector3(node.getLocalTranslation());
+		newLocalScale = new Vector3(node.getLocalScale());
 	}
 
 	@Override

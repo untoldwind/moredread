@@ -101,9 +101,9 @@ public class Group extends AbstractSpatialComposite<AbstractSpatialNode> {
 			parent.attachChild(displayNode);
 		}
 
-		displayNode.setLocalRotation(localRotation);
-		displayNode.setLocalTranslation(localTranslation);
-		displayNode.setLocalScale(localScale);
+		displayNode.setLocalRotation(localRotation.toJME());
+		displayNode.setLocalTranslation(localTranslation.toJME());
+		displayNode.setLocalScale(localScale.toJME());
 
 		if (structuralChange) {
 			displayNode.detachAllChildren();
@@ -125,8 +125,8 @@ public class Group extends AbstractSpatialComposite<AbstractSpatialNode> {
 	@Override
 	public void readState(final IStateReader reader) throws IOException {
 		name = reader.readString();
-		localTranslation = reader.readVector3f();
-		localScale = reader.readVector3f();
+		localTranslation = reader.readVector3();
+		localScale = reader.readVector3();
 		localRotation = reader.readQuaternion();
 		reader.readUntypedList(new IStateReader.IInstanceCreator<INode>() {
 			@Override
@@ -147,8 +147,8 @@ public class Group extends AbstractSpatialComposite<AbstractSpatialNode> {
 	@Override
 	public void writeState(final IStateWriter writer) throws IOException {
 		writer.writeString("name", name);
-		writer.writeVector3f("localTranslation", localTranslation);
-		writer.writeVector3f("localScale", localScale);
+		writer.writeVector3("localTranslation", localTranslation);
+		writer.writeVector3("localScale", localScale);
 		writer.writeQuaternion("localRotation", localRotation);
 		writer.writeUntypedList("children", children);
 	}

@@ -1,17 +1,16 @@
 package net.untoldwind.moredread.model.op.utils;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IVertex;
 import net.untoldwind.moredread.model.mesh.Vertex;
 import net.untoldwind.moredread.model.mesh.VertexGeometry;
 import net.untoldwind.moredread.model.scene.BoundingBox;
 
-import com.jme.math.Vector3f;
-
 public class UnitRescale {
 	BoundingBox originalBoundingBox;
-	Vector3f scale;
-	Vector3f translation;
+	Vector3 scale;
+	Vector3 translation;
 
 	public UnitRescale(final IMesh... meshes) {
 		originalBoundingBox = new BoundingBox();
@@ -22,7 +21,7 @@ public class UnitRescale {
 		}
 
 		translation = originalBoundingBox.getCenter();
-		scale = new Vector3f(originalBoundingBox.getXExtent(),
+		scale = new Vector3(originalBoundingBox.getXExtent(),
 				originalBoundingBox.getYExtent(),
 				originalBoundingBox.getZExtent());
 	}

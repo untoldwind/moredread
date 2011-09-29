@@ -16,7 +16,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-import com.jme.math.Vector3f;
+import com.jme.math.Vector3;
 
 public class SVGHelper {
 	public static Map<String, Polygon> readPaths(final String resource)
@@ -43,7 +43,7 @@ public class SVGHelper {
 			final StringTokenizer t = new StringTokenizer(d, " ");
 
 			final List<IPoint> vertices = new ArrayList<IPoint>();
-			final List<Vector3f> normals = new ArrayList<Vector3f>();
+			final List<Vector3> normals = new ArrayList<Vector3>();
 			final List<Integer> stripCounts = new ArrayList<Integer>();
 			int count = 0;
 
@@ -54,13 +54,13 @@ public class SVGHelper {
 				case 'M':
 				case 'm':
 					vertices.add(parseCoordinate(t.nextToken()));
-					normals.add(new Vector3f(0, 0, 1));
+					normals.add(new Vector3(0, 0, 1));
 					count++;
 					break;
 				case 'L':
 				case 'l':
 					vertices.add(parseCoordinate(t.nextToken()));
-					normals.add(new Vector3f(0, 0, 1));
+					normals.add(new Vector3(0, 0, 1));
 					count++;
 					break;
 				case 'Z':
@@ -78,7 +78,7 @@ public class SVGHelper {
 			}
 
 			result.put(id, new Polygon(vertices.toArray(new IPoint[vertices
-					.size()]), normals.toArray(new Vector3f[normals.size()]),
+					.size()]), normals.toArray(new Vector3[normals.size()]),
 					stripCountsArr, new int[] { stripCountsArr.length }, true));
 		}
 
@@ -88,7 +88,7 @@ public class SVGHelper {
 	protected static IPoint parseCoordinate(final String coord) {
 		final String[] coordArr = coord.split(",");
 
-		return new Point(new Vector3f(Float.parseFloat(coordArr[0]), Float
+		return new Point(new Vector3(Float.parseFloat(coordArr[0]), Float
 				.parseFloat(coordArr[1]), 0));
 	}
 }

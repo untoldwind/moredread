@@ -4,17 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.untoldwind.moredread.model.enums.GeometryType;
+import net.untoldwind.moredread.model.math.Plane;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.state.IStateHolder;
-
-import com.jme.math.Plane;
-import com.jme.math.Vector3f;
 
 public abstract class Face<FaceK extends FaceId, FaceT extends Face<?, ?>>
 		implements IStateHolder, IFace {
 	protected final Mesh<?, ?> owner;
 	protected final FaceK index;
-	protected Vector3f center;
-	protected Vector3f meanNormal;
+	protected Vector3 center;
+	protected Vector3 meanNormal;
 
 	protected Face(final Mesh<?, ?> owner, final FaceK index) {
 		this.owner = owner;
@@ -50,7 +49,7 @@ public abstract class Face<FaceK extends FaceId, FaceT extends Face<?, ?>>
 	}
 
 	@Override
-	public Vector3f getCenter() {
+	public Vector3 getCenter() {
 		if (center == null) {
 			updateCenter();
 		}
@@ -58,7 +57,7 @@ public abstract class Face<FaceK extends FaceId, FaceT extends Face<?, ?>>
 	}
 
 	@Override
-	public Vector3f getMeanNormal() {
+	public Vector3 getMeanNormal() {
 		if (meanNormal == null) {
 			updateMeanNormal();
 		}
@@ -67,7 +66,7 @@ public abstract class Face<FaceK extends FaceId, FaceT extends Face<?, ?>>
 
 	@Override
 	public Plane getPlane() {
-		final Vector3f n = getMeanNormal();
+		final Vector3 n = getMeanNormal();
 
 		final float d = n.dot(getCenter());
 

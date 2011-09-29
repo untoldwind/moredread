@@ -3,7 +3,7 @@ package net.untoldwind.moredread.model.op.bool.blebopf;
 import java.util.Iterator;
 import java.util.List;
 
-import com.jme.math.Vector3f;
+import net.untoldwind.moredread.model.math.Vector3;
 
 public class BoolBoundingBox {
 	float minX;
@@ -30,7 +30,7 @@ public class BoolBoundingBox {
 
 		final Iterator<BoolVertex> it = points.iterator();
 
-		Vector3f p = it.next().getPoint();
+		Vector3 p = it.next().getPoint();
 
 		minX = p.x;
 		minY = p.y;

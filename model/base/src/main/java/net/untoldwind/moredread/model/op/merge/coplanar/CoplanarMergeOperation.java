@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import net.untoldwind.moredread.model.ModelPlugin;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.FaceId;
 import net.untoldwind.moredread.model.mesh.IEdge;
 import net.untoldwind.moredread.model.mesh.IFace;
@@ -21,7 +22,6 @@ import net.untoldwind.moredread.model.op.IUnaryOperation;
 
 import com.jme.math.FastMath;
 import com.jme.math.Vector2f;
-import com.jme.math.Vector3f;
 
 /**
  * Simple coplanar merge operation.
@@ -228,10 +228,10 @@ public class CoplanarMergeOperation implements IUnaryOperation {
 			final List<IVertex> sourceStrip = sourceStrips.get(j);
 
 			for (int i = sourceStrip.size() - 1; i >= 0; i--) {
-				final Vector3f diff1 = sourceStrip
+				final Vector3 diff1 = sourceStrip
 						.get((i + 1) % sourceStrip.size()).getPoint()
 						.subtract(sourceStrip.get(i).getPoint());
-				final Vector3f diff2 = sourceStrip
+				final Vector3 diff2 = sourceStrip
 						.get((i + sourceStrip.size() - 1) % sourceStrip.size())
 						.getPoint().subtract(sourceStrip.get(i).getPoint());
 				diff2.crossLocal(diff1);
@@ -250,17 +250,17 @@ public class CoplanarMergeOperation implements IUnaryOperation {
 			return;
 		}
 
-		final Vector3f n = source.getFace(faces.iterator().next())
+		final Vector3 n = source.getFace(faces.iterator().next())
 				.getMeanNormal();
-		final Vector3f vx = sourceStrips.get(0).get(1).getPoint()
+		final Vector3 vx = sourceStrips.get(0).get(1).getPoint()
 				.subtract(sourceStrips.get(0).get(0).getPoint());
 		vx.normalizeLocal();
-		final Vector3f vy = vx.cross(n).normalizeLocal();
+		final Vector3 vy = vx.cross(n).normalizeLocal();
 
 		sortStrips(vx, vy, sourceStrips);
 
 		for (int i = 0; i < sourceStrips.size(); i++) {
-			final Vector3f pn = calculateMeanNormal(sourceStrips.get(i));
+			final Vector3 pn = calculateMeanNormal(sourceStrips.get(i));
 
 			if (n.dot(pn) < 0) {
 				if (i == 0) {
@@ -305,7 +305,7 @@ public class CoplanarMergeOperation implements IUnaryOperation {
 		}
 	}
 
-	private void sortStrips(final Vector3f vx, final Vector3f vy,
+	private void sortStrips(final Vector3 vx, final Vector3 vy,
 			final List<List<IVertex>> sourceStrips) {
 		for (int i = 1; i < sourceStrips.size(); i++) {
 			if (isInside(vx, vy, sourceStrips.get(0).get(0),
@@ -315,7 +315,7 @@ public class CoplanarMergeOperation implements IUnaryOperation {
 		}
 	}
 
-	private boolean isInside(final Vector3f vx, final Vector3f vy,
+	private boolean isInside(final Vector3 vx, final Vector3 vy,
 			final IVertex vertex, final List<IVertex> polygon) {
 		final int polySides = polygon.size();
 		if (polySides == 0) {
@@ -329,8 +329,8 @@ public class CoplanarMergeOperation implements IUnaryOperation {
 		boolean oddNodes = false;
 
 		for (i = 0; i < polySides; i++) {
-			final Vector3f vi = polygon.get(i).getPoint();
-			final Vector3f vj = polygon.get(j).getPoint();
+			final Vector3 vi = polygon.get(i).getPoint();
+			final Vector3 vj = polygon.get(j).getPoint();
 			final Vector2f pi = new Vector2f(vi.dot(vx), vi.dot(vy));
 			final Vector2f pj = new Vector2f(vj.dot(vx), vj.dot(vy));
 
@@ -345,12 +345,12 @@ public class CoplanarMergeOperation implements IUnaryOperation {
 		return oddNodes;
 	}
 
-	private Vector3f calculateMeanNormal(final List<IVertex> sourceStrip) {
-		final Vector3f meanNormal = new Vector3f(0, 0, 0);
+	private Vector3 calculateMeanNormal(final List<IVertex> sourceStrip) {
+		final Vector3 meanNormal = new Vector3(0, 0, 0);
 		final int outerStripCount = sourceStrip.size();
 		for (int i = 0; i < outerStripCount; i++) {
-			final Vector3f v1 = sourceStrip.get(i).getPoint();
-			final Vector3f v2 = sourceStrip.get((i + 1) % outerStripCount)
+			final Vector3 v1 = sourceStrip.get(i).getPoint();
+			final Vector3 v2 = sourceStrip.get((i + 1) % outerStripCount)
 					.getPoint();
 			meanNormal.addLocal(v1.cross(v2));
 		}
@@ -360,8 +360,8 @@ public class CoplanarMergeOperation implements IUnaryOperation {
 	}
 
 	private boolean checkCoplanar(final IFace face1, final IFace face2) {
-		final Vector3f cross = face1.getMeanNormal().cross(
-				face2.getMeanNormal());
+		final Vector3 cross = face1.getMeanNormal()
+				.cross(face2.getMeanNormal());
 
 		return FastMath.abs(cross.x) < FastMath.ZERO_TOLERANCE
 				&& FastMath.abs(cross.y) < FastMath.ZERO_TOLERANCE

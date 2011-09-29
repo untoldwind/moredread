@@ -3,9 +3,10 @@ package net.untoldwind.moredread.model.state;
 import java.io.IOException;
 import java.util.List;
 
-import com.jme.math.Quaternion;
+import net.untoldwind.moredread.model.math.Quaternion;
+import net.untoldwind.moredread.model.math.Vector3;
+
 import com.jme.math.Vector2f;
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 
 public interface IStateWriter {
@@ -23,7 +24,7 @@ public interface IStateWriter {
 
 	void writeVector2f(String tag, Vector2f value) throws IOException;
 
-	void writeVector3f(String tag, Vector3f value) throws IOException;
+	void writeVector3(String tag, Vector3 value) throws IOException;
 
 	void writeQuaternion(String tag, Quaternion quaterion) throws IOException;
 

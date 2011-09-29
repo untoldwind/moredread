@@ -1,6 +1,7 @@
 package net.untoldwind.moredread.ui.utils;
 
 import static net.untoldwind.moredread.ui.utils.FormatUtils.formatLength;
+import net.untoldwind.moredread.model.math.Vector3;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -8,8 +9,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
-
-import com.jme.math.Vector3f;
 
 public class XYZText extends Composite {
 
@@ -43,7 +42,7 @@ public class XYZText extends Composite {
 		zText.setBackground(display.getSystemColor(SWT.COLOR_BLUE));
 	}
 
-	public void setValue(final Vector3f value) {
+	public void setValue(final Vector3 value) {
 		if (value == null) {
 			xText.setText("");
 			yText.setText("");

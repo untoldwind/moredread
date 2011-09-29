@@ -1,11 +1,11 @@
 package net.untoldwind.moredread.model.op.triangulator.fist;
 
-import com.jme.math.Vector3f;
+import net.untoldwind.moredread.model.math.Vector3;
 
 public class GeometryInfo {
 	public static final int POLYGON_ARRAY = 5;
 
-	Vector3f[] coordinates;
+	Vector3[] coordinates;
 	int coordinateIndices[] = null;
 
 	int stripCounts[] = null;
@@ -15,7 +15,7 @@ public class GeometryInfo {
 		return POLYGON_ARRAY;
 	}
 
-	public Vector3f[] getCoordinates() {
+	public Vector3[] getCoordinates() {
 		return coordinates;
 	}
 

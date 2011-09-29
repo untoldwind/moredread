@@ -10,9 +10,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IPoint;
-
-import com.jme.math.Vector3f;
 
 public class PNGHelper {
 	public static void drawPolygon(final List<? extends IPoint> vertices,
@@ -54,7 +53,7 @@ public class PNGHelper {
 			final int x[] = new int[count];
 			final int y[] = new int[count];
 			for (int j = 0; j < count; j++) {
-				final Vector3f v1 = vertices.get(offset + j).getPoint();
+				final Vector3 v1 = vertices.get(offset + j).getPoint();
 
 				x[j] = (int) (v1.x - minX);
 				y[j] = (int) (v1.y - minY);
@@ -99,9 +98,9 @@ public class PNGHelper {
 		g.fillRect(0, 0, (int) (maxX - minX), (int) (maxY - minY));
 
 		for (int i = 0; i < indices.length; i += 3) {
-			final Vector3f v1 = vertices.get(indices[i]).getPoint();
-			final Vector3f v2 = vertices.get(indices[i + 1]).getPoint();
-			final Vector3f v3 = vertices.get(indices[i + 2]).getPoint();
+			final Vector3 v1 = vertices.get(indices[i]).getPoint();
+			final Vector3 v2 = vertices.get(indices[i + 1]).getPoint();
+			final Vector3 v3 = vertices.get(indices[i + 2]).getPoint();
 			final int[] x = { (int) (v1.x - minX), (int) (v2.x - minX),
 					(int) (v3.x - minX) };
 			final int[] y = { (int) (v1.y - minY), (int) (v2.y - minY),

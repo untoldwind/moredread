@@ -2,8 +2,9 @@ package net.untoldwind.moredread.model.op.triangulator.fist;
 
 import java.util.Random;
 
+import net.untoldwind.moredread.model.math.Vector3;
+
 import com.jme.math.Vector2f;
-import com.jme.math.Vector3f;
 
 /**
  * Triangulator is a utility for turning arbitrary polygons into triangles so
@@ -73,7 +74,7 @@ public class Triangulator extends Object {
 
 	int stripCounts[] = null;
 	int vertexIndices[] = null;
-	Vector3f vertices[] = null;
+	Vector3 vertices[] = null;
 
 	boolean ccwLoop = true;
 
@@ -389,7 +390,8 @@ public class Triangulator extends Object {
 								// System.out.println("***** let's hope for the best *****\n");
 								if (!Desperate.letsHope(this, ind)) {
 									/*
-									 * System.out.println("***** sorry, I can't do it! ***** \n"
+									 * System.out.println(
+									 * "***** sorry, I can't do it! ***** \n"
 									 * );System.out.println(
 									 * "***** ask a triangulation wizard, or ");
 									 * System.out.println(

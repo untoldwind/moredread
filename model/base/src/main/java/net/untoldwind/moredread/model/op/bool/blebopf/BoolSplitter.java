@@ -1,7 +1,7 @@
 package net.untoldwind.moredread.model.op.bool.blebopf;
 
-import com.jme.math.Plane;
-import com.jme.math.Vector3f;
+import net.untoldwind.moredread.model.math.Plane;
+import net.untoldwind.moredread.model.math.Vector3;
 
 public class BoolSplitter {
 	/**
@@ -18,7 +18,7 @@ public class BoolSplitter {
 	 *            relative edge index
 	 * @return intersection point
 	 */
-	static Vector3f splitEdge(final Plane plane, final BoolFace f, final int e) {
+	static Vector3 splitEdge(final Plane plane, final BoolFace f, final int e) {
 		BoolVertex v1, v2;
 
 		switch (e) {
@@ -38,8 +38,8 @@ public class BoolSplitter {
 			throw new RuntimeException("Invalid e = " + e);
 		}
 
-		final Vector3f p1 = v1.getPoint();
-		final Vector3f p2 = v2.getPoint();
+		final Vector3 p1 = v1.getPoint();
+		final Vector3 p2 = v2.getPoint();
 
 		return MathUtils.intersectPlane(plane, p1, p2);
 	}

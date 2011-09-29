@@ -1,14 +1,15 @@
 package net.untoldwind.moredread.model.op.bool.bspfilter;
 
+import net.untoldwind.moredread.model.math.Plane;
+import net.untoldwind.moredread.model.math.Vector3;
+
 import com.jme.math.FastMath;
-import com.jme.math.Plane;
-import com.jme.math.Vector3f;
 
 public class MathUtils {
-	public static Plane planeForTriangle(final Vector3f v1, final Vector3f v2,
-			final Vector3f v3) {
-		final Vector3f normal = v2.subtract(v1).normalizeLocal();
-		final Vector3f other = v3.subtract(v1).normalizeLocal();
+	public static Plane planeForTriangle(final Vector3 v1, final Vector3 v2,
+			final Vector3 v3) {
+		final Vector3 normal = v2.subtract(v1).normalizeLocal();
+		final Vector3 other = v3.subtract(v1).normalizeLocal();
 		normal.crossLocal(other);
 
 		final float len = normal.length();
@@ -34,8 +35,8 @@ public class MathUtils {
 
 	public static BoolVertex intersectLinePlane(final Plane plane,
 			final BoolVertex v1, final BoolVertex v2) {
-		final Vector3f intersection = new Vector3f(v1.getPoint());
-		final Vector3f diff = v2.getPoint().subtract(v1.getPoint());
+		final Vector3 intersection = new Vector3(v1.getPoint());
+		final Vector3 diff = v2.getPoint().subtract(v1.getPoint());
 
 		final float den = plane.normal.dot(diff);
 
@@ -49,15 +50,15 @@ public class MathUtils {
 		return new BoolVertex(intersection, v1.getIndex(), v2.getIndex(), plane);
 	}
 
-	public static boolean isOnLine(final Vector3f p, final Vector3f v1,
-			final Vector3f v2) {
-		final Vector3f diff1 = v2.subtract(v1);
+	public static boolean isOnLine(final Vector3 p, final Vector3 v1,
+			final Vector3 v2) {
+		final Vector3 diff1 = v2.subtract(v1);
 		final float l1 = diff1.lengthSquared();
 
 		if (l1 < FastMath.FLT_EPSILON) {
 			return false;
 		}
-		final Vector3f diff2 = p.subtract(v1);
+		final Vector3 diff2 = p.subtract(v1);
 		final float u = diff1.dot(diff2) / l1;
 
 		if (u < 0.0 || u > 1.0) {

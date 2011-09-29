@@ -3,6 +3,7 @@ package net.untoldwind.moredread.ui.controls.impl;
 import java.nio.FloatBuffer;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.EdgeId;
 import net.untoldwind.moredread.model.mesh.IEdge;
 import net.untoldwind.moredread.model.mesh.IEdgeGeometry;
@@ -12,7 +13,6 @@ import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 
-import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Line;
@@ -106,10 +106,10 @@ public class EdgeSelectionModelControl extends Line implements IModelControl {
 			return;
 		}
 
-		final Vector3f v1 = node.localToWorld(edge.getVertex1().getPoint(),
-				new Vector3f());
-		final Vector3f v2 = node.localToWorld(edge.getVertex2().getPoint(),
-				new Vector3f());
+		final Vector3 v1 = node.localToWorld(edge.getVertex1().getPoint(),
+				new Vector3());
+		final Vector3 v2 = node.localToWorld(edge.getVertex2().getPoint(),
+				new Vector3());
 		final FloatBuffer vertexBuffer = BufferUtils.createVector3Buffer(2);
 
 		vertexBuffer.put(v1.x);
@@ -135,15 +135,16 @@ public class EdgeSelectionModelControl extends Line implements IModelControl {
 			return;
 		}
 
-		final Vector3f v1 = node.localToWorld(edge.getVertex1().getPoint(),
-				new Vector3f());
-		final Vector3f v2 = node.localToWorld(edge.getVertex2().getPoint(),
-				new Vector3f());
+		final Vector3 v1 = node.localToWorld(edge.getVertex1().getPoint(),
+				new Vector3());
+		final Vector3 v2 = node.localToWorld(edge.getVertex2().getPoint(),
+				new Vector3());
 
 		if (lineControlHandle == null) {
-			lineControlHandle = new LineControlHandle(this, camera, v1, v2);
+			lineControlHandle = new LineControlHandle(this, camera, v1.toJME(),
+					v2.toJME());
 		} else {
-			lineControlHandle.update(camera, v1, v2);
+			lineControlHandle.update(camera, v1.toJME(), v2.toJME());
 		}
 	}
 

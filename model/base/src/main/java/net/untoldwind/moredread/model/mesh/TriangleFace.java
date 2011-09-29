@@ -5,11 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 import net.untoldwind.moredread.model.transform.ITransformation;
-
-import com.jme.math.Vector3f;
 
 public class TriangleFace extends Face<TriangleFaceId, TriangleFace> {
 	private final Vertex[] vertices;
@@ -81,7 +80,7 @@ public class TriangleFace extends Face<TriangleFaceId, TriangleFace> {
 
 	@Override
 	public void updateCenter() {
-		center = new Vector3f(0, 0, 0);
+		center = new Vector3(0, 0, 0);
 
 		for (final Vertex vertex : vertices) {
 			center.addLocal(vertex.getPoint());
@@ -92,9 +91,9 @@ public class TriangleFace extends Face<TriangleFaceId, TriangleFace> {
 
 	@Override
 	public void updateMeanNormal() {
-		final Vector3f v1 = vertices[1].getPoint().subtract(
+		final Vector3 v1 = vertices[1].getPoint().subtract(
 				vertices[0].getPoint());
-		final Vector3f v2 = vertices[2].getPoint().subtract(
+		final Vector3 v2 = vertices[2].getPoint().subtract(
 				vertices[0].getPoint());
 		meanNormal = v1.cross(v2);
 		final float len = meanNormal.length();

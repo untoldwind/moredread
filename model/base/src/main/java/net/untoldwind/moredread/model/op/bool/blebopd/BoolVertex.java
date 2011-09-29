@@ -5,13 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.untoldwind.moredread.model.enums.GeometryType;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IPoint;
 import net.untoldwind.moredread.model.mesh.Point;
 import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 import net.untoldwind.moredread.model.transform.ITransformation;
-
-import com.jme.math.Vector3f;
 
 public class BoolVertex implements IPoint {
 	private final Vector3d point;
@@ -53,8 +52,8 @@ public class BoolVertex implements IPoint {
 		this.tag = tag;
 	}
 
-	public Vector3f getPoint() {
-		return point.toVector3f();
+	public Vector3 getPoint() {
+		return point.toVector3();
 	}
 
 	public Vector3d getPoint3d() {
@@ -63,7 +62,7 @@ public class BoolVertex implements IPoint {
 
 	@Override
 	public IPoint transform(final ITransformation transformation) {
-		return new Point(transformation.transformPoint(point.toVector3f()));
+		return new Point(transformation.transformPoint(point.toVector3()));
 	}
 
 	@Override

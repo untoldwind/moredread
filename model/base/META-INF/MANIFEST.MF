@@ -13,6 +13,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: untoldwind.net
 Export-Package: net.untoldwind.moredread.model.enums,
  net.untoldwind.moredread.model.generator,
+ net.untoldwind.moredread.model.math,
  net.untoldwind.moredread.model.mesh,
  net.untoldwind.moredread.model.op,
  net.untoldwind.moredread.model.renderer,

@@ -2,10 +2,10 @@ package net.untoldwind.moredread.model.renderer;
 
 import java.nio.FloatBuffer;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IEdge;
 import net.untoldwind.moredread.model.mesh.IGrid;
 
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Geometry;
 import com.jme.scene.Line;
@@ -34,8 +34,8 @@ public class LineGridRendererAdapter implements IGridRendererAdapter {
 		}
 
 		for (final IEdge edge : grid.getEdges()) {
-			final Vector3f p1 = edge.getVertex1().getPoint();
-			final Vector3f p2 = edge.getVertex2().getPoint();
+			final Vector3 p1 = edge.getVertex1().getPoint();
+			final Vector3 p2 = edge.getVertex2().getPoint();
 
 			vertexBuffer.put(p1.x);
 			vertexBuffer.put(p1.y);

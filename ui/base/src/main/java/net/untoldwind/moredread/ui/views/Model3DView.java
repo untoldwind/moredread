@@ -5,6 +5,7 @@ import java.util.HashMap;
 import net.untoldwind.moredread.jme.MDKeyInput;
 import net.untoldwind.moredread.jme.MoreDreadJME;
 import net.untoldwind.moredread.model.io.ModelIOPlugin;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.ISpatialNode;
 import net.untoldwind.moredread.model.scene.Scene;
@@ -61,7 +62,6 @@ import org.eclipse.ui.views.properties.IPropertySheetPage;
 import org.eclipse.ui.views.properties.tabbed.TabbedPropertySheetPage;
 
 import com.jme.input.KeyInput;
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.system.DisplaySystem;
 
@@ -463,7 +463,7 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 		final float factor = 0.01f;
 
 		public void handleDrag(final int xDiff, final int yDiff) {
-			final Vector3f center = new Vector3f(0, 0, 0);
+			final Vector3 center = new Vector3(0, 0, 0);
 			final SceneSelection sceneSelection = MoreDreadUI.getDefault()
 					.getSceneHolder().getScene().getSceneSelection();
 
@@ -482,7 +482,7 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 			}
 			if (xDiff != 0) {
 				canvas.queueCameraUpdate(new RotateAroundXCameraUpdate(factor
-						* xDiff, center, new Vector3f(0, 1, 0)));
+						* xDiff, center, new Vector3(0, 1, 0)));
 			}
 			if (yDiff != 0) {
 				canvas.queueCameraUpdate(new RotateAroundYCameraUpdate(factor

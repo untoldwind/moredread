@@ -3,14 +3,13 @@ package net.untoldwind.moredread.model.op.bool.blebopf;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Plane;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IVertex;
 import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleFaceId;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
 import net.untoldwind.moredread.model.op.IBooleanOperation;
-
-import com.jme.math.Plane;
 
 public class BlebopfBooleanOperation implements IBooleanOperation {
 

@@ -1,7 +1,7 @@
 package net.untoldwind.moredread.model.op.bool.blebopf;
 
-import com.jme.math.Plane;
-import com.jme.math.Vector3f;
+import net.untoldwind.moredread.model.math.Plane;
+import net.untoldwind.moredread.model.math.Vector3;
 
 public class MathUtils {
 	private static final boolean VAR_EPSILON = false;
@@ -142,7 +142,7 @@ public class MathUtils {
 	 *            scalar triplet
 	 * @return 1 if A > B, -1 if A < B, 0 otherwise
 	 */
-	public static int comp(final Vector3f A, final Vector3f B) {
+	public static int comp(final Vector3 A, final Vector3 B) {
 		if (!VAR_EPSILON) {
 			if (A.x >= (B.x + EPSILON)) {
 				return 1;
@@ -187,7 +187,7 @@ public class MathUtils {
 	 * @return >0 if the point is above (OUT), =0 if the point is on (ON), <0 if
 	 *         the point is below (IN)
 	 */
-	public static int classify(final Vector3f p, final Plane plane) {
+	public static int classify(final Vector3 p, final Plane plane) {
 		// Compare plane - point distance with zero
 		return comp0(plane.pseudoDistance(p));
 	}
@@ -203,14 +203,14 @@ public class MathUtils {
 	 *            point
 	 * @return true if the three points lay on the same line, false otherwise
 	 */
-	public static boolean collinear(final Vector3f p1, final Vector3f p2,
-			final Vector3f p3) {
+	public static boolean collinear(final Vector3 p1, final Vector3 p2,
+			final Vector3 p3) {
 		if (comp(p1, p2) == 0 || comp(p2, p3) == 0) {
 			return true;
 		}
 
-		final Vector3f v1 = p2.subtract(p1);
-		final Vector3f v2 = p3.subtract(p2);
+		final Vector3 v1 = p2.subtract(p1);
+		final Vector3 v2 = p3.subtract(p2);
 
 		/*
 		 * normalize vectors before taking their cross product, so its length
@@ -221,7 +221,7 @@ public class MathUtils {
 		v1.normalize();
 		v2.normalize();
 
-		final Vector3f w = v1.cross(v2);
+		final Vector3 w = v1.cross(v2);
 
 		return (fuzzyZero(w.x) && fuzzyZero(w.y) && fuzzyZero(w.z));
 	}
@@ -231,11 +231,11 @@ public class MathUtils {
 	 * 
 	 * @return true if the quad is convex, false otherwise
 	 */
-	public static boolean convex(final Vector3f p1, final Vector3f p2,
-			final Vector3f p3, final Vector3f p4) {
-		final Vector3f v1 = p3.subtract(p1);
-		final Vector3f v2 = p4.subtract(p2);
-		final Vector3f quadPlane = v1.cross(v2);
+	public static boolean convex(final Vector3 p1, final Vector3 p2,
+			final Vector3 p3, final Vector3 p4) {
+		final Vector3 v1 = p3.subtract(p1);
+		final Vector3 v2 = p4.subtract(p2);
+		final Vector3 quadPlane = v1.cross(v2);
 		// plane1 is the perpendicular plane that contains the quad diagonal
 		// (p2,p4)
 		final Plane plane1 = createPlane(quadPlane.cross(v2), p2);
@@ -258,11 +258,11 @@ public class MathUtils {
 	 * @return 0 if is convex, 1 if is concave and split edge is p1-p3 and -1 if
 	 *         is cancave and split edge is p2-p4.
 	 */
-	public static int concave(final Vector3f p1, final Vector3f p2,
-			final Vector3f p3, final Vector3f p4) {
-		final Vector3f v1 = p3.subtract(p1);
-		final Vector3f v2 = p4.subtract(p2);
-		final Vector3f quadPlane = v1.cross(v2);
+	public static int concave(final Vector3 p1, final Vector3 p2,
+			final Vector3 p3, final Vector3 p4) {
+		final Vector3 v1 = p3.subtract(p1);
+		final Vector3 v2 = p4.subtract(p2);
+		final Vector3 quadPlane = v1.cross(v2);
 		// plane1 is the perpendicular plane that contains the quad diagonal
 		// (p2,p4)
 		final Plane plane1 = createPlane(quadPlane.cross(v2), p2);
@@ -298,8 +298,8 @@ public class MathUtils {
 	 *            intersection point (if exists)
 	 * @return false if lines are parallels, true otherwise
 	 */
-	public static boolean intersect(final Vector3f vL1, final Vector3f pL1,
-			final Vector3f vL2, final Vector3f pL2, final Vector3f intersection) {
+	public static boolean intersect(final Vector3 vL1, final Vector3 pL1,
+			final Vector3 vL2, final Vector3 pL2, final Vector3 intersection) {
 		// NOTE:
 		// If the lines aren't on the same plane, the intersection point will
 		// not be valid.
@@ -348,36 +348,36 @@ public class MathUtils {
 	 *            circle center
 	 * @return false if points are collinears, true otherwise
 	 */
-	public static boolean getCircleCenter(final Vector3f p1, final Vector3f p2,
-			final Vector3f p3, final Vector3f center) {
+	public static boolean getCircleCenter(final Vector3 p1, final Vector3 p2,
+			final Vector3 p3, final Vector3 center) {
 		// Compute quad plane
-		final Vector3f p1p2 = p2.subtract(p1);
-		final Vector3f p1p3 = p3.subtract(p1);
+		final Vector3 p1p2 = p2.subtract(p1);
+		final Vector3 p1p3 = p3.subtract(p1);
 		final Plane plane1 = createPlane(p1, p2, p3);
-		final Vector3f plane = plane1.getNormal();
+		final Vector3 plane = plane1.getNormal();
 
 		// Compute first line vector, perpendicular to plane vector and edge
 		// (p1,p2)
-		final Vector3f vL1 = p1p2.cross(plane);
+		final Vector3 vL1 = p1p2.cross(plane);
 		if (fuzzyZero(vL1.length())) {
 			return false;
 		}
 		vL1.normalize();
 
 		// Compute first line point, middle point of edge (p1,p2)
-		final Vector3f pL1 = new Vector3f();
+		final Vector3 pL1 = new Vector3();
 		pL1.interpolate(p1, p2, 0.5f);
 
 		// Compute second line vector, perpendicular to plane vector and edge
 		// (p1,p3)
-		final Vector3f vL2 = p1p3.cross(plane);
+		final Vector3 vL2 = p1p3.cross(plane);
 		if (fuzzyZero(vL2.length())) {
 			return false;
 		}
 		vL2.normalize();
 
 		// Compute second line point, middle point of edge (p1,p3)
-		final Vector3f pL2 = new Vector3f();
+		final Vector3 pL2 = new Vector3();
 		pL2.interpolate(p1, p2, 0.5f);
 
 		// Compute intersection (the lines lay on the same plane, so the
@@ -400,9 +400,9 @@ public class MathUtils {
 	 * @return true if p4 or p5 are inside the circle, false otherwise. If the
 	 *         circle does not exist (p1, p2 and p3 are collinears) returns true
 	 */
-	public static boolean isInsideCircle(final Vector3f p1, final Vector3f p2,
-			final Vector3f p3, final Vector3f q) {
-		final Vector3f center = new Vector3f();
+	public static boolean isInsideCircle(final Vector3 p1, final Vector3 p2,
+			final Vector3 p3, final Vector3 q) {
+		final Vector3 center = new Vector3();
 
 		// Compute circle center
 		final boolean ok = getCircleCenter(p1, p2, p3, center);
@@ -433,9 +433,9 @@ public class MathUtils {
 	 * @return true if p4 or p5 is inside the circle, false otherwise. If the
 	 *         circle does not exist (p1, p2 and p3 are collinears) returns true
 	 */
-	public static boolean isInsideCircle(final Vector3f p1, final Vector3f p2,
-			final Vector3f p3, final Vector3f p4, final Vector3f p5) {
-		final Vector3f center = new Vector3f();
+	public static boolean isInsideCircle(final Vector3 p1, final Vector3 p2,
+			final Vector3 p3, final Vector3 p4, final Vector3 p5) {
+		final Vector3 center = new Vector3();
 		final boolean ok = getCircleCenter(p1, p2, p3, center);
 
 		if (!ok) {
@@ -460,8 +460,8 @@ public class MathUtils {
 	 *            second line point
 	 * @return intersection between plane and line that contains p1 and p2
 	 */
-	public static Vector3f intersectPlane(final Plane plane, final Vector3f p1,
-			final Vector3f p2) {
+	public static Vector3 intersectPlane(final Plane plane, final Vector3 p1,
+			final Vector3 p2) {
 		// Compute intersection between plane and line ...
 		//
 		// L: (p2-p1)lambda + p1
@@ -470,8 +470,8 @@ public class MathUtils {
 		//
 		// coefA*((p2.x - p1.y)*lambda + p1.x) + ... + coefD = 0
 
-		final Vector3f intersection = new Vector3f(0, 0, 0);
-		final Vector3f diff = p2.subtract(p1);
+		final Vector3 intersection = new Vector3(0, 0, 0);
+		final Vector3 diff = p2.subtract(p1);
 
 		final float den = plane.getNormal().dot(diff);
 
@@ -497,23 +497,23 @@ public class MathUtils {
 	 *            point
 	 * @return true if the point is on the plane, false otherwise
 	 */
-	public static boolean containsPoint(final Plane plane, final Vector3f point) {
+	public static boolean containsPoint(final Plane plane, final Vector3 point) {
 		return fuzzyZero(plane.pseudoDistance(point));
 	}
 
-	public static Plane createPlane(final Vector3f n, final Vector3f p) {
-		final Vector3f mn = n.normalize();
+	public static Plane createPlane(final Vector3 n, final Vector3 p) {
+		final Vector3 mn = n.normalize();
 		final float md = mn.dot(p);
 
 		return new Plane(mn, md);
 	}
 
-	public static Plane createPlane(final Vector3f a, final Vector3f b,
-			final Vector3f c) {
-		final Vector3f l1 = b.subtract(a);
-		final Vector3f l2 = c.subtract(b);
+	public static Plane createPlane(final Vector3 a, final Vector3 b,
+			final Vector3 c) {
+		final Vector3 l1 = b.subtract(a);
+		final Vector3 l2 = c.subtract(b);
 
-		Vector3f n = l1.cross(l2);
+		Vector3 n = l1.cross(l2);
 		n = n.normalize();
 		final float d = n.dot(a);
 

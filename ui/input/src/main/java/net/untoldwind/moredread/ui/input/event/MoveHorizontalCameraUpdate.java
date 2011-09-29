@@ -1,6 +1,5 @@
 package net.untoldwind.moredread.ui.input.event;
 
-
 import com.jme.math.Vector3f;
 import com.jme.renderer.Camera;
 

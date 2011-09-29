@@ -5,6 +5,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import net.untoldwind.moredread.model.math.Quaternion;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.renderer.SolidNodeRenderer;
 import net.untoldwind.moredread.model.renderer.SolidNodeRendererParam;
 import net.untoldwind.moredread.model.scene.BoundingBox;
@@ -26,10 +28,8 @@ import com.jme.intersection.PickData;
 import com.jme.intersection.PickResults;
 import com.jme.intersection.TrianglePickResults;
 import com.jme.math.FastMath;
-import com.jme.math.Quaternion;
 import com.jme.math.Ray;
 import com.jme.math.Vector2f;
-import com.jme.math.Vector3f;
 import com.jme.scene.Node;
 import com.jme.scene.state.BlendState;
 import com.jme.scene.state.BlendState.BlendEquation;
@@ -39,7 +39,7 @@ import com.jme.system.canvas.SimpleCanvasImpl;
 public class MDCanvasImplementor extends SimpleCanvasImpl implements IViewport {
 
 	private Quaternion rotQuat;
-	private Vector3f axis;
+	private Vector3 axis;
 	long startTime = 0;
 	long fps = 0;
 	private InputHandler input;
@@ -88,7 +88,7 @@ public class MDCanvasImplementor extends SimpleCanvasImpl implements IViewport {
 
 		// Normal Scene setup stuff...
 		rotQuat = new Quaternion();
-		axis = new Vector3f(1, 1, 0.5f);
+		axis = new Vector3(1, 1, 0.5f);
 		axis.normalizeLocal();
 
 		startTime = System.currentTimeMillis() + 5000;

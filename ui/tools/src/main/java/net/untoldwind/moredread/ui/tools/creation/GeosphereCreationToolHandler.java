@@ -2,10 +2,9 @@ package net.untoldwind.moredread.ui.tools.creation;
 
 import net.untoldwind.moredread.model.generator.AbstractCenterSizeGenerator;
 import net.untoldwind.moredread.model.generator.GeosphereMeshGenerator;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
-
-import com.jme.math.Vector3f;
 
 public class GeosphereCreationToolHandler extends
 		AbstractCenterSizeCreationToolHandler {
@@ -23,7 +22,7 @@ public class GeosphereCreationToolHandler extends
 
 		@Override
 		protected AbstractCenterSizeGenerator createGenerator(
-				final Vector3f point) {
+				final Vector3 point) {
 			return new GeosphereMeshGenerator(5, point, 0.0f);
 		}
 

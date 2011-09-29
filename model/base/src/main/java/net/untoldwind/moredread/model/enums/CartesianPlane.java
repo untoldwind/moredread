@@ -1,5 +1,7 @@
 package net.untoldwind.moredread.model.enums;
 
+import net.untoldwind.moredread.model.math.Vector3;
+
 import com.jme.math.FastMath;
 import com.jme.math.Vector3f;
 
@@ -13,6 +15,12 @@ public enum CartesianPlane {
 				final float u, final float v) {
 			return new Vector3f(center.x + u, center.y + v, position.z);
 		}
+
+		@Override
+		public Vector3 project(final Vector3 center, final Vector3 position,
+				final float u, final float v) {
+			return new Vector3(center.x + u, center.y + v, position.z);
+		}
 	},
 	XZ(0, -1, 0) {
 		@Override
@@ -21,12 +29,24 @@ public enum CartesianPlane {
 			return new Vector3f(center.x + u, position.y, center.z + v);
 		}
 
+		@Override
+		public Vector3 project(final Vector3 center, final Vector3 position,
+				final float u, final float v) {
+			return new Vector3(center.x + u, position.y, center.z + v);
+		}
+
 	},
 	YZ(1, 0, 0) {
 		@Override
 		public Vector3f project(final Vector3f center, final Vector3f position,
 				final float u, final float v) {
 			return new Vector3f(position.x, center.y + u, center.z + v);
+		}
+
+		@Override
+		public Vector3 project(final Vector3 center, final Vector3 position,
+				final float u, final float v) {
+			return new Vector3(position.x, center.y + u, center.z + v);
 		}
 	};
 
@@ -42,6 +62,9 @@ public enum CartesianPlane {
 
 	public abstract Vector3f project(Vector3f center, Vector3f position,
 			float u, float v);
+
+	public abstract Vector3 project(Vector3 center, Vector3 position, float u,
+			float v);
 
 	public static CartesianPlane choose(final Vector3f direction) {
 		final float x = FastMath.abs(direction.x);

@@ -3,6 +3,7 @@ package net.untoldwind.moredread.ui.tools.utilities;
 import java.util.Collections;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IEdge;
 import net.untoldwind.moredread.model.mesh.PolyMesh;
 import net.untoldwind.moredread.model.mesh.Vertex;
@@ -16,8 +17,6 @@ import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.tools.IToolController;
 import net.untoldwind.moredread.ui.tools.spi.IToolHandler;
-
-import com.jme.math.Vector3f;
 
 public class AddMidpointToolHandler implements IToolHandler {
 
@@ -36,7 +35,7 @@ public class AddMidpointToolHandler implements IToolHandler {
 								.toPolyMesh();
 						final IEdge edge = mesh.getEdge(edgeSelection
 								.getEdgeIndex());
-						final Vector3f point = new Vector3f();
+						final Vector3 point = new Vector3();
 						point.set(edge.getVertex1().getPoint());
 						point.addLocal(edge.getVertex2().getPoint());
 						point.divideLocal(2);

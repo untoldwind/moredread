@@ -4,8 +4,8 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jme.math.Plane;
-import com.jme.math.Vector3f;
+import net.untoldwind.moredread.model.math.Plane;
+import net.untoldwind.moredread.model.math.Vector3;
 
 public class BSPNode {
 	BSPNode inChild;
@@ -57,12 +57,12 @@ public class BSPNode {
 	 * @param plane
 	 *            face plane.
 	 */
-	int addFace(final List<Vector3f> points, final Plane plane) {
+	int addFace(final List<Vector3> points, final Plane plane) {
 		int newDeep = 0;
 		int tag = BoolTag.ON;
 
 		// find out if any points on the "face" lie in either half-space
-		for (final Vector3f itp : points) {
+		for (final Vector3 itp : points) {
 			tag = (tag | testPoint(itp));
 		}
 
@@ -85,9 +85,9 @@ public class BSPNode {
 				newDeep = 2;
 			}
 		} else { // face lies in both half-spaces: split it
-			final List<Vector3f> inside = new ArrayList<Vector3f>();
-			final List<Vector3f> outside = new ArrayList<Vector3f>();
-			Vector3f lpoint = points.get(points.size() - 1);
+			final List<Vector3> inside = new ArrayList<Vector3>();
+			final List<Vector3> outside = new ArrayList<Vector3>();
+			Vector3 lpoint = points.get(points.size() - 1);
 			int ltag = testPoint(lpoint);
 			int tstate = ltag;
 
@@ -95,7 +95,7 @@ public class BSPNode {
 			// different
 			// sides of the hyperplane.
 
-			for (final Vector3f npoint : points) {
+			for (final Vector3 npoint : points) {
 				final int ntag = testPoint(npoint);
 
 				if (ltag != BoolTag.ON) { // last point not on hyperplane
@@ -111,7 +111,7 @@ public class BSPNode {
 					if (ntag != BoolTag.ON && ntag != tstate) { // last, self in
 						// different
 						// half-spaces
-						final Vector3f mpoint = MathUtils.intersectPlane(plane,
+						final Vector3 mpoint = MathUtils.intersectPlane(plane,
 								lpoint, npoint);
 						if (inChild != null) {
 							inside.add(mpoint);
@@ -157,7 +157,7 @@ public class BSPNode {
 		return deep;
 	}
 
-	int testPoint(final Vector3f p) {
+	int testPoint(final Vector3 p) {
 		return BoolTag.createTAG(MathUtils.classify(p, plane));
 	}
 
@@ -174,10 +174,10 @@ public class BSPNode {
 	 *            face plane.
 	 * @return TAG result: IN, OUT or IN&OUT.
 	 */
-	int classifyFace(final Vector3f p1, final Vector3f p2, final Vector3f p3,
+	int classifyFace(final Vector3 p1, final Vector3 p2, final Vector3 p3,
 			final Plane plane) {
 		// local variables
-		Vector3f auxp1, auxp2;
+		Vector3 auxp1, auxp2;
 		int auxtag1, auxtag2, auxtag3;
 
 		switch (BoolTag.createTAG(testPoint(p1), testPoint(p2), testPoint(p3))) {
@@ -395,7 +395,7 @@ public class BSPNode {
 	 * @param plane
 	 *            face plane.
 	 */
-	int classifyFaceIN(final Vector3f p1, final Vector3f p2, final Vector3f p3,
+	int classifyFaceIN(final Vector3 p1, final Vector3 p2, final Vector3 p3,
 			final Plane plane) {
 		if (inChild != null) {
 			return inChild.classifyFace(p1, p2, p3, plane);
@@ -416,8 +416,8 @@ public class BSPNode {
 	 * @param plane
 	 *            face plane.
 	 */
-	int classifyFaceOUT(final Vector3f p1, final Vector3f p2,
-			final Vector3f p3, final Plane plane) {
+	int classifyFaceOUT(final Vector3 p1, final Vector3 p2, final Vector3 p3,
+			final Plane plane) {
 		if (outChild != null) {
 			return outChild.classifyFace(p1, p2, p3, plane);
 		} else {
@@ -450,9 +450,9 @@ public class BSPNode {
 	 *            face plane.
 	 * @return TAG result: IN or OUT.
 	 */
-	int simplifiedClassifyFace(final Vector3f p1, final Vector3f p2,
-			final Vector3f p3, final Plane plane) {
-		final Vector3f ret[] = new Vector3f[3];
+	int simplifiedClassifyFace(final Vector3 p1, final Vector3 p2,
+			final Vector3 p3, final Plane plane) {
+		final Vector3 ret[] = new Vector3[3];
 
 		final int tag = BoolTag.createTAG(testPoint(p1), testPoint(p2),
 				testPoint(p3));
@@ -494,8 +494,8 @@ public class BSPNode {
 	 * @param plane
 	 *            face plane.
 	 */
-	int simplifiedClassifyFaceIN(final Vector3f p1, final Vector3f p2,
-			final Vector3f p3, final Plane plane) {
+	int simplifiedClassifyFaceIN(final Vector3 p1, final Vector3 p2,
+			final Vector3 p3, final Plane plane) {
 		if (inChild != null) {
 			return inChild.simplifiedClassifyFace(p1, p2, p3, plane);
 		} else {
@@ -515,8 +515,8 @@ public class BSPNode {
 	 * @param plane
 	 *            face plane.
 	 */
-	int simplifiedClassifyFaceOUT(final Vector3f p1, final Vector3f p2,
-			final Vector3f p3, final Plane plane) {
+	int simplifiedClassifyFaceOUT(final Vector3 p1, final Vector3 p2,
+			final Vector3 p3, final Plane plane) {
 		if (outChild != null) {
 			return outChild.simplifiedClassifyFace(p1, p2, p3, plane);
 		} else {
@@ -560,9 +560,8 @@ public class BSPNode {
 	 * @param tag
 	 *            triangle orientation respect the plane.
 	 */
-	int splitTriangle(final Vector3f[] res, final Plane plane,
-			final Vector3f p1, final Vector3f p2, final Vector3f p3,
-			final int tag) {
+	int splitTriangle(final Vector3[] res, final Plane plane,
+			final Vector3 p1, final Vector3 p2, final Vector3 p3, final int tag) {
 		switch (tag) {
 		case BoolTag.IN_OUT_ON:
 			if (compChildren() < 0) {

@@ -3,9 +3,8 @@ package net.untoldwind.moredread.model.op.bool.blebopf;
 import java.util.Arrays;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Plane;
 import net.untoldwind.moredread.model.mesh.TriangleFaceId;
-
-import com.jme.math.Plane;
 
 public class BoolFace {
 	Plane plane;

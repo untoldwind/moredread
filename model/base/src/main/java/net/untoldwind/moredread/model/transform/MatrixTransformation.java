@@ -1,18 +1,18 @@
 package net.untoldwind.moredread.model.transform;
 
-import com.jme.math.Matrix4f;
-import com.jme.math.Quaternion;
-import com.jme.math.Vector3f;
+import net.untoldwind.moredread.model.math.Matrix4;
+import net.untoldwind.moredread.model.math.Quaternion;
+import net.untoldwind.moredread.model.math.Vector3;
 
 public class MatrixTransformation implements ITransformation {
-	private final Matrix4f transformation;
+	private final Matrix4 transformation;
 	private final Quaternion rotation;
-	private final Vector3f translation;
-	private final Vector3f scale;
+	private final Vector3 translation;
+	private final Vector3 scale;
 
-	public MatrixTransformation(final Vector3f scale,
-			final Quaternion rotation, final Vector3f translation) {
-		transformation = new Matrix4f();
+	public MatrixTransformation(final Vector3 scale, final Quaternion rotation,
+			final Vector3 translation) {
+		transformation = new Matrix4();
 
 		this.rotation = rotation;
 		this.translation = translation;
@@ -24,24 +24,24 @@ public class MatrixTransformation implements ITransformation {
 	}
 
 	@Override
-	public Vector3f transformPoint(final Vector3f vec) {
+	public Vector3 transformPoint(final Vector3 vec) {
 		return transformation.mult(vec);
 	}
 
 	@Override
-	public Vector3f transformPoint(final Vector3f vec, final Vector3f store) {
+	public Vector3 transformPoint(final Vector3 vec, final Vector3 store) {
 		return transformation.mult(vec, store);
 	}
 
 	@Override
-	public Vector3f transformVector(final Vector3f vec) {
-		final Vector3f result = new Vector3f(vec);
+	public Vector3 transformVector(final Vector3 vec) {
+		final Vector3 result = new Vector3(vec);
 		transformation.rotateVect(result);
 		return result;
 	}
 
 	@Override
-	public Vector3f transformVector(final Vector3f vec, final Vector3f store) {
+	public Vector3 transformVector(final Vector3 vec, final Vector3 store) {
 		transformation.rotateVect(store);
 		return store;
 	}
@@ -52,12 +52,12 @@ public class MatrixTransformation implements ITransformation {
 	}
 
 	@Override
-	public Vector3f getTranslation() {
+	public Vector3 getTranslation() {
 		return translation;
 	}
 
 	@Override
-	public Vector3f getScale() {
+	public Vector3 getScale() {
 		return scale;
 	}
 

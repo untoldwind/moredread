@@ -5,13 +5,13 @@ import java.nio.IntBuffer;
 import java.util.List;
 
 import net.untoldwind.moredread.model.enums.CartesianPlane;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.scene.BoundingBox;
 import net.untoldwind.moredread.ui.controls.IControlHandle;
 import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Line;
 import com.jme.scene.Node;
@@ -71,7 +71,7 @@ public class PlaneRestrictedModelControl extends Node implements IModelControl {
 
 	@Override
 	public void updatePositions() {
-		controlHandle.setPosition(toolAdapter.getCenter());
+		controlHandle.setPosition(toolAdapter.getCenter().toJME());
 
 		updateBackdrop();
 	}
@@ -100,14 +100,14 @@ public class PlaneRestrictedModelControl extends Node implements IModelControl {
 		final FloatBuffer vertexBuffer = BufferUtils.createVector3Buffer(4);
 		final IntBuffer indexBuffer = BufferUtils.createIntBuffer(4);
 
-		final Vector3f position = toolAdapter.getFeedbackPoint();
-		final Vector3f v1 = plane.project(boundingBox.getCenter(), position,
+		final Vector3 position = toolAdapter.getFeedbackPoint();
+		final Vector3 v1 = plane.project(boundingBox.getCenter(), position,
 				-maxExtend, -maxExtend);
-		final Vector3f v2 = plane.project(boundingBox.getCenter(), position,
+		final Vector3 v2 = plane.project(boundingBox.getCenter(), position,
 				maxExtend, -maxExtend);
-		final Vector3f v3 = plane.project(boundingBox.getCenter(), position,
+		final Vector3 v3 = plane.project(boundingBox.getCenter(), position,
 				maxExtend, maxExtend);
-		final Vector3f v4 = plane.project(boundingBox.getCenter(), position,
+		final Vector3 v4 = plane.project(boundingBox.getCenter(), position,
 				-maxExtend, maxExtend);
 		vertexBuffer.put(v1.x);
 		vertexBuffer.put(v1.y);

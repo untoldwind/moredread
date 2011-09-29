@@ -52,9 +52,9 @@ public class PolygonNode extends GeometryNode<IPolygon, Polygon> implements
 		displayNode.setUserData(ISceneHolder.NODE_USERDATA_KEY, nodeRef);
 
 		displayNode.setName(name);
-		displayNode.setLocalRotation(localRotation);
-		displayNode.setLocalTranslation(localTranslation);
-		displayNode.setLocalScale(localScale);
+		displayNode.setLocalRotation(localRotation.toJME());
+		displayNode.setLocalTranslation(localTranslation.toJME());
+		displayNode.setLocalScale(localScale.toJME());
 
 		if (renderedGeometries == null) {
 			renderedGeometries = rendererAdapter.renderNode(this);

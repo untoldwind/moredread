@@ -84,7 +84,7 @@ public class MoveRotateCrossModelControl extends CompositeModelControl
 
 	@Override
 	public void updatePositions() {
-		this.setLocalTranslation(toolAdapter.getCenter());
+		this.setLocalTranslation(toolAdapter.getCenter().toJME());
 	}
 
 	@Override

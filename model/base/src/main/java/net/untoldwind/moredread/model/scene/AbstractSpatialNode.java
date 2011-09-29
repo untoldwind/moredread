@@ -3,6 +3,8 @@ package net.untoldwind.moredread.model.scene;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Quaternion;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IPoint;
 import net.untoldwind.moredread.model.mesh.IPolygon;
 import net.untoldwind.moredread.model.mesh.Point;
@@ -18,9 +20,6 @@ import net.untoldwind.moredread.model.transform.MatrixTransformation;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.views.properties.IPropertySource;
 
-import com.jme.math.Quaternion;
-import com.jme.math.Vector3f;
-
 public abstract class AbstractSpatialNode extends AbstractNode implements
 		ISpatialNode {
 	/** The parent node (group). */
@@ -29,9 +28,9 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 	/** Spatial's rotation relative to its parent. */
 	protected Quaternion localRotation;
 	/** Spatial's translation relative to its parent. */
-	protected Vector3f localTranslation;
+	protected Vector3 localTranslation;
 	/** Spatial's scale relative to its parent. */
-	protected Vector3f localScale;
+	protected Vector3 localScale;
 
 	protected AbstractSpatialNode(
 			final AbstractSpatialComposite<? extends INode> parent,
@@ -43,8 +42,8 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 			parent.addChild(this);
 		}
 		localRotation = new Quaternion();
-		localTranslation = new Vector3f();
-		localScale = new Vector3f(1, 1, 1);
+		localTranslation = new Vector3();
+		localScale = new Vector3(1, 1, 1);
 	}
 
 	public AbstractSpatialComposite<? extends INode> getParent() {
@@ -79,11 +78,11 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 	}
 
 	@Override
-	public Vector3f getLocalTranslation() {
+	public Vector3 getLocalTranslation() {
 		return localTranslation;
 	}
 
-	public void setLocalTranslation(final Vector3f localTranslation) {
+	public void setLocalTranslation(final Vector3 localTranslation) {
 		scene.getSceneChangeHandler().registerCommand(
 				new NodeTransformationChangeCommand(this));
 
@@ -91,11 +90,11 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 	}
 
 	@Override
-	public Vector3f getLocalScale() {
+	public Vector3 getLocalScale() {
 		return localScale;
 	}
 
-	public void setLocalScale(final Vector3f localScale) {
+	public void setLocalScale(final Vector3 localScale) {
 		scene.getSceneChangeHandler().registerCommand(
 				new NodeTransformationChangeCommand(this));
 
@@ -109,9 +108,9 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 	}
 
 	@Override
-	public Vector3f localToWorld(final Vector3f in, Vector3f store) {
+	public Vector3 localToWorld(final Vector3 in, Vector3 store) {
 		if (store == null) {
-			store = new Vector3f();
+			store = new Vector3();
 		}
 		// multiply with scale first, then rotate, finally translate (cf.
 		// Eberly)
@@ -122,7 +121,7 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 
 	@Override
 	public IPoint localToWorld(final IPoint point) {
-		return new Point(localToWorld(point.getPoint(), new Vector3f()));
+		return new Point(localToWorld(point.getPoint(), new Vector3()));
 	}
 
 	@Override
@@ -138,9 +137,9 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 	}
 
 	@Override
-	public Vector3f worldToLocal(final Vector3f in, Vector3f store) {
+	public Vector3 worldToLocal(final Vector3 in, Vector3 store) {
 		if (store == null) {
-			store = new Vector3f();
+			store = new Vector3();
 		}
 		in.subtract(getWorldTranslation(), store).divideLocal(getWorldScale());
 		getWorldRotation().inverse().mult(store, store);
@@ -148,7 +147,7 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 	}
 
 	@Override
-	public Vector3f getWorldTranslation() {
+	public Vector3 getWorldTranslation() {
 		if (parent != null) {
 			return parent.localToWorld(localTranslation, null);
 		}
@@ -162,7 +161,7 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 		return localRotation;
 	}
 
-	public Vector3f getWorldScale() {
+	public Vector3 getWorldScale() {
 		if (parent != null) {
 			return parent.getWorldScale().mult(localScale);
 		}

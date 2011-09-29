@@ -2,17 +2,17 @@ package net.untoldwind.moredread.model.generator;
 
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
 
 import com.jme.math.FastMath;
-import com.jme.math.Vector3f;
 
 public class IcosahedronMeshGenerator extends AbstractCenterSizeGenerator {
 	public IcosahedronMeshGenerator() {
-		super(new Vector3f(), 1.0f);
+		super(new Vector3(), 1.0f);
 	}
 
-	public IcosahedronMeshGenerator(final Vector3f center, final float size) {
+	public IcosahedronMeshGenerator(final Vector3 center, final float size) {
 		super(center, size);
 	}
 
@@ -31,18 +31,18 @@ public class IcosahedronMeshGenerator extends AbstractCenterSizeGenerator {
 
 		final TriangleMesh mesh = new TriangleMesh();
 
-		mesh.addVertex(new Vector3f(fU, fV, 0.0f).addLocal(center));
-		mesh.addVertex(new Vector3f(-fU, fV, 0.0f).addLocal(center));
-		mesh.addVertex(new Vector3f(fU, -fV, 0.0f).addLocal(center));
-		mesh.addVertex(new Vector3f(-fU, -fV, 0.0f).addLocal(center));
-		mesh.addVertex(new Vector3f(fV, 0.0f, fU).addLocal(center));
-		mesh.addVertex(new Vector3f(fV, 0.0f, -fU).addLocal(center));
-		mesh.addVertex(new Vector3f(-fV, 0.0f, fU).addLocal(center));
-		mesh.addVertex(new Vector3f(-fV, 0.0f, -fU).addLocal(center));
-		mesh.addVertex(new Vector3f(0.0f, fU, fV).addLocal(center));
-		mesh.addVertex(new Vector3f(0.0f, -fU, fV).addLocal(center));
-		mesh.addVertex(new Vector3f(0.0f, fU, -fV).addLocal(center));
-		mesh.addVertex(new Vector3f(0.0f, -fU, -fV).addLocal(center));
+		mesh.addVertex(new Vector3(fU, fV, 0.0f).addLocal(center));
+		mesh.addVertex(new Vector3(-fU, fV, 0.0f).addLocal(center));
+		mesh.addVertex(new Vector3(fU, -fV, 0.0f).addLocal(center));
+		mesh.addVertex(new Vector3(-fU, -fV, 0.0f).addLocal(center));
+		mesh.addVertex(new Vector3(fV, 0.0f, fU).addLocal(center));
+		mesh.addVertex(new Vector3(fV, 0.0f, -fU).addLocal(center));
+		mesh.addVertex(new Vector3(-fV, 0.0f, fU).addLocal(center));
+		mesh.addVertex(new Vector3(-fV, 0.0f, -fU).addLocal(center));
+		mesh.addVertex(new Vector3(0.0f, fU, fV).addLocal(center));
+		mesh.addVertex(new Vector3(0.0f, -fU, fV).addLocal(center));
+		mesh.addVertex(new Vector3(0.0f, fU, -fV).addLocal(center));
+		mesh.addVertex(new Vector3(0.0f, -fU, -fV).addLocal(center));
 
 		mesh.addFace(0, 8, 4);
 		mesh.addFace(0, 5, 10);

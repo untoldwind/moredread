@@ -4,11 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 import net.untoldwind.moredread.model.transform.ITransformation;
-
-import com.jme.math.Vector3f;
 
 public class PolyFace extends Face<PolyFaceId, PolyFace> {
 	private final List<Vertex> vertices;
@@ -113,7 +112,7 @@ public class PolyFace extends Face<PolyFaceId, PolyFace> {
 
 	@Override
 	public void updateCenter() {
-		center = new Vector3f(0, 0, 0);
+		center = new Vector3(0, 0, 0);
 
 		for (final Vertex vertex : vertices) {
 			center.addLocal(vertex.getPoint());
@@ -124,11 +123,11 @@ public class PolyFace extends Face<PolyFaceId, PolyFace> {
 
 	@Override
 	public void updateMeanNormal() {
-		meanNormal = new Vector3f(0, 0, 0);
+		meanNormal = new Vector3(0, 0, 0);
 		final int outerStripCount = stripCounts.get(0);
 		for (int i = 0; i < outerStripCount; i++) {
-			final Vector3f v1 = vertices.get(i).getPoint();
-			final Vector3f v2 = vertices.get((i + 1) % outerStripCount)
+			final Vector3 v1 = vertices.get(i).getPoint();
+			final Vector3 v2 = vertices.get((i + 1) % outerStripCount)
 					.getPoint();
 			meanNormal.addLocal(v1.cross(v2));
 		}

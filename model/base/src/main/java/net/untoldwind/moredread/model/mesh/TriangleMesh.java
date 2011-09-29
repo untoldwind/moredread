@@ -94,7 +94,7 @@ public class TriangleMesh extends Mesh<TriangleFaceId, TriangleFace> {
 		final int numVertices = reader.readInt();
 
 		for (int i = 0; i < numVertices; i++) {
-			addVertex(reader.readVector3f());
+			addVertex(reader.readVector3());
 		}
 		final int numFaces = reader.readInt();
 
@@ -110,7 +110,7 @@ public class TriangleMesh extends Mesh<TriangleFaceId, TriangleFace> {
 	public void writeState(final IStateWriter writer) throws IOException {
 		writer.writeInt("numVertices", vertices.size());
 		for (final IVertex vertex : vertices) {
-			writer.writeVector3f("vertex", vertex.getPoint());
+			writer.writeVector3("vertex", vertex.getPoint());
 		}
 		writer.writeInt("numFaces", faces.size());
 		for (final TriangleFace face : faces.values()) {

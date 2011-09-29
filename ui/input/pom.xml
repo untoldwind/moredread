@@ -21,6 +21,11 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>net.untoldwind.moredread.model</groupId>
+			<artifactId>base</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.eclipse</groupId>
 			<artifactId>swt</artifactId>
 		</dependency>

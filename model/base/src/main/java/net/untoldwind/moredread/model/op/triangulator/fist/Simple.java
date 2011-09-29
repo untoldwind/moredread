@@ -1,6 +1,6 @@
 package net.untoldwind.moredread.model.op.triangulator.fist;
 
-import com.jme.math.Vector3f;
+import net.untoldwind.moredread.model.math.Vector3;
 
 class Simple {
 
@@ -18,7 +18,7 @@ class Simple {
 		int ind0, ind2, ind3, ind4;
 		int i1, i2, i3, i4;
 
-		Vector3f pq, pr, nr;
+		Vector3 pq, pr, nr;
 
 		double x, y, z;
 		int ori2, ori4;
@@ -60,9 +60,9 @@ class Simple {
 			triRef.initPnts(5);
 			i1 = triRef.fetchData(ind1);
 
-			pq = new Vector3f();
-			pr = new Vector3f();
-			nr = new Vector3f();
+			pq = new Vector3();
+			pr = new Vector3();
+			nr = new Vector3();
 			/*
 			 * System.out.println("ind0 " + ind0 + ", ind1 " + ind1 + ", ind2 "
 			 * + ind2 + ", ind3 " + ind3 + ", ind4 " + ind4);

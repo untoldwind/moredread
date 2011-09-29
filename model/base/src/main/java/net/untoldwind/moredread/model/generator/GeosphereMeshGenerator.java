@@ -3,16 +3,16 @@ package net.untoldwind.moredread.model.generator;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
 
 import com.jme.math.FastMath;
-import com.jme.math.Vector3f;
 
 public class GeosphereMeshGenerator extends AbstractCenterSizeGenerator
 		implements IMeshGenerator {
 	private final int numLevels;
 
-	public GeosphereMeshGenerator(final int numLevels, final Vector3f center,
+	public GeosphereMeshGenerator(final int numLevels, final Vector3 center,
 			final float size) {
 		super(center, size);
 
@@ -30,12 +30,12 @@ public class GeosphereMeshGenerator extends AbstractCenterSizeGenerator
 		List<Triangle> triangles = new ArrayList<Triangle>();
 
 		if (numLevels % 2 == 0) {
-			mesh.addVertex(new Vector3f(center.x + size, center.y, center.z));
-			mesh.addVertex(new Vector3f(center.x - size, center.y, center.z));
-			mesh.addVertex(new Vector3f(center.x, center.y + size, center.z));
-			mesh.addVertex(new Vector3f(center.x, center.y - size, center.z));
-			mesh.addVertex(new Vector3f(center.x, center.y, center.z + size));
-			mesh.addVertex(new Vector3f(center.x, center.y, center.z - size));
+			mesh.addVertex(new Vector3(center.x + size, center.y, center.z));
+			mesh.addVertex(new Vector3(center.x - size, center.y, center.z));
+			mesh.addVertex(new Vector3(center.x, center.y + size, center.z));
+			mesh.addVertex(new Vector3(center.x, center.y - size, center.z));
+			mesh.addVertex(new Vector3(center.x, center.y, center.z + size));
+			mesh.addVertex(new Vector3(center.x, center.y, center.z - size));
 
 			triangles.add(new Triangle(4, 0, 2));
 			triangles.add(new Triangle(4, 2, 1));
@@ -52,18 +52,18 @@ public class GeosphereMeshGenerator extends AbstractCenterSizeGenerator
 			final float fU = fGoldenRatio * fInvRoot * size;
 			final float fV = fInvRoot * size;
 
-			mesh.addVertex(new Vector3f(center.x + fU, center.y + fV, center.z));
-			mesh.addVertex(new Vector3f(center.x - fU, center.y + fV, center.z));
-			mesh.addVertex(new Vector3f(center.x + fU, center.y - fV, center.z));
-			mesh.addVertex(new Vector3f(center.x - fU, center.y - fV, center.z));
-			mesh.addVertex(new Vector3f(center.x + fV, center.y, center.z + fU));
-			mesh.addVertex(new Vector3f(center.x + fV, center.y, center.z - fU));
-			mesh.addVertex(new Vector3f(center.x - fV, center.y, center.z + fU));
-			mesh.addVertex(new Vector3f(center.x - fV, center.y, center.z - fU));
-			mesh.addVertex(new Vector3f(center.x, center.y + fU, center.z + fV));
-			mesh.addVertex(new Vector3f(center.x, center.y - fU, center.z + fV));
-			mesh.addVertex(new Vector3f(center.x, center.y + fU, center.z - fV));
-			mesh.addVertex(new Vector3f(center.x, center.y - fU, center.z - fV));
+			mesh.addVertex(new Vector3(center.x + fU, center.y + fV, center.z));
+			mesh.addVertex(new Vector3(center.x - fU, center.y + fV, center.z));
+			mesh.addVertex(new Vector3(center.x + fU, center.y - fV, center.z));
+			mesh.addVertex(new Vector3(center.x - fU, center.y - fV, center.z));
+			mesh.addVertex(new Vector3(center.x + fV, center.y, center.z + fU));
+			mesh.addVertex(new Vector3(center.x + fV, center.y, center.z - fU));
+			mesh.addVertex(new Vector3(center.x - fV, center.y, center.z + fU));
+			mesh.addVertex(new Vector3(center.x - fV, center.y, center.z - fU));
+			mesh.addVertex(new Vector3(center.x, center.y + fU, center.z + fV));
+			mesh.addVertex(new Vector3(center.x, center.y - fU, center.z + fV));
+			mesh.addVertex(new Vector3(center.x, center.y + fU, center.z - fV));
+			mesh.addVertex(new Vector3(center.x, center.y - fU, center.z - fV));
 
 			triangles.add(new Triangle(0, 8, 4));
 			triangles.add(new Triangle(0, 5, 10));
@@ -87,9 +87,9 @@ public class GeosphereMeshGenerator extends AbstractCenterSizeGenerator
 			triangles.add(new Triangle(11, 7, 5));
 		}
 
-		Vector3f pt0;
-		Vector3f pt1;
-		Vector3f pt2;
+		Vector3 pt0;
+		Vector3 pt1;
+		Vector3 pt2;
 		for (int level = 1; level < numLevels; level += 2) {
 			final List<Triangle> nextTriangles = new ArrayList<Triangle>(
 					triangles.size() * 4);
@@ -98,13 +98,13 @@ public class GeosphereMeshGenerator extends AbstractCenterSizeGenerator
 				pt0 = mesh.getVertex(old.i1).getPoint();
 				pt1 = mesh.getVertex(old.i2).getPoint();
 				pt2 = mesh.getVertex(old.i3).getPoint();
-				final Vector3f av = createMidpoint(pt0, pt2)
+				final Vector3 av = createMidpoint(pt0, pt2)
 						.subtractLocal(center).normalizeLocal().multLocal(size)
 						.addLocal(center);
-				final Vector3f bv = createMidpoint(pt0, pt1)
+				final Vector3 bv = createMidpoint(pt0, pt1)
 						.subtractLocal(center).normalizeLocal().multLocal(size)
 						.addLocal(center);
-				final Vector3f cv = createMidpoint(pt1, pt2)
+				final Vector3 cv = createMidpoint(pt1, pt2)
 						.subtractLocal(center).normalizeLocal().multLocal(size)
 						.addLocal(center);
 				final int a = mesh.addVertex(av).getIndex();
@@ -126,8 +126,8 @@ public class GeosphereMeshGenerator extends AbstractCenterSizeGenerator
 		return mesh;
 	}
 
-	private Vector3f createMidpoint(final Vector3f a, final Vector3f b) {
-		return new Vector3f((a.x + b.x) * 0.5f, (a.y + b.y) * 0.5f,
+	private Vector3 createMidpoint(final Vector3 a, final Vector3 b) {
+		return new Vector3((a.x + b.x) * 0.5f, (a.y + b.y) * 0.5f,
 				(a.z + b.z) * 0.5f);
 	}
 
