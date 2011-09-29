@@ -2,46 +2,27 @@ package net.untoldwind.moredread.model.math;
 
 import com.jme.math.FastMath;
 
-public class Quaternion {
-	public float x;
-	public float y;
-	public float z;
-	public float w;
+public class Quaternion extends com.jme.math.Quaternion {
 
 	public Quaternion() {
-		this.x = 0;
-		this.y = 0;
-		this.z = 0;
-		this.w = 1;
-	}
-
-	public Quaternion(final Quaternion q) {
-		this.x = q.x;
-		this.y = q.y;
-		this.z = q.z;
-		this.w = q.w;
+		super();
 	}
 
 	public Quaternion(final float x, final float y, final float z, final float w) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.w = w;
+		super(x, y, z, w);
 	}
 
-	public void set(final float x, final float y, final float z, final float w) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.w = w;
+	public Quaternion(final float[] angles) {
+		super(angles);
 	}
 
-	public Quaternion set(final Quaternion other) {
-		this.x = other.x;
-		this.y = other.y;
-		this.z = other.z;
-		this.w = other.w;
-		return this;
+	public Quaternion(final com.jme.math.Quaternion q1,
+			final com.jme.math.Quaternion q2, final float interp) {
+		super(q1, q2, interp);
+	}
+
+	public Quaternion(final com.jme.math.Quaternion q) {
+		super(q);
 	}
 
 	public void setIdentity() {
@@ -84,18 +65,7 @@ public class Quaternion {
 		return res;
 	}
 
-	public void normalize() {
-		final float n = FastMath.invSqrt(norm());
-		x *= n;
-		y *= n;
-		z *= n;
-		w *= n;
-	}
-
-	public float norm() {
-		return w * w + x * x + y * y + z * z;
-	}
-
+	@Override
 	public Quaternion inverse() {
 		final float norm = norm();
 		if (norm > 0.0) {
@@ -105,29 +75,6 @@ public class Quaternion {
 		}
 		// return an invalid result to flag the error
 		return null;
-	}
-
-	public float toAngleAxis(final Vector3 axisResult) {
-		final float sqrLength = x * x + y * y + z * z;
-		float angle;
-		if (sqrLength == 0.0f) {
-			angle = 0.0f;
-			if (axisResult != null) {
-				axisResult.x = 1.0f;
-				axisResult.y = 0.0f;
-				axisResult.z = 0.0f;
-			}
-		} else {
-			angle = (2.0f * FastMath.acos(w));
-			if (axisResult != null) {
-				final float invLength = (1.0f / FastMath.sqrt(sqrLength));
-				axisResult.x = x * invLength;
-				axisResult.y = y * invLength;
-				axisResult.z = z * invLength;
-			}
-		}
-
-		return angle;
 	}
 
 	public Matrix3 toRotationMatrix(final Matrix3 result) {
@@ -202,15 +149,7 @@ public class Quaternion {
 		return result;
 	}
 
-	public void fromAngles(final float[] angles) {
-		if (angles.length != 3) {
-			throw new IllegalArgumentException(
-					"Angles array must have three elements");
-		}
-
-		fromAngles(angles[0], angles[1], angles[2]);
-	}
-
+	@Override
 	public Quaternion fromAngles(final float yaw, final float roll,
 			final float pitch) {
 		float angle;
@@ -240,6 +179,7 @@ public class Quaternion {
 		return this;
 	}
 
+	@Override
 	public float[] toAngles(float[] angles) {
 		if (angles == null) {
 			angles = new float[3];
@@ -292,9 +232,5 @@ public class Quaternion {
 			z = sin * axis.z;
 		}
 		return this;
-	}
-
-	public com.jme.math.Quaternion toJME() {
-		return new com.jme.math.Quaternion(x, y, z, w);
 	}
 }

@@ -119,7 +119,7 @@ public class RotateCircleModelControl extends Node implements IModelControl {
 	void updateHandle(final Camera camera) {
 		final List<Vector3> worldPoints = new ArrayList<Vector3>();
 		for (final Vector3 point : circlePoints) {
-			worldPoints.add(new Vector3(localToWorld(point.toJME(), null)));
+			worldPoints.add(new Vector3(localToWorld(point, null)));
 		}
 		if (polyLineControlHandle == null) {
 			polyLineControlHandle = new PolyLineControlHandle(this, camera,

@@ -114,9 +114,9 @@ public abstract class AbstractSpatialNode extends AbstractNode implements
 		}
 		// multiply with scale first, then rotate, finally translate (cf.
 		// Eberly)
-		return getWorldRotation().mult(
-				store.set(in).multLocal(getWorldScale()), store).addLocal(
-				getWorldTranslation());
+		store.set(in);
+		return getWorldRotation().mult(store.multLocal(getWorldScale()), store)
+				.addLocal(getWorldTranslation());
 	}
 
 	@Override

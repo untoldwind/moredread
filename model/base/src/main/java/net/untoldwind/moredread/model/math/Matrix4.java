@@ -1,15 +1,12 @@
 package net.untoldwind.moredread.model.math;
 
-import com.jme.math.FastMath;
+import com.jme.math.Matrix4f;
 
-public class Matrix4 {
-	public float m00, m01, m02, m03;
-	public float m10, m11, m12, m13;
-	public float m20, m21, m22, m23;
-	public float m30, m31, m32, m33;
+public class Matrix4 extends Matrix4f {
+	private static final long serialVersionUID = 1L;
 
 	public Matrix4() {
-		setIdentity();
+		super();
 	}
 
 	public Matrix4(final float m00, final float m01, final float m02,
@@ -17,29 +14,19 @@ public class Matrix4 {
 			final float m13, final float m20, final float m21, final float m22,
 			final float m23, final float m30, final float m31, final float m32,
 			final float m33) {
-
-		this.m00 = m00;
-		this.m01 = m01;
-		this.m02 = m02;
-		this.m03 = m03;
-		this.m10 = m10;
-		this.m11 = m11;
-		this.m12 = m12;
-		this.m13 = m13;
-		this.m20 = m20;
-		this.m21 = m21;
-		this.m22 = m22;
-		this.m23 = m23;
-		this.m30 = m30;
-		this.m31 = m31;
-		this.m32 = m32;
-		this.m33 = m33;
+		super(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30,
+				m31, m32, m33);
 	}
 
-	public Matrix4(final Matrix4 mat) {
-		set(mat);
+	public Matrix4(final float[] array) {
+		super(array);
 	}
 
+	public Matrix4(final Matrix4f mat) {
+		super(mat);
+	}
+
+	@Override
 	public Matrix4 zero() {
 		m00 = m01 = m02 = m03 = m10 = m11 = m12 = m13 = m20 = m21 = m22 = m23 = m30 = m31 = m32 = m33 = 0.0f;
 		return this;
@@ -69,12 +56,6 @@ public class Matrix4 {
 		return this;
 	}
 
-	public Matrix4 setIdentity() {
-		m01 = m02 = m03 = m10 = m12 = m13 = m20 = m21 = m23 = m30 = m31 = m32 = 0.0f;
-		m00 = m11 = m22 = m33 = 1.0f;
-		return this;
-	}
-
 	public Vector3 mult(final Vector3 vec) {
 		final float vx = vec.x;
 		final float vy = vec.y;
@@ -94,22 +75,6 @@ public class Matrix4 {
 		result.z = m20 * vx + m21 * vy + m22 * vz + m23;
 
 		return result;
-	}
-
-	public void inverseRotateVect(final Vector3 vec) {
-		final float vx = vec.x, vy = vec.y, vz = vec.z;
-
-		vec.x = vx * m00 + vy * m10 + vz * m20;
-		vec.y = vx * m01 + vy * m11 + vz * m21;
-		vec.z = vx * m02 + vy * m12 + vz * m22;
-	}
-
-	public void rotateVect(final Vector3 vec) {
-		final float vx = vec.x, vy = vec.y, vz = vec.z;
-
-		vec.x = vx * m00 + vy * m01 + vz * m02;
-		vec.y = vx * m10 + vy * m11 + vz * m12;
-		vec.z = vx * m20 + vy * m21 + vz * m22;
 	}
 
 	public Matrix4 mult(final Matrix4 in2, final Matrix4 result) {
@@ -186,44 +151,4 @@ public class Matrix4 {
 		return this;
 	}
 
-	public void fromAngleAxis(final float angle, final Vector3 axis) {
-		final Vector3 normAxis = axis.normalize();
-		fromAngleNormalAxis(angle, normAxis);
-	}
-
-	public void fromAngleNormalAxis(final float angle, final Vector3 axis) {
-		zero();
-		m33 = 1;
-
-		final float fCos = FastMath.cos(angle);
-		final float fSin = FastMath.sin(angle);
-		final float fOneMinusCos = ((float) 1.0) - fCos;
-		final float fX2 = axis.x * axis.x;
-		final float fY2 = axis.y * axis.y;
-		final float fZ2 = axis.z * axis.z;
-		final float fXYM = axis.x * axis.y * fOneMinusCos;
-		final float fXZM = axis.x * axis.z * fOneMinusCos;
-		final float fYZM = axis.y * axis.z * fOneMinusCos;
-		final float fXSin = axis.x * fSin;
-		final float fYSin = axis.y * fSin;
-		final float fZSin = axis.z * fSin;
-
-		m00 = fX2 * fOneMinusCos + fCos;
-		m01 = fXYM - fZSin;
-		m02 = fXZM + fYSin;
-		m10 = fXYM + fZSin;
-		m11 = fY2 * fOneMinusCos + fCos;
-		m12 = fYZM - fXSin;
-		m20 = fXZM - fYSin;
-		m21 = fYZM + fXSin;
-		m22 = fZ2 * fOneMinusCos + fCos;
-	}
-
-	public void multLocal(final Quaternion rotation) {
-		final Vector3 axis = new Vector3();
-		final float angle = rotation.toAngleAxis(axis);
-		final Matrix4 matrix4 = new Matrix4();
-		matrix4.fromAngleAxis(angle, axis);
-		multLocal(matrix4);
-	}
 }

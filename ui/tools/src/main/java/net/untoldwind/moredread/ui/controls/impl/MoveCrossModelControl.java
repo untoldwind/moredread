@@ -7,7 +7,6 @@ import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 
 import com.jme.math.FastMath;
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.shape.Box;
 
@@ -38,7 +37,7 @@ public class MoveCrossModelControl extends CompositeModelControl implements
 		this.attachChild(zControl);
 		subControls.add(zControl);
 
-		final Box box = new Box("center", new Vector3f(0, 0, 0), 0.05f, 0.05f,
+		final Box box = new Box("center", new Vector3(0, 0, 0), 0.05f, 0.05f,
 				0.05f);
 		box.setDefaultColor(ColorRGBA.yellow.clone());
 		this.attachChild(box);
@@ -69,7 +68,7 @@ public class MoveCrossModelControl extends CompositeModelControl implements
 
 	@Override
 	public void updatePositions() {
-		this.setLocalTranslation(toolAdapter.getCenter().toJME());
+		this.setLocalTranslation(toolAdapter.getCenter());
 	}
 
 	@Override

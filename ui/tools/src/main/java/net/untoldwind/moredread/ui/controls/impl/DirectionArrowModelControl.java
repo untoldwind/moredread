@@ -10,7 +10,6 @@ import net.untoldwind.moredread.ui.controls.IModelControl;
 import net.untoldwind.moredread.ui.controls.IViewport;
 import net.untoldwind.moredread.ui.tools.spi.IToolAdapter;
 
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Line;
 import com.jme.scene.Node;
@@ -51,9 +50,8 @@ public class DirectionArrowModelControl extends Node implements IModelControl {
 			break;
 		}
 
-		line = new Line(direction + "Line", new Vector3f[] {
-				new Vector3f(0, 0, 0), new Vector3f(0, 1, 0) }, null, null,
-				null);
+		line = new Line(direction + "Line", new Vector3[] {
+				new Vector3(0, 0, 0), new Vector3(0, 1, 0) }, null, null, null);
 		line.setDefaultColor(color);
 		line.setLocalRotation(direction.getStandardRotation());
 		line.setLineWidth(2f);

@@ -109,9 +109,9 @@ public abstract class GeometryNode<RO_GEOMETRY extends IVertexGeometry<?>, RW_GE
 		displayNode.setUserData(ISceneHolder.NODE_USERDATA_KEY, nodeRef);
 
 		displayNode.setName(name);
-		displayNode.setLocalRotation(localRotation.toJME());
-		displayNode.setLocalTranslation(localTranslation.toJME());
-		displayNode.setLocalScale(localScale.toJME());
+		displayNode.setLocalRotation(localRotation);
+		displayNode.setLocalTranslation(localTranslation);
+		displayNode.setLocalScale(localScale);
 
 		if (renderedGeometries == null) {
 			renderedGeometries = rendererAdapter.renderNode(this);

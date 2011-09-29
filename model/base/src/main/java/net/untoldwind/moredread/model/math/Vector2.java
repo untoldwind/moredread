@@ -2,30 +2,21 @@ package net.untoldwind.moredread.model.math;
 
 import com.jme.math.Vector2f;
 
-public class Vector2 implements Cloneable {
-	public float x;
-	public float y;
+public class Vector2 extends Vector2f {
 
 	public Vector2() {
-		this.x = 0;
-		this.y = 0;
+		super();
 	}
 
 	public Vector2(final float x, final float y) {
-		this.x = x;
-		this.y = y;
-	}
-
-	public Vector2(final Vector2 vector) {
-		this.x = vector.x;
-		this.y = vector.y;
+		super(x, y);
 	}
 
 	public Vector2(final Vector2f vector2f) {
-		this.x = vector2f.x;
-		this.y = vector2f.y;
+		super(vector2f);
 	}
 
+	@Override
 	public Vector2 add(final Vector2f vec) {
 		return new Vector2(x + vec.x, y + vec.y);
 	}
@@ -52,30 +43,36 @@ public class Vector2 implements Cloneable {
 		return result;
 	}
 
+	@Override
 	public Vector2 mult(final float scalar) {
 		return new Vector2(x * scalar, y * scalar);
 	}
 
+	@Override
 	public Vector2 multLocal(final float scalar) {
 		x *= scalar;
 		y *= scalar;
 		return this;
 	}
 
+	@Override
 	public Vector2 divide(final float scalar) {
 		return new Vector2(x / scalar, y / scalar);
 	}
 
+	@Override
 	public Vector2 divideLocal(final float scalar) {
 		x /= scalar;
 		y /= scalar;
 		return this;
 	}
 
+	@Override
 	public float length() {
 		return (float) Math.sqrt(lengthSquared());
 	}
 
+	@Override
 	public float lengthSquared() {
 		return x * x + y * y;
 	}
@@ -104,14 +101,6 @@ public class Vector2 implements Cloneable {
 
 	@Override
 	public Vector2 clone() {
-		try {
-			return (Vector2) super.clone();
-		} catch (final CloneNotSupportedException e) {
-			throw new AssertionError(); // can not happen
-		}
-	}
-
-	public Vector2f toJME() {
-		return new Vector2f(x, y);
+		return (Vector2) super.clone();
 	}
 }

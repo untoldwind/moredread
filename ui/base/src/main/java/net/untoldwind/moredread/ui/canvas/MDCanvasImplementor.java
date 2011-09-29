@@ -31,7 +31,6 @@ import com.jme.intersection.PickResults;
 import com.jme.intersection.TrianglePickResults;
 import com.jme.math.FastMath;
 import com.jme.math.Ray;
-import com.jme.math.Vector2f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Node;
 import com.jme.scene.state.BlendState;
@@ -274,12 +273,12 @@ public class MDCanvasImplementor extends JMECanvasImplementor implements
 
 	@Override
 	public INode pickNode(final Vector2 screenCoord) {
-		final Vector2f screen = screenCoord.toJME();
 		final PickResults results = new TrianglePickResults();
 		final Ray ray = new Ray();
 
-		renderer.getCamera().getWorldCoordinates(screen, 0, ray.origin);
-		renderer.getCamera().getWorldCoordinates(screen, 0.3f, ray.direction)
+		renderer.getCamera().getWorldCoordinates(screenCoord, 0, ray.origin);
+		renderer.getCamera()
+				.getWorldCoordinates(screenCoord, 0.3f, ray.direction)
 				.subtractLocal(ray.origin).normalizeLocal();
 
 		results.setCheckDistance(true);

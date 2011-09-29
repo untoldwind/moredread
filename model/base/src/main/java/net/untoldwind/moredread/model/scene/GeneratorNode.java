@@ -148,9 +148,9 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 		displayNode.setUserData(ISceneHolder.NODE_USERDATA_KEY, nodeRef);
 
 		displayNode.setName(name);
-		displayNode.setLocalRotation(localRotation.toJME());
-		displayNode.setLocalTranslation(localTranslation.toJME());
-		displayNode.setLocalScale(localScale.toJME());
+		displayNode.setLocalRotation(localRotation);
+		displayNode.setLocalTranslation(localTranslation);
+		displayNode.setLocalScale(localScale);
 
 		if (renderedGeometries == null) {
 			final boolean isChildNodeSelected = getScene().getSceneSelection()

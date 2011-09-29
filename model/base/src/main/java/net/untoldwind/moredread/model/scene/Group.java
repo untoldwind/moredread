@@ -101,9 +101,9 @@ public class Group extends AbstractSpatialComposite<AbstractSpatialNode> {
 			parent.attachChild(displayNode);
 		}
 
-		displayNode.setLocalRotation(localRotation.toJME());
-		displayNode.setLocalTranslation(localTranslation.toJME());
-		displayNode.setLocalScale(localScale.toJME());
+		displayNode.setLocalRotation(localRotation);
+		displayNode.setLocalTranslation(localTranslation);
+		displayNode.setLocalScale(localScale);
 
 		if (structuralChange) {
 			displayNode.detachAllChildren();

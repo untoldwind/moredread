@@ -3,19 +3,12 @@ package net.untoldwind.moredread.model.enums;
 import net.untoldwind.moredread.model.math.Vector3;
 
 import com.jme.math.FastMath;
-import com.jme.math.Vector3f;
 
 /**
  * A plane in the Cartesian coordinate system.
  */
 public enum CartesianPlane {
 	XY(0, 0, 1) {
-		@Override
-		public Vector3f project(final Vector3f center, final Vector3f position,
-				final float u, final float v) {
-			return new Vector3f(center.x + u, center.y + v, position.z);
-		}
-
 		@Override
 		public Vector3 project(final Vector3 center, final Vector3 position,
 				final float u, final float v) {
@@ -24,12 +17,6 @@ public enum CartesianPlane {
 	},
 	XZ(0, -1, 0) {
 		@Override
-		public Vector3f project(final Vector3f center, final Vector3f position,
-				final float u, final float v) {
-			return new Vector3f(center.x + u, position.y, center.z + v);
-		}
-
-		@Override
 		public Vector3 project(final Vector3 center, final Vector3 position,
 				final float u, final float v) {
 			return new Vector3(center.x + u, position.y, center.z + v);
@@ -37,12 +24,6 @@ public enum CartesianPlane {
 
 	},
 	YZ(1, 0, 0) {
-		@Override
-		public Vector3f project(final Vector3f center, final Vector3f position,
-				final float u, final float v) {
-			return new Vector3f(position.x, center.y + u, center.z + v);
-		}
-
 		@Override
 		public Vector3 project(final Vector3 center, final Vector3 position,
 				final float u, final float v) {
@@ -59,9 +40,6 @@ public enum CartesianPlane {
 	public Vector3 getNormal() {
 		return normal;
 	}
-
-	public abstract Vector3f project(Vector3f center, Vector3f position,
-			float u, float v);
 
 	public abstract Vector3 project(Vector3 center, Vector3 position, float u,
 			float v);

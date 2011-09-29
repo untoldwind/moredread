@@ -8,7 +8,7 @@ public class Camera {
 	}
 
 	public Vector3 getScreenCoordinates(final Vector3 worldPoint) {
-		return new Vector3(delegate.getScreenCoordinates(worldPoint.toJME()));
+		return new Vector3(delegate.getScreenCoordinates(worldPoint));
 	}
 
 	public Vector3 getDirection() {
@@ -22,8 +22,7 @@ public class Camera {
 
 	public void setFrame(final Vector3 location, final Vector3 left,
 			final Vector3 up, final Vector3 direction) {
-		delegate.setFrame(location.toJME(), left.toJME(), up.toJME(),
-				direction.toJME());
+		delegate.setFrame(location, left, up, direction);
 	}
 
 	public Vector3 getLocation() {
@@ -32,8 +31,7 @@ public class Camera {
 
 	public Vector3 getWorldCoordinates(final Vector2 scenePosition,
 			final float zPos) {
-		return new Vector3(delegate.getWorldCoordinates(scenePosition.toJME(),
-				zPos));
+		return new Vector3(delegate.getWorldCoordinates(scenePosition, zPos));
 	}
 
 	public Vector3 getLeft() {
@@ -61,19 +59,19 @@ public class Camera {
 	}
 
 	public void setDirection(final Vector3 direction) {
-		delegate.setDirection(direction.toJME());
+		delegate.setDirection(direction);
 	}
 
 	public void setUp(final Vector3 up) {
-		delegate.setUp(up.toJME());
+		delegate.setUp(up);
 	}
 
 	public void setLeft(final Vector3 left) {
-		delegate.setLeft(left.toJME());
+		delegate.setLeft(left);
 	}
 
 	public void setLocation(final Vector3 location) {
-		delegate.setLocation(location.toJME());
+		delegate.setLocation(location);
 	}
 
 	public com.jme.renderer.Camera toJME() {

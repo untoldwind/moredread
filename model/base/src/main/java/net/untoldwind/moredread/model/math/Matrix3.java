@@ -1,20 +1,22 @@
 package net.untoldwind.moredread.model.math;
 
-import com.jme.math.FastMath;
+import com.jme.math.Matrix3f;
 
-public class Matrix3 {
-	public float m00, m01, m02;
-	public float m10, m11, m12;
-	public float m20, m21, m22;
+public class Matrix3 extends Matrix3f {
+	private static final long serialVersionUID = 1L;
 
 	public Matrix3() {
-		setIdentity();
+		super();
 	}
 
-	public Matrix3 setIdentity() {
-		m01 = m02 = m10 = m12 = m20 = m21 = 0;
-		m00 = m11 = m22 = 1;
-		return this;
+	public Matrix3(final float m00, final float m01, final float m02,
+			final float m10, final float m11, final float m12, final float m20,
+			final float m21, final float m22) {
+		super(m00, m01, m02, m10, m11, m12, m20, m21, m22);
+	}
+
+	public Matrix3(final Matrix3f mat) {
+		super(mat);
 	}
 
 	public void set(final Quaternion quaternion) {
@@ -66,48 +68,6 @@ public class Matrix3 {
 		product.y = m10 * x + m11 * y + m12 * z;
 		product.z = m20 * x + m21 * y + m22 * z;
 		return product;
-	}
-
-	public void fromAngleAxis(final float angle, final Vector3 axis) {
-		final Vector3 normAxis = axis.normalize();
-		fromAngleNormalAxis(angle, normAxis);
-	}
-
-	public void fromAngleNormalAxis(final float angle, final Vector3 axis) {
-		final float fCos = FastMath.cos(angle);
-		final float fSin = FastMath.sin(angle);
-		final float fOneMinusCos = ((float) 1.0) - fCos;
-		final float fX2 = axis.x * axis.x;
-		final float fY2 = axis.y * axis.y;
-		final float fZ2 = axis.z * axis.z;
-		final float fXYM = axis.x * axis.y * fOneMinusCos;
-		final float fXZM = axis.x * axis.z * fOneMinusCos;
-		final float fYZM = axis.y * axis.z * fOneMinusCos;
-		final float fXSin = axis.x * fSin;
-		final float fYSin = axis.y * fSin;
-		final float fZSin = axis.z * fSin;
-
-		m00 = fX2 * fOneMinusCos + fCos;
-		m01 = fXYM - fZSin;
-		m02 = fXZM + fYSin;
-		m10 = fXYM + fZSin;
-		m11 = fY2 * fOneMinusCos + fCos;
-		m12 = fYZM - fXSin;
-		m20 = fXZM - fYSin;
-		m21 = fYZM + fXSin;
-		m22 = fZ2 * fOneMinusCos + fCos;
-	}
-
-	public void scale(final Vector3 scale) {
-		m00 *= scale.x;
-		m10 *= scale.x;
-		m20 *= scale.x;
-		m01 *= scale.y;
-		m11 *= scale.y;
-		m21 *= scale.y;
-		m02 *= scale.z;
-		m12 *= scale.z;
-		m22 *= scale.z;
 	}
 
 }

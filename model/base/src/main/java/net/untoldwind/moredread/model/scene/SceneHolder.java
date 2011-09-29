@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.untoldwind.moredread.model.enums.SelectionMode;
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
 import net.untoldwind.moredread.model.scene.event.ISceneChangeListener;
 import net.untoldwind.moredread.model.scene.event.ISceneSelectionChangeListener;
@@ -15,7 +16,6 @@ import net.untoldwind.moredread.model.scene.event.SceneSelectionModeEvent;
 import com.jme.intersection.PickResults;
 import com.jme.light.DirectionalLight;
 import com.jme.math.Ray;
-import com.jme.math.Vector3f;
 import com.jme.renderer.ColorRGBA;
 import com.jme.renderer.Renderer;
 import com.jme.scene.state.BlendState;
@@ -71,7 +71,7 @@ public class SceneHolder implements ISceneHolder {
 			final DirectionalLight light = new DirectionalLight();
 			light.setDiffuse(new ColorRGBA(1.0f, 1.0f, 1.0f, 1.0f));
 			light.setAmbient(new ColorRGBA(0.5f, 0.5f, 0.5f, 1.0f));
-			light.setDirection(new Vector3f(-1, -1, -1));
+			light.setDirection(new Vector3(-1, -1, -1));
 			light.setEnabled(true);
 
 			/** Attach the light to a lightState and the lightState to rootNode. */

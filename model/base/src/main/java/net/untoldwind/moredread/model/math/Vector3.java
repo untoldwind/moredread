@@ -2,48 +2,19 @@ package net.untoldwind.moredread.model.math;
 
 import com.jme.math.Vector3f;
 
-public class Vector3 implements Cloneable {
+public class Vector3 extends Vector3f {
 	public final static Vector3 ZERO = new Vector3(0, 0, 0);
-	public float x;
-	public float y;
-	public float z;
 
 	public Vector3() {
-		this.x = 0;
-		this.y = 0;
-		this.z = 0;
+		super();
 	}
 
 	public Vector3(final float x, final float y, final float z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		super(x, y, z);
 	}
 
-	public Vector3(final Vector3 v) {
-		this.x = v.x;
-		this.y = v.y;
-		this.z = v.z;
-	}
-
-	public Vector3(final Vector3f v) {
-		this.x = v.x;
-		this.y = v.y;
-		this.z = v.z;
-	}
-
-	public Vector3 set(final Vector3 other) {
-		this.x = other.x;
-		this.y = other.y;
-		this.z = other.z;
-		return this;
-	}
-
-	public Vector3 set(final float x, final float y, final float z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		return this;
+	public Vector3(final Vector3f copy) {
+		super(copy);
 	}
 
 	public Vector3 add(final Vector3 other) {
@@ -82,6 +53,7 @@ public class Vector3 implements Cloneable {
 		return this;
 	}
 
+	@Override
 	public Vector3 mult(final float scalar) {
 		return new Vector3(x * scalar, y * scalar, z * scalar);
 	}
@@ -93,6 +65,7 @@ public class Vector3 implements Cloneable {
 		return result;
 	}
 
+	@Override
 	public Vector3 multLocal(final float scalar) {
 		x *= scalar;
 		y *= scalar;
@@ -105,7 +78,10 @@ public class Vector3 implements Cloneable {
 	}
 
 	public Vector3 mult(final Vector3 vec, final Vector3 result) {
-		return result.set(x * vec.x, y * vec.y, z * vec.z);
+		result.x = x * vec.x;
+		result.y = y * vec.y;
+		result.z = z * vec.z;
+		return result;
 	}
 
 	public Vector3 multLocal(final Vector3 vec) {
@@ -115,11 +91,13 @@ public class Vector3 implements Cloneable {
 		return this;
 	}
 
+	@Override
 	public Vector3 divide(float scalar) {
 		scalar = 1f / scalar;
 		return new Vector3(x * scalar, y * scalar, z * scalar);
 	}
 
+	@Override
 	public Vector3 divideLocal(float scalar) {
 		scalar = 1f / scalar;
 		x *= scalar;
@@ -135,15 +113,18 @@ public class Vector3 implements Cloneable {
 		return this;
 	}
 
+	@Override
 	public float length() {
 		return (float) Math.sqrt(lengthSquared());
 
 	}
 
+	@Override
 	public float lengthSquared() {
 		return x * x + y * y + z * z;
 	}
 
+	@Override
 	public Vector3 normalize() {
 		final float length = length();
 		if (length != 0) {
@@ -153,6 +134,7 @@ public class Vector3 implements Cloneable {
 		return divide(1);
 	}
 
+	@Override
 	public Vector3 normalizeLocal() {
 		final float length = length();
 		if (length != 0) {
@@ -208,15 +190,7 @@ public class Vector3 implements Cloneable {
 
 	@Override
 	public Vector3 clone() {
-		try {
-			return (Vector3) super.clone();
-		} catch (final CloneNotSupportedException e) {
-			throw new AssertionError(); // can not happen
-		}
-	}
-
-	public Vector3f toJME() {
-		return new Vector3f(x, y, z);
+		return (Vector3) super.clone();
 	}
 
 	public static boolean isValidVector(final Vector3 vector) {
