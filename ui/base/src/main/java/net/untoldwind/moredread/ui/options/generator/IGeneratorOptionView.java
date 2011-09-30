@@ -5,7 +5,9 @@ import net.untoldwind.moredread.model.scene.GeneratorNode;
 import org.eclipse.swt.widgets.Composite;
 
 public interface IGeneratorOptionView {
-	void createControls(Composite parent, GeneratorNode node);
+	String getTitle();
+
+	Composite createControls(Composite parent, GeneratorNode node);
 
 	void dispose();
 

@@ -11,7 +11,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
 
 public class CenterSizeGeneratorOptions implements IGeneratorOptionView {
 	private final AbstractCenterSizeGenerator generator;
@@ -26,17 +25,16 @@ public class CenterSizeGeneratorOptions implements IGeneratorOptionView {
 	}
 
 	@Override
-	public void createControls(final Composite parent, final GeneratorNode node) {
+	public String getTitle() {
+		return generator.getName() + " generator";
+	}
+
+	@Override
+	public Composite createControls(final Composite parent,
+			final GeneratorNode node) {
 		container = new Composite(parent, SWT.NONE);
 		container.setLayout(new GridLayout(2, false));
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-		final Label typeLabel = new Label(container, SWT.NONE);
-		typeLabel.setText("Type");
-		final Text typeText = new Text(container, SWT.FLAT);
-		typeText.setText(generator.getName());
-		typeText.setEditable(false);
-		typeText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		final Label centerLabel = new Label(container, SWT.NONE);
 		centerLabel.setText("Center");
@@ -50,6 +48,8 @@ public class CenterSizeGeneratorOptions implements IGeneratorOptionView {
 
 		centerText.setValue(generator.getCenter());
 		sizeText.setValue(generator.getSize());
+
+		return container;
 	}
 
 	@Override

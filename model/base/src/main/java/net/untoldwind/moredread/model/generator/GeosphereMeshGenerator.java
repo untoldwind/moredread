@@ -1,16 +1,19 @@
 package net.untoldwind.moredread.model.generator;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
+import net.untoldwind.moredread.model.state.IStateReader;
+import net.untoldwind.moredread.model.state.IStateWriter;
 
 import com.jme.math.FastMath;
 
 public class GeosphereMeshGenerator extends AbstractCenterSizeGenerator
 		implements IMeshGenerator {
-	private final int numLevels;
+	private int numLevels;
 
 	public GeosphereMeshGenerator(final int numLevels, final Vector3 center,
 			final float size) {
@@ -22,6 +25,10 @@ public class GeosphereMeshGenerator extends AbstractCenterSizeGenerator
 	@Override
 	public String getName() {
 		return "Geosphere";
+	}
+
+	public int getNumLevels() {
+		return numLevels;
 	}
 
 	@Override
@@ -124,6 +131,18 @@ public class GeosphereMeshGenerator extends AbstractCenterSizeGenerator
 		}
 
 		return mesh;
+	}
+
+	@Override
+	public void readState(final IStateReader reader) throws IOException {
+		super.readState(reader);
+		numLevels = reader.readInt();
+	}
+
+	@Override
+	public void writeState(final IStateWriter writer) throws IOException {
+		super.writeState(writer);
+		writer.writeInt("levels", numLevels);
 	}
 
 	private Vector3 createMidpoint(final Vector3 a, final Vector3 b) {

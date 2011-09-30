@@ -358,6 +358,13 @@
                type="net.untoldwind.moredread.ui.options.generator.IGeneratorOptionView">
          </adapter>
       </factory>
+      <factory
+            adaptableType="net.untoldwind.moredread.model.generator.GeosphereMeshGenerator"
+            class="net.untoldwind.moredread.ui.options.generator.GeosphereOptionView$Factory">
+         <adapter
+               type="net.untoldwind.moredread.ui.options.generator.IGeneratorOptionView">
+         </adapter>
+      </factory>
    </extension>
 
 </plugin>

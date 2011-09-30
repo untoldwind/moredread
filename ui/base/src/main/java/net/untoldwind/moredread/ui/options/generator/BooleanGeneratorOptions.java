@@ -27,7 +27,13 @@ public class BooleanGeneratorOptions implements IGeneratorOptionView {
 	}
 
 	@Override
-	public void createControls(final Composite parent, final GeneratorNode node) {
+	public String getTitle() {
+		return "Boolean generator";
+	}
+
+	@Override
+	public Composite createControls(final Composite parent,
+			final GeneratorNode node) {
 		container = new Composite(parent, SWT.NONE);
 		container.setLayout(new GridLayout(2, false));
 		container.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -63,6 +69,8 @@ public class BooleanGeneratorOptions implements IGeneratorOptionView {
 				}
 			}
 		});
+
+		return container;
 	}
 
 	@Override

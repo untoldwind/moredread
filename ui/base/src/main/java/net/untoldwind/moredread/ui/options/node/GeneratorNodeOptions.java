@@ -13,6 +13,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 public class GeneratorNodeOptions implements IOptionView {
 	private final GeneratorNode node;
@@ -37,6 +38,9 @@ public class GeneratorNodeOptions implements IOptionView {
 				.getAdapter(IGeneratorOptionView.class);
 
 		if (generatorOptions != null) {
+			final Label titleLabel = new Label(container, SWT.CENTER);
+			titleLabel.setText(generatorOptions.getTitle());
+			titleLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			generatorOptions.createControls(container, node);
 		} else {
 			final Composite empty = new Composite(container, SWT.NONE);
