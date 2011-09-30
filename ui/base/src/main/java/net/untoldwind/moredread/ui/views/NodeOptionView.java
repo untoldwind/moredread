@@ -1,6 +1,7 @@
 package net.untoldwind.moredread.ui.views;
 
 import net.untoldwind.moredread.model.scene.INode;
+import net.untoldwind.moredread.model.scene.SceneSelection;
 import net.untoldwind.moredread.model.scene.event.ISceneChangeListener;
 import net.untoldwind.moredread.model.scene.event.ISceneSelectionChangeListener;
 import net.untoldwind.moredread.model.scene.event.SceneChangeEvent;
@@ -13,9 +14,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
-public class OptionView extends ViewPart implements ISceneChangeListener,
+public class NodeOptionView extends ViewPart implements ISceneChangeListener,
 		ISceneSelectionChangeListener {
-	public static final String ID = "net.untoldwind.moredread.ui.optionView";
+	public static final String ID = "net.untoldwind.moredread.ui.nodeOptionView";
 
 	Composite optionsContainer;
 	IOptionView activeOptionView;
@@ -31,6 +32,8 @@ public class OptionView extends ViewPart implements ISceneChangeListener,
 		MoreDreadUI.getDefault().getSceneHolder().addSceneChangeListener(this);
 		MoreDreadUI.getDefault().getSceneHolder()
 				.addSceneSelectionChangeListener(this);
+
+		updateOptionView();
 	}
 
 	@Override
@@ -55,13 +58,20 @@ public class OptionView extends ViewPart implements ISceneChangeListener,
 
 	@Override
 	public void sceneSelectionChanged(final SceneSelectionChangeEvent event) {
+		updateOptionView();
+	}
+
+	private void updateOptionView() {
 		if (activeOptionView != null) {
 			activeOptionView.dispose();
 			activeOptionView = null;
 		}
 
-		if (event.getSelectedNodes().size() == 1) {
-			final INode node = event.getSelectedNodes().iterator().next();
+		final SceneSelection sceneSelection = MoreDreadUI.getDefault()
+				.getSceneHolder().getScene().getSceneSelection();
+		if (sceneSelection.getSelectedNodes().size() == 1) {
+			final INode node = sceneSelection.getSelectedNodes().iterator()
+					.next();
 
 			activeOptionView = (IOptionView) node.getAdapter(IOptionView.class);
 			if (activeOptionView != null) {

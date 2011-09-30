@@ -89,13 +89,17 @@ public class ToolController implements IToolController,
 
 	@Override
 	public void addToolActivationListener(final IToolActivationListener listener) {
-		activationListeners.add(listener);
+		synchronized (activationListeners) {
+			activationListeners.add(listener);
+		}
 	}
 
 	@Override
 	public void removeToolActivationListener(
 			final IToolActivationListener listener) {
-		activationListeners.remove(listener);
+		synchronized (activationListeners) {
+			activationListeners.remove(listener);
+		}
 	}
 
 	@Override
@@ -108,12 +112,8 @@ public class ToolController implements IToolController,
 				&& toolDescriptor.getToolType() == ToolType.TOGGLE) {
 			this.activeTool = toolDescriptor;
 
-			final ActiveToolChangedEvent event = new ActiveToolChangedEvent(
-					this, toolDescriptor);
-
-			for (final IToolActivationListener listener : activationListeners) {
-				listener.activeToolChanged(event);
-			}
+			fireActiveToolChangedEvent(new ActiveToolChangedEvent(this,
+					toolDescriptor));
 		}
 	}
 
@@ -130,6 +130,20 @@ public class ToolController implements IToolController,
 	@Override
 	public void completeActiveTool() {
 		getActiveTool().complete(sceneHolder.getScene());
+	}
+
+	protected void fireActiveToolChangedEvent(final ActiveToolChangedEvent event) {
+		final IToolActivationListener listenerArray[];
+
+		synchronized (activationListeners) {
+			listenerArray = activationListeners
+					.toArray(new IToolActivationListener[activationListeners
+							.size()]);
+		}
+
+		for (final IToolActivationListener listener : listenerArray) {
+			listener.activeToolChanged(event);
+		}
 	}
 
 	private IToolDescriptor getDefaultTool() {

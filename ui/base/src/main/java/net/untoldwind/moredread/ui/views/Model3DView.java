@@ -55,6 +55,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.ISaveablePart;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.part.ViewPart;
@@ -229,6 +230,10 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 	 */
 	@Override
 	public void sceneSelectionChanged(final SceneSelectionChangeEvent event) {
+		final IViewPart nodeOptions = getSite().getPage().findView(
+				NodeOptionView.ID);
+		getSite().getPage().bringToTop(nodeOptions);
+
 		implementor.updateDisplayNodes();
 		implementor.updateToolControls();
 		canvas.queueRender();
@@ -248,6 +253,10 @@ public class Model3DView extends ViewPart implements ISaveablePart,
 
 	@Override
 	public void activeToolChanged(final ActiveToolChangedEvent event) {
+		final IViewPart toolOptions = getSite().getPage().findView(
+				ToolOptionView.ID);
+		getSite().getPage().bringToTop(toolOptions);
+
 		implementor.updateToolControls();
 		canvas.queueRender();
 	}

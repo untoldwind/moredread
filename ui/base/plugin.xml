@@ -74,9 +74,15 @@
             restorable="true">
       </view>
       <view
-            class="net.untoldwind.moredread.ui.views.OptionView"
-            id="net.untoldwind.moredread.ui.optionView"
-            name="Options"
+            class="net.untoldwind.moredread.ui.views.NodeOptionView"
+            id="net.untoldwind.moredread.ui.nodeOptionView"
+            name="Node Options"
+            restorable="true">
+      </view>
+      <view
+            class="net.untoldwind.moredread.ui.views.ToolOptionView"
+            id="net.untoldwind.moredread.ui.toolOptionView"
+            name="Tool options"
             restorable="true">
       </view>
    </extension>

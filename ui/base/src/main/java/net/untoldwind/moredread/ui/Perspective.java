@@ -3,10 +3,11 @@ package net.untoldwind.moredread.ui;
 import net.untoldwind.moredread.ui.views.GeneratorTreeView;
 import net.untoldwind.moredread.ui.views.Model3DView;
 import net.untoldwind.moredread.ui.views.ModelTreeView;
-import net.untoldwind.moredread.ui.views.OptionView;
+import net.untoldwind.moredread.ui.views.NodeOptionView;
 import net.untoldwind.moredread.ui.views.SelectionInfoView;
 import net.untoldwind.moredread.ui.views.SelectionModeView;
 import net.untoldwind.moredread.ui.views.ToolControlView;
+import net.untoldwind.moredread.ui.views.ToolOptionView;
 import net.untoldwind.moredread.ui.views.ToolSelectionView;
 
 import org.eclipse.ui.IFolderLayout;
@@ -52,8 +53,10 @@ public class Perspective implements IPerspectiveFactory {
 
 		layout.addStandaloneView(SelectionInfoView.ID, true, IPageLayout.RIGHT,
 				0.8f, "modelViews");
-		layout.addStandaloneView(OptionView.ID, true, IPageLayout.BOTTOM, 0.1f,
-				SelectionInfoView.ID);
+		final IFolderLayout optionFolder = layout.createFolder("optionViews",
+				IPageLayout.BOTTOM, 0.1f, SelectionInfoView.ID);
+		optionFolder.addView(NodeOptionView.ID);
+		optionFolder.addView(ToolOptionView.ID);
 
 		layout.addShowViewShortcut(Model3DView.ID);
 		layout.addShowViewShortcut(ModelTreeView.ID);
