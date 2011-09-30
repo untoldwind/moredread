@@ -1,7 +1,12 @@
 package net.untoldwind.moredread.ui.views;
 
+import java.util.EnumSet;
+
 import net.untoldwind.moredread.model.enums.SelectionMode;
+import net.untoldwind.moredread.model.scene.INode;
+import net.untoldwind.moredread.model.scene.event.ISceneSelectionChangeListener;
 import net.untoldwind.moredread.model.scene.event.ISceneSelectionModeListener;
+import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionModeEvent;
 import net.untoldwind.moredread.ui.MoreDreadUI;
 
@@ -16,7 +21,8 @@ import org.eclipse.ui.ISizeProvider;
 import org.eclipse.ui.part.ViewPart;
 
 public class SelectionModeView extends ViewPart implements
-		ISceneSelectionModeListener, ISizeProvider {
+		ISceneSelectionChangeListener, ISceneSelectionModeListener,
+		ISizeProvider {
 	public static final String ID = "net.untoldwind.moredread.ui.selectionModeView";
 
 	private ToolBar toolBar;
@@ -54,6 +60,7 @@ public class SelectionModeView extends ViewPart implements
 						.setSelectionMode(SelectionMode.FACE);
 			}
 		});
+		faceSelection.setEnabled(false);
 		edgeSelection = new ToolItem(toolBar, SWT.RADIO | SWT.NONE);
 		edgeSelection.setImage(MoreDreadUI.getDefault().getImage(
 				"/icons/SelectionModeEdge.png"));
@@ -64,6 +71,7 @@ public class SelectionModeView extends ViewPart implements
 						.setSelectionMode(SelectionMode.EDGE);
 			}
 		});
+		edgeSelection.setEnabled(false);
 		vertexSelection = new ToolItem(toolBar, SWT.RADIO | SWT.NONE);
 		vertexSelection.setImage(MoreDreadUI.getDefault().getImage(
 				"/icons/SelectionModeVertex.png"));
@@ -74,8 +82,20 @@ public class SelectionModeView extends ViewPart implements
 						.setSelectionMode(SelectionMode.VERTEX);
 			}
 		});
+		vertexSelection.setEnabled(false);
 		MoreDreadUI.getDefault().getSceneHolder()
 				.addSceneSelectionModeListener(this);
+		MoreDreadUI.getDefault().getSceneHolder()
+				.addSceneSelectionChangeListener(this);
+	}
+
+	@Override
+	public void dispose() {
+		MoreDreadUI.getDefault().getSceneHolder()
+				.removeSceneSelectionModeListener(this);
+		MoreDreadUI.getDefault().getSceneHolder()
+				.removeSceneSelectionChangeListener(this);
+		super.dispose();
 	}
 
 	/**
@@ -83,6 +103,27 @@ public class SelectionModeView extends ViewPart implements
 	 */
 	@Override
 	public void setFocus() {
+	}
+
+	@Override
+	public void sceneSelectionChanged(final SceneSelectionChangeEvent event) {
+		EnumSet<SelectionMode> supportedModes = null;
+		if (event.getSelectedNodes().isEmpty()) {
+			supportedModes = EnumSet.of(SelectionMode.OBJECT);
+		} else {
+			supportedModes = EnumSet.allOf(SelectionMode.class);
+
+			for (final INode node : event.getSelectedNodes()) {
+				supportedModes.retainAll(node.getSupportedSelectionModes());
+			}
+		}
+
+		objectSelection.setEnabled(supportedModes
+				.contains(SelectionMode.OBJECT));
+		faceSelection.setEnabled(supportedModes.contains(SelectionMode.FACE));
+		edgeSelection.setEnabled(supportedModes.contains(SelectionMode.EDGE));
+		vertexSelection.setEnabled(supportedModes
+				.contains(SelectionMode.VERTEX));
 	}
 
 	/**

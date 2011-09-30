@@ -1,6 +1,9 @@
 package net.untoldwind.moredread.model.scene;
 
+import java.util.EnumSet;
+
 import net.untoldwind.moredread.model.enums.GeometryType;
+import net.untoldwind.moredread.model.enums.SelectionMode;
 import net.untoldwind.moredread.model.mesh.Grid;
 import net.untoldwind.moredread.model.mesh.IGrid;
 
@@ -28,6 +31,12 @@ public class GridNode extends GeometryNode<IGrid, Grid> implements IGridNode {
 	@Override
 	public <T> T accept(final ISceneVisitor<T> visitor) {
 		return visitor.visitGridNode(this);
+	}
+
+	@Override
+	public EnumSet<SelectionMode> getSupportedSelectionModes() {
+		return EnumSet.of(SelectionMode.OBJECT, SelectionMode.EDGE,
+				SelectionMode.VERTEX);
 	}
 
 }

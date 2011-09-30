@@ -1,5 +1,8 @@
 package net.untoldwind.moredread.model.scene;
 
+import java.util.EnumSet;
+
+import net.untoldwind.moredread.model.enums.SelectionMode;
 import net.untoldwind.moredread.model.state.IStateHolder;
 
 import org.eclipse.core.runtime.IAdaptable;
@@ -27,4 +30,6 @@ public interface INode extends IStateHolder, IAdaptable {
 	<T> T accept(ISceneVisitor<T> visitor);
 
 	void remove();
+
+	EnumSet<SelectionMode> getSupportedSelectionModes();
 }

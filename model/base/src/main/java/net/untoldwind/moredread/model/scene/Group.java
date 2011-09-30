@@ -2,7 +2,9 @@ package net.untoldwind.moredread.model.scene;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.util.EnumSet;
 
+import net.untoldwind.moredread.model.enums.SelectionMode;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
 import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
@@ -120,6 +122,22 @@ public class Group extends AbstractSpatialComposite<AbstractSpatialNode> {
 	@Override
 	public <T> T accept(final ISceneVisitor<T> visitor) {
 		return visitor.visitGroup(this);
+	}
+
+	@Override
+	public EnumSet<SelectionMode> getSupportedSelectionModes() {
+		if (children.isEmpty()) {
+			return EnumSet.of(SelectionMode.OBJECT);
+		} else {
+			final EnumSet<SelectionMode> supportedModes = EnumSet
+					.allOf(SelectionMode.class);
+
+			for (final INode node : children) {
+				supportedModes.retainAll(node.getSupportedSelectionModes());
+			}
+
+			return supportedModes;
+		}
 	}
 
 	@Override

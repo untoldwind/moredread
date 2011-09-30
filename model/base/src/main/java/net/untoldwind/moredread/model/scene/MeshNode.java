@@ -1,6 +1,9 @@
 package net.untoldwind.moredread.model.scene;
 
+import java.util.EnumSet;
+
 import net.untoldwind.moredread.model.enums.GeometryType;
+import net.untoldwind.moredread.model.enums.SelectionMode;
 import net.untoldwind.moredread.model.generator.IGeneratorInput;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.Mesh;
@@ -30,6 +33,11 @@ public class MeshNode extends GeometryNode<IMesh, Mesh<?, ?>> implements
 	@Override
 	public <T> T accept(final ISceneVisitor<T> visitor) {
 		return visitor.visitMeshNode(this);
+	}
+
+	@Override
+	public EnumSet<SelectionMode> getSupportedSelectionModes() {
+		return EnumSet.allOf(SelectionMode.class);
 	}
 
 }

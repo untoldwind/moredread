@@ -1,6 +1,9 @@
 package net.untoldwind.moredread.model.scene;
 
+import java.util.EnumSet;
+
 import net.untoldwind.moredread.model.enums.GeometryType;
+import net.untoldwind.moredread.model.enums.SelectionMode;
 import net.untoldwind.moredread.model.mesh.IPolygon;
 import net.untoldwind.moredread.model.mesh.Polygon;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
@@ -32,6 +35,12 @@ public class PolygonNode extends GeometryNode<IPolygon, Polygon> implements
 	@Override
 	public <T> T accept(final ISceneVisitor<T> visitor) {
 		return visitor.visitPolygonNode(this);
+	}
+
+	@Override
+	public EnumSet<SelectionMode> getSupportedSelectionModes() {
+		return EnumSet.of(SelectionMode.OBJECT, SelectionMode.EDGE,
+				SelectionMode.VERTEX);
 	}
 
 	@Override
