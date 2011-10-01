@@ -36,7 +36,6 @@ public class ToolOptionView extends ViewPart implements IToolActivationListener 
 
 	@Override
 	public void activeToolChanged(final ActiveToolChangedEvent event) {
-		System.out.println(">>> Hurra");
 		// TODO Auto-generated method stub
 
 	}

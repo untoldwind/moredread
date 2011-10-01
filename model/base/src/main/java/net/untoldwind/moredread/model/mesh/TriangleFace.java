@@ -79,30 +79,34 @@ public class TriangleFace extends Face<TriangleFaceId, TriangleFace> {
 	}
 
 	@Override
-	public void updateCenter() {
-		center = new Vector3(0, 0, 0);
+	public Vector3 calculateCenter() {
+		final Vector3 center = new Vector3(0, 0, 0);
 
 		for (final Vertex vertex : vertices) {
 			center.addLocal(vertex.getPoint());
 		}
 
 		center.divideLocal(3);
+
+		return center;
 	}
 
 	@Override
-	public void updateMeanNormal() {
+	public Vector3 calculateMeanNormal() {
 		final Vector3 v1 = vertices[1].getPoint().subtract(
 				vertices[0].getPoint());
 		final Vector3 v2 = vertices[2].getPoint().subtract(
 				vertices[0].getPoint());
-		meanNormal = v1.cross(v2);
-		final float len = meanNormal.length();
+		final Vector3 normal = v1.cross(v2);
+		final float len = normal.length();
 
 		if (len == 0f) {
-			meanNormal.set(0, 0, 1);
+			normal.set(0, 0, 1);
 		} else {
-			meanNormal.divideLocal(len);
+			normal.divideLocal(len);
 		}
+
+		return normal;
 	}
 
 	@Override

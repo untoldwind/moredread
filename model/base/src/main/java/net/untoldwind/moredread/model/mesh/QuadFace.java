@@ -79,32 +79,36 @@ public class QuadFace extends Face<QuadFaceId, QuadFace> {
 	}
 
 	@Override
-	public void updateCenter() {
-		center = new Vector3(0, 0, 0);
+	public Vector3 calculateCenter() {
+		final Vector3 center = new Vector3(0, 0, 0);
 
 		for (final Vertex vertex : vertices) {
 			center.addLocal(vertex.getPoint());
 		}
 
 		center.divideLocal(4);
+
+		return center;
 	}
 
 	@Override
-	public void updateMeanNormal() {
+	public Vector3 calculateMeanNormal() {
 		final Vector3 v1 = vertices[1].getPoint().subtract(
 				vertices[0].getPoint());
 		final Vector3 v2 = vertices[2].getPoint().subtract(
 				vertices[0].getPoint());
 		final Vector3 v3 = vertices[3].getPoint().subtract(
 				vertices[0].getPoint());
-		meanNormal = v1.cross(v2).addLocal(v1.cross(v3));
-		final float len = meanNormal.length();
+		final Vector3 normal = v1.cross(v2).addLocal(v1.cross(v3));
+		final float len = normal.length();
 
 		if (len < 1e-6) {
-			meanNormal.set(0, 0, 1);
+			normal.set(0, 0, 1);
 		} else {
-			meanNormal.divideLocal(len);
+			normal.divideLocal(len);
 		}
+
+		return normal;
 	}
 
 	@Override

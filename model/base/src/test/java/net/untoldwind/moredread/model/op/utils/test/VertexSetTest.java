@@ -133,5 +133,11 @@ public class VertexSetTest {
 		public List<? extends IVertex> getNeighbours() {
 			return null;
 		}
+
+		@Override
+		public Vector3 getMeanNormal() {
+			return null;
+		}
+
 	}
 }

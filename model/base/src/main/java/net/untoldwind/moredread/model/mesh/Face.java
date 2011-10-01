@@ -12,8 +12,8 @@ public abstract class Face<FaceK extends FaceId, FaceT extends Face<?, ?>>
 		implements IStateHolder, IFace {
 	protected final Mesh<?, ?> owner;
 	protected final FaceK index;
-	protected Vector3 center;
-	protected Vector3 meanNormal;
+	private Vector3 center;
+	private Vector3 meanNormal;
 
 	protected Face(final Mesh<?, ?> owner, final FaceK index) {
 		this.owner = owner;
@@ -51,7 +51,7 @@ public abstract class Face<FaceK extends FaceId, FaceT extends Face<?, ?>>
 	@Override
 	public Vector3 getCenter() {
 		if (center == null) {
-			updateCenter();
+			center = calculateCenter();
 		}
 		return center;
 	}
@@ -59,7 +59,7 @@ public abstract class Face<FaceK extends FaceId, FaceT extends Face<?, ?>>
 	@Override
 	public Vector3 getMeanNormal() {
 		if (meanNormal == null) {
-			updateMeanNormal();
+			meanNormal = calculateMeanNormal();
 		}
 		return meanNormal;
 	}
@@ -80,9 +80,9 @@ public abstract class Face<FaceK extends FaceId, FaceT extends Face<?, ?>>
 
 	public abstract List<Vertex> getVertices();
 
-	public abstract void updateCenter();
+	public abstract Vector3 calculateCenter();
 
-	public abstract void updateMeanNormal();
+	public abstract Vector3 calculateMeanNormal();
 
 	abstract void remove();
 }

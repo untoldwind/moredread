@@ -20,6 +20,7 @@ public class Vertex implements IStateHolder, IVertex {
 	private boolean smooth;
 	private final Set<Edge> edges;
 	private final Set<Face<?, ?>> faces;
+	private Vector3 meanNormal;
 
 	Vertex(final VertexGeometry<?> owner, final int index, final Vector3 point) {
 		this.owner = owner;
@@ -75,6 +76,14 @@ public class Vertex implements IStateHolder, IVertex {
 		return faces;
 	}
 
+	@Override
+	public Vector3 getMeanNormal() {
+		if (meanNormal == null) {
+			updateMeanNormal();
+		}
+		return meanNormal;
+	}
+
 	void remove() {
 		if (owner instanceof EdgeGeometry<?>) {
 			final Set<EdgeId> edgeIds = new HashSet<EdgeId>();
@@ -102,6 +111,27 @@ public class Vertex implements IStateHolder, IVertex {
 	@Override
 	public IPoint transform(final ITransformation transformation) {
 		return new Point(transformation.transformPoint(point));
+	}
+
+	void markDirty() {
+		meanNormal = null;
+	}
+
+	public void updateMeanNormal() {
+		final Vector3 normal = new Vector3(0, 0, 0);
+
+		for (final IFace face : faces) {
+			normal.addLocal(face.getMeanNormal());
+		}
+		final float len = normal.length();
+
+		if (len < 1e-6) {
+			normal.set(0, 0, 1);
+		} else {
+			normal.divideLocal(len);
+		}
+
+		this.meanNormal = normal;
 	}
 
 	@Override

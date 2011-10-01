@@ -111,33 +111,37 @@ public class PolyFace extends Face<PolyFaceId, PolyFace> {
 	}
 
 	@Override
-	public void updateCenter() {
-		center = new Vector3(0, 0, 0);
+	public Vector3 calculateCenter() {
+		final Vector3 center = new Vector3(0, 0, 0);
 
 		for (final Vertex vertex : vertices) {
 			center.addLocal(vertex.getPoint());
 		}
 
 		center.divideLocal(vertices.size());
+
+		return center;
 	}
 
 	@Override
-	public void updateMeanNormal() {
-		meanNormal = new Vector3(0, 0, 0);
+	public Vector3 calculateMeanNormal() {
+		final Vector3 normal = new Vector3(0, 0, 0);
 		final int outerStripCount = stripCounts.get(0);
 		for (int i = 0; i < outerStripCount; i++) {
 			final Vector3 v1 = vertices.get(i).getPoint();
 			final Vector3 v2 = vertices.get((i + 1) % outerStripCount)
 					.getPoint();
-			meanNormal.addLocal(v1.cross(v2));
+			normal.addLocal(v1.cross(v2));
 		}
-		final float len = meanNormal.length();
+		final float len = normal.length();
 
 		if (len < 1e-6) {
-			meanNormal.set(0, 0, 1);
+			normal.set(0, 0, 1);
 		} else {
-			meanNormal.divideLocal(len);
+			normal.divideLocal(len);
 		}
+
+		return normal;
 	}
 
 	@Override

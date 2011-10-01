@@ -108,6 +108,18 @@
          </enablement>
       </tool>
       <tool
+            categoryId="net.untoldwind.moredread.ui.tool.category.utilities"
+            class="net.untoldwind.moredread.ui.tools.utilities.ThicknessToolHandler"
+            icon="icons/CreateCube.png"
+            id="net.untoldwind.moredread.ui.tool.addThicknessTool"
+            label="Add thickness"
+            type="PUSH">
+         <enablement
+               selectionCount="1"
+               selectionMode="OBJECT">
+         </enablement>
+      </tool>
+      <tool
             categoryId="net.untoldwind.moredread.ui.tool.category.creation"
             class="net.untoldwind.moredread.ui.tools.creation.CubeCreationToolHandler"
             icon="icons/CreateCube.png"
