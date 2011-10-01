@@ -6,7 +6,6 @@ import net.untoldwind.moredread.model.scene.AbstractSceneOperation;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
 import net.untoldwind.moredread.model.scene.Scene;
 
-import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -22,7 +21,7 @@ public class BooleanGeneratorOptions implements IGeneratorOptionView {
 	Composite container;
 	Combo typeCombo;
 
-	BooleanGeneratorOptions(final BooleanGenerator generator) {
+	public BooleanGeneratorOptions(final BooleanGenerator generator) {
 		this.generator = generator;
 	}
 
@@ -82,27 +81,5 @@ public class BooleanGeneratorOptions implements IGeneratorOptionView {
 	public void update(final GeneratorNode node) {
 		generator = (BooleanGenerator) node.getMeshGenerator();
 		typeCombo.select(generator.getBoolOperation().ordinal());
-	}
-
-	public static class Factory implements IAdapterFactory {
-
-		@Override
-		public Object getAdapter(final Object adaptableObject,
-				@SuppressWarnings("rawtypes") final Class adapterType) {
-			if (adapterType == IGeneratorOptionView.class) {
-				if (adaptableObject instanceof BooleanGenerator) {
-					return new BooleanGeneratorOptions(
-							(BooleanGenerator) adaptableObject);
-				}
-
-			}
-			return null;
-		}
-
-		@SuppressWarnings("rawtypes")
-		@Override
-		public Class[] getAdapterList() {
-			return new Class[] { IGeneratorOptionView.class };
-		}
 	}
 }

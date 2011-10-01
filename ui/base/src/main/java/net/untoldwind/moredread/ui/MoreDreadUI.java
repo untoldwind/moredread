@@ -31,8 +31,12 @@ import net.untoldwind.moredread.model.scene.PolygonNode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.scene.SceneHolder;
 import net.untoldwind.moredread.ui.canvas.MDCanvasConstructor;
+import net.untoldwind.moredread.ui.options.generator.GeneratorOptionViewAdapterFactory;
 import net.untoldwind.moredread.ui.tools.UIToolsPlugin;
 
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -59,6 +63,8 @@ public class MoreDreadUI extends AbstractUIPlugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "net.untoldwind.moredread.ui.base";
 
+	public static final String GENERATOR_OPTIONS_EXTENSION_ID = "net.untoldwind.moredread.ui.generatorOptionViews";
+
 	// The shared instance
 	private static MoreDreadUI plugin;
 
@@ -75,6 +81,24 @@ public class MoreDreadUI extends AbstractUIPlugin {
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+
+		final IExtensionRegistry registry = Platform.getExtensionRegistry();
+		final IExtensionPoint toolExtensionPoint = registry
+				.getExtensionPoint(GENERATOR_OPTIONS_EXTENSION_ID);
+
+		for (final IConfigurationElement element : toolExtensionPoint
+				.getConfigurationElements()) {
+			if ("generatorOptionView".equals(element.getName())) {
+				final Class<?> generatorClass = Class.forName(element
+						.getAttribute("generatorClass"));
+				final Class<?> optionViewClass = Class.forName(element
+						.getAttribute("optionViewClass"));
+
+				Platform.getAdapterManager().registerAdapters(
+						new GeneratorOptionViewAdapterFactory(generatorClass,
+								optionViewClass), generatorClass);
+			}
+		}
 
 		initializeScene();
 

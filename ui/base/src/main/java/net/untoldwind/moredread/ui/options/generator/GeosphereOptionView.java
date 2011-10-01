@@ -3,7 +3,6 @@ package net.untoldwind.moredread.ui.options.generator;
 import net.untoldwind.moredread.model.generator.GeosphereMeshGenerator;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
 
-import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -32,28 +31,6 @@ public class GeosphereOptionView extends CenterSizeGeneratorOptions {
 		levelSpinner.setSelection(geosphereMeshGenerator.getNumLevels());
 
 		return container;
-	}
-
-	public static class Factory implements IAdapterFactory {
-
-		@Override
-		public Object getAdapter(final Object adaptableObject,
-				@SuppressWarnings("rawtypes") final Class adapterType) {
-			if (adapterType == IGeneratorOptionView.class) {
-				if (adaptableObject instanceof GeosphereMeshGenerator) {
-					return new GeosphereOptionView(
-							(GeosphereMeshGenerator) adaptableObject);
-				}
-			}
-			return null;
-		}
-
-		@SuppressWarnings("rawtypes")
-		@Override
-		public Class[] getAdapterList() {
-			return new Class[] { IGeneratorOptionView.class };
-		}
-
 	}
 
 }

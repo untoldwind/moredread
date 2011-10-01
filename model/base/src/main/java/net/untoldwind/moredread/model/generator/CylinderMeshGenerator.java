@@ -13,7 +13,7 @@ import net.untoldwind.moredread.model.state.IStateWriter;
 
 import com.jme.math.FastMath;
 
-public class CylinderGenerator extends AbstractGeometryGenerator implements
+public class CylinderMeshGenerator extends AbstractGeometryGenerator implements
 		IMeshGenerator {
 
 	private Vector3 startPoint;
@@ -23,7 +23,7 @@ public class CylinderGenerator extends AbstractGeometryGenerator implements
 	private int pointsPerSection;
 	private boolean closed;
 
-	public CylinderGenerator() {
+	public CylinderMeshGenerator() {
 		startPoint = new Vector3(0, 0, 0);
 		endPoint = new Vector3(0, 0, 1);
 		radius = 1.0f;

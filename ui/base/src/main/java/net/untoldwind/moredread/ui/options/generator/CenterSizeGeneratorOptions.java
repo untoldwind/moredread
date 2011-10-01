@@ -5,7 +5,6 @@ import net.untoldwind.moredread.model.scene.GeneratorNode;
 import net.untoldwind.moredread.ui.utils.LengthText;
 import net.untoldwind.moredread.ui.utils.XYZText;
 
-import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -60,29 +59,6 @@ public class CenterSizeGeneratorOptions implements IGeneratorOptionView {
 	@Override
 	public void update(final GeneratorNode node) {
 		// TODO Auto-generated method stub
-
-	}
-
-	public static class Factory implements IAdapterFactory {
-
-		@Override
-		public Object getAdapter(final Object adaptableObject,
-				@SuppressWarnings("rawtypes") final Class adapterType) {
-			if (adapterType == IGeneratorOptionView.class) {
-				if (adaptableObject instanceof AbstractCenterSizeGenerator) {
-					return new CenterSizeGeneratorOptions(
-							(AbstractCenterSizeGenerator) adaptableObject);
-				}
-
-			}
-			return null;
-		}
-
-		@SuppressWarnings("rawtypes")
-		@Override
-		public Class[] getAdapterList() {
-			return new Class[] { IGeneratorOptionView.class };
-		}
 
 	}
 }

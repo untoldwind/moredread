@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="net.untoldwind.moredread.model" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="net.untoldwind.moredread.ui.base" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="net.untoldwind.moredread.model" id="net.untoldwind.moredread.model.generators" name="MoreDread Generators"/>
+         <meta.schema plugin="net.untoldwind.moredread.ui.base" id="net.untoldwind.moredread.ui.generatorOptionViews" name="Generator Option Views"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]
@@ -18,7 +18,7 @@
       </annotation>
       <complexType>
          <sequence minOccurs="1" maxOccurs="unbounded">
-            <element ref="generator"/>
+            <element ref="generatorOptionView"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -47,45 +47,25 @@
       </complexType>
    </element>
 
-   <element name="generator">
+   <element name="generatorOptionView">
       <complexType>
-         <attribute name="id" type="string" use="required">
+         <attribute name="generatorClass" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="identifier"/>
+                  <meta.attribute kind="java" basedOn=":net.untoldwind.moredread.model.generator.IGeometryGenerator"/>
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="name" type="string" use="required">
+         <attribute name="optionViewClass" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
                <appinfo>
-                  <meta.attribute translatable="true"/>
-               </appinfo>
-            </annotation>
-         </attribute>
-         <attribute name="icon" type="string">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-               <appinfo>
-                  <meta.attribute kind="resource"/>
-               </appinfo>
-            </annotation>
-         </attribute>
-         <attribute name="class" type="string" use="required">
-            <annotation>
-               <documentation>
-                  
-               </documentation>
-               <appinfo>
-                  <meta.attribute kind="java" basedOn=":net.untoldwind.moredread.model.generator.IMeshGenerator"/>
+                  <meta.attribute kind="java" basedOn=":net.untoldwind.moredread.ui.options.generator.IGeneratorOptionView"/>
                </appinfo>
             </annotation>
          </attribute>

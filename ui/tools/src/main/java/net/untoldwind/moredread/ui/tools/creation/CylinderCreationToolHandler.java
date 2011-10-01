@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-import net.untoldwind.moredread.model.generator.CylinderGenerator;
+import net.untoldwind.moredread.model.generator.CylinderMeshGenerator;
 import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
 import net.untoldwind.moredread.model.scene.Scene;
@@ -60,7 +60,7 @@ public class CylinderCreationToolHandler implements IToolHandler {
 		Vector3 lastPoint = new Vector3();
 		Vector3 position = new Vector3();
 		boolean directionMode = false;
-		CylinderGenerator generator;
+		CylinderMeshGenerator generator;
 		GeneratorNode node;
 
 		public CreateCylinderToolAdapter(final Scene scene) {
@@ -108,7 +108,7 @@ public class CylinderCreationToolHandler implements IToolHandler {
 		public boolean handleClick(final IModelControl modelControl,
 				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			if (node == null) {
-				generator = new CylinderGenerator();
+				generator = new CylinderMeshGenerator();
 				generator.setStartPoint(point.clone());
 				lastPoint.set(point);
 				generator.setEndPoint(point.add(Vector3.UNIT_Z));

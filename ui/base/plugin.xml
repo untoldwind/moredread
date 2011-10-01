@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension-point id="net.untoldwind.moredread.ui.generatorOptionViews" name="Generator Option Views" schema="schema/generatorOptionViews.exsd"/>
 
    <extension
          id="application"
@@ -350,27 +351,25 @@
                type="net.untoldwind.moredread.ui.options.IOptionView">
          </adapter>
       </factory>
-      <factory
-            adaptableType="net.untoldwind.moredread.model.generator.AbstractCenterSizeGenerator"
-            class="net.untoldwind.moredread.ui.options.generator.CenterSizeGeneratorOptions$Factory">
-         <adapter
-               type="net.untoldwind.moredread.ui.options.generator.IGeneratorOptionView">
-         </adapter>
-      </factory>
-      <factory
-            adaptableType="net.untoldwind.moredread.model.generator.BooleanGenerator"
-            class="net.untoldwind.moredread.ui.options.generator.BooleanGeneratorOptions$Factory">
-         <adapter
-               type="net.untoldwind.moredread.ui.options.generator.IGeneratorOptionView">
-         </adapter>
-      </factory>
-      <factory
-            adaptableType="net.untoldwind.moredread.model.generator.GeosphereMeshGenerator"
-            class="net.untoldwind.moredread.ui.options.generator.GeosphereOptionView$Factory">
-         <adapter
-               type="net.untoldwind.moredread.ui.options.generator.IGeneratorOptionView">
-         </adapter>
-      </factory>
+   </extension>
+   <extension
+         point="net.untoldwind.moredread.ui.generatorOptionViews">
+      <generatorOptionView
+            generatorClass="net.untoldwind.moredread.model.generator.AbstractCenterSizeGenerator"
+            optionViewClass="net.untoldwind.moredread.ui.options.generator.CenterSizeGeneratorOptions">
+      </generatorOptionView>
+      <generatorOptionView
+            generatorClass="net.untoldwind.moredread.model.generator.BooleanGenerator"
+            optionViewClass="net.untoldwind.moredread.ui.options.generator.BooleanGeneratorOptions">
+      </generatorOptionView>
+      <generatorOptionView
+            generatorClass="net.untoldwind.moredread.model.generator.GeosphereMeshGenerator"
+            optionViewClass="net.untoldwind.moredread.ui.options.generator.GeosphereOptionView">
+      </generatorOptionView>
+      <generatorOptionView
+            generatorClass="net.untoldwind.moredread.model.generator.CylinderMeshGenerator"
+            optionViewClass="net.untoldwind.moredread.ui.options.generator.CylinderGeneratorOptions">
+      </generatorOptionView>
    </extension>
 
 </plugin>
