@@ -124,6 +124,7 @@ public class CylinderMeshGenerator extends AbstractGeometryGenerator<IMesh>
 			int[] prevSection = generateSectionVertices(result, radiusU,
 					radiusV, 0);
 
+			result.addFace(prevSection);
 			for (int i = 1; i <= numSections; i++) {
 				final int[] nextSection = generateSectionVertices(result,
 						radiusU, radiusV, i);
@@ -135,6 +136,11 @@ public class CylinderMeshGenerator extends AbstractGeometryGenerator<IMesh>
 
 				prevSection = nextSection;
 			}
+			final int[] lastSection = new int[prevSection.length];
+			for (int i = 0; i < prevSection.length; i++) {
+				lastSection[prevSection.length - i - 1] = prevSection[i];
+			}
+			result.addFace(lastSection);
 
 			return result;
 		} else {
@@ -164,7 +170,8 @@ public class CylinderMeshGenerator extends AbstractGeometryGenerator<IMesh>
 		final int[] result = new int[pointsPerSection];
 		final Vector3 mid = new Vector3();
 
-		mid.interpolate(startPoint, endPoint, section / numSections);
+		mid.interpolate(startPoint, endPoint, (float) section
+				/ (float) numSections);
 
 		for (int i = 0; i < pointsPerSection; i++) {
 			final Vector3 p = new Vector3(mid);

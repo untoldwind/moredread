@@ -10,8 +10,8 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 
 public class XYZValueField extends AbstractValueField<Vector3> {
@@ -22,13 +22,18 @@ public class XYZValueField extends AbstractValueField<Vector3> {
 	public XYZValueField(final Composite parent) {
 		super(parent);
 
-		final Display display = parent.getDisplay();
-
-		setBackground(display.getSystemColor(SWT.COLOR_BLACK));
+		final GridLayout layout = new GridLayout(3, true);
+		layout.marginHeight = 1;
+		layout.marginWidth = 1;
+		layout.horizontalSpacing = 1;
+		layout.verticalSpacing = 1;
+		setLayout(layout);
+		setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		setBackground(getDisplay().getSystemColor(SWT.COLOR_BLACK));
 
 		xText = new Text(this, SWT.FLAT | SWT.SINGLE);
 		xText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		xText.setBackground(display.getSystemColor(SWT.COLOR_RED));
+		xText.setBackground(getDisplay().getSystemColor(SWT.COLOR_RED));
 		xText.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetDefaultSelected(final SelectionEvent e) {
@@ -44,7 +49,7 @@ public class XYZValueField extends AbstractValueField<Vector3> {
 
 		yText = new Text(this, SWT.FLAT | SWT.SINGLE);
 		yText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		yText.setBackground(display.getSystemColor(SWT.COLOR_GREEN));
+		yText.setBackground(getDisplay().getSystemColor(SWT.COLOR_GREEN));
 		yText.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetDefaultSelected(final SelectionEvent e) {
@@ -60,7 +65,7 @@ public class XYZValueField extends AbstractValueField<Vector3> {
 
 		zText = new Text(this, SWT.FLAT | SWT.SINGLE);
 		zText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		zText.setBackground(display.getSystemColor(SWT.COLOR_BLUE));
+		zText.setBackground(getDisplay().getSystemColor(SWT.COLOR_BLUE));
 		zText.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetDefaultSelected(final SelectionEvent e) {

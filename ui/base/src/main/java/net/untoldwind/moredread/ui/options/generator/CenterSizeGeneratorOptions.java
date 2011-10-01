@@ -1,8 +1,13 @@
 package net.untoldwind.moredread.ui.options.generator;
 
 import net.untoldwind.moredread.model.generator.AbstractCenterSizeGenerator;
+import net.untoldwind.moredread.model.math.Vector3;
+import net.untoldwind.moredread.model.scene.AbstractSceneOperation;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
+import net.untoldwind.moredread.model.scene.Scene;
+import net.untoldwind.moredread.ui.utils.IValueChangedListener;
 import net.untoldwind.moredread.ui.utils.LengthValueField;
+import net.untoldwind.moredread.ui.utils.ValueChangedEvent;
 import net.untoldwind.moredread.ui.utils.XYZValueField;
 
 import org.eclipse.swt.SWT;
@@ -39,11 +44,45 @@ public class CenterSizeGeneratorOptions implements IGeneratorOptionView {
 		centerLabel.setText("Center");
 
 		centerField = new XYZValueField(container);
+		centerField
+				.addValueChangeListener(new IValueChangedListener<Vector3>() {
+					@Override
+					public void valueChanged(
+							final ValueChangedEvent<Vector3> event) {
+						if (!generator.getCenter().equals(event.getValue())) {
+							node.getScene().undoableChange(
+									new AbstractSceneOperation(generator
+											.getName() + " operation change") {
+										@Override
+										public void perform(final Scene scene) {
+											generator.setCenter(event
+													.getValue());
+										}
+									});
+						}
+					}
+				});
 
 		final Label sizeLabel = new Label(container, SWT.NONE);
 		sizeLabel.setText("Size");
 
 		sizeField = new LengthValueField(container);
+		sizeField.addValueChangeListener(new IValueChangedListener<Float>() {
+			@Override
+			public void valueChanged(final ValueChangedEvent<Float> event) {
+				if (generator.getSize() != event.getValue()) {
+					node.getScene().undoableChange(
+							new AbstractSceneOperation(
+									"Cylinder operation change") {
+								@Override
+								public void perform(final Scene scene) {
+									System.out.println(">>> Hereherer");
+									generator.setSize(event.getValue());
+								}
+							});
+				}
+			}
+		});
 
 		centerField.setValue(generator.getCenter());
 		sizeField.setValue(generator.getSize());

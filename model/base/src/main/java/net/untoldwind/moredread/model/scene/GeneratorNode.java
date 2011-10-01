@@ -231,6 +231,7 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 		localScale = reader.readVector3();
 		localRotation = reader.readQuaternion();
 		generator = reader.readObject();
+		generator.setGeneratorNode(this);
 		reader.readUntypedList(new IStateReader.IInstanceCreator<INode>() {
 			@Override
 			public INode createInstance(final Class<INode> clazz) {
