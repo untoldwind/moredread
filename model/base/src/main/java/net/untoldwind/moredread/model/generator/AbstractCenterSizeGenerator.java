@@ -7,10 +7,8 @@ import net.untoldwind.moredread.model.state.IStateHolder;
 import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 
-import org.eclipse.core.runtime.Platform;
-
-public abstract class AbstractCenterSizeGenerator implements IMeshGenerator,
-		IStateHolder {
+public abstract class AbstractCenterSizeGenerator extends
+		AbstractGeometryGenerator implements IMeshGenerator, IStateHolder {
 	protected Vector3 center = new Vector3();
 	protected float size = 1f;
 
@@ -45,11 +43,6 @@ public abstract class AbstractCenterSizeGenerator implements IMeshGenerator,
 	public void writeState(final IStateWriter writer) throws IOException {
 		writer.writeVector3("center", center);
 		writer.writeFloat("size", size);
-	}
-
-	@Override
-	public Object getAdapter(@SuppressWarnings("rawtypes") final Class adapter) {
-		return Platform.getAdapterManager().getAdapter(this, adapter);
 	}
 
 }

@@ -15,9 +15,8 @@ import net.untoldwind.moredread.model.mesh.VertexGeometry;
 import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 
-import org.eclipse.core.runtime.Platform;
-
-public class ThicknessMeshGenerator implements IMeshGenerator {
+public class ThicknessMeshGenerator extends AbstractGeometryGenerator implements
+		IMeshGenerator {
 	private float thickness;
 	private int interpolationPoints;
 
@@ -117,10 +116,4 @@ public class ThicknessMeshGenerator implements IMeshGenerator {
 		writer.writeFloat("thickness", thickness);
 		writer.writeInt("interpolationPoints", interpolationPoints);
 	}
-
-	@Override
-	public Object getAdapter(@SuppressWarnings("rawtypes") final Class adapter) {
-		return Platform.getAdapterManager().getAdapter(this, adapter);
-	}
-
 }

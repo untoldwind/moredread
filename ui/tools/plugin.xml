@@ -192,6 +192,18 @@
          </enablement>
       </tool>
       <tool
+            categoryId="net.untoldwind.moredread.ui.tool.category.creation"
+            class="net.untoldwind.moredread.ui.tools.creation.CylinderCreationToolHandler"
+            icon="icons/SelectionTool.png"
+            id="net.untoldwind.moredread.ui.tool.create.cylinder"
+            label="Create cylinder"
+            type="TOGGLE">
+         <enablement
+               selectionCount="0-*"
+               selectionMode="OBJECT">
+         </enablement>
+      </tool>
+      <tool
             categoryId="net.untoldwind.moredread.ui.tool.category.polygon"
             class="net.untoldwind.moredread.ui.tools.creation.CreatePolygonToolHandler"
             icon="icons/CreatePolygon.png"

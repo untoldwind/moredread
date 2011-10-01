@@ -4,6 +4,9 @@ import com.jme.math.Vector3f;
 
 public class Vector3 extends Vector3f {
 	public final static Vector3 ZERO = new Vector3(0, 0, 0);
+	public final static Vector3 UNIT_X = new Vector3(1, 0, 0);
+	public final static Vector3 UNIT_Y = new Vector3(0, 1, 0);
+	public final static Vector3 UNIT_Z = new Vector3(0, 0, 1);
 
 	public Vector3() {
 		super();
