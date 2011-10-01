@@ -212,7 +212,7 @@
       </key>
       <key
             commandId="net.untoldwind.moredread.ui.toolComplete"
-            contextId="org.eclipse.ui.contexts.window"
+            contextId="net.untoldwind.moredread.ui.context.3dview"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="ENTER">
       </key>

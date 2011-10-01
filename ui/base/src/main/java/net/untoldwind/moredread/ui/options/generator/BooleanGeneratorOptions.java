@@ -59,8 +59,7 @@ public class BooleanGeneratorOptions implements IGeneratorOptionView {
 									"Boolean operation change") {
 								@Override
 								public void perform(final Scene scene) {
-									node.setGenerator(new BooleanGenerator(
-											boolOperation));
+									generator.setBoolOperation(boolOperation);
 								}
 							});
 				}

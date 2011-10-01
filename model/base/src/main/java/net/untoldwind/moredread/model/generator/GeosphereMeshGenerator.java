@@ -31,8 +31,15 @@ public class GeosphereMeshGenerator extends AbstractCenterSizeGenerator
 		return numLevels;
 	}
 
+	public void setNumLevels(final int numLevels) {
+		registerParameterChange();
+
+		this.numLevels = numLevels;
+	}
+
 	@Override
-	public TriangleMesh generateGeometry(final List<IGeneratorInput> generatorInputs) {
+	public TriangleMesh generateGeometry(
+			final List<IGeneratorInput> generatorInputs) {
 		final TriangleMesh mesh = new TriangleMesh();
 		List<Triangle> triangles = new ArrayList<Triangle>();
 

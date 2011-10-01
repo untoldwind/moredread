@@ -48,6 +48,7 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 		super(parent, generator.getName());
 
 		this.generator = generator;
+		this.generator.setGeneratorNode(this);
 		this.modelColor = ColorRGBA.red.clone();
 	}
 

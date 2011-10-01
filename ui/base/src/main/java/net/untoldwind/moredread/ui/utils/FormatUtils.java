@@ -7,6 +7,14 @@ public class FormatUtils {
 		return String.valueOf(value);
 	}
 
+	public static float parseLength(final String text) {
+		try {
+			return Float.parseFloat(text);
+		} catch (final NumberFormatException e) {
+			return Float.NaN;
+		}
+	}
+
 	public static String formatAngle(final float value) {
 		return String.valueOf(180.0f * value / FastMath.PI);
 	}

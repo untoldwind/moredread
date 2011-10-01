@@ -15,9 +15,9 @@ import net.untoldwind.moredread.model.scene.event.ISceneSelectionChangeListener;
 import net.untoldwind.moredread.model.scene.event.SceneChangeEvent;
 import net.untoldwind.moredread.model.scene.event.SceneSelectionChangeEvent;
 import net.untoldwind.moredread.ui.MoreDreadUI;
-import net.untoldwind.moredread.ui.utils.RotationText;
+import net.untoldwind.moredread.ui.utils.RotationValueField;
 import net.untoldwind.moredread.ui.utils.StringText;
-import net.untoldwind.moredread.ui.utils.XYZText;
+import net.untoldwind.moredread.ui.utils.XYZValueField;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -37,9 +37,9 @@ public class SelectionInfoView extends ViewPart implements
 
 	Composite container;
 	StringText nameText;
-	XYZText hotpointText;
-	XYZText centerText;
-	RotationText rotateText;
+	XYZValueField hotpointText;
+	XYZValueField centerText;
+	RotationValueField rotateText;
 
 	Runnable updateSelectionRun;
 
@@ -71,19 +71,19 @@ public class SelectionInfoView extends ViewPart implements
 		hotPointLabel.setText("Hotpoint");
 		hotPointLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		hotpointText = new XYZText(parent);
+		hotpointText = new XYZValueField(parent);
 
 		final Label centerLabel = new Label(parent, SWT.NONE);
 		centerLabel.setText("Center");
 		centerLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		centerText = new XYZText(parent);
+		centerText = new XYZValueField(parent);
 
 		final Label rotateLabel = new Label(parent, SWT.NONE);
 		rotateLabel.setText("Rotate");
 		rotateLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		rotateText = new RotationText(parent);
+		rotateText = new RotationValueField(parent);
 
 		MoreDreadUI.getDefault().getSceneHolder().addSceneChangeListener(this);
 		MoreDreadUI.getDefault().getSceneHolder()

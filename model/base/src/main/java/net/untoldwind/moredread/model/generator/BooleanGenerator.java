@@ -29,6 +29,12 @@ public class BooleanGenerator extends AbstractGeometryGenerator<IMesh>
 		return boolOperation;
 	}
 
+	public void setBoolOperation(final BoolOperation boolOperation) {
+		registerParameterChange();
+
+		this.boolOperation = boolOperation;
+	}
+
 	@Override
 	public GeometryType getGeometryType() {
 		return GeometryType.MESH;

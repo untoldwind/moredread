@@ -43,6 +43,8 @@ public class CylinderMeshGenerator extends AbstractGeometryGenerator<IMesh>
 	}
 
 	public void setStartPoint(final Vector3 startPoint) {
+		registerParameterChange();
+
 		this.startPoint = startPoint;
 	}
 
@@ -51,6 +53,8 @@ public class CylinderMeshGenerator extends AbstractGeometryGenerator<IMesh>
 	}
 
 	public void setEndPoint(final Vector3 endPoint) {
+		registerParameterChange();
+
 		this.endPoint = endPoint;
 	}
 
@@ -59,6 +63,8 @@ public class CylinderMeshGenerator extends AbstractGeometryGenerator<IMesh>
 	}
 
 	public void setRadius(final float radius) {
+		registerParameterChange();
+
 		this.radius = radius;
 	}
 
@@ -67,6 +73,8 @@ public class CylinderMeshGenerator extends AbstractGeometryGenerator<IMesh>
 	}
 
 	public void setNumSections(final int numSections) {
+		registerParameterChange();
+
 		this.numSections = numSections;
 	}
 
@@ -75,6 +83,8 @@ public class CylinderMeshGenerator extends AbstractGeometryGenerator<IMesh>
 	}
 
 	public void setPointsPerSection(final int pointsPerSection) {
+		registerParameterChange();
+
 		this.pointsPerSection = pointsPerSection;
 	}
 
@@ -83,6 +93,8 @@ public class CylinderMeshGenerator extends AbstractGeometryGenerator<IMesh>
 	}
 
 	public void setClosed(final boolean closed) {
+		registerParameterChange();
+
 		this.closed = closed;
 	}
 

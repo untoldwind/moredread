@@ -2,8 +2,8 @@ package net.untoldwind.moredread.ui.options.generator;
 
 import net.untoldwind.moredread.model.generator.CylinderMeshGenerator;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
-import net.untoldwind.moredread.ui.utils.LengthText;
-import net.untoldwind.moredread.ui.utils.XYZText;
+import net.untoldwind.moredread.ui.utils.LengthValueField;
+import net.untoldwind.moredread.ui.utils.XYZValueField;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -17,9 +17,9 @@ public class CylinderGeneratorOptions implements IGeneratorOptionView {
 
 	Composite container;
 
-	XYZText startPointText;
-	XYZText endPointText;
-	LengthText radiusText;
+	XYZValueField startPointText;
+	XYZValueField endPointText;
+	LengthValueField radiusText;
 	Spinner numberOfSectionsSpinner;
 	Spinner pointsPerSctionSpinner;
 
@@ -42,17 +42,17 @@ public class CylinderGeneratorOptions implements IGeneratorOptionView {
 		final Label startPointTextLabel = new Label(container, SWT.NONE);
 		startPointTextLabel.setText("Start");
 
-		startPointText = new XYZText(container);
+		startPointText = new XYZValueField(container);
 
 		final Label endPointTextLabel = new Label(container, SWT.NONE);
 		endPointTextLabel.setText("End");
 
-		endPointText = new XYZText(container);
+		endPointText = new XYZValueField(container);
 
 		final Label radiusLabel = new Label(container, SWT.NONE);
 		radiusLabel.setText("Radius");
 
-		radiusText = new LengthText(container);
+		radiusText = new LengthValueField(container);
 
 		final Label numberOfSectionsLabel = new Label(container, SWT.NONE);
 		numberOfSectionsLabel.setText("Sections");

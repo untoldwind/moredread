@@ -31,7 +31,19 @@ public class ThicknessMeshGenerator extends AbstractGeometryGenerator<IMesh>
 	}
 
 	public void setThickness(final float thickness) {
+		registerParameterChange();
+
 		this.thickness = thickness;
+	}
+
+	public int getInterpolationPoints() {
+		return interpolationPoints;
+	}
+
+	public void setInterpolationPoints(final int interpolationPoints) {
+		registerParameterChange();
+
+		this.interpolationPoints = interpolationPoints;
 	}
 
 	@Override

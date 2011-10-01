@@ -25,6 +25,8 @@ public abstract class AbstractCenterSizeGenerator extends
 	}
 
 	public void setCenter(final Vector3 center) {
+		registerParameterChange();
+
 		this.center = center;
 	}
 
@@ -33,6 +35,8 @@ public abstract class AbstractCenterSizeGenerator extends
 	}
 
 	public void setSize(final float size) {
+		registerParameterChange();
+
 		this.size = size;
 	}
 

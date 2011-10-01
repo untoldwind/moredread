@@ -2,8 +2,8 @@ package net.untoldwind.moredread.ui.options.generator;
 
 import net.untoldwind.moredread.model.generator.AbstractCenterSizeGenerator;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
-import net.untoldwind.moredread.ui.utils.LengthText;
-import net.untoldwind.moredread.ui.utils.XYZText;
+import net.untoldwind.moredread.ui.utils.LengthValueField;
+import net.untoldwind.moredread.ui.utils.XYZValueField;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -12,12 +12,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 public class CenterSizeGeneratorOptions implements IGeneratorOptionView {
-	private final AbstractCenterSizeGenerator generator;
+	AbstractCenterSizeGenerator generator;
 
 	Composite container;
 
-	XYZText centerText;
-	LengthText sizeText;
+	XYZValueField centerField;
+	LengthValueField sizeField;
 
 	CenterSizeGeneratorOptions(final AbstractCenterSizeGenerator generator) {
 		this.generator = generator;
@@ -38,15 +38,15 @@ public class CenterSizeGeneratorOptions implements IGeneratorOptionView {
 		final Label centerLabel = new Label(container, SWT.NONE);
 		centerLabel.setText("Center");
 
-		centerText = new XYZText(container);
+		centerField = new XYZValueField(container);
 
 		final Label sizeLabel = new Label(container, SWT.NONE);
 		sizeLabel.setText("Size");
 
-		sizeText = new LengthText(container);
+		sizeField = new LengthValueField(container);
 
-		centerText.setValue(generator.getCenter());
-		sizeText.setValue(generator.getSize());
+		centerField.setValue(generator.getCenter());
+		sizeField.setValue(generator.getSize());
 
 		return container;
 	}
@@ -58,7 +58,9 @@ public class CenterSizeGeneratorOptions implements IGeneratorOptionView {
 
 	@Override
 	public void update(final GeneratorNode node) {
-		// TODO Auto-generated method stub
+		generator = (AbstractCenterSizeGenerator) node.getGenerator();
 
+		centerField.setValue(generator.getCenter());
+		sizeField.setValue(generator.getSize());
 	}
 }
