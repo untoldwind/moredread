@@ -110,7 +110,7 @@
       <tool
             categoryId="net.untoldwind.moredread.ui.tool.category.utilities"
             class="net.untoldwind.moredread.ui.tools.utilities.ThicknessToolHandler"
-            icon="icons/CreateCube.png"
+            icon="icons/AddThickness.png"
             id="net.untoldwind.moredread.ui.tool.addThicknessTool"
             label="Add thickness"
             type="PUSH">
@@ -194,7 +194,7 @@
       <tool
             categoryId="net.untoldwind.moredread.ui.tool.category.creation"
             class="net.untoldwind.moredread.ui.tools.creation.CylinderCreationToolHandler"
-            icon="icons/SelectionTool.png"
+            icon="icons/CreateCylinder.png"
             id="net.untoldwind.moredread.ui.tool.create.cylinder"
             label="Create cylinder"
             type="TOGGLE">
