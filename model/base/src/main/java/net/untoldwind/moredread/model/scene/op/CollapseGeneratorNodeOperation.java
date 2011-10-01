@@ -1,6 +1,6 @@
 package net.untoldwind.moredread.model.scene.op;
 
-import net.untoldwind.moredread.model.mesh.IMesh;
+import net.untoldwind.moredread.model.mesh.IVertexGeometry;
 import net.untoldwind.moredread.model.mesh.Mesh;
 import net.untoldwind.moredread.model.scene.AbstractSpatialComposite;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
@@ -22,7 +22,7 @@ public class CollapseGeneratorNodeOperation implements ISceneOperation {
 
 	@Override
 	public void perform(final Scene scene) {
-		final IMesh mesh = node.getRenderGeometry();
+		final IVertexGeometry<?> mesh = node.getRenderGeometry();
 
 		if (mesh instanceof Mesh<?, ?>) {
 			MeshNode collapsedNode;

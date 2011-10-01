@@ -2,7 +2,8 @@ package net.untoldwind.moredread.model.scene.change;
 
 import java.util.List;
 
-import net.untoldwind.moredread.model.generator.IMeshGenerator;
+import net.untoldwind.moredread.model.generator.AbstractGeometryGenerator;
+import net.untoldwind.moredread.model.mesh.IVertexGeometry;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
 import net.untoldwind.moredread.model.scene.IGeometryNode;
 import net.untoldwind.moredread.model.scene.INode;
@@ -41,7 +42,7 @@ public class GeneratorNodeChangeCommand extends AbstractOperation implements
 		if (node == null) {
 			throw new RuntimeException("Node " + nodeId + " not found in scene");
 		}
-		oldState = BinaryStateWriter.toByteArray(node.getMeshGenerator());
+		oldState = BinaryStateWriter.toByteArray(node.getGenerator());
 	}
 
 	@Override
@@ -51,7 +52,7 @@ public class GeneratorNodeChangeCommand extends AbstractOperation implements
 		if (node == null) {
 			throw new RuntimeException("Node " + nodeId + " not found in scene");
 		}
-		newState = BinaryStateWriter.toByteArray(node.getMeshGenerator());
+		newState = BinaryStateWriter.toByteArray(node.getGenerator());
 	}
 
 	@Override
@@ -71,6 +72,7 @@ public class GeneratorNodeChangeCommand extends AbstractOperation implements
 		return Status.OK_STATUS;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public IStatus redo(final IProgressMonitor monitor, final IAdaptable info)
 			throws ExecutionException {
@@ -83,7 +85,7 @@ public class GeneratorNodeChangeCommand extends AbstractOperation implements
 		scene.getSceneChangeHandler().beginNotUndoable();
 
 		try {
-			node.setMeshGenerator((IMeshGenerator) BinaryStateReader
+			node.setGenerator((AbstractGeometryGenerator<? extends IVertexGeometry<?>>) BinaryStateReader
 					.fromByteArray(newState));
 		} finally {
 			scene.getSceneChangeHandler().commit();
@@ -92,6 +94,7 @@ public class GeneratorNodeChangeCommand extends AbstractOperation implements
 		return Status.OK_STATUS;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public IStatus undo(final IProgressMonitor monitor, final IAdaptable info)
 			throws ExecutionException {
@@ -104,7 +107,7 @@ public class GeneratorNodeChangeCommand extends AbstractOperation implements
 		scene.getSceneChangeHandler().beginNotUndoable();
 
 		try {
-			node.setMeshGenerator((IMeshGenerator) BinaryStateReader
+			node.setGenerator((AbstractGeometryGenerator<? extends IVertexGeometry<?>>) BinaryStateReader
 					.fromByteArray(oldState));
 		} finally {
 			scene.getSceneChangeHandler().commit();

@@ -6,10 +6,10 @@ import java.util.List;
 import net.untoldwind.moredread.model.enums.SelectionMode;
 import net.untoldwind.moredread.model.mesh.EdgeId;
 import net.untoldwind.moredread.model.mesh.FaceId;
+import net.untoldwind.moredread.model.mesh.IGrid;
+import net.untoldwind.moredread.model.mesh.IMesh;
+import net.untoldwind.moredread.model.mesh.IPolygon;
 import net.untoldwind.moredread.model.scene.IGeometryNode;
-import net.untoldwind.moredread.model.scene.IGridNode;
-import net.untoldwind.moredread.model.scene.IMeshNode;
-import net.untoldwind.moredread.model.scene.IPolygonNode;
 import net.untoldwind.moredread.model.scene.SceneSelection;
 
 import com.jme.bounding.BoundingBox;
@@ -69,9 +69,10 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 			final List<Spatial> geometries = new ArrayList<Spatial>();
 
 			if (node.isSelected()) {
-				renderSelected((IMeshNode) node, geometries);
+				renderSelected(node, (IMesh) node.getRenderGeometry(),
+						geometries);
 			} else {
-				renderNormal((IMeshNode) node, geometries);
+				renderNormal(node, (IMesh) node.getRenderGeometry(), geometries);
 			}
 
 			return geometries;
@@ -80,9 +81,11 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 			final List<Spatial> geometries = new ArrayList<Spatial>();
 
 			if (node.isSelected()) {
-				renderSelected((IPolygonNode) node, geometries);
+				renderSelected(node, (IPolygon) node.getRenderGeometry(),
+						geometries);
 			} else {
-				renderNormal((IPolygonNode) node, geometries);
+				renderNormal(node, (IPolygon) node.getRenderGeometry(),
+						geometries);
 			}
 
 			return geometries;
@@ -91,9 +94,10 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 			final List<Spatial> geometries = new ArrayList<Spatial>();
 
 			if (node.isSelected()) {
-				renderSelected((IGridNode) node, geometries);
+				renderSelected(node, (IGrid) node.getRenderGeometry(),
+						geometries);
 			} else {
-				renderNormal((IGridNode) node, geometries);
+				renderNormal(node, (IGrid) node.getRenderGeometry(), geometries);
 			}
 
 			return geometries;
@@ -104,8 +108,8 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 		}
 	}
 
-	private void renderSelected(final IPolygonNode node,
-			final List<Spatial> geometries) {
+	private void renderSelected(final IGeometryNode<?, ?> node,
+			final IPolygon renderGeometry, final List<Spatial> geometries) {
 		IColorProvider colorProvider = null;
 		switch (selectionMode) {
 		case EDGE:
@@ -117,7 +121,7 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 		}
 
 		final Geometry geometry = selectedPolygonRenderer.renderPolygon(
-				node.getRenderGeometry(), colorProvider);
+				renderGeometry, colorProvider);
 		if (geometry != null) {
 			geometry.setDefaultColor(ColorRGBA.black.clone());
 			geometry.setModelBound(new BoundingBox());
@@ -127,7 +131,7 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 		}
 
 		final Geometry vertexGeometry = selectedVertexPolygonRenderer
-				.renderPolygon(node.getRenderGeometry(), colorProvider);
+				.renderPolygon(renderGeometry, colorProvider);
 		if (vertexGeometry != null) {
 			geometries.add(vertexGeometry);
 			vertexGeometry.setDefaultColor(ColorRGBA.black.clone());
@@ -141,8 +145,8 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 
 	}
 
-	private void renderSelected(final IGridNode node,
-			final List<Spatial> geometries) {
+	private void renderSelected(final IGeometryNode<?, ?> node,
+			final IGrid renderGeometry, final List<Spatial> geometries) {
 		IColorProvider colorProvider = null;
 		switch (selectionMode) {
 		case EDGE:
@@ -154,7 +158,7 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 		}
 
 		final Geometry geometry = selectedGridRenderer.renderGrid(
-				node.getRenderGeometry(), colorProvider);
+				renderGeometry, colorProvider);
 		if (geometry != null) {
 			geometry.setDefaultColor(ColorRGBA.black.clone());
 			geometry.setModelBound(new BoundingBox());
@@ -164,7 +168,7 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 		}
 
 		final Geometry vertexGeometry = selectedVertexGridRenderer.renderGrid(
-				node.getRenderGeometry(), colorProvider);
+				renderGeometry, colorProvider);
 		if (vertexGeometry != null) {
 			geometries.add(vertexGeometry);
 			vertexGeometry.setDefaultColor(ColorRGBA.black.clone());
@@ -178,10 +182,10 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 
 	}
 
-	private void renderNormal(final IPolygonNode node,
-			final List<Spatial> geometries) {
-		final Geometry geometry = polygonRenderer.renderPolygon(
-				node.getRenderGeometry(), null);
+	private void renderNormal(final IGeometryNode<?, ?> node,
+			final IPolygon renderGeometry, final List<Spatial> geometries) {
+		final Geometry geometry = polygonRenderer.renderPolygon(renderGeometry,
+				null);
 		if (geometry != null) {
 			geometry.setDefaultColor(ColorRGBA.black.clone());
 			geometry.setModelBound(new BoundingBox());
@@ -192,10 +196,9 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 
 	}
 
-	private void renderNormal(final IGridNode node,
-			final List<Spatial> geometries) {
-		final Geometry geometry = gridRenderer.renderGrid(
-				node.getRenderGeometry(), null);
+	private void renderNormal(final IGeometryNode<?, ?> node,
+			final IGrid renderGeometry, final List<Spatial> geometries) {
+		final Geometry geometry = gridRenderer.renderGrid(renderGeometry, null);
 		if (geometry != null) {
 			geometry.setDefaultColor(ColorRGBA.black.clone());
 			geometry.setModelBound(new BoundingBox());
@@ -206,8 +209,8 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 
 	}
 
-	private void renderSelected(final IMeshNode node,
-			final List<Spatial> geometries) {
+	private void renderSelected(final IGeometryNode<?, ?> node,
+			final IMesh renderGeometry, final List<Spatial> geometries) {
 		IColorProvider colorProvider = null;
 
 		switch (selectionMode) {
@@ -223,7 +226,7 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 		}
 
 		final Geometry solidGeometry = solidMeshRenderer.renderMesh(
-				node.getRenderGeometry(), colorProvider);
+				renderGeometry, colorProvider);
 		if (solidGeometry != null) {
 			geometries.add(solidGeometry);
 			solidGeometry.setModelBound(new BoundingBox());
@@ -233,7 +236,7 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 		}
 
 		final Geometry wireframeGeometry = selectedWireframeMeshRenderer
-				.renderMesh(node.getRenderGeometry(), colorProvider);
+				.renderMesh(renderGeometry, colorProvider);
 		if (wireframeGeometry != null) {
 			geometries.add(wireframeGeometry);
 			wireframeGeometry.setDefaultColor(ColorRGBA.black.clone());
@@ -243,7 +246,7 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 		}
 
 		final Geometry vertexGeometry = selectedVertexMeshRenderer.renderMesh(
-				node.getRenderGeometry(), colorProvider);
+				renderGeometry, colorProvider);
 		if (vertexGeometry != null) {
 			geometries.add(vertexGeometry);
 			vertexGeometry.setDefaultColor(ColorRGBA.black.clone());
@@ -257,7 +260,7 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 		}
 	}
 
-	private IColorProvider getFaceSelectionColors(final IMeshNode node) {
+	private IColorProvider getFaceSelectionColors(final IGeometryNode<?, ?> node) {
 		final ColorRGBA modelColor = node.getModelColor(0.5f);
 		final ColorRGBA selectedColor = new ColorRGBA(1.0f - modelColor.r,
 				1.0f - modelColor.g, 1.0f - modelColor.b, 0.5f);
@@ -384,10 +387,10 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 		};
 	}
 
-	private void renderNormal(final IMeshNode node,
-			final List<Spatial> geometries) {
+	private void renderNormal(final IGeometryNode<?, ?> node,
+			final IMesh renderGeometry, final List<Spatial> geometries) {
 		final Geometry solidGeometry = solidMeshRenderer.renderMesh(
-				node.getRenderGeometry(), null);
+				renderGeometry, null);
 		if (solidGeometry != null) {
 			geometries.add(solidGeometry);
 			solidGeometry.setDefaultColor(node.getModelColor(1.0f));
@@ -397,7 +400,7 @@ public class SolidNodeRenderer implements INodeRendererAdapter {
 		}
 
 		final Geometry wireframeGeometry = wireframeMeshRenderer.renderMesh(
-				node.getRenderGeometry(), null);
+				renderGeometry, null);
 		if (wireframeGeometry != null) {
 			geometries.add(wireframeGeometry);
 			wireframeGeometry.setDefaultColor(ColorRGBA.black.clone());

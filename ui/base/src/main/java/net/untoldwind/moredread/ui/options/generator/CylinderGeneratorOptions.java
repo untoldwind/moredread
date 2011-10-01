@@ -70,8 +70,6 @@ public class CylinderGeneratorOptions implements IGeneratorOptionView {
 	@Override
 	public void dispose() {
 		container.dispose();
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

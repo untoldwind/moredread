@@ -7,10 +7,13 @@ import java.util.List;
 
 import net.untoldwind.moredread.model.enums.GeometryType;
 import net.untoldwind.moredread.model.enums.SelectionMode;
+import net.untoldwind.moredread.model.generator.AbstractGeometryGenerator;
 import net.untoldwind.moredread.model.generator.IGeneratorInput;
-import net.untoldwind.moredread.model.generator.IMeshGenerator;
+import net.untoldwind.moredread.model.generator.IGeometryGenerator;
 import net.untoldwind.moredread.model.mesh.IMesh;
+import net.untoldwind.moredread.model.mesh.IVertexGeometry;
 import net.untoldwind.moredread.model.mesh.Mesh;
+import net.untoldwind.moredread.model.mesh.VertexGeometry;
 import net.untoldwind.moredread.model.renderer.GhostNodeRenderer;
 import net.untoldwind.moredread.model.renderer.INodeRendererAdapter;
 import net.untoldwind.moredread.model.renderer.SubSelectionNodeRenderer;
@@ -22,12 +25,13 @@ import com.jme.renderer.ColorRGBA;
 import com.jme.scene.Spatial;
 
 public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
-		implements IMeshNode, IGeneratorInput {
-	private IMeshGenerator meshGenerator;
+		implements IVertexGeometryNode<IVertexGeometry<?>, VertexGeometry<?>>,
+		IGeneratorInput {
+	private AbstractGeometryGenerator<? extends IVertexGeometry<?>> generator;
 
 	private transient com.jme.scene.Node displayNode;
 
-	private transient IMesh generatedMesh;
+	private transient IVertexGeometry<?> generatedGeometry;
 	private transient List<Spatial> renderedGeometries;
 	private transient volatile BoundingBox worldBoundingBox;
 	private transient volatile BoundingBox localBoundingBox;
@@ -40,10 +44,10 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 
 	public GeneratorNode(
 			final AbstractSpatialComposite<? extends INode> parent,
-			final IMeshGenerator meshGenerator) {
-		super(parent, meshGenerator.getName());
+			final AbstractGeometryGenerator<? extends IVertexGeometry<?>> generator) {
+		super(parent, generator.getName());
 
-		this.meshGenerator = meshGenerator;
+		this.generator = generator;
 		this.modelColor = ColorRGBA.red.clone();
 	}
 
@@ -60,12 +64,12 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 	}
 
 	@Override
-	public IMesh getRenderGeometry() {
-		if (generatedMesh == null) {
+	public IVertexGeometry<?> getRenderGeometry() {
+		if (generatedGeometry == null) {
 			regenerate();
 		}
 
-		return generatedMesh;
+		return generatedGeometry;
 	}
 
 	@Override
@@ -79,23 +83,32 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 	}
 
 	@Override
-	public void setGeometry(final Mesh<?, ?> geometry) {
+	public void setGeometry(final VertexGeometry<?> geometry) {
 	}
 
 	@Override
 	public GeometryType getGeometryType() {
-		return GeometryType.MESH;
+		return generator.getGeometryType();
 	}
 
-	public IMeshGenerator getMeshGenerator() {
-		return meshGenerator;
+	public IGeometryGenerator<? extends IVertexGeometry<?>> getGenerator() {
+		return generator;
 	}
 
-	public void setMeshGenerator(final IMeshGenerator meshGenerator) {
+	public void setGenerator(
+			final AbstractGeometryGenerator<? extends IVertexGeometry<?>> generator) {
 		scene.getSceneChangeHandler().registerCommand(
 				new GeneratorNodeChangeCommand(this));
 
-		this.meshGenerator = meshGenerator;
+		if (this.generator != null) {
+			this.generator.setGeneratorNode(null);
+		}
+
+		this.generator = generator;
+
+		if (this.generator != null) {
+			this.generator.setGeneratorNode(this);
+		}
 	}
 
 	@Override
@@ -129,7 +142,7 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 		// TODO: Don't just throw existing mesh away, rather queue a regenerate
 		// somewhere (Job). This needs some intelligence for cascading generator
 		// nodes
-		generatedMesh = null;
+		generatedGeometry = null;
 	}
 
 	@Override
@@ -200,7 +213,7 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 	}
 
 	public void regenerate() {
-		generatedMesh = meshGenerator.generateMesh(children);
+		generatedGeometry = generator.generateMesh(children);
 		renderedGeometries = null;
 	}
 
@@ -216,7 +229,7 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 		localTranslation = reader.readVector3();
 		localScale = reader.readVector3();
 		localRotation = reader.readQuaternion();
-		meshGenerator = reader.readObject();
+		generator = reader.readObject();
 		reader.readUntypedList(new IStateReader.IInstanceCreator<INode>() {
 			@Override
 			public INode createInstance(final Class<INode> clazz) {
@@ -240,7 +253,7 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 		writer.writeVector3("localTranslation", localTranslation);
 		writer.writeVector3("localScale", localScale);
 		writer.writeQuaternion("localRotation", localRotation);
-		writer.writeObject("meshGenerator", meshGenerator);
+		writer.writeObject("meshGenerator", generator);
 		writer.writeUntypedList("children", children);
 	}
 }

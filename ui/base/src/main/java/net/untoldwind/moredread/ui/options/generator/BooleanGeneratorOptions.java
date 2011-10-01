@@ -47,8 +47,6 @@ public class BooleanGeneratorOptions implements IGeneratorOptionView {
 		}
 		typeCombo.setItems(items);
 
-		typeCombo.select(generator.getBoolOperation().ordinal());
-
 		typeCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
@@ -61,13 +59,15 @@ public class BooleanGeneratorOptions implements IGeneratorOptionView {
 									"Boolean operation change") {
 								@Override
 								public void perform(final Scene scene) {
-									node.setMeshGenerator(new BooleanGenerator(
+									node.setGenerator(new BooleanGenerator(
 											boolOperation));
 								}
 							});
 				}
 			}
 		});
+
+		update(node);
 
 		return container;
 	}
@@ -79,7 +79,7 @@ public class BooleanGeneratorOptions implements IGeneratorOptionView {
 
 	@Override
 	public void update(final GeneratorNode node) {
-		generator = (BooleanGenerator) node.getMeshGenerator();
+		generator = (BooleanGenerator) node.getGenerator();
 		typeCombo.select(generator.getBoolOperation().ordinal());
 	}
 }

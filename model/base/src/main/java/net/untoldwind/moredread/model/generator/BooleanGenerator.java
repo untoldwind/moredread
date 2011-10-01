@@ -12,8 +12,8 @@ import net.untoldwind.moredread.model.op.IBooleanOperation.BoolOperation;
 import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 
-public class BooleanGenerator extends AbstractGeometryGenerator implements
-		IMeshGenerator {
+public class BooleanGenerator extends AbstractGeometryGenerator<IMesh>
+		implements IMeshGenerator {
 	private BoolOperation boolOperation;
 
 	protected BooleanGenerator() {
@@ -27,6 +27,11 @@ public class BooleanGenerator extends AbstractGeometryGenerator implements
 
 	public BoolOperation getBoolOperation() {
 		return boolOperation;
+	}
+
+	@Override
+	public GeometryType getGeometryType() {
+		return GeometryType.MESH;
 	}
 
 	@Override

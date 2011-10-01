@@ -3,6 +3,7 @@ package net.untoldwind.moredread.model.generator;
 import java.io.IOException;
 import java.util.List;
 
+import net.untoldwind.moredread.model.enums.GeometryType;
 import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.Mesh;
@@ -13,8 +14,8 @@ import net.untoldwind.moredread.model.state.IStateWriter;
 
 import com.jme.math.FastMath;
 
-public class CylinderMeshGenerator extends AbstractGeometryGenerator implements
-		IMeshGenerator {
+public class CylinderMeshGenerator extends AbstractGeometryGenerator<IMesh>
+		implements IMeshGenerator {
 
 	private Vector3 startPoint;
 	private Vector3 endPoint;
@@ -83,6 +84,11 @@ public class CylinderMeshGenerator extends AbstractGeometryGenerator implements
 
 	public void setClosed(final boolean closed) {
 		this.closed = closed;
+	}
+
+	@Override
+	public GeometryType getGeometryType() {
+		return GeometryType.MESH;
 	}
 
 	@Override

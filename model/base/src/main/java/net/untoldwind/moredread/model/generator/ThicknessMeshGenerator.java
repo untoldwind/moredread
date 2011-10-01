@@ -3,6 +3,7 @@ package net.untoldwind.moredread.model.generator;
 import java.io.IOException;
 import java.util.List;
 
+import net.untoldwind.moredread.model.enums.GeometryType;
 import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IFace;
 import net.untoldwind.moredread.model.mesh.IGeometry;
@@ -15,8 +16,8 @@ import net.untoldwind.moredread.model.mesh.VertexGeometry;
 import net.untoldwind.moredread.model.state.IStateReader;
 import net.untoldwind.moredread.model.state.IStateWriter;
 
-public class ThicknessMeshGenerator extends AbstractGeometryGenerator implements
-		IMeshGenerator {
+public class ThicknessMeshGenerator extends AbstractGeometryGenerator<IMesh>
+		implements IMeshGenerator {
 	private float thickness;
 	private int interpolationPoints;
 
@@ -36,6 +37,11 @@ public class ThicknessMeshGenerator extends AbstractGeometryGenerator implements
 	@Override
 	public String getName() {
 		return "Thickness";
+	}
+
+	@Override
+	public GeometryType getGeometryType() {
+		return GeometryType.MESH;
 	}
 
 	@Override

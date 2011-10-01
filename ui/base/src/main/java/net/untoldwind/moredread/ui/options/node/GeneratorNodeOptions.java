@@ -34,7 +34,7 @@ public class GeneratorNodeOptions implements IOptionView {
 		layout.marginWidth = 0;
 		container.setLayout(layout);
 
-		generatorOptions = (IGeneratorOptionView) node.getMeshGenerator()
+		generatorOptions = (IGeneratorOptionView) node.getGenerator()
 				.getAdapter(IGeneratorOptionView.class);
 
 		if (generatorOptions != null) {
