@@ -299,7 +299,19 @@ public class MDCanvasImplementor extends JMECanvasImplementor implements
 
 	@Override
 	public BoundingBox getBoundingBox() {
-		return sceneHolder.getScene().getWorldBoundingBox();
+		final BoundingBox boundingBox = new BoundingBox(sceneHolder.getScene()
+				.getWorldBoundingBox());
+
+		if (boundingBox.getXExtent() < 10.0f) {
+			boundingBox.setXExtent(10.0f);
+		}
+		if (boundingBox.getYExtent() < 10.0f) {
+			boundingBox.setYExtent(10.0f);
+		}
+		if (boundingBox.getZExtent() < 10.0f) {
+			boundingBox.setZExtent(10.0f);
+		}
+		return boundingBox;
 	}
 
 	public void updateToolControls() {

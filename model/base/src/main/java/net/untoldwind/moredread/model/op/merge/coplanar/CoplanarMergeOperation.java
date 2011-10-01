@@ -363,8 +363,7 @@ public class CoplanarMergeOperation implements IUnaryOperation {
 		final Vector3 cross = face1.getMeanNormal()
 				.cross(face2.getMeanNormal());
 
-		return FastMath.abs(cross.x) < FastMath.ZERO_TOLERANCE
-				&& FastMath.abs(cross.y) < FastMath.ZERO_TOLERANCE
-				&& FastMath.abs(cross.z) < FastMath.ZERO_TOLERANCE;
+		return FastMath.abs(cross.x) < 1e-6 && FastMath.abs(cross.y) < 1e-6
+				&& FastMath.abs(cross.z) < 1e-6;
 	}
 }

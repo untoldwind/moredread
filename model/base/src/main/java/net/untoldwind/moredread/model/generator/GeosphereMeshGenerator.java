@@ -15,6 +15,10 @@ public class GeosphereMeshGenerator extends AbstractCenterSizeGenerator
 		implements IMeshGenerator {
 	private int numLevels;
 
+	public GeosphereMeshGenerator() {
+		super(new Vector3(0, 0, 0), 1f);
+	}
+
 	public GeosphereMeshGenerator(final int numLevels, final Vector3 center,
 			final float size) {
 		super(center, size);

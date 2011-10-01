@@ -24,6 +24,14 @@ public class BoundingBox {
 		zExtent = boundingBox.zExtent;
 	}
 
+	public BoundingBox(final Vector3 center, final float xExtend,
+			final float yExtend, final float zExtend) {
+		this.center.set(center);
+		this.xExtent = xExtend;
+		this.yExtent = yExtend;
+		this.zExtent = zExtend;
+	}
+
 	public BoundingBox(final List<? extends IPoint> points) {
 		computeFromPoints(points);
 	}
@@ -42,6 +50,18 @@ public class BoundingBox {
 
 	public float getZExtent() {
 		return zExtent;
+	}
+
+	public void setXExtent(final float xExtent) {
+		this.xExtent = xExtent;
+	}
+
+	public void setYExtent(final float yExtent) {
+		this.yExtent = yExtent;
+	}
+
+	public void setZExtent(final float zExtent) {
+		this.zExtent = zExtent;
 	}
 
 	public void add(final Vector3 point) {
