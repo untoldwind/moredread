@@ -35,7 +35,7 @@ public class BooleanGenerator extends AbstractGeometryGenerator<IMesh>
 	}
 
 	@Override
-	public IMesh generateMesh(final List<IGeneratorInput> generatorInputs) {
+	public IMesh generateGeometry(final List<IGeneratorInput> generatorInputs) {
 		final IMesh inputs[] = new IMesh[2];
 		int validInputCount = 0;
 
@@ -50,7 +50,7 @@ public class BooleanGenerator extends AbstractGeometryGenerator<IMesh>
 		if (validInputCount == 0) {
 			// TODO: Consider a nice placeholder geometry (or some other kind of
 			// error handling)
-			return new CubeMeshGenerator().generateMesh(null);
+			return new CubeMeshGenerator().generateGeometry(null);
 		} else if (validInputCount == 1) {
 			return inputs[0];
 		} else {

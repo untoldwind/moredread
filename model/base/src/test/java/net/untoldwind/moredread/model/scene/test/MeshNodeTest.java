@@ -26,7 +26,7 @@ import com.jme.math.FastMath;
 public class MeshNodeTest {
 	@Test
 	public void testReadWriteState() throws Exception {
-		final Mesh<?, ?> mesh = new CubeMeshGenerator().generateMesh(null);
+		final Mesh<?, ?> mesh = new CubeMeshGenerator().generateGeometry(null);
 		final SceneHolder sceneHolder = new SceneHolder();
 		final Scene scene = sceneHolder.createScene();
 

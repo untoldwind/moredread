@@ -21,7 +21,7 @@ public class DodecahedronMeshGenerator extends AbstractCenterSizeGenerator {
 	}
 
 	@Override
-	public PolyMesh generateMesh(final List<IGeneratorInput> generatorInputs) {
+	public PolyMesh generateGeometry(final List<IGeneratorInput> generatorInputs) {
 		final PolyMesh mesh = new PolyMesh();
 
 		float fA = 1.0f / FastMath.sqrt(3.0f);

@@ -213,7 +213,7 @@ public class GeneratorNode extends AbstractSpatialComposite<IGeneratorInput>
 	}
 
 	public void regenerate() {
-		generatedGeometry = generator.generateMesh(children);
+		generatedGeometry = generator.generateGeometry(children);
 		renderedGeometries = null;
 	}
 

@@ -21,7 +21,7 @@ public class OctahedronMeshGenerator extends AbstractCenterSizeGenerator {
 	}
 
 	@Override
-	public TriangleMesh generateMesh(final List<IGeneratorInput> generatorInputs) {
+	public TriangleMesh generateGeometry(final List<IGeneratorInput> generatorInputs) {
 		final TriangleMesh mesh = new TriangleMesh();
 
 		mesh.addVertex(new Vector3(size, 0, 0).addLocal(center));

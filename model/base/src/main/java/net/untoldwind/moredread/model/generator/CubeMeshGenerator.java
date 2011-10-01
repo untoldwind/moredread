@@ -19,7 +19,7 @@ public class CubeMeshGenerator extends AbstractCenterSizeGenerator {
 		return "Cube";
 	}
 
-	public QuadMesh generateMesh(final List<IGeneratorInput> generatorInputs) {
+	public QuadMesh generateGeometry(final List<IGeneratorInput> generatorInputs) {
 		final QuadMesh mesh = new QuadMesh();
 
 		mesh.addVertex(new Vector3(-size, -size, -size).addLocal(center));

@@ -92,7 +92,7 @@ public class CylinderMeshGenerator extends AbstractGeometryGenerator<IMesh>
 	}
 
 	@Override
-	public IMesh generateMesh(final List<IGeneratorInput> generatorInputs) {
+	public IMesh generateGeometry(final List<IGeneratorInput> generatorInputs) {
 		final Vector3 dir = endPoint.subtract(startPoint);
 		Vector3 radiusU = dir.cross(Vector3.UNIT_Y);
 		float len = radiusU.length();

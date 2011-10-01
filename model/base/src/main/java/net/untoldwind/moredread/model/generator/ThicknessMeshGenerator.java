@@ -45,11 +45,11 @@ public class ThicknessMeshGenerator extends AbstractGeometryGenerator<IMesh>
 	}
 
 	@Override
-	public IMesh generateMesh(final List<IGeneratorInput> generatorInputs) {
+	public IMesh generateGeometry(final List<IGeneratorInput> generatorInputs) {
 		if (generatorInputs.isEmpty()) {
 			// TODO: Consider a nice placeholder geometry (or some other kind of
 			// error handling)
-			return new CubeMeshGenerator().generateMesh(null);
+			return new CubeMeshGenerator().generateGeometry(null);
 		}
 		IGeometry<?> geometry = generatorInputs.get(0).getRenderGeometry();
 
@@ -72,15 +72,15 @@ public class ThicknessMeshGenerator extends AbstractGeometryGenerator<IMesh>
 	}
 
 	private IMesh generatePointThickness(final VertexGeometry<?> geometry) {
-		return new CubeMeshGenerator().generateMesh(null);
+		return new CubeMeshGenerator().generateGeometry(null);
 	}
 
 	private IMesh generatePolygonThickness(final IPolygon geometry) {
-		return new CubeMeshGenerator().generateMesh(null);
+		return new CubeMeshGenerator().generateGeometry(null);
 	}
 
 	private IMesh generateGridThickness(final IGrid geometry) {
-		return new CubeMeshGenerator().generateMesh(null);
+		return new CubeMeshGenerator().generateGeometry(null);
 	}
 
 	private IMesh generateMeshThickness(final IMesh geometry) {

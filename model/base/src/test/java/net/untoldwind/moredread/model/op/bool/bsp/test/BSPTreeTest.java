@@ -19,7 +19,7 @@ import org.junit.Test;
 public class BSPTreeTest {
 	@Test
 	public void testInOutCube() throws Exception {
-		final IMesh mesh = new CubeMeshGenerator().generateMesh(null);
+		final IMesh mesh = new CubeMeshGenerator().generateGeometry(null);
 
 		final BSPTree tree = new BSPTree();
 
@@ -39,7 +39,7 @@ public class BSPTreeTest {
 
 	@Test
 	public void testInOutCubeInverted() throws Exception {
-		final IMesh mesh = new CubeMeshGenerator().generateMesh(null);
+		final IMesh mesh = new CubeMeshGenerator().generateGeometry(null);
 		final TriangleMesh triMesh = mesh.toTriangleMesh().invert();
 		final BSPTree tree = new BSPTree();
 

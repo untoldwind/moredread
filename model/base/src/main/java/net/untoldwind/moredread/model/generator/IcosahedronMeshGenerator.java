@@ -22,7 +22,7 @@ public class IcosahedronMeshGenerator extends AbstractCenterSizeGenerator {
 	}
 
 	@Override
-	public TriangleMesh generateMesh(final List<IGeneratorInput> generatorInputs) {
+	public TriangleMesh generateGeometry(final List<IGeneratorInput> generatorInputs) {
 		final float fGoldenRatio = 0.5f * (1.0f + FastMath.sqrt(5.0f));
 		final float fInvRoot = 1.0f / FastMath.sqrt(1.0f + fGoldenRatio
 				* fGoldenRatio);

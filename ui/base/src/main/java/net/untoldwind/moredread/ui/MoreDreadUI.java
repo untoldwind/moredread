@@ -194,7 +194,7 @@ public class MoreDreadUI extends AbstractUIPlugin {
 				node1.setLocalScale(new Vector3(2.0f, 2.0f, 2.0f));
 
 				final AbstractSpatialNode node2 = new MeshNode(scene,
-						"Mesh Cube", new CubeMeshGenerator().generateMesh(null));
+						"Mesh Cube", new CubeMeshGenerator().generateGeometry(null));
 
 				node2.setLocalTranslation(new Vector3(3.5f, 0, 0));
 
@@ -211,14 +211,14 @@ public class MoreDreadUI extends AbstractUIPlugin {
 
 				final AbstractSpatialNode node5 = new MeshNode(scene,
 						"Mesh Dodecahedron", new DodecahedronMeshGenerator()
-								.generateMesh(null));
+								.generateGeometry(null));
 
 				node5.setLocalScale(new Vector3(3.0f, 3.0f, 3.0f));
 				node5.setLocalTranslation(new Vector3(-10f, 0, 0));
 
 				final AbstractSpatialNode node6 = new MeshNode(scene,
 						"Mesh Octahedron", new OctahedronMeshGenerator()
-								.generateMesh(null));
+								.generateGeometry(null));
 
 				node6.setLocalScale(new Vector3(3.0f, 3.0f, 3.0f));
 				node6.setLocalTranslation(new Vector3(0, 10f, 0));
@@ -271,9 +271,9 @@ public class MoreDreadUI extends AbstractUIPlugin {
 								IBooleanOperation.BoolOperation.INTERSECTION));
 
 				new MeshNode(node8, "Cube1", new CubeMeshGenerator(new Vector3(
-						0, 0, 0), 1f).generateMesh(null));
+						0, 0, 0), 1f).generateGeometry(null));
 				new MeshNode(node8, "Cube2", new CubeMeshGenerator(new Vector3(
-						0.1f, 0.2f, 0.3f), 1f).generateMesh(null));
+						0.1f, 0.2f, 0.3f), 1f).generateGeometry(null));
 
 				node8.setLocalScale(new Vector3(3.0f, 3.0f, 3.0f));
 				node8.setLocalTranslation(new Vector3(-10f, -10f, 0));
@@ -283,9 +283,9 @@ public class MoreDreadUI extends AbstractUIPlugin {
 								IBooleanOperation.BoolOperation.UNION));
 
 				new MeshNode(node9, "Cube1", new CubeMeshGenerator(new Vector3(
-						0, 0, 0), 1f).generateMesh(null));
+						0, 0, 0), 1f).generateGeometry(null));
 				new MeshNode(node9, "Cube2", new CubeMeshGenerator(new Vector3(
-						0.1f, 0.2f, 0.3f), 1f).generateMesh(null));
+						0.1f, 0.2f, 0.3f), 1f).generateGeometry(null));
 
 				node9.setLocalScale(new Vector3(3.0f, 3.0f, 3.0f));
 				node9.setLocalTranslation(new Vector3(-20f, -10f, 0));
@@ -295,23 +295,23 @@ public class MoreDreadUI extends AbstractUIPlugin {
 								IBooleanOperation.BoolOperation.DIFFERENCE));
 
 				new MeshNode(node10, "Cube1", new CubeMeshGenerator(
-						new Vector3(0, 0, 0), 1f).generateMesh(null));
+						new Vector3(0, 0, 0), 1f).generateGeometry(null));
 				new MeshNode(node10, "Cube2", new CubeMeshGenerator(
-						new Vector3(0.1f, 0.2f, 0.3f), 1f).generateMesh(null));
+						new Vector3(0.1f, 0.2f, 0.3f), 1f).generateGeometry(null));
 
 				node10.setLocalScale(new Vector3(3.0f, 3.0f, 3.0f));
 				node10.setLocalTranslation(new Vector3(-30f, -10f, 0));
 
 				final AbstractSpatialNode node11 = new MeshNode(scene,
 						"Mesh Icosahedron", new IcosahedronMeshGenerator()
-								.generateMesh(null));
+								.generateGeometry(null));
 
 				node11.setLocalScale(new Vector3(3.0f, 3.0f, 3.0f));
 				node11.setLocalTranslation(new Vector3(-20f, 10f, 0));
 
 				final AbstractSpatialNode node12 = new MeshNode(scene,
 						"Mesh Geosphere", new GeosphereMeshGenerator(5,
-								new Vector3(), 1.0f).generateMesh(null));
+								new Vector3(), 1.0f).generateGeometry(null));
 
 				node12.setLocalScale(new Vector3(5.0f, 5.0f, 5.0f));
 				node12.setLocalTranslation(new Vector3(-30f, 10f, 0));

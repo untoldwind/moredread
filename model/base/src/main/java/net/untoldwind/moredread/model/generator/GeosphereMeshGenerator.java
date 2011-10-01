@@ -32,7 +32,7 @@ public class GeosphereMeshGenerator extends AbstractCenterSizeGenerator
 	}
 
 	@Override
-	public TriangleMesh generateMesh(final List<IGeneratorInput> generatorInputs) {
+	public TriangleMesh generateGeometry(final List<IGeneratorInput> generatorInputs) {
 		final TriangleMesh mesh = new TriangleMesh();
 		List<Triangle> triangles = new ArrayList<Triangle>();
 

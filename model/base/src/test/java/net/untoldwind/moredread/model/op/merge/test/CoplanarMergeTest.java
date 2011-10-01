@@ -20,7 +20,7 @@ public class CoplanarMergeTest {
 	@Test
 	public void testCubeMerge() throws Exception {
 		final TriangleMesh cube = new CubeMeshGenerator(new Vector3(0, 0, 0),
-				1f).generateMesh(null).toTriangleMesh();
+				1f).generateGeometry(null).toTriangleMesh();
 
 		final IUnaryOperation mergeOperation = UnaryOperationFactory
 				.createOperation(UnaryOperationFactory.Implementation.COPLANAR_MERGE);
@@ -39,7 +39,7 @@ public class CoplanarMergeTest {
 	@Test
 	public void testDodecahedronMerge() throws Exception {
 		final TriangleMesh cube = new DodecahedronMeshGenerator(new Vector3(0,
-				0, 0), 1f).generateMesh(null).toTriangleMesh();
+				0, 0), 1f).generateGeometry(null).toTriangleMesh();
 
 		final IUnaryOperation mergeOperation = UnaryOperationFactory
 				.createOperation(UnaryOperationFactory.Implementation.COPLANAR_MERGE);
