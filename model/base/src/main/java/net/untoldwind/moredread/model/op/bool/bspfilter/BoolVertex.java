@@ -99,9 +99,9 @@ public class BoolVertex {
 		this.index = new ConstructedIndex(index1, index2, plane);
 	}
 
-	public BoolVertex(final IVertex vertex) {
+	public BoolVertex(final int offset, final IVertex vertex) {
 		this.point = vertex.getPoint();
-		this.index = new IntegerIndex(vertex.getIndex());
+		this.index = new IntegerIndex(vertex.getIndex() + offset);
 	}
 
 	public Vector3 getPoint() {

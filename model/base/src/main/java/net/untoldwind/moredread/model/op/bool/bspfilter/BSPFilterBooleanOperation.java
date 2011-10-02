@@ -29,10 +29,6 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 		final boolean invertMeshB = (operation != BoolOperation.INTERSECTION);
 		final boolean invertResult = (operation == BoolOperation.UNION);
 
-		final VertexSet vertexSet = new VertexSet();
-		final Map<BoolVertex.IBoolIndex, Integer> vertexMapA = new HashMap<BoolVertex.IBoolIndex, Integer>();
-		final Map<BoolVertex.IBoolIndex, Integer> vertexMapB = new HashMap<BoolVertex.IBoolIndex, Integer>();
-
 		if (invertMeshA) {
 			meshA = meshA.invert();
 		}
@@ -53,22 +49,14 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 		final BSPTree bspB = new BSPTree();
 		bspB.addMesh(meshB);
 
-		final List<List<Integer>> faces = new ArrayList<List<Integer>>();
+		final List<BoolFace> faces = new ArrayList<BoolFace>();
 		PolyMesh result = new PolyMesh();
 
-		bspFilter(result, faces, vertexSet, bspA, facesB, vertexMapB);
-		bspFilter(result, faces, vertexSet, bspB, facesA, vertexMapA);
-		mergeMidpoints(result, faces);
+		bspFilter(result, faces, bspA, facesB, meshA.getVertexCount());
+		bspFilter(result, faces, bspB, facesA, 0);
 
-		for (final List<Integer> face : faces) {
-			final int[] indices = new int[face.size()];
+		transferFaces(faces, result);
 
-			for (int i = 0; i < indices.length; i++) {
-				indices[i] = face.get(i);
-			}
-
-			result.addFace(indices);
-		}
 		if (invertResult) {
 			result = result.invert();
 		}
@@ -77,31 +65,48 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 		return result;
 	}
 
-	private void bspFilter(final PolyMesh result,
-			final List<List<Integer>> faces, final VertexSet vertexSet,
+	private void bspFilter(final PolyMesh result, final List<BoolFace> faces,
 			final BSPTree filter, final List<TriangleFace> source,
-			final Map<BoolVertex.IBoolIndex, Integer> vertexMap) {
+			final int offset) {
 		for (final TriangleFace face : source) {
 			final IVertex[] verticies = face.getVertexArray();
 
-			final List<BoolFace> inFaces = filter.testTriangle(verticies[0],
-					verticies[1], verticies[2]);
+			faces.addAll(filter.testTriangle(offset, verticies[0],
+					verticies[1], verticies[2]));
 
-			for (final BoolFace inFace : inFaces) {
-				final BoolVertex[] vertices = inFace.getVertices();
-				if (vertices.length < 3) {
-					continue;
-				}
+		}
+	}
 
-				final List<Integer> indices = new ArrayList<Integer>(
-						verticies.length);
+	private void transferFaces(final List<BoolFace> faces, final PolyMesh result) {
+		final VertexSet vertexSet = new VertexSet();
+		final Map<BoolVertex.IBoolIndex, Integer> vertexMap = new HashMap<BoolVertex.IBoolIndex, Integer>();
 
-				for (int i = 0; i < vertices.length; i++) {
-					indices.add(transferredIndex(result, vertexSet,
-							vertices[i], vertexMap));
-				}
-				faces.add(indices);
+		final List<List<Integer>> faceIndices = new ArrayList<List<Integer>>();
+		for (final BoolFace face : faces) {
+			final BoolVertex[] vertices = face.getVertices();
+			if (vertices.length < 3) {
+				continue;
 			}
+
+			final List<Integer> indices = new ArrayList<Integer>(
+					vertices.length);
+
+			for (int i = 0; i < vertices.length; i++) {
+				indices.add(transferredIndex(result, vertexSet, vertices[i],
+						vertexMap));
+			}
+			faceIndices.add(indices);
+		}
+		mergeMidpoints(result, faceIndices);
+
+		for (final List<Integer> face : faceIndices) {
+			final int[] indices = new int[face.size()];
+
+			for (int i = 0; i < indices.length; i++) {
+				indices[i] = face.get(i);
+			}
+
+			result.addFace(indices);
 		}
 	}
 

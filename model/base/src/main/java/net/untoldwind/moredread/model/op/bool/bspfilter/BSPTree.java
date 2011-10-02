@@ -18,9 +18,9 @@ public class BSPTree {
 		}
 	}
 
-	public VertexTag testVertex(final IVertex v) {
+	public VertexTag testVertex(final int offset, final IVertex v) {
 		if (root != null) {
-			return root.testVertex(new BoolVertex(v));
+			return root.testVertex(new BoolVertex(offset, v));
 		}
 		return VertexTag.OUT;
 	}
@@ -32,15 +32,16 @@ public class BSPTree {
 		return VertexTag.OUT;
 	}
 
-	public List<BoolFace> testTriangle(final IVertex v1, final IVertex v2,
-			final IVertex v3) {
+	public List<BoolFace> testTriangle(final int offset, final IVertex v1,
+			final IVertex v2, final IVertex v3) {
 		final List<BoolFace> inFaces = new ArrayList<BoolFace>();
 		if (root != null) {
 			final Plane plane = MathUtils.planeForTriangle(v1.getPoint(),
 					v2.getPoint(), v3.getPoint());
 
-			root.testFace(new BoolVertex[] { new BoolVertex(v1),
-					new BoolVertex(v2), new BoolVertex(v3) }, plane, inFaces);
+			root.testFace(new BoolVertex[] { new BoolVertex(offset, v1),
+					new BoolVertex(offset, v2), new BoolVertex(offset, v3) },
+					plane, inFaces);
 		}
 		return inFaces;
 	}

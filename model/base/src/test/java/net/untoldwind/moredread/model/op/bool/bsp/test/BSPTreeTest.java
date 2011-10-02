@@ -117,9 +117,8 @@ public class BSPTreeTest {
 		for (final TriangleFace face : triMeshA.getFaces()) {
 			final IVertex[] verticies = face.getVertexArray();
 
-			count += bspB
-					.testTriangle(verticies[0], verticies[1], verticies[2])
-					.size();
+			count += bspB.testTriangle(0, verticies[0], verticies[1],
+					verticies[2]).size();
 		}
 		assertEquals(22, count);
 	}
@@ -147,9 +146,8 @@ public class BSPTreeTest {
 		for (final TriangleFace face : meshB.getFaces()) {
 			final IVertex[] verticies = face.getVertexArray();
 
-			count += bspA
-					.testTriangle(verticies[0], verticies[1], verticies[2])
-					.size();
+			count += bspA.testTriangle(0, verticies[0], verticies[1],
+					verticies[2]).size();
 		}
 		assertEquals(0, count);
 	}
@@ -177,9 +175,8 @@ public class BSPTreeTest {
 		for (final TriangleFace face : meshB.getFaces()) {
 			final IVertex[] verticies = face.getVertexArray();
 
-			count += bspA
-					.testTriangle(verticies[0], verticies[1], verticies[2])
-					.size();
+			count += bspA.testTriangle(0, verticies[0], verticies[1],
+					verticies[2]).size();
 		}
 		assertEquals(0, count);
 	}
