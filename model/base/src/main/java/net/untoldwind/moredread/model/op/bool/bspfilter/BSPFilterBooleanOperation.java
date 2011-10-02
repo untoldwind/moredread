@@ -15,6 +15,9 @@ import net.untoldwind.moredread.model.op.IBooleanOperation;
 import net.untoldwind.moredread.model.op.utils.UnitRescale;
 import net.untoldwind.moredread.model.op.utils.VertexSet;
 
+/**
+ * Implementation of IBooleanOperation using BSP tree filtering.
+ */
 public class BSPFilterBooleanOperation implements IBooleanOperation {
 
 	@Override

@@ -169,7 +169,7 @@ public class BSPNode {
 		if (inChild != null) {
 			inChild.testFace(vertices, plane, inFaces);
 		} else {
-			inFaces.add(new BoolFace(vertices));
+			inFaces.add(new BoolFace(vertices, plane));
 		}
 	}
 
