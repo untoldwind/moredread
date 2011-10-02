@@ -29,14 +29,12 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 	@Override
 	public IMesh performBoolean(final BoolOperation operation, final IMesh inA,
 			final IMesh inB) {
-		final long start = System.nanoTime();
 		final boolean invertMeshA = (operation == BoolOperation.UNION);
 		final boolean invertMeshB = (operation != BoolOperation.INTERSECTION);
 		final boolean invertResult = (operation == BoolOperation.UNION);
 
 		final TriangleMesh meshA = triangulate(inA, invertMeshA);
 		final TriangleMesh meshB = triangulate(inB, invertMeshB);
-		System.out.println(">>>1 " + (System.nanoTime() - start) / 1000000.0);
 
 		final UnitRescale unitRescale = new UnitRescale(meshA, meshB);
 		unitRescale.rescaleInput(meshA);
@@ -48,24 +46,18 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 				meshB.getFaces());
 		final BSPTree bspA = new BSPTree(meshA);
 		final BSPTree bspB = new BSPTree(meshB);
-		System.out.println(">>>1a " + (System.nanoTime() - start) / 1000000.0);
 
 		final PlaneMap<BoolFace> faces = new PlaneMap<BoolFace>();
 
 		bspFilter(bspA, facesB, meshA.getVertexCount(), faces);
 		bspFilter(bspB, facesA, 0, faces);
-		System.out.println(">>>2 " + (System.nanoTime() - start) / 1000000.0);
 
 		final PolyMesh result = new PolyMesh();
 
 		transferVertices(faces, result);
-		System.out.println(">>>3 " + (System.nanoTime() - start) / 1000000.0);
 		mergeMidpoints(faces, result);
-		System.out.println(">>>4 " + (System.nanoTime() - start) / 1000000.0);
 		mergeFaces(faces);
-		System.out.println(">>>5 " + (System.nanoTime() - start) / 1000000.0);
 		transferFaces(faces, invertResult, result);
-		System.out.println(">>>6 " + (System.nanoTime() - start) / 1000000.0);
 
 		final Set<Integer> obsoleteVertices = new HashSet<Integer>();
 
@@ -78,7 +70,6 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 
 		unitRescale.rescaleOutput(result);
 
-		System.out.println(">>> " + (System.nanoTime() - start) / 1000000.0);
 		return result;
 	}
 
