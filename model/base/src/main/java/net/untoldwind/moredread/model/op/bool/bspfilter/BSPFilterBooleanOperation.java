@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IFace;
 import net.untoldwind.moredread.model.mesh.IMesh;
 import net.untoldwind.moredread.model.mesh.IVertex;
@@ -20,6 +21,8 @@ import net.untoldwind.moredread.model.op.utils.IndexList;
 import net.untoldwind.moredread.model.op.utils.PlaneMap;
 import net.untoldwind.moredread.model.op.utils.UnitRescale;
 import net.untoldwind.moredread.model.op.utils.VertexSet;
+
+import com.jme.math.FastMath;
 
 /**
  * Implementation of IBooleanOperation using BSP tree filtering.
@@ -57,6 +60,7 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 		transferVertices(faces, result);
 		mergeMidpoints(faces, result);
 		mergeFaces(faces);
+		cleanMidpoints(faces, result);
 		transferFaces(faces, invertResult, result);
 
 		final Set<Integer> obsoleteVertices = new HashSet<Integer>();
@@ -247,5 +251,28 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 		}
 
 		return false;
+	}
+
+	private void cleanMidpoints(final PlaneMap<BoolFace> faces,
+			final PolyMesh result) {
+		for (final BoolFace face : faces.allValues()) {
+			final IndexList vertices = face.getResultIndices();
+
+			for (int k = 0; k < vertices.size(); k++) {
+				final Vector3 p = result.getVertex(vertices.get(k)).getPoint();
+				final Vector3 diff1 = result.getVertex(vertices.get(k - 1))
+						.getPoint().subtract(p);
+				final Vector3 diff2 = result.getVertex(vertices.get(k + 1))
+						.getPoint().subtract(p);
+				diff2.crossLocal(diff1);
+
+				if (FastMath.abs(diff2.x) < 1e-6
+						&& FastMath.abs(diff2.y) < 1e-6
+						&& FastMath.abs(diff2.z) < 1e-6) {
+					vertices.remove(k);
+					k--;
+				}
+			}
+		}
 	}
 }
