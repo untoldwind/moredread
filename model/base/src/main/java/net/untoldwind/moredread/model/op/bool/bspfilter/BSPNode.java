@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.untoldwind.moredread.model.math.Plane;
+import net.untoldwind.moredread.model.op.utils.PlaneMap;
 
 public class BSPNode {
 	private final Plane nodePlane;
@@ -100,7 +101,7 @@ public class BSPNode {
 	}
 
 	public void testFace(final BoolVertex[] vertices, final Plane plane,
-			final List<BoolFace> inFaces) {
+			final PlaneMap<BoolFace> inFaces) {
 		final VertexTag[] tags = new VertexTag[vertices.length];
 
 		for (int i = 0; i < tags.length; i++) {
@@ -165,16 +166,16 @@ public class BSPNode {
 	}
 
 	private void testFaceIn(final BoolVertex[] vertices, final Plane plane,
-			final List<BoolFace> inFaces) {
+			final PlaneMap<BoolFace> inFaces) {
 		if (inChild != null) {
 			inChild.testFace(vertices, plane, inFaces);
 		} else {
-			inFaces.add(new BoolFace(vertices, plane));
+			inFaces.add(plane, new BoolFace(vertices));
 		}
 	}
 
 	private void testFaceOut(final BoolVertex[] vertices, final Plane plane,
-			final List<BoolFace> inFaces) {
+			final PlaneMap<BoolFace> inFaces) {
 		if (outChild != null) {
 			outChild.testFace(vertices, plane, inFaces);
 		}

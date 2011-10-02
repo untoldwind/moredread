@@ -1,22 +1,23 @@
 package net.untoldwind.moredread.model.op.bool.bspfilter;
 
-import net.untoldwind.moredread.model.math.Plane;
-
 public class BoolFace {
-	private final Plane plane;
 	private final BoolVertex[] vertices;
+	private int[] resultIndices;
 
-	public BoolFace(final BoolVertex[] vertices, final Plane plane) {
-		this.plane = plane;
+	public BoolFace(final BoolVertex[] vertices) {
 		this.vertices = vertices;
-	}
-
-	public Plane getPlane() {
-		return plane;
 	}
 
 	public BoolVertex[] getVertices() {
 		return vertices;
+	}
+
+	public int[] getResultIndices() {
+		return resultIndices;
+	}
+
+	public void setResultIndices(final int[] resultIndices) {
+		this.resultIndices = resultIndices;
 	}
 
 }

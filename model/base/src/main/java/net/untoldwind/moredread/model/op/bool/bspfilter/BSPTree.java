@@ -1,16 +1,18 @@
 package net.untoldwind.moredread.model.op.bool.bspfilter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.untoldwind.moredread.model.math.Plane;
 import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.IVertex;
 import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
+import net.untoldwind.moredread.model.op.utils.PlaneMap;
 
 public class BSPTree {
 	BSPNode root;
+
+	public BSPTree(final TriangleMesh mesh) {
+		addMesh(mesh);
+	}
 
 	public void addMesh(final TriangleMesh mesh) {
 		for (final TriangleFace face : mesh.getFaces()) {
@@ -32,18 +34,16 @@ public class BSPTree {
 		return VertexTag.OUT;
 	}
 
-	public List<BoolFace> testTriangle(final int offset, final IVertex v1,
-			final IVertex v2, final IVertex v3) {
-		final List<BoolFace> inFaces = new ArrayList<BoolFace>();
+	public void testTriangle(final int offset, final IVertex v1,
+			final IVertex v2, final IVertex v3, final PlaneMap<BoolFace> result) {
 		if (root != null) {
 			final Plane plane = MathUtils.planeForTriangle(v1.getPoint(),
 					v2.getPoint(), v3.getPoint());
 
 			root.testFace(new BoolVertex[] { new BoolVertex(offset, v1),
 					new BoolVertex(offset, v2), new BoolVertex(offset, v3) },
-					plane, inFaces);
+					plane, result);
 		}
-		return inFaces;
 	}
 
 	private void addFace(final TriangleFace face) {

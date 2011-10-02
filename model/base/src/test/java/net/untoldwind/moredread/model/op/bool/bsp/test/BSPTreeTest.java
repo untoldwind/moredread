@@ -9,7 +9,9 @@ import net.untoldwind.moredread.model.mesh.IVertex;
 import net.untoldwind.moredread.model.mesh.TriangleFace;
 import net.untoldwind.moredread.model.mesh.TriangleMesh;
 import net.untoldwind.moredread.model.op.bool.bspfilter.BSPTree;
+import net.untoldwind.moredread.model.op.bool.bspfilter.BoolFace;
 import net.untoldwind.moredread.model.op.bool.bspfilter.VertexTag;
+import net.untoldwind.moredread.model.op.utils.PlaneMap;
 import net.untoldwind.moredread.model.op.utils.UnitRescale;
 import net.untoldwind.moredread.model.state.XMLStateReader;
 import net.untoldwind.moredread.model.transform.MatrixTransformation;
@@ -21,9 +23,7 @@ public class BSPTreeTest {
 	public void testInOutCube() throws Exception {
 		final IMesh mesh = new CubeMeshGenerator().generateGeometry(null);
 
-		final BSPTree tree = new BSPTree();
-
-		tree.addMesh(mesh.toTriangleMesh());
+		final BSPTree tree = new BSPTree(mesh.toTriangleMesh());
 
 		assertEquals(VertexTag.IN, tree.testPoint(new Vector3(0, 0, 0)));
 		assertEquals(VertexTag.IN, tree.testPoint(new Vector3(0.9f, 0, 0)));
@@ -41,9 +41,7 @@ public class BSPTreeTest {
 	public void testInOutCubeInverted() throws Exception {
 		final IMesh mesh = new CubeMeshGenerator().generateGeometry(null);
 		final TriangleMesh triMesh = mesh.toTriangleMesh().invert();
-		final BSPTree tree = new BSPTree();
-
-		tree.addMesh(triMesh);
+		final BSPTree tree = new BSPTree(triMesh);
 
 		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(0, 0, 0)));
 		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(0.9f, 0, 0)));
@@ -65,9 +63,7 @@ public class BSPTreeTest {
 						.getClassLoader()
 						.getResourceAsStream(
 								"net/untoldwind/moredread/model/mesh/test/cube-with-hole-state.xml"));
-		final BSPTree tree = new BSPTree();
-
-		tree.addMesh(mesh.toTriangleMesh());
+		final BSPTree tree = new BSPTree(mesh.toTriangleMesh());
 
 		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(0, 0, 0)));
 		assertEquals(VertexTag.OUT, tree.testPoint(new Vector3(0.5f, 0, 0)));
@@ -110,15 +106,17 @@ public class BSPTreeTest {
 		// unitRescale.rescaleInput(triMeshA);
 		// unitRescale.rescaleInput(triMeshB);
 
-		final BSPTree bspB = new BSPTree();
-		bspB.addMesh(triMeshB);
+		final BSPTree bspB = new BSPTree(triMeshB);
 
 		int count = 0;
 		for (final TriangleFace face : triMeshA.getFaces()) {
 			final IVertex[] verticies = face.getVertexArray();
 
-			count += bspB.testTriangle(0, verticies[0], verticies[1],
-					verticies[2]).size();
+			final PlaneMap<BoolFace> result = new PlaneMap<BoolFace>();
+			bspB.testTriangle(0, verticies[0], verticies[1], verticies[2],
+					result);
+
+			count += result.totalSize();
 		}
 		assertEquals(22, count);
 	}
@@ -139,15 +137,16 @@ public class BSPTreeTest {
 		unitRescale.rescaleInput(meshA);
 		unitRescale.rescaleInput(meshB);
 
-		final BSPTree bspA = new BSPTree();
-		bspA.addMesh(meshA);
+		final BSPTree bspA = new BSPTree(meshA);
 
 		int count = 0;
 		for (final TriangleFace face : meshB.getFaces()) {
 			final IVertex[] verticies = face.getVertexArray();
 
-			count += bspA.testTriangle(0, verticies[0], verticies[1],
-					verticies[2]).size();
+			final PlaneMap<BoolFace> result = new PlaneMap<BoolFace>();
+			bspA.testTriangle(0, verticies[0], verticies[1], verticies[2],
+					result);
+			count += result.totalSize();
 		}
 		assertEquals(0, count);
 	}
@@ -168,15 +167,16 @@ public class BSPTreeTest {
 		unitRescale.rescaleInput(meshA);
 		unitRescale.rescaleInput(meshB);
 
-		final BSPTree bspA = new BSPTree();
-		bspA.addMesh(meshA);
+		final BSPTree bspA = new BSPTree(meshA);
 
 		int count = 0;
 		for (final TriangleFace face : meshB.getFaces()) {
 			final IVertex[] verticies = face.getVertexArray();
 
-			count += bspA.testTriangle(0, verticies[0], verticies[1],
-					verticies[2]).size();
+			final PlaneMap<BoolFace> result = new PlaneMap<BoolFace>();
+			bspA.testTriangle(0, verticies[0], verticies[1], verticies[2],
+					result);
+			count += result.totalSize();
 		}
 		assertEquals(0, count);
 	}

@@ -14,10 +14,10 @@
 			<outputDirectory>/schema</outputDirectory>
 		</fileSet>
 	</fileSets>
-	<files>
+<!-- <files>
 		<file>
 			<source>plugin.xml</source>
 			<outputDirectory>/</outputDirectory>
 		</file>
-	</files>	
+	</files>	-->
 </assembly>
