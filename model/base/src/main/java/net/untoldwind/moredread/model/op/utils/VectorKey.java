@@ -7,14 +7,18 @@ import com.jme.math.FastMath;
 public class VectorKey {
 	private final float TOLERANCE = 1e-5f;
 
-	private final Vector3 point;
+	private final Vector3 vector;
 	private final int hashCode;
 
 	VectorKey(final Vector3 point) {
-		this.point = point;
+		this.vector = point;
 		this.hashCode = 31 * 31 * Math.round(point.x / TOLERANCE / 2) + 31
 				* Math.round(point.y / TOLERANCE / 2)
 				+ Math.round(point.z / TOLERANCE / 2);
+	}
+
+	public Vector3 getVector() {
+		return vector;
 	}
 
 	@Override
@@ -35,9 +39,9 @@ public class VectorKey {
 		}
 		final VectorKey other = (VectorKey) obj;
 
-		return FastMath.abs(point.x - other.point.x) < TOLERANCE
-				&& FastMath.abs(point.y - other.point.y) < TOLERANCE
-				&& FastMath.abs(point.z - other.point.z) < TOLERANCE;
+		return FastMath.abs(vector.x - other.vector.x) < TOLERANCE
+				&& FastMath.abs(vector.y - other.vector.y) < TOLERANCE
+				&& FastMath.abs(vector.z - other.vector.z) < TOLERANCE;
 	}
 
 }

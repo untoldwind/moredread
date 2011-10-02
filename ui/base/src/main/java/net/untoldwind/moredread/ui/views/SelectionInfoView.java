@@ -6,7 +6,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import net.untoldwind.moredread.model.math.Quaternion;
 import net.untoldwind.moredread.model.math.Vector3;
+import net.untoldwind.moredread.model.mesh.IEdgeGeometry;
+import net.untoldwind.moredread.model.mesh.IGeometry;
+import net.untoldwind.moredread.model.mesh.IMesh;
+import net.untoldwind.moredread.model.mesh.IVertexGeometry;
 import net.untoldwind.moredread.model.scene.BoundingBox;
+import net.untoldwind.moredread.model.scene.IGeometryNode;
 import net.untoldwind.moredread.model.scene.INode;
 import net.untoldwind.moredread.model.scene.ISpatialNode;
 import net.untoldwind.moredread.model.scene.Scene;
@@ -40,6 +45,9 @@ public class SelectionInfoView extends ViewPart implements
 	XYZValueField hotpointText;
 	XYZValueField centerText;
 	RotationValueField rotateText;
+	Label faceCountLabel;
+	Label edgeCountLabel;
+	Label vertexCountLabel;
 
 	Runnable updateSelectionRun;
 
@@ -88,6 +96,28 @@ public class SelectionInfoView extends ViewPart implements
 		MoreDreadUI.getDefault().getSceneHolder().addSceneChangeListener(this);
 		MoreDreadUI.getDefault().getSceneHolder()
 				.addSceneSelectionChangeListener(this);
+
+		final Composite geometryCounts = new Composite(parent, SWT.NONE);
+		final GridData layoutData = new GridData(GridData.FILL_HORIZONTAL);
+		layoutData.horizontalSpan = 2;
+		geometryCounts.setLayoutData(layoutData);
+		geometryCounts.setLayout(new GridLayout(6, false));
+
+		final Label facesLabel = new Label(geometryCounts, SWT.NONE);
+		facesLabel.setText("F:");
+		faceCountLabel = new Label(geometryCounts, SWT.NONE);
+		faceCountLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		final Label edgesLabel = new Label(geometryCounts, SWT.NONE);
+		edgesLabel.setText("E:");
+		edgeCountLabel = new Label(geometryCounts, SWT.NONE);
+		edgeCountLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+		final Label verticesLabel = new Label(geometryCounts, SWT.NONE);
+		verticesLabel.setText("V:");
+		vertexCountLabel = new Label(geometryCounts, SWT.NONE);
+		vertexCountLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
 	}
 
 	@Override
@@ -101,8 +131,6 @@ public class SelectionInfoView extends ViewPart implements
 
 	@Override
 	public void setFocus() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -147,6 +175,9 @@ public class SelectionInfoView extends ViewPart implements
 			}
 		}
 
+		faceCountLabel.setText("");
+		edgeCountLabel.setText("");
+		vertexCountLabel.setText("");
 		if (selection.isEmpty()) {
 			nameText.setValue(null);
 			centerText.setValue(null);
@@ -161,9 +192,35 @@ public class SelectionInfoView extends ViewPart implements
 			rotation.set(spatialNode.getLocalRotation());
 			nameText.setValue(spatialNode.getName());
 			nameText.setEnabled(true);
+
+			int vertexCount = 0;
+			int edgeCount = 0;
+			int faceCount = 0;
+			if (spatialNode instanceof IGeometryNode<?, ?>) {
+				final IGeometry<?> geometry = ((IGeometryNode<?, ?>) spatialNode)
+						.getRenderGeometry();
+
+				switch (geometry.getGeometryType()) {
+				case MESH:
+					faceCount += ((IMesh) geometry).getFaces().size();
+				case GRID:
+				case POLYGON:
+					edgeCount += ((IEdgeGeometry<?>) geometry).getEdges()
+							.size();
+				case POINT:
+					vertexCount += ((IVertexGeometry<?>) geometry)
+							.getVertices().size();
+				}
+			}
+			faceCountLabel.setText(String.valueOf(faceCount));
+			edgeCountLabel.setText(String.valueOf(edgeCount));
+			vertexCountLabel.setText(String.valueOf(vertexCount));
 		} else {
 			int count = 0;
 
+			int vertexCount = 0;
+			int edgeCount = 0;
+			int faceCount = 0;
 			for (final ISpatialNode spatialNode : selection) {
 				if (boundingBox == null) {
 					boundingBox = new BoundingBox(
@@ -173,8 +230,27 @@ public class SelectionInfoView extends ViewPart implements
 				}
 				hotpoint.addLocal(spatialNode.getWorldTranslation());
 
+				if (spatialNode instanceof IGeometryNode<?, ?>) {
+					final IGeometry<?> geometry = ((IGeometryNode<?, ?>) spatialNode)
+							.getRenderGeometry();
+
+					switch (geometry.getGeometryType()) {
+					case MESH:
+						faceCount += ((IMesh) geometry).getFaces().size();
+					case GRID:
+					case POLYGON:
+						edgeCount += ((IEdgeGeometry<?>) geometry).getEdges()
+								.size();
+					case POINT:
+						vertexCount += ((IVertexGeometry<?>) geometry)
+								.getVertices().size();
+					}
+				}
 				count++;
 			}
+			faceCountLabel.setText(String.valueOf(faceCount));
+			edgeCountLabel.setText(String.valueOf(edgeCount));
+			vertexCountLabel.setText(String.valueOf(vertexCount));
 			hotpoint.divideLocal(count);
 			nameText.setValue("Multiple");
 			nameText.setEnabled(false);

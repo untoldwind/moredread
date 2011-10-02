@@ -12,16 +12,12 @@ public class BoolVertex {
 		private final int index;
 
 		public IntegerIndex(final int index) {
-			super();
 			this.index = index;
 		}
 
 		@Override
 		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + index;
-			return result;
+			return index;
 		}
 
 		@Override
@@ -47,6 +43,7 @@ public class BoolVertex {
 	public static class ConstructedIndex implements IBoolIndex {
 		private final IBoolIndex index1;
 		private final IBoolIndex index2;
+		private final int hashCode;
 		private final Plane plane;
 
 		public ConstructedIndex(final IBoolIndex index1,
@@ -54,15 +51,13 @@ public class BoolVertex {
 			this.index1 = index1;
 			this.index2 = index2;
 			this.plane = plane;
+			this.hashCode = 31 * 31 * 31 * index1.hashCode() + 31 * 31
+					* index2.hashCode() + plane.hashCode();
 		}
 
 		@Override
 		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + index1.hashCode() + index2.hashCode();
-			result = prime * result + plane.hashCode();
-			return result;
+			return hashCode;
 		}
 
 		@Override

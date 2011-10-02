@@ -2,8 +2,10 @@ package net.untoldwind.moredread.model.op.bool.bspfilter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import net.untoldwind.moredread.model.mesh.IFace;
 import net.untoldwind.moredread.model.mesh.IMesh;
@@ -14,6 +16,7 @@ import net.untoldwind.moredread.model.mesh.TriangleMesh;
 import net.untoldwind.moredread.model.op.IBooleanOperation;
 import net.untoldwind.moredread.model.op.ITriangulator;
 import net.untoldwind.moredread.model.op.TriangulatorFactory;
+import net.untoldwind.moredread.model.op.utils.IndexList;
 import net.untoldwind.moredread.model.op.utils.PlaneMap;
 import net.untoldwind.moredread.model.op.utils.UnitRescale;
 import net.untoldwind.moredread.model.op.utils.VertexSet;
@@ -26,12 +29,14 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 	@Override
 	public IMesh performBoolean(final BoolOperation operation, final IMesh inA,
 			final IMesh inB) {
+		final long start = System.nanoTime();
 		final boolean invertMeshA = (operation == BoolOperation.UNION);
 		final boolean invertMeshB = (operation != BoolOperation.INTERSECTION);
 		final boolean invertResult = (operation == BoolOperation.UNION);
 
 		final TriangleMesh meshA = triangulate(inA, invertMeshA);
 		final TriangleMesh meshB = triangulate(inB, invertMeshB);
+		System.out.println(">>>1 " + (System.nanoTime() - start) / 1000000.0);
 
 		final UnitRescale unitRescale = new UnitRescale(meshA, meshB);
 		unitRescale.rescaleInput(meshA);
@@ -43,21 +48,37 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 				meshB.getFaces());
 		final BSPTree bspA = new BSPTree(meshA);
 		final BSPTree bspB = new BSPTree(meshB);
+		System.out.println(">>>1a " + (System.nanoTime() - start) / 1000000.0);
 
 		final PlaneMap<BoolFace> faces = new PlaneMap<BoolFace>();
 
 		bspFilter(bspA, facesB, meshA.getVertexCount(), faces);
 		bspFilter(bspB, facesA, 0, faces);
+		System.out.println(">>>2 " + (System.nanoTime() - start) / 1000000.0);
 
 		final PolyMesh result = new PolyMesh();
 
 		transferVertices(faces, result);
+		System.out.println(">>>3 " + (System.nanoTime() - start) / 1000000.0);
 		mergeMidpoints(faces, result);
-		// mergeFaces(faces);
+		System.out.println(">>>4 " + (System.nanoTime() - start) / 1000000.0);
+		mergeFaces(faces);
+		System.out.println(">>>5 " + (System.nanoTime() - start) / 1000000.0);
 		transferFaces(faces, invertResult, result);
+		System.out.println(">>>6 " + (System.nanoTime() - start) / 1000000.0);
+
+		final Set<Integer> obsoleteVertices = new HashSet<Integer>();
+
+		for (final IVertex vertex : result.getVertices()) {
+			if (vertex.getFaces().isEmpty()) {
+				obsoleteVertices.add(vertex.getIndex());
+			}
+		}
+		result.removeVertices(obsoleteVertices);
 
 		unitRescale.rescaleOutput(result);
 
+		System.out.println(">>> " + (System.nanoTime() - start) / 1000000.0);
 		return result;
 	}
 
@@ -110,11 +131,11 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 				continue;
 			}
 
-			final int indices[] = new int[vertices.length];
+			final IndexList indices = new IndexList(vertices.length);
 
 			for (int i = 0; i < vertices.length; i++) {
-				indices[i] = transferredIndex(result, vertexSet, vertices[i],
-						vertexMap);
+				indices.add(transferredIndex(result, vertexSet, vertices[i],
+						vertexMap));
 			}
 			face.setResultIndices(indices);
 		}
@@ -123,14 +144,14 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 	private void transferFaces(final PlaneMap<BoolFace> faces,
 			final boolean invert, final PolyMesh result) {
 		for (final BoolFace face : faces.allValues()) {
-			final int[] resultIndices = face.getResultIndices();
-			final int[] indices = new int[resultIndices.length];
+			final IndexList resultIndices = face.getResultIndices();
+			final int[] indices = new int[resultIndices.size()];
 
 			for (int i = 0; i < indices.length; i++) {
 				if (invert) {
-					indices[indices.length - i - 1] = resultIndices[i];
+					indices[indices.length - i - 1] = resultIndices.get(i);
 				} else {
-					indices[i] = resultIndices[i];
+					indices[i] = resultIndices.get(i);
 				}
 			}
 
@@ -160,26 +181,17 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 			final PolyMesh result) {
 		for (final IVertex vertex : result.getVertices()) {
 			for (final BoolFace face : faces.allValues()) {
-				int[] resultIndices = face.getResultIndices();
-				IVertex prev = result
-						.getVertex(resultIndices[resultIndices.length - 1]);
-				for (int i = 0; i < resultIndices.length; i++) {
-					final IVertex next = result.getVertex(resultIndices[i]);
+				final IndexList resultIndices = face.getResultIndices();
+				IVertex prev = result.getVertex(resultIndices.get(-1));
+				for (int i = 0; i < resultIndices.size(); i++) {
+					final IVertex next = result.getVertex(resultIndices.get(i));
 
 					if (vertex.getIndex() != prev.getIndex()
 							&& vertex.getIndex() != next.getIndex()
 							&& MathUtils.isOnLine(vertex.getPoint(),
 									prev.getPoint(), next.getPoint())) {
 
-						final int[] newIndices = new int[resultIndices.length + 1];
-
-						System.arraycopy(resultIndices, 0, newIndices, 0, i);
-						newIndices[i] = vertex.getIndex();
-						System.arraycopy(resultIndices, i, newIndices, i + 1,
-								resultIndices.length - i);
-
-						resultIndices = newIndices;
-						face.setResultIndices(resultIndices);
+						resultIndices.add(i, vertex.getIndex());
 
 						prev = vertex;
 					} else {
@@ -192,14 +204,19 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 
 	private void mergeFaces(final PlaneMap<BoolFace> faces) {
 		for (final List<BoolFace> faceList : faces.valueSets()) {
-			for (int i = 0; i < faceList.size(); i++) {
-				final BoolFace face1 = faceList.get(i);
-				for (int j = i + 1; j < faceList.size(); j++) {
-					final BoolFace face2 = faceList.get(j);
+			boolean found = true;
+			while (found) {
+				found = false;
+				for (int i = 0; i < faceList.size(); i++) {
+					final BoolFace face1 = faceList.get(i);
+					for (int j = i + 1; j < faceList.size(); j++) {
+						final BoolFace face2 = faceList.get(j);
 
-					if (checkFaceMerge(face1, face2)) {
-						faceList.remove(j);
-						j--;
+						if (checkFaceMerge(face1, face2)) {
+							faceList.remove(j);
+							found = true;
+							j--;
+						}
 					}
 				}
 			}
@@ -207,34 +224,31 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 	}
 
 	private boolean checkFaceMerge(final BoolFace face1, final BoolFace face2) {
-		final int[] vertices1 = face1.getResultIndices();
-		final int[] vertices2 = face2.getResultIndices();
+		final IndexList vertices1 = face1.getResultIndices();
+		final IndexList vertices2 = face2.getResultIndices();
 
-		for (int i = 0; i < vertices1.length; i++) {
-			final int idx1a = vertices1[i];
-			final int idx1b = vertices1[(i + 1) % vertices1.length];
+		for (int i = 0; i < vertices1.size(); i++) {
+			final int idx1a = vertices1.get(i);
+			final int idx1b = vertices1.get(i + 1);
 
-			for (int j = 0; j < vertices2.length; j++) {
-				final int idx2a = vertices2[j];
-				final int idx2b = vertices2[(j + 1) % vertices2.length];
+			for (int j = 0; j < vertices2.size(); j++) {
+				final int idx2a = vertices2.get(j);
+				final int idx2b = vertices2.get(j + 1);
 
 				if (idx1a == idx2b && idx1b == idx2a) {
-					final int[] newVertices = new int[vertices1.length
-							+ vertices2.length - 2];
-
-					int l = 0;
-					for (int k = 0; k <= i; k++) {
-						newVertices[l++] = vertices1[k];
-					}
-					for (int k = 0; k < vertices2.length - 2; k++) {
-						newVertices[l++] = vertices2[(j + 2 + k)
-								% vertices2.length];
-					}
-					for (int k = i + 1; k < vertices1.length; k++) {
-						newVertices[l++] = vertices1[k];
+					for (int k = 0; k < vertices2.size() - 2; k++) {
+						vertices1.add(i + 1 + k, vertices2.get(j + 2 + k));
 					}
 
-					face1.setResultIndices(newVertices);
+					for (int k = 0; k < vertices1.size(); k++) {
+						final int idx1 = vertices1.get(k - 1);
+						final int idx2 = vertices1.get(k + 1);
+
+						if (idx1 == idx2) {
+							vertices1.remove(k, k + 1);
+							k = -1;
+						}
+					}
 
 					return true;
 				}
