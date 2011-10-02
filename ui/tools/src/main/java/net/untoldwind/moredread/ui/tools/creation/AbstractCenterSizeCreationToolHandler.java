@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.untoldwind.moredread.model.generator.AbstractCenterSizeGenerator;
 import net.untoldwind.moredread.model.math.Vector3;
+import net.untoldwind.moredread.model.scene.AbstractSceneOperation;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.ui.controls.IModelControl;
@@ -88,29 +89,29 @@ public abstract class AbstractCenterSizeCreationToolHandler implements
 			if (node == null) {
 				generator = createGenerator(point);
 
-				scene.getSceneChangeHandler().beginUndoable(
-						"Create " + generator.getName());
-
-				try {
-					node = new GeneratorNode(scene, generator);
-				} finally {
-					scene.getSceneChangeHandler().savepoint();
-				}
+				scene.undoableSavepoint(new AbstractSceneOperation("Create "
+						+ generator.getName()) {
+					@Override
+					public void perform(final Scene scene) {
+						node = new GeneratorNode(scene, generator);
+					}
+				});
 			} else {
-				scene.getSceneChangeHandler().beginUndoable(
-						"Create " + generator.getName());
+				scene.undoableSavepoint(new AbstractSceneOperation("Create "
+						+ generator.getName()) {
+					@Override
+					public void perform(final Scene scene) {
+						generator.setSize(maxDistance(generator.getCenter(),
+								point));
+						node.regenerate();
 
-				try {
-					generator
-							.setSize(maxDistance(generator.getCenter(), point));
-					node.regenerate();
-				} finally {
-					scene.getSceneChangeHandler().commit();
-				}
-				node = null;
-				generator = null;
+						node = null;
+						generator = null;
 
-				toolController.setActiveTool(null);
+						toolController.setActiveTool(null);
+					}
+				});
+
 			}
 			return true;
 		}
@@ -123,16 +124,15 @@ public abstract class AbstractCenterSizeCreationToolHandler implements
 			modelControl.updatePositions();
 
 			if (node != null) {
-				scene.getSceneChangeHandler().beginUndoable(
-						"Create " + generator.getName());
-
-				try {
-					generator
-							.setSize(maxDistance(generator.getCenter(), point));
-					node.regenerate();
-				} finally {
-					scene.getSceneChangeHandler().savepoint();
-				}
+				scene.undoableSavepoint(new AbstractSceneOperation("Create "
+						+ generator.getName()) {
+					@Override
+					public void perform(final Scene scene) {
+						generator.setSize(maxDistance(generator.getCenter(),
+								point));
+						node.regenerate();
+					}
+				});
 			}
 			return true;
 		}

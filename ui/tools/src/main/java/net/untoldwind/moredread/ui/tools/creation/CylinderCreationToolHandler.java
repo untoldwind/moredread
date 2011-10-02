@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.untoldwind.moredread.model.generator.CylinderMeshGenerator;
 import net.untoldwind.moredread.model.math.Vector3;
+import net.untoldwind.moredread.model.scene.AbstractSceneOperation;
 import net.untoldwind.moredread.model.scene.GeneratorNode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.ui.controls.IModelControl;
@@ -85,20 +86,19 @@ public class CylinderCreationToolHandler implements IToolHandler {
 			modelControl.updatePositions();
 
 			if (node != null) {
-				scene.getSceneChangeHandler().beginUndoable(
-						"Create " + generator.getName());
-
-				try {
-					if (directionMode) {
-						generator.setEndPoint(point.clone());
-					} else {
-						generator.setRadius(maxDistance(
-								generator.getStartPoint(), point));
+				scene.undoableSavepoint(new AbstractSceneOperation("Create "
+						+ generator.getName()) {
+					@Override
+					public void perform(final Scene scene) {
+						if (directionMode) {
+							generator.setEndPoint(point.clone());
+						} else {
+							generator.setRadius(maxDistance(
+									generator.getStartPoint(), point));
+						}
+						node.regenerate();
 					}
-					node.regenerate();
-				} finally {
-					scene.getSceneChangeHandler().savepoint();
-				}
+				});
 			}
 
 			return true;
@@ -113,40 +113,39 @@ public class CylinderCreationToolHandler implements IToolHandler {
 				lastPoint.set(point);
 				generator.setEndPoint(point.add(Vector3.UNIT_Z));
 
-				scene.getSceneChangeHandler().beginUndoable(
-						"Create " + generator.getName());
-
-				try {
-					node = new GeneratorNode(scene, generator);
-				} finally {
-					scene.getSceneChangeHandler().savepoint();
-				}
+				scene.undoableSavepoint(new AbstractSceneOperation("Create "
+						+ generator.getName()) {
+					@Override
+					public void perform(final Scene scene) {
+						node = new GeneratorNode(scene, generator);
+					}
+				});
 			} else if (!directionMode) {
-				scene.getSceneChangeHandler().beginUndoable(
-						"Create " + generator.getName());
+				scene.undoableSavepoint(new AbstractSceneOperation("Create "
+						+ generator.getName()) {
+					@Override
+					public void perform(final Scene scene) {
+						generator.setRadius(maxDistance(
+								generator.getStartPoint(), point));
+						node.regenerate();
 
-				try {
-					generator.setRadius(maxDistance(generator.getStartPoint(),
-							point));
-					node.regenerate();
-				} finally {
-					scene.getSceneChangeHandler().savepoint();
-				}
-				directionMode = true;
+						directionMode = true;
+					}
+				});
 			} else {
-				scene.getSceneChangeHandler().beginUndoable(
-						"Create " + generator.getName());
+				scene.undoableSavepoint(new AbstractSceneOperation("Create "
+						+ generator.getName()) {
+					@Override
+					public void perform(final Scene scene) {
+						generator.setEndPoint(point.clone());
+						node.regenerate();
 
-				try {
-					generator.setEndPoint(point.clone());
-					node.regenerate();
-				} finally {
-					scene.getSceneChangeHandler().commit();
-				}
-				node = null;
-				generator = null;
+						node = null;
+						generator = null;
 
-				toolController.setActiveTool(null);
+						toolController.setActiveTool(null);
+					}
+				});
 			}
 			return true;
 		}

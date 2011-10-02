@@ -43,7 +43,7 @@ public class SceneChangeHandler implements IAdaptable {
 		begin(null, false);
 	}
 
-	public synchronized void begin(final String label, final boolean allowUndo) {
+	synchronized void begin(final String label, final boolean allowUndo) {
 		if (lockOwner != null) {
 			throw new RuntimeException(
 					"Scene is already manipulated by thread: " + lockOwner);

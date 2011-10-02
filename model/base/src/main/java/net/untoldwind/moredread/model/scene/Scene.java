@@ -58,6 +58,16 @@ public class Scene extends Group {
 		}
 	}
 
+	public void undoableSavepoint(final ISceneOperation operation) {
+		sceneChangeHandler.begin(operation.getLabel(), true);
+
+		try {
+			operation.perform(this);
+		} finally {
+			sceneChangeHandler.savepoint();
+		}
+	}
+
 	public void notUndoableChange(final ISceneOperation operation) {
 		sceneChangeHandler.begin(operation.getLabel(), false);
 

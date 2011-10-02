@@ -1,5 +1,6 @@
 package net.untoldwind.moredread.model.scene.properties;
 
+import net.untoldwind.moredread.model.scene.AbstractSceneOperation;
 import net.untoldwind.moredread.model.scene.AbstractSpatialNode;
 import net.untoldwind.moredread.model.scene.Scene;
 
@@ -70,14 +71,13 @@ public class SpatialNodePropertySource implements IPropertySource {
 	public void setPropertyValue(final Object id, final Object value) {
 		final Scene scene = node.getScene();
 
-		scene.getSceneChangeHandler().beginUndoable("Changed Property");
-
-		try {
-			if (PROPERTY_NAME.equals(id)) {
-				node.setName(value.toString());
+		scene.undoableChange(new AbstractSceneOperation("Change Property") {
+			@Override
+			public void perform(final Scene scene) {
+				if (PROPERTY_NAME.equals(id)) {
+					node.setName(value.toString());
+				}
 			}
-		} finally {
-			scene.getSceneChangeHandler().commit();
-		}
+		});
 	}
 }

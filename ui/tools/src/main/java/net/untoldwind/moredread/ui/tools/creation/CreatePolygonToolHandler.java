@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.untoldwind.moredread.model.math.Vector3;
 import net.untoldwind.moredread.model.mesh.Polygon;
+import net.untoldwind.moredread.model.scene.AbstractSceneOperation;
 import net.untoldwind.moredread.model.scene.PolygonNode;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.state.BinaryStateReader;
@@ -39,20 +40,20 @@ public class CreatePolygonToolHandler implements IToolHandler {
 	@Override
 	public void completed(final IToolController toolController,
 			final Scene scene) {
-		scene.getSceneChangeHandler().beginUndoable("Create polygon");
+		scene.undoableChange(new AbstractSceneOperation("Create polygon") {
+			@Override
+			public void perform(final Scene scene) {
+				if (polygonNode != null && completeState != null) {
+					final Polygon polygon = BinaryStateReader
+							.fromByteArray(completeState);
 
-		try {
-			if (polygonNode != null && completeState != null) {
-				final Polygon polygon = BinaryStateReader
-						.fromByteArray(completeState);
+					polygonNode.setGeometry(polygon);
 
-				polygonNode.setGeometry(polygon);
+					polygonNode = null;
+					completeState = null;
+				}
 			}
-		} finally {
-			scene.getSceneChangeHandler().commit();
-		}
-		polygonNode = null;
-		completeState = null;
+		});
 	}
 
 	@Override
@@ -93,14 +94,16 @@ public class CreatePolygonToolHandler implements IToolHandler {
 			modelControl.updatePositions();
 
 			if (polygonNode != null) {
-				scene.getSceneChangeHandler().beginUndoable("Create polygon");
-				try {
-					final Polygon polygon = polygonNode.getEditableGeometry();
-					polygon.getVertex(polygon.getVertexCount() - 1).setPoint(
-							point);
-				} finally {
-					scene.getSceneChangeHandler().savepoint();
-				}
+				scene.undoableSavepoint(new AbstractSceneOperation(
+						"Create polygon") {
+					@Override
+					public void perform(final Scene scene) {
+						final Polygon polygon = polygonNode
+								.getEditableGeometry();
+						polygon.getVertex(polygon.getVertexCount() - 1)
+								.setPoint(point);
+					}
+				});
 			}
 			return true;
 		}
@@ -109,32 +112,35 @@ public class CreatePolygonToolHandler implements IToolHandler {
 		public boolean handleClick(final IModelControl modelControl,
 				final Vector3 point, final EnumSet<Modifier> modifiers) {
 			if (polygonNode == null) {
-				scene.getSceneChangeHandler().beginUndoable("Create polygon");
-				try {
-					final Polygon polygon = new Polygon();
+				scene.undoableSavepoint(new AbstractSceneOperation(
+						"Create polygon") {
+					@Override
+					public void perform(final Scene scene) {
+						final Polygon polygon = new Polygon();
 
-					polygon.appendVertex(point, false);
-					polygon.appendVertex(point, false);
-					lastPoint.set(point);
-					completeState = BinaryStateWriter.toByteArray(polygon);
+						polygon.appendVertex(point, false);
+						polygon.appendVertex(point, false);
+						lastPoint.set(point);
+						completeState = BinaryStateWriter.toByteArray(polygon);
 
-					polygonNode = new PolygonNode(scene, polygon);
-				} finally {
-					scene.getSceneChangeHandler().savepoint();
-				}
+						polygonNode = new PolygonNode(scene, polygon);
+					}
+				});
 			} else {
-				scene.getSceneChangeHandler().beginUndoable("Create polygon");
-				try {
-					final Polygon polygon = polygonNode.getEditableGeometry();
-					polygon.getVertex(polygon.getVertexCount() - 1).setPoint(
-							point);
-					completeState = BinaryStateWriter.toByteArray(polygon);
+				scene.undoableSavepoint(new AbstractSceneOperation(
+						"Create polygon") {
+					@Override
+					public void perform(final Scene scene) {
+						final Polygon polygon = polygonNode
+								.getEditableGeometry();
+						polygon.getVertex(polygon.getVertexCount() - 1)
+								.setPoint(point);
+						completeState = BinaryStateWriter.toByteArray(polygon);
 
-					polygon.appendVertex(point, false);
-					lastPoint.set(point);
-				} finally {
-					scene.getSceneChangeHandler().savepoint();
-				}
+						polygon.appendVertex(point, false);
+						lastPoint.set(point);
+					}
+				});
 			}
 
 			return true;

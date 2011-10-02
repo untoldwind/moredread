@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import net.untoldwind.moredread.model.io.spi.IModelReader;
+import net.untoldwind.moredread.model.scene.AbstractSceneOperation;
 import net.untoldwind.moredread.model.scene.ISceneHolder;
 import net.untoldwind.moredread.model.scene.Scene;
 import net.untoldwind.moredread.model.state.XMLStateReader;
@@ -29,12 +30,16 @@ public class MUFModelReader implements IModelReader {
 					document.getRootElement());
 
 			final Scene scene = sceneHolder.createScene();
-			scene.getSceneChangeHandler().beginNotUndoable();
-			try {
-				scene.readState(reader);
-			} finally {
-				scene.getSceneChangeHandler().commit();
-			}
+			scene.notUndoableChange(new AbstractSceneOperation("Load scene") {
+				@Override
+				public void perform(final Scene scene) {
+					try {
+						scene.readState(reader);
+					} catch (final IOException e) {
+						throw new RuntimeException(e);
+					}
+				}
+			});
 
 			return scene;
 		} catch (final DocumentException e) {
