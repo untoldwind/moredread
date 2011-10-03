@@ -140,6 +140,11 @@ public class BSPFilterBooleanOperation implements IBooleanOperation {
 			final boolean invert, final PolyMesh result) {
 		for (final BoolFace face : faces.allValues()) {
 			final IndexList resultIndices = face.getResultIndices();
+
+			if (resultIndices.size() < 3) {
+				continue;
+			}
+
 			final int[] indices = new int[resultIndices.size()];
 
 			for (int i = 0; i < indices.length; i++) {
